@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>知识图谱 - 心晴空间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        :root {
+            --primary: #7CB8A8;
+            --primary-light: #A8D5C7;
+            --bg-main: #F8FAF9;
+            --text-main: #2D3436;
+            --text-secondary: #636E72;
+        }
+        
+        body {
+            background: var(--bg-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .node-exercise { fill: #7CB8A8; }
+        .node-knowledge { fill: #74B9FF; }
+        .node-emotion { fill: #FD79A8; }
+        .node-method { fill: #FDCB6E; }
+        .node-tag { fill: #A29BFE; }
+        .node-group { fill: #55EFC4; }
+        
+        .link { stroke: #B2BEC3; stroke-opacity: 0.6; }
+        .link-has_tag { stroke: #A29BFE; }
+        .link-suitable_for { stroke: #55EFC4; }
+        .link-treats { stroke: #FD79A8; }
+        
+        .node-label {
+            font-size: 12px;
+            fill: var(--text-main);
+            pointer-events: none;
+        }
+        
+        .tooltip {
+            position: absolute;
+            background: white;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            font-size: 14px;
+            max-width: 280px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        #graph-container {
+            width: 100%;
+            height: 600px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        
+        .filter-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            transition: all 0.2s;
+            border: 1px solid #DFE6E9;
+            background: white;
+            color: var(--text-secondary);
+        }
+        
+        .filter-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .stats-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .search-input {
+            border: 1px solid #DFE6E9;
+            border-radius: 24px;
+            padding: 10px 20px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(124, 184, 168, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#7CB8A8] to-[#A8D5C7]"></div>
+                <span class="text-lg font-medium" style="color: var(--text-main)">心晴空间</span>
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="index.html" class="text-sm hover:text-[#7CB8A8] transition" style="color: var(--text-secondary)">首页</a>
+                <a href="test.html" class="text-sm hover:text-[#7CB8A8] transition" style="color: var(--text-secondary)">情绪自测</a>
+                <a href="article.html" class="text-sm hover:text-[#7CB8A8] transition" style="color: var(--text-secondary)">疗愈内容</a>
+                <a href="relax.html" class="text-sm hover:text-[#7CB8A8] transition" style="color: var(--text-secondary)">放松练习</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- 标题区 -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-medium mb-2" style="color: var(--text-main)">心理疗愈知识图谱</h1>
+            <p class="text-sm" style="color: var(--text-secondary)">探索情绪、练习与心理知识之间的关联</p>
+        </div>
+
+        <!-- 统计卡片 -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="stats-card">
+                <div class="text-2xl font-medium" style="color: var(--primary)" id="stat-nodes">-</div>
+                <div class="text-xs" style="color: var(--text-secondary)">知识节点</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-medium" style="color: var(--primary)" id="stat-edges">-</div>
+                <div class="text-xs" style="color: var(--text-secondary)">关联关系</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-medium" style="color: var(--primary)" id="stat-exercises">-</div>
+                <div class="text-xs" style="color: var(--text-secondary)">疗愈练习</div>
+            </div>
+            <div class="stats-card">
+                <div class="text-2xl font-medium" style="color: var(--primary)" id="stat-knowledge">-</div>
+                <div class="text-xs" style="color: var(--text-secondary)">心理知识</div>
+            </div>
+        </div>
+
+        <!-- 工具栏 -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+            <!-- 搜索 -->
+            <input type="text" id="search-input" class="search-input" placeholder="搜索节点...">
+            
+            <!-- 过滤器 -->
+            <div class="flex flex-wrap gap-2">
+                <button class="filter-btn active" data-type="all">全部</button>
+                <button class="filter-btn" data-type="exercise">练习</button>
+                <button class="filter-btn" data-type="knowledge">知识</button>
+                <button class="filter-btn" data-type="emotion">情绪</button>
+                <button class="filter-btn" data-type="method">方法</button>
+                <button class="filter-btn" data-type="tag">标签</button>
+            </div>
+        </div>
+
+        <!-- 图谱容器 -->
+        <div id="graph-container">
+            <svg id="graph-svg" width="100%" height="100%"></svg>
+        </div>
+
+        <!-- 图例 -->
+        <div class="mt-6 p-4 bg-white rounded-xl">
+            <h3 class="text-sm font-medium mb-3" style="color: var(--text-main)">图例说明</h3>
+            <div class="flex flex-wrap gap-6">
+                <div class="legend-item">
+                    <div class="legend-dot node-exercise"></div>
+                    <span class="text-sm" style="color: var(--text-secondary)">疗愈练习</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot node-knowledge"></div>
+                    <span class="text-sm" style="color: var(--text-secondary)">心理知识</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot node-emotion"></div>
+                    <span class="text-sm" style="color: var(--text-secondary)">情绪类型</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot node-method"></div>
+                    <span class="text-sm" style="color: var(--text-secondary)">调节方法</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot node-tag"></div>
+                    <span class="text-sm" style="color: var(--text-secondary)">标签</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 使用提示 -->
+        <div class="mt-6 p-4 rounded-xl" style="background: linear-gradient(135deg, #F0FDF9 0%, #F0FDFA 100%)">
+            <h3 class="text-sm font-medium mb-2" style="color: var(--text-main)">使用提示</h3>
+            <ul class="text-sm space-y-1" style="color: var(--text-secondary)">
+                <li>• 拖动节点可调整位置，滚轮可缩放视图</li>
+                <li>• 点击节点查看详细信息</li>
+                <li>• 使用过滤器筛选特定类型的节点</li>
+                <li>• 搜索框可快速定位节点</li>
+            </ul>
+        </div>
+    </main>
+
+    <!-- 提示框 -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- 免责声明 -->
+    <footer class="mt-12 py-6 text-center" style="background: #F0FDF9">
+        <p class="text-xs px-4" style="color: var(--text-secondary)">
+            本知识图谱仅供心理健康科普参考，不构成医学诊断或治疗建议。如有心理困扰，请寻求专业帮助。
+        </p>
+    </footer>
+
+    <script>
+        // 图谱数据
+        let graphData = { nodes: [], edges: [] };
+        let simulation, svg, g;
+        let currentFilter = 'all';
+        
+        // API基础地址
+        const API_BASE = 'http://localhost:3000/api';
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            initGraph();
+            loadGraphData();
+            setupEventListeners();
+        });
+        
+        // 初始化图谱
+        function initGraph() {
+            const container = document.getElementById('graph-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            svg = d3.select('#graph-svg')
+                .attr('viewBox', [0, 0, width, height]);
+            
+            // 添加缩放功能
+            const zoom = d3.zoom()
+                .scaleExtent([0.3, 3])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+            
+            svg.call(zoom);
+            
+            // 创建主容器
+            g = svg.append('g');
+            
+            // 定义箭头
+            svg.append('defs').append('marker')
+                .attr('id', 'arrowhead')
+                .attr('viewBox', '-0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('orient', 'auto')
+                .attr('markerWidth', 6)
+                .attr('markerHeight', 6)
+                .append('path')
+                .attr('d', 'M 0,-5 L 10,0 L 0,5')
+                .attr('fill', '#B2BEC3');
+            
+            // 初始化力导向模拟
+            simulation = d3.forceSimulation()
+                .force('link', d3.forceLink().id(d => d.id).distance(100))
+                .force('charge', d3.forceManyBody().strength(-200))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(30));
+        }
+        
+        // 加载图谱数据
+        async function loadGraphData() {
+            try {
+                const response = await fetch(`${API_BASE}/knowledge/graph`);
+                const data = await response.json();
+                
+                graphData = data;
+                updateStats();
+                renderGraph();
+            } catch (error) {
+                console.error('加载图谱数据失败:', error);
+                // 使用模拟数据
+                graphData = generateMockData();
+                updateStats();
+                renderGraph();
+            }
+        }
+        
+        // 更新统计
+        function updateStats() {
+            document.getElementById('stat-nodes').textContent = graphData.nodes.length;
+            document.getElementById('stat-edges').textContent = graphData.edges.length;
+            
+            const exercises = graphData.nodes.filter(n => n.type === 'exercise').length;
+            const knowledge = graphData.nodes.filter(n => n.type === 'knowledge').length;
+            
+            document.getElementById('stat-exercises').textContent = exercises;
+            document.getElementById('stat-knowledge').textContent = knowledge;
+        }
+        
+        // 渲染图谱
+        function renderGraph() {
+            // 清除现有内容
+            g.selectAll('*').remove();
+            
+            // 过滤数据
+            let filteredNodes = graphData.nodes;
+            let filteredEdges = graphData.edges;
+            
+            if (currentFilter !== 'all') {
+                filteredNodes = graphData.nodes.filter(n => n.type === currentFilter);
+                const nodeIds = new Set(filteredNodes.map(n => n.id));
+                filteredEdges = graphData.edges.filter(e => 
+                    nodeIds.has(e.source) || nodeIds.has(e.target)
+                );
+            }
+            
+            // 绘制连线
+            const links = g.append('g')
+                .selectAll('line')
+                .data(filteredEdges)
+                .enter()
+                .append('line')
+                .attr('class', d => `link link-${d.type}`)
+                .attr('stroke-width', 1.5);
+            
+            // 绘制节点
+            const nodes = g.append('g')
+                .selectAll('g')
+                .data(filteredNodes)
+                .enter()
+                .append('g')
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded));
+            
+            // 节点圆形
+            nodes.append('circle')
+                .attr('r', d => d.type === 'tag' ? 8 : 15)
+                .attr('class', d => `node-${d.type}`)
+                .attr('stroke', 'white')
+                .attr('stroke-width', 2)
+                .on('mouseover', showTooltip)
+                .on('mouseout', hideTooltip)
+                .on('click', nodeClicked);
+            
+            // 节点标签
+            nodes.append('text')
+                .attr('class', 'node-label')
+                .attr('dy', 25)
+                .attr('text-anchor', 'middle')
+                .text(d => d.label.length > 10 ? d.label.substring(0, 10) + '...' : d.label);
+            
+            // 更新模拟
+            simulation.nodes(filteredNodes);
+            simulation.force('link').links(filteredEdges);
+            simulation.alpha(1).restart();
+            
+            simulation.on('tick', () => {
+                links
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+                
+                nodes.attr('transform', d => `translate(${d.x},${d.y})`);
+            });
+        }
+        
+        // 拖拽函数
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+        
+        // 显示提示框
+        function showTooltip(event, d) {
+            const tooltip = document.getElementById('tooltip');
+            const typeNames = {
+                exercise: '疗愈练习',
+                knowledge: '心理知识',
+                emotion: '情绪类型',
+                method: '调节方法',
+                tag: '标签',
+                group: '适用人群'
+            };
+            
+            tooltip.innerHTML = `
+                <div class="font-medium mb-1">${d.label}</div>
+                <div class="text-xs" style="color: var(--text-secondary)">
+                    类型: ${typeNames[d.type] || d.type}
+                    ${d.category ? `<br>分类: ${d.category}` : ''}
+                </div>
+            `;
+            
+            tooltip.style.left = (event.pageX + 10) + 'px';
+            tooltip.style.top = (event.pageY - 10) + 'px';
+            tooltip.style.opacity = 1;
+        }
+        
+        // 隐藏提示框
+        function hideTooltip() {
+            document.getElementById('tooltip').style.opacity = 0;
+        }
+        
+        // 节点点击
+        function nodeClicked(event, d) {
+            if (d.type === 'exercise') {
+                window.location.href = `relax.html?id=${d.id}`;
+            } else if (d.type === 'knowledge') {
+                window.location.href = `article.html?id=${d.id}`;
+            }
+        }
+        
+        // 设置事件监听
+        function setupEventListeners() {
+            // 过滤按钮
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.type;
+                    renderGraph();
+                });
+            });
+            
+            // 搜索
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                if (query) {
+                    // 高亮匹配节点
+                    g.selectAll('circle')
+                        .attr('stroke', d => 
+                            d.label.toLowerCase().includes(query) ? '#7CB8A8' : 'white'
+                        )
+                        .attr('stroke-width', d => 
+                            d.label.toLowerCase().includes(query) ? 3 : 2
+                        );
+                } else {
+                    g.selectAll('circle')
+                        .attr('stroke', 'white')
+                        .attr('stroke-width', 2);
+                }
+            });
+        }
+        
+        // 生成模拟数据
+        function generateMockData() {
+            return {
+                nodes: [
+                    { id: 'exercise_001', label: '正念呼吸', type: 'exercise', category: '正念冥想' },
+                    { id: 'exercise_002', label: '腹式呼吸', type: 'exercise', category: '情绪调节' },
+                    { id: 'knowledge_001', label: '正念科学基础', type: 'knowledge', category: '心理科学' },
+                    { id: 'emotion_焦虑', label: '焦虑', type: 'emotion' },
+                    { id: 'emotion_抑郁', label: '抑郁', type: 'emotion' },
+                    { id: 'method_腹式呼吸', label: '腹式呼吸', type: 'method' },
+                    { id: 'method_正念冥想', label: '正念冥想', type: 'method' },
+                    { id: 'tag_正念', label: '正念', type: 'tag' },
+                    { id: 'tag_呼吸', label: '呼吸', type: 'tag' },
+                    { id: 'tag_放松', label: '放松', type: 'tag' }
+                ],
+                edges: [
+                    { source: 'exercise_001', target: 'tag_正念', type: 'has_tag' },
+                    { source: 'exercise_001', target: 'tag_呼吸', type: 'has_tag' },
+                    { source: 'exercise_002', target: 'tag_呼吸', type: 'has_tag' },
+                    { source: 'exercise_002', target: 'tag_放松', type: 'has_tag' },
+                    { source: 'knowledge_001', target: 'tag_正念', type: 'has_tag' },
+                    { source: 'emotion_焦虑', target: 'method_腹式呼吸', type: 'treats' },
+                    { source: 'emotion_焦虑', target: 'method_正念冥想', type: 'treats' },
+                    { source: 'emotion_抑郁', target: 'method_正念冥想', type: 'treats' }
+                ]
+            };
+        }
+    </script>
+</body>
+</html>

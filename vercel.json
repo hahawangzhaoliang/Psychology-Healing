@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "name": "xinqing-space",
+  "builds": [
+    {
+      "src": "server/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/$1"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/knowledge/cron-update?secret=xinqing-space-2026-secret",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

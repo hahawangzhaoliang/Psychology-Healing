@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心晴空间 - 这里，可以安放你的心事</title>
+    <meta name="description" content="心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台，提供情绪自测、心理科普、放松练习等内容。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0faf7',
+                            100: '#d9f2eb',
+                            200: '#b5ddd3',
+                            300: '#8ac4b5',
+                            400: '#7CB8A8',
+                            500: '#5A9A8A',
+                            600: '#4a8a7a',
+                        },
+                        warm: {
+                            50: '#fdfbf9',
+                            100: '#F5E6D3',
+                            200: '#E8D5C4',
+                            300: '#d4c4b0',
+                        },
+                        accent: {
+                            orange: '#F4A261',
+                            coral: '#E57373',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito Sans', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'soft': '12px',
+                        'card': '16px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .breathing {
+            animation: breathing 4s ease-in-out infinite;
+        }
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        .float {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #7CB8A8 0%, #5A9A8A 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(124, 184, 168, 0.15);
+        }
+        .btn-primary {
+            transition: all 0.25s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(124, 184, 168, 0.3);
+        }
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen">
+    <!-- 免责声明弹窗 -->
+    <div id="disclaimerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-overlay">
+        <div class="bg-white rounded-card max-w-md w-full p-6 shadow-2xl fade-in">
+            <div class="text-center mb-4">
+                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-2">欢迎来到心晴空间</h2>
+                <p class="text-sm text-gray-500">请先了解我们的服务边界</p>
+            </div>
+            
+            <div class="bg-warm-50 rounded-soft p-4 mb-4 text-sm">
+                <p class="font-medium text-gray-700 mb-3">我们提供：</p>
+                <ul class="space-y-2 text-gray-600 mb-4">
+                    <li class="flex items-center">
+                        <span class="text-primary-400 mr-2">✓</span>
+                        情绪陪伴与心理科普
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-primary-400 mr-2">✓</span>
+                        自我成长引导内容
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-primary-400 mr-2">✓</span>
+                        放松练习与情绪记录
+                    </li>
+                </ul>
+                
+                <p class="font-medium text-gray-700 mb-3">我们不提供：</p>
+                <ul class="space-y-2 text-gray-600 mb-4">
+                    <li class="flex items-center">
+                        <span class="text-accent-coral mr-2">✗</span>
+                        医学诊断或心理疾病诊断
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-accent-coral mr-2">✗</span>
+                        心理治疗或精神科诊疗
+                    </li>
+                </ul>
+
+                <div class="bg-white rounded-soft p-3 border border-primary-100">
+                    <p class="text-xs text-gray-500 mb-2">以下情况请寻求专业医疗帮助：</p>
+                    <p class="text-xs text-gray-600">中重度抑郁/焦虑持续两周以上、存在自伤自杀念头、双相情感障碍等重性精神疾病</p>
+                </div>
+            </div>
+
+            <div class="bg-primary-50 rounded-soft p-3 mb-4">
+                <p class="text-xs text-gray-600 text-center">
+                    <span class="font-medium">全国心理援助热线：400-161-9995</span><br>
+                    <span class="text-gray-500">24小时免费服务</span>
+                </p>
+            </div>
+
+            <button onclick="closeDisclaimer()" class="w-full bg-primary-400 text-white py-3 rounded-soft font-medium btn-primary hover:bg-primary-500">
+                我已了解，继续使用
+            </button>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-gray-800">心晴空间</span>
+                </a>
+                
+                <!-- 桌面导航 -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-primary-500 font-medium">首页</a>
+                    <a href="test.html" class="text-gray-600 hover:text-primary-500 transition-colors">情绪自测</a>
+                    <a href="article.html" class="text-gray-600 hover:text-primary-500 transition-colors">疗愈内容</a>
+                    <a href="relax.html" class="text-gray-600 hover:text-primary-500 transition-colors">放松练习</a>
+                    <a href="about.html" class="text-gray-600 hover:text-primary-500 transition-colors">关于我们</a>
+                </div>
+
+                <!-- 移动端菜单按钮 -->
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-4 py-3 space-y-2">
+                <a href="index.html" class="block py-2 px-3 text-primary-500 bg-primary-50 rounded-lg font-medium">首页</a>
+                <a href="test.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">情绪自测</a>
+                <a href="article.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">疗愈内容</a>
+                <a href="relax.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">放松练习</a>
+                <a href="about.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="pt-16">
+        <!-- Hero 区域 -->
+        <section class="relative overflow-hidden bg-gradient-to-b from-primary-50 to-warm-50 py-16 sm:py-24">
+            <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute -top-40 -right-40 w-80 h-80 bg-primary-100 rounded-full opacity-50 float"></div>
+                <div class="absolute top-20 -left-20 w-60 h-60 bg-warm-100 rounded-full opacity-60 float" style="animation-delay: -2s;"></div>
+            </div>
+            
+            <div class="relative max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="text-center max-w-2xl mx-auto fade-in">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
+                        这里，可以安放<br class="sm:hidden">你的心事
+                    </h1>
+                    <p class="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
+                        无论今天过得怎样，你都值得被温柔对待。<br>
+                        心晴空间，陪你照顾自己的内心。
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <a href="test.html" class="w-full sm:w-auto bg-primary-400 text-white px-8 py-3 rounded-full font-medium btn-primary hover:bg-primary-500 text-center">
+                            开始情绪自测
+                        </a>
+                        <a href="article.html" class="w-full sm:w-auto bg-white text-primary-500 px-8 py-3 rounded-full font-medium border border-primary-200 hover:border-primary-300 hover:bg-primary-50 transition-all text-center">
+                            浏览疗愈内容
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 每日一句 -->
+        <section class="py-12 sm:py-16 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                <div class="bg-gradient-to-br from-primary-50 to-warm-50 rounded-card p-6 sm:p-8 text-center">
+                    <p class="text-sm text-primary-500 mb-2 font-medium">今日暖心</p>
+                    <p class="text-lg sm:text-xl text-gray-700 leading-relaxed" id="dailyQuote">
+                        加载中...
+                    </p>
+                    <p class="text-sm text-gray-500 mt-3" id="dailyQuoteSource">—— 心晴空间</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能入口 -->
+        <section class="py-12 sm:py-16 bg-warm-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">在这里，你可以</h2>
+                    <p class="text-gray-600">找到适合自己的方式，照顾情绪</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- 情绪自测 -->
+                    <a href="test.html" class="bg-white rounded-card p-6 card-hover border border-gray-100">
+                        <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">情绪自测</h3>
+                        <p class="text-sm text-gray-600">了解最近的情绪状态，获得温暖的建议</p>
+                    </a>
+
+                    <!-- 疗愈内容 -->
+                    <a href="article.html" class="bg-white rounded-card p-6 card-hover border border-gray-100">
+                        <div class="w-12 h-12 bg-warm-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">疗愈内容</h3>
+                        <p class="text-sm text-gray-600">轻量心理科普，用易懂的方式了解自己</p>
+                    </a>
+
+                    <!-- 放松练习 -->
+                    <a href="relax.html" class="bg-white rounded-card p-6 card-hover border border-gray-100">
+                        <div class="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">放松练习</h3>
+                        <p class="text-sm text-gray-600">呼吸训练、冥想引导，让身心休息一下</p>
+                    </a>
+
+                    <!-- 危机求助 -->
+                    <a href="about.html#hotline" class="bg-white rounded-card p-6 card-hover border border-gray-100">
+                        <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
+                            <svg class="w-6 h-6 text-accent-coral" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">求助热线</h3>
+                        <p class="text-sm text-gray-600">当你需要更多支持，这里有人愿意帮助你</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 情绪陪伴介绍 -->
+        <section class="py-12 sm:py-16 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">什么是情绪陪伴？</h2>
+                        <div class="space-y-4 text-gray-600 leading-relaxed">
+                            <p>
+                                情绪陪伴，是一种温和的支持方式。它不是心理咨询，也不是心理治疗，而是一种日常的自我照顾。
+                            </p>
+                            <p>
+                                在这里，你可以记录每天的心情，了解自己的情绪变化；可以通过简单的自测，更好地认识当下的状态；可以阅读温暖的心理科普，学习照顾自己的方法。
+                            </p>
+                            <p>
+                                我们相信，每个人都值得被倾听、被理解。即使只是一个小小的情绪波动，也值得被认真对待。
+                            </p>
+                        </div>
+                        
+                        <!-- 数据支持 -->
+                        <div class="mt-6 grid grid-cols-3 gap-4">
+                            <div class="text-center p-3 bg-primary-50 rounded-soft">
+                                <p class="text-2xl font-bold text-primary-500">5亿+</p>
+                                <p class="text-xs text-gray-500">全球正念实践者</p>
+                            </div>
+                            <div class="text-center p-3 bg-warm-100 rounded-soft">
+                                <p class="text-2xl font-bold text-accent-orange">1200+</p>
+                                <p class="text-xs text-gray-500">临床研究支持</p>
+                            </div>
+                            <div class="text-center p-3 bg-primary-50 rounded-soft">
+                                <p class="text-2xl font-bold text-primary-500">50%</p>
+                                <p class="text-xs text-gray-500">情绪恢复提升</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 p-4 bg-primary-50 rounded-soft">
+                            <p class="text-sm text-gray-600">
+                                <span class="font-medium text-primary-600">温馨提示：</span>
+                                本平台为公益性质的情绪陪伴服务，不提供医学诊断或心理治疗。如有严重心理困扰，请寻求专业帮助。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square bg-gradient-to-br from-primary-100 to-warm-100 rounded-card flex items-center justify-center">
+                            <div class="text-center p-8">
+                                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg breathing">
+                                    <svg class="w-12 h-12 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-600 font-medium">陪伴，是最温柔的治愈</p>
+                                <p class="text-sm text-gray-500 mt-2">数据来源：Nature·心理健康 2026年元分析</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 常见情绪 -->
+        <section class="py-12 sm:py-16 bg-warm-50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">最近感觉怎么样？</h2>
+                    <p class="text-gray-600">选择最贴近你当下状态的感受</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto">
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😌</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">平静</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😰</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">焦虑</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😔</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">低落</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😴</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">疲惫</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😤</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">愤怒</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">🤔</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">迷茫</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">😊</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">感恩</p>
+                    </button>
+                    <button class="bg-white rounded-card p-4 text-center card-hover border border-gray-100 group">
+                        <div class="text-3xl mb-2">🌟</div>
+                        <p class="text-sm text-gray-700 group-hover:text-primary-500 transition-colors">期待</p>
+                    </button>
+                </div>
+
+                <div class="text-center mt-8">
+                    <a href="test.html" class="inline-flex items-center text-primary-500 hover:text-primary-600 font-medium">
+                        想更深入了解？做个情绪自测吧
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-semibold text-gray-800">心晴空间</span>
+                    </div>
+                    <p class="text-sm text-gray-600">公益心理疗愈平台<br>陪你照顾自己的内心</p>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">功能</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="test.html" class="hover:text-primary-500 transition-colors">情绪自测</a></li>
+                        <li><a href="article.html" class="hover:text-primary-500 transition-colors">疗愈内容</a></li>
+                        <li><a href="relax.html" class="hover:text-primary-500 transition-colors">放松练习</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">关于</h4>
+                    <ul class="space-y-2 text-sm text-gray-600">
+                        <li><a href="about.html" class="hover:text-primary-500 transition-colors">关于我们</a></li>
+                        <li><a href="about.html#disclaimer" class="hover:text-primary-500 transition-colors">免责声明</a></li>
+                        <li><a href="about.html#privacy" class="hover:text-primary-500 transition-colors">隐私政策</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-800 mb-4">求助热线</h4>
+                    <p class="text-sm text-gray-600 mb-2">全国心理援助热线</p>
+                    <p class="text-lg font-semibold text-primary-500">400-161-9995</p>
+                    <p class="text-xs text-gray-500 mt-1">24小时免费服务</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-100 pt-8">
+                <div class="bg-warm-50 rounded-soft p-4 mb-6">
+                    <p class="text-xs text-gray-600 text-center leading-relaxed">
+                        本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务，不开展心理治疗、精神科治疗、临床心理干预等医疗行为。如有严重心理困扰或精神健康问题，请及时前往正规医疗机构就诊。
+                    </p>
+                </div>
+                <p class="text-center text-sm text-gray-500">
+                    © 2024 心晴空间 · 公益心理疗愈平台 · 用心陪伴每一天
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 免责声明弹窗
+        function closeDisclaimer() {
+            document.getElementById('disclaimerModal').classList.add('hidden');
+            localStorage.setItem('disclaimerAccepted', 'true');
+        }
+
+        // 检查是否已同意
+        if (localStorage.getItem('disclaimerAccepted')) {
+            document.getElementById('disclaimerModal').classList.add('hidden');
+        }
+
+        // 移动端菜单
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        // 点击页面其他地方关闭菜单
+        document.addEventListener('click', function(e) {
+            const menu = document.getElementById('mobileMenu');
+            const button = e.target.closest('button');
+            if (!menu.contains(e.target) && !button?.onclick?.toString().includes('toggleMobileMenu')) {
+                menu.classList.add('hidden');
+            }
+        });
+
+        // 加载每日提示
+        async function loadDailyTip() {
+            try {
+                const response = await fetch('/api/knowledge/tips?limit=1');
+                const data = await response.json();
+                
+                if (data.tips && data.tips.length > 0) {
+                    // 随机选择一条
+                    const randomIndex = Math.floor(Math.random() * data.tips.length);
+                    const tip = data.tips[randomIndex] || data.tips[0];
+                    
+                    document.getElementById('dailyQuote').textContent = `"${tip.content}"`;
+                    document.getElementById('dailyQuoteSource').textContent = 
+                        tip.source ? `—— ${tip.source}` : '—— 心晴空间';
+                }
+            } catch (error) {
+                console.error('加载每日提示失败:', error);
+                // 使用默认内容
+                document.getElementById('dailyQuote').textContent = 
+                    '"重要的不是过去发生了什么，而是你赋予它什么意义。"';
+                document.getElementById('dailyQuoteSource').textContent = '—— 阿德勒';
+            }
+        }
+
+        // 页面加载时获取每日提示
+        document.addEventListener('DOMContentLoaded', loadDailyTip);
+    </script>
+</body>
+</html>

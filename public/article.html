@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疗愈内容 - 心晴空间</title>
+    <meta name="description" content="轻量心理科普，用易懂的方式了解自己。阅读温暖的心理健康内容，学习照顾自己的方法。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0faf7',
+                            100: '#d9f2eb',
+                            200: '#b5ddd3',
+                            300: '#8ac4b5',
+                            400: '#7CB8A8',
+                            500: '#5A9A8A',
+                            600: '#4a8a7a',
+                        },
+                        warm: {
+                            50: '#fdfbf9',
+                            100: '#F5E6D3',
+                            200: '#E8D5C4',
+                            300: '#d4c4b0',
+                        },
+                        accent: {
+                            orange: '#F4A261',
+                            coral: '#E57373',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito Sans', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'soft': '12px',
+                        'card': '16px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(124, 184, 168, 0.15);
+        }
+        .tag {
+            transition: all 0.2s ease;
+        }
+        .tag:hover {
+            background-color: #d9f2eb;
+        }
+        .tag.active {
+            background-color: #7CB8A8;
+            color: white;
+        }
+        .article-content {
+            line-height: 1.8;
+        }
+        .article-content p {
+            margin-bottom: 1rem;
+        }
+        .article-content h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-gray-800">心晴空间</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors">首页</a>
+                    <a href="test.html" class="text-gray-600 hover:text-primary-500 transition-colors">情绪自测</a>
+                    <a href="article.html" class="text-primary-500 font-medium">疗愈内容</a>
+                    <a href="relax.html" class="text-gray-600 hover:text-primary-500 transition-colors">放松练习</a>
+                    <a href="about.html" class="text-gray-600 hover:text-primary-500 transition-colors">关于我们</a>
+                </div>
+
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-4 py-3 space-y-2">
+                <a href="index.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">首页</a>
+                <a href="test.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">情绪自测</a>
+                <a href="article.html" class="block py-2 px-3 text-primary-500 bg-primary-50 rounded-lg font-medium">疗愈内容</a>
+                <a href="relax.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">放松练习</a>
+                <a href="about.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="pt-16">
+        <!-- 页面标题 -->
+        <section class="bg-gradient-to-b from-primary-50 to-warm-50 py-12">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">疗愈内容</h1>
+                <p class="text-gray-600 max-w-xl mx-auto">轻量心理科普，用易懂的方式了解自己，学习照顾内心的方法。</p>
+            </div>
+        </section>
+
+        <!-- 文章列表 -->
+        <section class="py-12">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <!-- 分类标签 -->
+                <div class="flex flex-wrap gap-2 mb-8 justify-center">
+                    <button onclick="filterArticles('all')" class="tag active px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        全部
+                    </button>
+                    <button onclick="filterArticles('神经科学')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        神经科学
+                    </button>
+                    <button onclick="filterArticles('临床心理')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        临床心理
+                    </button>
+                    <button onclick="filterArticles('心理科学')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        心理科学
+                    </button>
+                    <button onclick="filterArticles('睡眠心理')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        睡眠心理
+                    </button>
+                    <button onclick="filterArticles('压力管理')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        压力管理
+                    </button>
+                    <button onclick="filterArticles('积极心理')" class="tag px-4 py-2 rounded-full text-sm bg-primary-100 text-primary-600">
+                        积极心理
+                    </button>
+                </div>
+
+                <!-- 加载状态 -->
+                <div id="loadingState" class="text-center py-12">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+                    <p class="text-gray-500 mt-4">加载中...</p>
+                </div>
+
+                <!-- 文章卡片容器 -->
+                <div id="articleList" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                    <!-- 动态加载的文章卡片 -->
+                </div>
+
+                <!-- 空状态 -->
+                <div id="emptyState" class="text-center py-12 hidden">
+                    <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                    <p class="text-gray-500">暂无相关内容</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 文章详情弹窗 -->
+        <div id="articleModal" class="fixed inset-0 z-50 hidden">
+            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeArticle()"></div>
+            <div class="absolute inset-4 sm:inset-8 md:inset-16 lg:inset-24 bg-white rounded-card overflow-hidden flex flex-col">
+                <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                    <h2 id="modalTitle" class="font-semibold text-gray-800">文章标题</h2>
+                    <button onclick="closeArticle()" class="p-2 text-gray-400 hover:text-gray-600">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="modalContent" class="flex-1 overflow-y-auto p-6 sm:p-8 article-content text-gray-700">
+                    <!-- 文章内容 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-100 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="bg-warm-50 rounded-soft p-4 mb-6">
+                <p class="text-xs text-gray-600 text-center leading-relaxed">
+                    本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。
+                </p>
+            </div>
+            <p class="text-center text-sm text-gray-500">
+                © 2024 心晴空间 · 公益心理疗愈平台
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 全局变量
+        let allKnowledge = [];
+        let currentFilter = 'all';
+
+        // 分类颜色映射
+        const categoryColors = {
+            '神经科学': { bg: 'bg-purple-50', text: 'text-purple-600', gradient: 'from-purple-100 to-purple-200' },
+            '临床心理': { bg: 'bg-blue-50', text: 'text-blue-500', gradient: 'from-blue-100 to-blue-200' },
+            '心理科学': { bg: 'bg-primary-50', text: 'text-primary-500', gradient: 'from-primary-100 to-primary-200' },
+            '睡眠心理': { bg: 'bg-indigo-50', text: 'text-indigo-500', gradient: 'from-indigo-100 to-indigo-200' },
+            '压力管理': { bg: 'bg-orange-50', text: 'text-orange-500', gradient: 'from-orange-100 to-orange-200' },
+            '积极心理': { bg: 'bg-green-50', text: 'text-green-600', gradient: 'from-green-100 to-green-200' },
+            'default': { bg: 'bg-primary-50', text: 'text-primary-500', gradient: 'from-primary-100 to-primary-200' }
+        };
+
+        // 移动端菜单
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        // 加载知识库数据
+        async function loadKnowledge() {
+            try {
+                const response = await fetch('/api/knowledge/psychology?limit=50');
+                const data = await response.json();
+                
+                if (data.knowledge && data.knowledge.length > 0) {
+                    allKnowledge = data.knowledge;
+                    renderArticles(allKnowledge);
+                } else {
+                    showError('暂无心理知识内容');
+                }
+            } catch (error) {
+                console.error('加载知识库失败:', error);
+                showError('网络错误，请稍后重试');
+            }
+        }
+
+        // 渲染文章列表
+        function renderArticles(articles) {
+            const container = document.getElementById('articleList');
+            const loadingState = document.getElementById('loadingState');
+            const emptyState = document.getElementById('emptyState');
+
+            loadingState.classList.add('hidden');
+
+            if (!articles || articles.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            container.classList.remove('hidden');
+
+            container.innerHTML = articles.map((article, index) => {
+                const colors = categoryColors[article.category] || categoryColors['default'];
+                const keyPoints = article.keyPoints || [];
+                const content = article.content || '';
+                
+                return `
+                    <article class="article-card bg-white rounded-card overflow-hidden card-hover border border-gray-100 fade-in" data-category="${article.category}" style="animation-delay: ${index * 0.1}s">
+                        <div class="h-40 bg-gradient-to-br ${colors.gradient} flex items-center justify-center">
+                            <svg class="w-16 h-16 ${colors.text}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                            </svg>
+                        </div>
+                        <div class="p-5">
+                            <span class="text-xs ${colors.text} ${colors.bg} px-2 py-1 rounded-full">${article.category || '心理科普'}</span>
+                            <h3 class="font-semibold text-gray-800 mt-3 mb-2">${article.title}</h3>
+                            <p class="text-sm text-gray-600 line-clamp-2">${content.substring(0, 80)}...</p>
+                            <button onclick='showArticle(${JSON.stringify(article).replace(/'/g, "\\'")})' class="mt-4 text-primary-500 text-sm font-medium hover:text-primary-600 flex items-center">
+                                阅读全文
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // 筛选文章
+        function filterArticles(category) {
+            currentFilter = category;
+            
+            // 更新按钮状态
+            const buttons = document.querySelectorAll('.tag');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 筛选并渲染
+            if (category === 'all') {
+                renderArticles(allKnowledge);
+            } else {
+                const filtered = allKnowledge.filter(article => article.category === category);
+                renderArticles(filtered);
+            }
+        }
+
+        // 显示文章详情
+        function showArticle(article) {
+            const modal = document.getElementById('articleModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+
+            title.textContent = article.title;
+
+            let html = `<p>${article.content || ''}</p>`;
+
+            if (article.keyPoints && article.keyPoints.length > 0) {
+                html += `
+                    <h3 class="text-lg font-semibold text-gray-800 mt-6 mb-3">核心要点</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                        ${article.keyPoints.map(point => `<li>${point}</li>`).join('')}
+                    </ul>
+                `;
+            }
+
+            if (article.tags && article.tags.length > 0) {
+                html += `
+                    <div class="mt-6 flex flex-wrap gap-2">
+                        ${article.tags.map(tag => `<span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                    </div>
+                `;
+            }
+
+            if (article.source) {
+                html += `<p class="text-xs text-gray-400 mt-4">来源：${article.source}</p>`;
+            }
+
+            content.innerHTML = html;
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭文章
+        function closeArticle() {
+            document.getElementById('articleModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // 显示错误
+        function showError(message) {
+            const loadingState = document.getElementById('loadingState');
+            loadingState.innerHTML = `
+                <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                </svg>
+                <p class="text-gray-500">${message}</p>
+            `;
+        }
+
+        // ESC键关闭
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeArticle();
+            }
+        });
+
+        // 页面加载时获取数据
+        document.addEventListener('DOMContentLoaded', loadKnowledge);
+    </script>
+</body>
+</html>

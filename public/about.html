@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>关于我们 - 心晴空间</title>
+    <meta name="description" content="了解心晴空间，查看完整的心理免责声明、隐私政策和使用须知。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0faf7',
+                            100: '#d9f2eb',
+                            200: '#b5ddd3',
+                            300: '#8ac4b5',
+                            400: '#7CB8A8',
+                            500: '#5A9A8A',
+                            600: '#4a8a7a',
+                        },
+                        warm: {
+                            50: '#fdfbf9',
+                            100: '#F5E6D3',
+                            200: '#E8D5C4',
+                            300: '#d4c4b0',
+                        },
+                        accent: {
+                            orange: '#F4A261',
+                            coral: '#E57373',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito Sans', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        'soft': '12px',
+                        'card': '16px',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+        .nav-link.active {
+            color: #7CB8A8;
+            background-color: #f0faf7;
+        }
+        .content-section h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .content-section p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+        .content-section ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .content-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.75;
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-gray-800">心晴空间</span>
+                </a>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors">首页</a>
+                    <a href="test.html" class="text-gray-600 hover:text-primary-500 transition-colors">情绪自测</a>
+                    <a href="article.html" class="text-gray-600 hover:text-primary-500 transition-colors">疗愈内容</a>
+                    <a href="relax.html" class="text-gray-600 hover:text-primary-500 transition-colors">放松练习</a>
+                    <a href="about.html" class="text-primary-500 font-medium">关于我们</a>
+                </div>
+
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <div class="px-4 py-3 space-y-2">
+                <a href="index.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">首页</a>
+                <a href="test.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">情绪自测</a>
+                <a href="article.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">疗愈内容</a>
+                <a href="relax.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">放松练习</a>
+                <a href="about.html" class="block py-2 px-3 text-primary-500 bg-primary-50 rounded-lg font-medium">关于我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="pt-16">
+        <!-- 页面标题 -->
+        <section class="bg-gradient-to-b from-primary-50 to-warm-50 py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">关于我们</h1>
+                <p class="text-gray-600">了解心晴空间，查看服务条款与隐私政策</p>
+            </div>
+        </section>
+
+        <!-- 内容区域 -->
+        <section class="py-12">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- 侧边导航 -->
+                    <div class="lg:w-48 flex-shrink-0">
+                        <nav class="lg:sticky lg:top-24 bg-white rounded-card p-4 border border-gray-100">
+                            <ul class="space-y-1">
+                                <li>
+                                    <a href="#about" class="nav-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50" data-section="about">关于平台</a>
+                                </li>
+                                <li>
+                                    <a href="#disclaimer" class="nav-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50" data-section="disclaimer">免责声明</a>
+                                </li>
+                                <li>
+                                    <a href="#terms" class="nav-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50" data-section="terms">使用须知</a>
+                                </li>
+                                <li>
+                                    <a href="#privacy" class="nav-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50" data-section="privacy">隐私政策</a>
+                                </li>
+                                <li>
+                                    <a href="#hotline" class="nav-link block px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50" data-section="hotline">求助热线</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                    <!-- 主内容 -->
+                    <div class="flex-1 min-w-0">
+                        <!-- 关于平台 -->
+                        <div id="about" class="bg-white rounded-card p-6 sm:p-8 border border-gray-100 mb-6 fade-in content-section">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">关于心晴空间</h2>
+                            
+                            <div class="w-16 h-16 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center mb-6">
+                                <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+
+                            <p>我们相信，每个人都值得被倾听、被理解。</p>
+
+                            <p>在这个快节奏的世界里，我们希望创造一个角落，让你可以停下来，和自己的情绪待一会儿。</p>
+
+                            <p>心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台。我们提供情绪自测、心理科普、放松练习等内容，帮助你在日常中照顾自己的内心。</p>
+
+                            <h3>我们的理念</h3>
+                            <ul>
+                                <li><strong>温暖陪伴</strong>：用温柔的方式，陪伴每一个需要被倾听的人</li>
+                                <li><strong>科学态度</strong>：基于心理学知识，提供有价值的科普内容</li>
+                                <li><strong>尊重边界</strong>：明确服务范围，不越界提供医疗行为</li>
+                                <li><strong>保护隐私</strong>：你的心事，只属于你自己</li>
+                            </ul>
+
+                            <div class="bg-primary-50 rounded-soft p-4 mt-6">
+                                <p class="text-gray-600 text-sm">
+                                    心晴空间是一个情绪陪伴平台，不是医院，不是诊所。如果你正在经历严重的心理困扰，请一定寻求专业帮助——这不丢人，这是爱自己的方式。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 免责声明 -->
+                        <div id="disclaimer" class="bg-white rounded-card p-6 sm:p-8 border border-gray-100 mb-6 fade-in content-section">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">心理服务免责声明</h2>
+                            
+                            <div class="bg-accent-coral/10 border border-accent-coral/20 rounded-soft p-4 mb-6">
+                                <p class="text-gray-700 font-medium">重要提示：请在使用本平台前仔细阅读以下声明</p>
+                            </div>
+
+                            <h3>一、服务性质说明</h3>
+                            <p>心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台，所提供的情绪陪伴、心理科普、自我成长引导等服务，均属于大众心理健康科普与成长教育服务范畴，<strong>不属于医疗行为</strong>。</p>
+
+                            <h3>二、明确不提供的服务</h3>
+                            <p>本平台<strong>不提供</strong>以下服务：</p>
+                            <ul>
+                                <li>任何形式的医学诊断、心理疾病诊断、精神疾病诊断</li>
+                                <li>心理治疗、精神科治疗、临床心理干预</li>
+                                <li>康复指导、病症干预、危机干预</li>
+                                <li>处方药物建议或治疗方案制定</li>
+                            </ul>
+
+                            <h3>三、服务边界</h3>
+                            <p>本平台<strong>不承接、不介入</strong>以下需要专业医疗机构处理的情况：</p>
+                            <ul>
+                                <li>重度抑郁、重度焦虑、双相情感障碍等严重心理问题</li>
+                                <li>精神分裂症、器质性精神障碍、严重人格障碍</li>
+                                <li>存在自伤、自杀风险、急性心理危机</li>
+                                <li>重度心理创伤、成瘾行为、重症精神类问题</li>
+                            </ul>
+                            <p>如遇上述情况，我们将明确引导至正规医院精神心理科接受专业诊疗，不提供任何替代医疗的服务。</p>
+
+                            <h3>四、测评工具说明</h3>
+                            <p>本平台提供的情绪自测量表（如焦虑自评、抑郁自评等）均为标准化心理测评工具的简化版本，<strong>测评结果仅供参考，不能作为医学诊断依据</strong>。情绪状态会受到多种因素影响，如有持续困扰，建议寻求专业帮助。</p>
+
+                            <h3>五、用户责任</h3>
+                            <p>使用本平台服务时，您确认：</p>
+                            <ul>
+                                <li>已了解本平台的服务边界和限制</li>
+                                <li>不会将本平台作为医疗诊断或治疗的替代</li>
+                                <li>如遇紧急情况或严重心理困扰，会及时寻求专业医疗帮助</li>
+                                <li>对自身行为和决策负责</li>
+                            </ul>
+
+                            <h3>六、责任限制</h3>
+                            <p>在法律允许的最大范围内，本平台对以下情况不承担责任：</p>
+                            <ul>
+                                <li>用户未按提示寻求专业医疗帮助导致的任何后果</li>
+                                <li>用户对测评结果的误解或不当使用</li>
+                                <li>因不可抗力导致的服务中断或数据丢失</li>
+                            </ul>
+
+                            <div class="bg-gray-50 rounded-soft p-4 mt-6">
+                                <p class="text-sm text-gray-600">
+                                    本声明最后更新日期：2024年1月。如有疑问，请通过平台反馈渠道联系我们。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 使用须知 -->
+                        <div id="terms" class="bg-white rounded-card p-6 sm:p-8 border border-gray-100 mb-6 fade-in content-section">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">使用须知</h2>
+
+                            <h3>一、服务内容</h3>
+                            <p>心晴空间提供以下服务：</p>
+                            <ul>
+                                <li><strong>情绪自测</strong>：提供焦虑、抑郁等情绪状态的自评量表</li>
+                                <li><strong>疗愈内容</strong>：心理健康科普文章、自我成长内容</li>
+                                <li><strong>放松练习</strong>：呼吸训练、冥想引导、身体扫描等放松技巧</li>
+                                <li><strong>求助导航</strong>：专业心理援助热线和机构信息</li>
+                            </ul>
+
+                            <h3>二、适用人群</h3>
+                            <p>本平台适合：</p>
+                            <ul>
+                                <li>希望了解自身情绪状态的健康人群</li>
+                                <li>有轻度情绪困扰，寻求自我调节方法的人群</li>
+                                <li>对心理健康知识感兴趣的人群</li>
+                            </ul>
+                            <p>本平台<strong>不适合</strong>有严重心理问题或精神疾病的人群作为主要支持来源。</p>
+
+                            <h3>三、使用规范</h3>
+                            <p>使用本平台时，请遵守以下规范：</p>
+                            <ul>
+                                <li>如实填写测评信息，以获得更准确的参考结果</li>
+                                <li>不将测评结果作为自我诊断的唯一依据</li>
+                                <li>遇到严重困扰时，及时寻求专业帮助</li>
+                                <li>尊重其他用户，不发布不当内容</li>
+                            </ul>
+
+                            <h3>四、知识产权</h3>
+                            <p>本平台的所有内容（包括但不限于文字、图片、音频、视频、软件等）均受知识产权法保护。未经授权，不得复制、传播或用于商业目的。</p>
+
+                            <h3>五、服务变更</h3>
+                            <p>本平台保留随时修改、暂停或终止部分或全部服务的权利，恕不另行通知。</p>
+
+                            <h3>六、年龄限制</h3>
+                            <p>本平台主要面向成年人。未成年人使用本平台，应在监护人陪同和指导下进行。</p>
+                        </div>
+
+                        <!-- 隐私政策 -->
+                        <div id="privacy" class="bg-white rounded-card p-6 sm:p-8 border border-gray-100 mb-6 fade-in content-section">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">隐私政策</h2>
+
+                            <p>我们深知，来到这里的人，可能正在经历一些不容易的事情。保护你的隐私，是我们最基本的承诺。</p>
+
+                            <h3>一、信息收集</h3>
+                            <p>我们可能收集以下信息：</p>
+                            <ul>
+                                <li><strong>使用数据</strong>：访问页面、使用功能等匿名统计数据</li>
+                                <li><strong>测评数据</strong>：你在情绪自测中的答案和结果</li>
+                                <li><strong>设备信息</strong>：浏览器类型、设备类型等技术信息</li>
+                            </ul>
+
+                            <h3>二、信息使用</h3>
+                            <p>我们使用收集的信息用于：</p>
+                            <ul>
+                                <li>提供和改进服务</li>
+                                <li>生成匿名统计报告</li>
+                                <li>保障平台安全</li>
+                            </ul>
+
+                            <h3>三、信息保护</h3>
+                            <p>我们采取以下措施保护你的信息：</p>
+                            <ul>
+                                <li>使用加密技术传输和存储敏感数据</li>
+                                <li>限制员工访问用户数据的权限</li>
+                                <li>定期审查和更新安全措施</li>
+                            </ul>
+
+                            <h3>四、信息分享</h3>
+                            <p>我们<strong>不会</strong>向第三方出售你的个人信息。我们仅在以下情况下分享信息：</p>
+                            <ul>
+                                <li>获得你的明确同意</li>
+                                <li>法律法规要求</li>
+                                <li>保护用户或公众的安全（如涉及自伤、伤害他人等紧急情况）</li>
+                            </ul>
+
+                            <h3>五、你的权利</h3>
+                            <p>你有权：</p>
+                            <ul>
+                                <li>访问我们持有的关于你的信息</li>
+                                <li>要求更正不准确的信息</li>
+                                <li>要求删除你的信息</li>
+                                <li>撤回对信息处理的同意</li>
+                            </ul>
+
+                            <h3>六、Cookie使用</h3>
+                            <p>本平台使用Cookie来改善用户体验、分析使用情况。你可以通过浏览器设置管理Cookie，但这可能影响部分功能的使用。</p>
+
+                            <h3>七、未成年人保护</h3>
+                            <p>我们不会故意收集未成年人的个人信息。如发现我们在未经监护人同意的情况下收集了未成年人的信息，我们将尽快删除。</p>
+
+                            <h3>八、政策更新</h3>
+                            <p>我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，请定期查阅。</p>
+
+                            <div class="bg-primary-50 rounded-soft p-4 mt-6">
+                                <p class="text-sm text-gray-600">
+                                    如果你对本隐私政策有任何疑问，请通过平台反馈渠道联系我们。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 求助热线 -->
+                        <div id="hotline" class="bg-white rounded-card p-6 sm:p-8 border border-gray-100 fade-in">
+                            <h2 class="text-xl font-semibold text-gray-800 mb-6">求助热线</h2>
+
+                            <p class="mb-6">如果你正在经历艰难的时刻，请知道——求助是勇敢的选择。以下是一些可以提供专业帮助的热线：</p>
+
+                            <div class="space-y-4">
+                                <div class="bg-gradient-to-r from-primary-50 to-warm-50 rounded-soft p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">全国心理援助热线</p>
+                                            <p class="text-sm text-gray-500">24小时免费服务</p>
+                                        </div>
+                                        <a href="tel:4001619995" class="text-xl font-bold text-primary-500 hover:text-primary-600">400-161-9995</a>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-primary-50 to-warm-50 rounded-soft p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">北京危机干预热线</p>
+                                            <p class="text-sm text-gray-500">24小时服务</p>
+                                        </div>
+                                        <a href="tel:01082951332" class="text-xl font-bold text-primary-500 hover:text-primary-600">010-82951332</a>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-primary-50 to-warm-50 rounded-soft p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">生命热线</p>
+                                            <p class="text-sm text-gray-500">每天10:00-22:00</p>
+                                        </div>
+                                        <a href="tel:4008211215" class="text-xl font-bold text-primary-500 hover:text-primary-600">400-821-1215</a>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gradient-to-r from-primary-50 to-warm-50 rounded-soft p-4">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="font-semibold text-gray-800">青少年心理咨询热线</p>
+                                            <p class="text-sm text-gray-500">12355</p>
+                                        </div>
+                                        <a href="tel:12355" class="text-xl font-bold text-primary-500 hover:text-primary-600">12355</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-6 p-4 bg-warm-100 rounded-soft">
+                                <p class="text-gray-700 text-center">
+                                    你不需要一个人扛着，有人愿意帮你。
+                                </p>
+                            </div>
+
+                            <div class="mt-6">
+                                <h3 class="font-semibold text-gray-800 mb-3">何时应该寻求专业帮助？</h3>
+                                <ul class="space-y-2 text-gray-600">
+                                    <li class="flex items-start">
+                                        <span class="text-primary-400 mr-2 mt-1">•</span>
+                                        <span>情绪低落或焦虑持续两周以上，影响日常生活</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-primary-400 mr-2 mt-1">•</span>
+                                        <span>出现自伤、自杀的念头或行为</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-primary-400 mr-2 mt-1">•</span>
+                                        <span>严重的睡眠问题、食欲改变</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-primary-400 mr-2 mt-1">•</span>
+                                        <span>无法控制的情绪波动</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <span class="text-primary-400 mr-2 mt-1">•</span>
+                                        <span>经历创伤事件后持续困扰</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-white border-t border-gray-100 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="bg-warm-50 rounded-soft p-4 mb-6">
+                <p class="text-xs text-gray-600 text-center leading-relaxed">
+                    本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。
+                </p>
+            </div>
+            <p class="text-center text-sm text-gray-500">
+                © 2024 心晴空间 · 公益心理疗愈平台
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 移动端菜单
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        // 导航高亮
+        function updateNavHighlight() {
+            const sections = ['about', 'disclaimer', 'terms', 'privacy', 'hotline'];
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let currentSection = 'about';
+            
+            sections.forEach(section => {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top <= 150) {
+                        currentSection = section;
+                    }
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === currentSection) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // 监听滚动
+        window.addEventListener('scroll', updateNavHighlight);
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 100;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 初始化
+        updateNavHighlight();
+    </script>
+</body>
+</html>

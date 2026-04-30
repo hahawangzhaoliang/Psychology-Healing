@@ -1,0 +1,45 @@
+# 依赖
+node_modules/
+package-lock.json
+yarn.lock
+
+# 环境配置
+.env
+.env.local
+.env.production
+
+# 数据文件
+data/*.json
+
+# 日志
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 构建输出
+dist/
+build/
+
+# 临时文件
+tmp/
+temp/
+*.tmp
+
+# 测试覆盖率
+coverage/
+
+# 缓存
+.cache/
+
+.vercel
