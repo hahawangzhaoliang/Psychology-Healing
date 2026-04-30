@@ -5,10 +5,11 @@
  * @deprecated 请使用 server/services/crawler/index.js
  */
 
-const crawlerModule = require('./services/crawler');
+const crawlerModule = require('./crawler');
 
 const {
     PsychologyCrawler,
+    EnhancedPsychologyCrawler,
     fetch,
     HTMLParser,
     CRAWLER_CONFIG,
@@ -16,10 +17,10 @@ const {
     getDataSourceInfo
 } = crawlerModule;
 
-// 保持向后兼容
-const PsychologyCrawlerLegacy = class extends crawlerModule.EnhancedPsychologyCrawler {
+// 保持向后兼容 - 使用组合而非继承
+class PsychologyCrawlerLegacy {
     constructor() {
-        super();
+        this.enhanced = new EnhancedPsychologyCrawler();
         this.results = {
             exercises: [],
             knowledge: [],
@@ -28,15 +29,19 @@ const PsychologyCrawlerLegacy = class extends crawlerModule.EnhancedPsychologyCr
     }
 
     async crawl() {
-        // 兼容旧接口：爬取中文来源
-        await this.crawlChineseSources();
-        this.generateTips();
+        const results = await this.enhanced.crawl();
+        this.results = results;
         return this.results;
     }
-};
+
+    getResults() {
+        return this.results;
+    }
+}
 
 module.exports = {
     PsychologyCrawler: PsychologyCrawlerLegacy,
+    EnhancedPsychologyCrawler,
     fetch,
     HTMLParser,
     CRAWLER_CONFIG,

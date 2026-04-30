@@ -10,6 +10,7 @@ const { CrawlHistoryManager, CrawlStatus, historyManager } = require('./CrawlHis
 const {
     SourceType,
     ContentType,
+    Topic,
     TopicLabels,
     getAllUrls,
     getHighCredibilitySources,
@@ -395,8 +396,14 @@ class EnhancedPsychologyCrawler {
             highCredibilityOnly = false,
             topics = null,
             contentTypes = null,
-            maxItems = 50
+            maxItems = 50,
+            incrementalMode = true  // 默认启用增量模式
         } = options;
+
+        // 应用增量模式设置（如果明确传入值则覆盖）
+        if (options.incrementalMode !== undefined) {
+            this.config.incrementalMode = options.incrementalMode;
+        }
 
         console.log('\n========================================');
         console.log('🕷️  增强版爬虫启动 (v2.0 - 增量去重)');
