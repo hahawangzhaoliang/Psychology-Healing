@@ -10,6 +10,7 @@ const crawlerModule = require('./crawler/index');
 const {
     PsychologyCrawler,
     EnhancedPsychologyCrawler,
+    FingerprintGenerator,
     fetch,
     HTMLParser,
     CRAWLER_CONFIG,
@@ -42,6 +43,7 @@ class PsychologyCrawlerLegacy {
 module.exports = {
     PsychologyCrawler: PsychologyCrawlerLegacy,
     EnhancedPsychologyCrawler,
+    FingerprintGenerator,
     fetch,
     HTMLParser,
     CRAWLER_CONFIG,
