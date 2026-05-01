@@ -5,7 +5,7 @@
  * @deprecated 请使用 server/services/crawler/index.js
  */
 
-const crawlerModule = require('./crawler');
+const crawlerModule = require('./crawler/index');
 
 const {
     PsychologyCrawler,
@@ -29,7 +29,7 @@ class PsychologyCrawlerLegacy {
     }
 
     async crawl() {
-        const results = await this.enhanced.crawl();
+        const results = await this.enhanced.crawlAll();
         this.results = results;
         return this.results;
     }
