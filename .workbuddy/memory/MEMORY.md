@@ -26,3 +26,18 @@ quickCrawl({ highCredibilityOnly: true, maxItems: 30 });
 - `server/services/knowledgeService.js` - KnowledgeManager 支持指纹去重
 - `server/services/crawler.js` - 向后兼容入口
 - `scripts/update-knowledge.js` - 定时更新脚本
+
+## Bug 修复记录
+### 2026-05-01: 爬虫模块循环依赖警告
+**问题**：`server/services/crawler.js` 第8行 `require('./crawler')` 会自我引用，因为 Node.js 优先解析同名 `.js` 文件而非目录。
+
+**修复**：
+1. `crawler.js` 第8行：`require('./crawler')` → `require('./crawler/index')`
+2. `crawler.js` 第32行：`this.enhanced.crawl()` → `this.enhanced.crawlAll()`（方法名修正）
+
+**验证**：所有导出（PsychologyCrawler, EnhancedPsychologyCrawler, fetch, HTMLParser, CRAWLER_CONFIG, quickCrawl, getDataSourceInfo）均为 function/object，不再是 undefined。
+
+### 2026-05-01: FingerprintGenerator 未导出
+**问题**：`knowledgeService.js` 导入 `FingerprintGenerator` 时为 undefined，因为 `crawler.js` 的解构和导出中没有包含该属性。
+
+**修复**：`crawler.js` 中添加 `FingerprintGenerator` 到解构和导出列表。
