@@ -46,3 +46,6 @@ coverage/
 
 # 内部文档（不发布到GitHub）
 internal-docs/
+
+# DuMate工具文件夹
+.dumate/
