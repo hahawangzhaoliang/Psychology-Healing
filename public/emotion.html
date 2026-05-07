@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>情绪觉察 - 心晴空间</title>
-    <meta name="description" content="记录和理解你的情绪，更好地管理它们">
+    <meta name="description" content="基于Plutchik情绪轮盘，可视化探索和理解你的情绪">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -42,13 +42,31 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .emotion-btn.active {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.3);
+        .emotion-tag {
+            transition: all 0.3s ease;
         }
-        .intensity-dot.active {
-            background-color: #5A9A8A;
-            transform: scale(1.3);
+        .emotion-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .emotion-tag.selected {
+            background-color: var(--tag-color);
+            color: white;
+            border-color: var(--tag-color);
+        }
+        #emotion-wheel-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .wheel-hint {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #999;
         }
     </style>
 </head>
@@ -83,42 +101,29 @@
         <!-- 记录情绪 -->
         <div id="content-record" class="fade-in">
             <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">今天感觉怎么样？</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">探索你的情绪世界</h2>
+                <p class="text-gray-500 text-center mb-6">点击轮盘选择情绪，最多可选2个相邻情绪</p>
                 
-                <!-- 情绪选择 -->
+                <!-- Plutchik情绪轮盘 -->
                 <div class="mb-8">
-                    <p class="text-gray-600 mb-4 text-center">选择你现在的情绪</p>
-                    <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
-                        <button onclick="selectEmotion('happy')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="happy">
-                            <span class="text-4xl mb-2">😊</span>
-                            <span class="text-sm text-gray-600">开心</span>
-                        </button>
-                        <button onclick="selectEmotion('calm')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="calm">
-                            <span class="text-4xl mb-2">😌</span>
-                            <span class="text-sm text-gray-600">平静</span>
-                        </button>
-                        <button onclick="selectEmotion('anxious')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="anxious">
-                            <span class="text-4xl mb-2">😰</span>
-                            <span class="text-sm text-gray-600">焦虑</span>
-                        </button>
-                        <button onclick="selectEmotion('sad')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="sad">
-                            <span class="text-4xl mb-2">😢</span>
-                            <span class="text-sm text-gray-600">难过</span>
-                        </button>
-                        <button onclick="selectEmotion('angry')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="angry">
-                            <span class="text-4xl mb-2">😡</span>
-                            <span class="text-sm text-gray-600">愤怒</span>
-                        </button>
-                        <button onclick="selectEmotion('tired')" class="emotion-btn flex flex-col items-center p-4 rounded-xl hover:bg-primary-50 transition" data-emotion="tired">
-                            <span class="text-4xl mb-2">😴</span>
-                            <span class="text-sm text-gray-600">疲惫</span>
-                        </button>
+                    <div id="emotion-wheel-container" class="flex justify-center items-center mb-8">
+                        <!-- Canvas will be inserted here -->
+                    </div>
+                    <p class="text-center text-sm text-gray-400">基于Plutchik情绪轮盘理论</p>
+                </div>
+
+                <!-- 已选情绪展示 -->
+                <div id="selected-emotions" class="mb-8 hidden">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-3">已选情绪</h3>
+                    <div id="emotion-tags" class="flex flex-wrap gap-3">
+                        <!-- 动态生成 -->
                     </div>
                 </div>
 
-                <!-- 情绪强度 - 滑动量表 -->
+                <!-- 情绪温度计 -->
                 <div class="mb-8">
-                    <p class="text-gray-600 mb-4 text-center">情绪温度计</p>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">情绪温度计</h3>
+                    <p class="text-gray-600 mb-4 text-sm">评估当前情绪的整体强度</p>
                     <div class="max-w-md mx-auto">
                         <div class="relative h-16 mb-4">
                             <div class="absolute inset-0 flex items-center">
@@ -144,13 +149,14 @@
 
                 <!-- 情境描述 -->
                 <div class="mb-8">
-                    <p class="text-gray-600 mb-4">发生了什么？（可选）</p>
-                    <textarea id="context" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="记录一下发生了什么，帮助你更好地理解情绪..."></textarea>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">发生了什么？</h3>
+                    <p class="text-gray-600 mb-4 text-sm">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
+                    <textarea id="context" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="今天发生了什么让你有这种感觉？"></textarea>
                 </div>
 
                 <!-- 标签选择 -->
                 <div class="mb-8">
-                    <p class="text-gray-600 mb-4">相关标签</p>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-4">相关标签</h3>
                     <div class="flex flex-wrap gap-2">
                         <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="工作">
                             工作
@@ -233,9 +239,13 @@
         </div>
     </main>
 
+    <!-- 引入情绪轮盘组件 -->
+    <script src="js/emotion-wheel.js"></script>
+    
     <script>
         // 状态管理
-        let selectedEmotion = null;
+        let emotionWheel = null;
+        let selectedEmotions = [];
         let selectedIntensity = 5;
         let selectedTags = [];
         let emotionChart = null;
@@ -253,6 +263,57 @@
             9: { emoji: '😢', text: '心情糟糕', color: '#DC2626' },
             10: { emoji: '😢', text: '情绪很差', color: '#B91C1C' }
         };
+
+        // 初始化情绪轮盘
+        function initEmotionWheel() {
+            const container = document.getElementById('emotion-wheel-container');
+            
+            // 响应式尺寸
+            const size = window.innerWidth < 640 ? 320 : 400;
+            
+            emotionWheel = new EmotionWheel('emotion-wheel-container', {
+                size: size,
+                onEmotionSelect: (selection) => {
+                    selectedEmotions = selection.emotions;
+                    updateSelectedEmotionsDisplay(selection);
+                }
+            });
+        }
+
+        // 更新已选情绪展示
+        function updateSelectedEmotionsDisplay(selection) {
+            const container = document.getElementById('selected-emotions');
+            const tagsContainer = document.getElementById('emotion-tags');
+            
+            if (selection.emotions.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+            
+            container.classList.remove('hidden');
+            
+            let html = '';
+            selection.emotions.forEach(emotion => {
+                html += `
+                    <div class="emotion-tag px-4 py-2 rounded-full border-2 text-sm font-medium" 
+                         style="--tag-color: ${emotion.color}; background-color: ${emotion.color}20; border-color: ${emotion.color}; color: ${emotion.color}">
+                        ${emotion.name} - ${emotion.levelName}
+                    </div>
+                `;
+            });
+            
+            // 如果有组合情绪
+            if (selection.combination) {
+                html += `
+                    <div class="emotion-tag px-4 py-2 rounded-full border-2 text-sm font-medium" 
+                         style="--tag-color: ${selection.combination.color}; background-color: ${selection.combination.color}; border-color: ${selection.combination.color}; color: white">
+                        ${selection.combination.name}
+                    </div>
+                `;
+            }
+            
+            tagsContainer.innerHTML = html;
+        }
 
         // 更新情绪滑动条
         function updateEmotionSlider(value) {
@@ -295,26 +356,6 @@
             }
         }
 
-        // 选择情绪
-        function selectEmotion(emotion) {
-            selectedEmotion = emotion;
-            document.querySelectorAll('.emotion-btn').forEach(btn => {
-                btn.classList.remove('active', 'bg-primary-50');
-            });
-            document.querySelector(`[data-emotion="${emotion}"]`).classList.add('active', 'bg-primary-50');
-        }
-
-        // 选择强度
-        function selectIntensity(intensity) {
-            selectedIntensity = intensity;
-            document.querySelectorAll('.intensity-dot').forEach(dot => {
-                dot.classList.remove('active');
-            });
-            for (let i = 1; i <= intensity; i++) {
-                document.querySelector(`[data-intensity="${i}"]`).classList.add('active');
-            }
-        }
-
         // 切换标签
         function toggleTag(btn) {
             const tag = btn.dataset.tag;
@@ -329,15 +370,22 @@
 
         // 保存情绪记录
         async function saveEmotion() {
-            if (!selectedEmotion) {
-                alert('请先选择一个情绪');
+            if (selectedEmotions.length === 0) {
+                alert('请先在轮盘上选择至少一个情绪');
                 return;
             }
 
             const context = document.getElementById('context').value;
             
             const record = {
-                emotionType: selectedEmotion,
+                emotions: selectedEmotions.map(e => ({
+                    key: e.key,
+                    name: e.name,
+                    level: e.level,
+                    levelName: e.levelName,
+                    color: e.color
+                })),
+                combination: emotionWheel.getSelection().combination,
                 intensity: selectedIntensity,
                 context: context,
                 tags: selectedTags,
@@ -353,16 +401,14 @@
                 alert('记录保存成功！');
                 
                 // 重置表单
-                selectedEmotion = null;
-                selectedIntensity = 3;
+                selectedEmotions = [];
+                selectedIntensity = 5;
                 selectedTags = [];
                 document.getElementById('context').value = '';
-                document.querySelectorAll('.emotion-btn').forEach(btn => {
-                    btn.classList.remove('active', 'bg-primary-50');
-                });
-                document.querySelectorAll('.intensity-dot').forEach(dot => {
-                    dot.classList.remove('active');
-                });
+                document.getElementById('emotion-slider').value = 5;
+                updateEmotionSlider(5);
+                emotionWheel.reset();
+                document.getElementById('selected-emotions').classList.add('hidden');
                 document.querySelectorAll('.tag-btn').forEach(btn => {
                     btn.classList.remove('bg-primary-500', 'text-white', 'border-primary-500');
                 });
@@ -387,22 +433,15 @@
             const tagCounts = {};
             
             records.forEach(record => {
-                emotionCounts[record.emotionType] = (emotionCounts[record.emotionType] || 0) + 1;
+                record.emotions.forEach(emotion => {
+                    emotionCounts[emotion.name] = (emotionCounts[emotion.name] || 0) + 1;
+                });
                 record.tags.forEach(tag => {
                     tagCounts[tag] = (tagCounts[tag] || 0) + 1;
                 });
             });
 
             // 显示情绪分布
-            const emotionNames = {
-                happy: '开心',
-                calm: '平静',
-                anxious: '焦虑',
-                sad: '难过',
-                angry: '愤怒',
-                tired: '疲惫'
-            };
-
             const total = records.length;
             let distributionHTML = '';
             Object.entries(emotionCounts)
@@ -411,7 +450,7 @@
                     const percentage = Math.round((count / total) * 100);
                     distributionHTML += `
                         <div class="flex items-center gap-3">
-                            <span class="text-sm text-gray-600 w-16">${emotionNames[emotion]}</span>
+                            <span class="text-sm text-gray-600 w-16">${emotion}</span>
                             <div class="flex-1 bg-gray-200 rounded-full h-3">
                                 <div class="bg-primary-500 h-3 rounded-full" style="width: ${percentage}%"></div>
                             </div>
@@ -443,42 +482,53 @@
             const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
             
             // 获取最近的情绪
-            const recentEmotion = records.length > 0 ? records[records.length - 1].emotionType : 'anxious';
+            const recentEmotions = records.length > 0 ? records[records.length - 1].emotions : [];
+            const primaryEmotion = recentEmotions.length > 0 ? recentEmotions[0].key : 'fear';
             
             const suggestions = {
-                happy: [
+                joy: [
                     { title: '感恩练习', desc: '记录3件让你感恩的事，延续积极情绪', action: 'practice.html' },
                     { title: '分享快乐', desc: '和朋友分享你的喜悦，增强幸福感', action: '#' },
                     { title: '正念冥想', desc: '5分钟正念练习，深化当下的美好', action: 'practice.html' }
                 ],
-                calm: [
-                    { title: '呼吸觉察', desc: '1分钟呼吸练习，保持内心平静', action: 'practice.html' },
-                    { title: '身体扫描', desc: '3分钟身体觉察，增强身心连接', action: 'practice.html' },
-                    { title: '自然漫步', desc: '到户外走走，感受自然的宁静', action: '#' }
+                trust: [
+                    { title: '建立连接', desc: '与信任的人深入交流，强化关系', action: '#' },
+                    { title: '感恩日记', desc: '记录今天让你感到安全的事', action: '#' },
+                    { title: '身体扫描', desc: '3分钟身体觉察，感受当下的安全感', action: 'practice.html' }
                 ],
-                anxious: [
+                fear: [
                     { title: '5-4-3-2-1接地法', desc: '快速平静神经系统，缓解焦虑', action: '#' },
                     { title: '呼吸觉察', desc: '1分钟快速放松，降低心率', action: 'practice.html' },
-                    { title: '认知重评', desc: '改变看待问题的方式，减少焦虑', action: '#' }
+                    { title: '认知重评', desc: '改变看待问题的方式，减少恐惧', action: '#' }
                 ],
-                sad: [
+                surprise: [
+                    { title: '正念觉察', desc: '观察这种惊讶感，不评判', action: 'practice.html' },
+                    { title: '记录发现', desc: '写下今天让你惊讶的事', action: '#' },
+                    { title: '深呼吸', desc: '3次深呼吸，平复心情', action: 'practice.html' }
+                ],
+                sadness: [
                     { title: '自我关怀', desc: '对自己温柔，接纳当下的情绪', action: '#' },
                     { title: '身体扫描', desc: '3分钟身体觉察，连接内在感受', action: 'practice.html' },
                     { title: '寻求支持', desc: '和朋友聊聊，不要独自承受', action: '#' }
                 ],
-                angry: [
+                disgust: [
+                    { title: '认知重评', desc: '重新审视让你不适的事物', action: '#' },
+                    { title: '呼吸练习', desc: '1分钟呼吸，释放负面感受', action: 'practice.html' },
+                    { title: '转移注意', desc: '做一些让你愉悦的事', action: '#' }
+                ],
+                anger: [
                     { title: '深呼吸', desc: '1分钟呼吸练习，平复情绪', action: 'practice.html' },
                     { title: '身体运动', desc: '释放愤怒能量，运动10分钟', action: '#' },
                     { title: '写下感受', desc: '把愤怒写下来，理清思绪', action: '#' }
                 ],
-                tired: [
-                    { title: '深度放松', desc: '7分钟渐进式肌肉放松', action: 'practice.html' },
-                    { title: '小憩片刻', desc: '15-20分钟小睡，恢复精力', action: '#' },
-                    { title: '调整作息', desc: '建立规律作息，改善睡眠', action: '#' }
+                anticipation: [
+                    { title: '正念冥想', desc: '5分钟冥想，享受期待的感觉', action: 'practice.html' },
+                    { title: '制定计划', desc: '为期待的事做准备', action: '#' },
+                    { title: '感恩练习', desc: '感谢这份期待带来的动力', action: '#' }
                 ]
             };
 
-            const emotionSuggestions = suggestions[recentEmotion] || suggestions.anxious;
+            const emotionSuggestions = suggestions[primaryEmotion] || suggestions.fear;
             
             let suggestionsHTML = '';
             emotionSuggestions.forEach(suggestion => {
@@ -495,7 +545,17 @@
 
         // 页面加载时初始化
         document.addEventListener('DOMContentLoaded', () => {
-            selectIntensity(3);
+            initEmotionWheel();
+            updateEmotionSlider(5);
+        });
+
+        // 响应窗口大小变化
+        window.addEventListener('resize', () => {
+            if (emotionWheel) {
+                const container = document.getElementById('emotion-wheel-container');
+                container.innerHTML = '';
+                initEmotionWheel();
+            }
         });
     </script>
 </body>
