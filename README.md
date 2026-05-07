@@ -2,9 +2,25 @@
 
 > 公益心理疗愈平台 - 这里，可以安放你的心事
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![License](https://img.shields.io/badge/license-AGPL%20v3-blue.svg)
 ![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-green.svg)
 ![Platform](https://img.shields.io/badge/platform-Web-orange.svg)
+![Copyright](https://img.shields.io/badge/copyright-2026%20Psychology%20Healing-red.svg)
+
+---
+
+## ⚠️ 版权声明
+
+**本项目采用 GNU AGPL v3.0 许可证**
+
+- ✅ 允许学习、研究和非商业使用
+- ⚠️ 衍生作品必须开源并使用相同许可证
+- ❌ 禁止闭源商业化
+- 📄 完整许可证：[LICENSE](./LICENSE)
+
+**在商业使用前，请务必阅读许可证条款或联系我们获取商业授权。**
+
+---
 
 ## 📖 项目简介
 
@@ -31,6 +47,7 @@
 
 - Node.js >= 16.0.0
 - npm >= 8.0.0
+- Python >= 3.7（可选，用于音频下载）
 - Upstash Search 账号（免费）
 
 ### 安装运行
@@ -46,6 +63,10 @@ npm install
 # 配置环境变量
 cp .env.example .env
 # 编辑 .env 文件，填入 Upstash Search 凭据
+
+# 下载疗愈音频（可选）
+pip install requests
+python scripts/download_audio.py --download
 
 # 启动服务
 npm start
@@ -69,7 +90,12 @@ xinqing-space/
 │   ├── article.html     # 疗愈内容页
 │   ├── relax.html       # 放松练习页
 │   ├── about.html       # 关于+合规页
-│   └── knowledge-graph.html # 知识图谱页
+│   ├── knowledge-graph.html # 知识图谱页
+│   └── audio/           # 疗愈音频资源
+│       ├── breathing/   # 呼吸觉察音频
+│       ├── body-scan/   # 身体扫描音频
+│       ├── meditation/  # 正念冥想音频
+│       └── relaxation/  # 深度放松音频
 ├── server/              # Node.js后端
 │   ├── index.js         # 服务入口
 │   ├── config/          # 配置文件
@@ -78,15 +104,22 @@ xinqing-space/
 │   │   ├── api.js       # 路由入口
 │   │   ├── emotion.js   # 情绪日记API
 │   │   ├── assessment.js# 心理测评API
-│   │   ├── content.js   # 内容API
 │   │   ├── knowledge.js # 知识库API
-│   │   ├── cron.js      # 定时任务API
-│   │   └── ...
+│   │   ├── practice.js  # 疗愈练习API
+│   │   ├── role.js      # 角色探索API
+│   │   ├── feedback.js  # 用户反馈API
+│   │   ├── stats.js     # 统计与热线API
+│   │   └── cron.js      # 定时任务API
 │   └── services/
 │       └── knowledgeService.js # 知识库服务
 ├── scripts/             # 脚本文件
-│   ├── migrate-to-upstash.js # 数据迁移
+│   ├── download_audio.py # 音频下载工具
 │   └── update-knowledge.js   # 知识更新
+├── docs/                # 文档目录
+│   ├── PRODUCT_STRATEGY.md # 产品战略规划
+│   ├── MVP_IMPLEMENTATION_PLAN.md # MVP实施计划
+│   ├── FREE_AUDIO_RESOURCES.md # 免费音频资源指南
+│   └── CODE_OPTIMIZATION_SUMMARY.md # 代码优化总结
 ├── logs/                # 日志目录
 ├── package.json
 ├── vercel.json          # Vercel配置

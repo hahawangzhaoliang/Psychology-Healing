@@ -1,0 +1,42 @@
+/*
+ * 心晴空间 - 公益心理疗愈平台
+ * Copyright (C) 2026 Psychology Healing Project
+ * 
+ * 本文件是心晴空间项目的一部分。
+ * 
+ * 本程序是自由软件：您可以根据 GNU Affero 通用公共许可证的条款重新分发和/或修改它，
+ * 由自由软件基金会发布，许可证版本为 3，或（根据您的选择）任何更高版本。
+ * 
+ * 本程序的发布希望它有用，但不提供任何保证；
+ * 甚至没有适销性或特定用途适用性的暗示保证。
+ * 有关更多详细信息，请参阅 GNU Affero 通用公共许可证。
+ * 
+ * 您应该已经收到 GNU Affero 通用公共许可证的副本
+ * 以及本程序。如果没有，请参阅 <https://www.gnu.org/licenses/>。
+ * 
+ * 项目地址：https://github.com/YOUR_USERNAME/Psychology-Healing
+ * 许可证：GNU AGPL v3.0
+ */
+
+/*
+ * Psychology Healing - Public Mental Health Platform
+ * Copyright (C) 2026 Psychology Healing Project
+ * 
+ * This file is part of Psychology Healing Project.
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * 
+ * Project: https://github.com/YOUR_USERNAME/Psychology-Healing
+ * License: GNU AGPL v3.0
+ */

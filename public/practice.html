@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疗愈练习 - 心晴空间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0faf7',
+                            100: '#d9f2eb',
+                            200: '#b5ddd3',
+                            300: '#8ac4b5',
+                            400: '#7CB8A8',
+                            500: '#5A9A8A',
+                            600: '#4a8a7a',
+                        },
+                        warm: {
+                            50: '#fdfbf9',
+                            100: '#F5E6D3',
+                            200: '#E8D5C4',
+                            300: '#d4c4b0',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        .breathing-circle {
+            animation: breathing 8s ease-in-out infinite;
+        }
+        @keyframes breathing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen">
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-2xl font-bold text-primary-500">心晴空间</a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="max-w-6xl mx-auto px-4 py-12">
+        <div class="text-center mb-12 fade-in">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">疗愈练习</h1>
+            <p class="text-lg text-gray-600">选择一个练习，给自己几分钟时间放松</p>
+        </div>
+
+        <!-- 练习统计 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 max-w-4xl mx-auto fade-in">
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-primary-500" id="totalPractices">0</div>
+                    <div class="text-sm text-gray-600">总练习次数</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-primary-500" id="totalMinutes">0</div>
+                    <div class="text-sm text-gray-600">总时长（分钟）</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-primary-500" id="streakDays">0</div>
+                    <div class="text-sm text-gray-600">连续天数</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 练习卡片 -->
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            
+            <!-- 呼吸觉察 -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition fade-in">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">呼吸觉察</h3>
+                    <p class="text-gray-600 mb-2">1分钟快速放松</p>
+                    <p class="text-sm text-gray-500">降低心率、减少焦虑</p>
+                </div>
+                <button onclick="startPractice('breathing', 60)" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    开始练习
+                </button>
+            </div>
+
+            <!-- 身体扫描 -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition fade-in">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">身体扫描</h3>
+                    <p class="text-gray-600 mb-2">3分钟深度觉察</p>
+                    <p class="text-sm text-gray-500">增强身体觉察、减少紧张</p>
+                </div>
+                <button onclick="startPractice('body-scan', 180)" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    开始练习
+                </button>
+            </div>
+
+            <!-- 正念冥想 -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition fade-in">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">正念冥想</h3>
+                    <p class="text-gray-600 mb-2">5分钟专注练习</p>
+                    <p class="text-sm text-gray-500">提升注意力、情绪调节</p>
+                </div>
+                <button onclick="startPractice('meditation', 300)" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    开始练习
+                </button>
+            </div>
+
+            <!-- 深度放松 -->
+            <div class="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition fade-in">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-10 h-10 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">深度放松</h3>
+                    <p class="text-gray-600 mb-2">7分钟深度放松</p>
+                    <p class="text-sm text-gray-500">改变脑电波、压力释放</p>
+                </div>
+                <button onclick="startPractice('relaxation', 420)" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    开始练习
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- 练习模态框 -->
+    <div id="practiceModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden">
+            <!-- 模态框头部 -->
+            <div class="bg-primary-500 text-white p-6">
+                <div class="flex items-center justify-between">
+                    <h2 id="practiceTitle" class="text-2xl font-bold">练习中</h2>
+                    <button onclick="closePractice()" class="text-white hover:text-gray-200 transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 模态框内容 -->
+            <div class="p-8">
+                <!-- 呼吸动画 -->
+                <div class="flex justify-center mb-8">
+                    <div id="breathingCircle" class="w-40 h-40 bg-primary-100 rounded-full flex items-center justify-center">
+                        <div id="breathingText" class="text-primary-500 text-lg font-medium">准备开始</div>
+                    </div>
+                </div>
+
+                <!-- 计时器 -->
+                <div class="text-center mb-8">
+                    <div id="timerDisplay" class="text-5xl font-bold text-gray-800 mb-2">1:00</div>
+                    <p class="text-gray-500">剩余时间</p>
+                </div>
+
+                <!-- 进度条 -->
+                <div class="mb-8">
+                    <div class="bg-gray-200 rounded-full h-2">
+                        <div id="progressBar" class="bg-primary-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- 控制按钮 -->
+                <div class="flex justify-center space-x-4">
+                    <button id="playPauseBtn" onclick="togglePlayPause()" class="bg-primary-500 text-white px-8 py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                        开始
+                    </button>
+                    <button onclick="closePractice()" class="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg hover:bg-gray-300 transition font-medium">
+                        结束
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/audio-player.js"></script>
+    <script>
+        let currentPractice = null;
+        let audioPlayer = null;
+        let timer = null;
+        let breathingAnimation = null;
+        let isPlaying = false;
+
+        // 页面加载时更新统计
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+        });
+
+        // 更新统计数据
+        function updateStats() {
+            const records = JSON.parse(localStorage.getItem('practiceRecords') || '[]');
+            
+            // 总练习次数
+            document.getElementById('totalPractices').textContent = records.length;
+            
+            // 总时长（分钟）
+            const totalSeconds = records.reduce((sum, r) => sum + r.duration, 0);
+            document.getElementById('totalMinutes').textContent = Math.round(totalSeconds / 60);
+            
+            // 连续天数
+            const streak = calculateStreak(records);
+            document.getElementById('streakDays').textContent = streak;
+        }
+
+        // 计算连续天数
+        function calculateStreak(records) {
+            if (records.length === 0) return 0;
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            let streak = 0;
+            let checkDate = new Date(today);
+            
+            // 按日期分组
+            const dates = new Set(
+                records.map(r => {
+                    const d = new Date(r.timestamp);
+                    d.setHours(0, 0, 0, 0);
+                    return d.getTime();
+                })
+            );
+            
+            // 从今天开始往前检查
+            while (dates.has(checkDate.getTime())) {
+                streak++;
+                checkDate.setDate(checkDate.getDate() - 1);
+            }
+            
+            return streak;
+        }
+
+        function startPractice(type, duration) {
+            currentPractice = { type, duration };
+            
+            // 设置标题
+            const titles = {
+                'breathing': '呼吸觉察',
+                'body-scan': '身体扫描',
+                'meditation': '正念冥想',
+                'relaxation': '深度放松'
+            };
+            document.getElementById('practiceTitle').textContent = titles[type];
+            
+            // 初始化计时器
+            timer = new Timer(duration * 1000, {
+                onTick: (remaining) => {
+                    document.getElementById('timerDisplay').textContent = timer.formatTime(remaining);
+                    const progress = ((duration * 1000 - remaining) / (duration * 1000)) * 100;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                },
+                onComplete: () => {
+                    completePractice();
+                }
+            });
+            
+            // 初始化音频播放器
+            audioPlayer = new AudioPlayer({
+                audioUrl: `audio/${type}/${type}_complete.mp3`,
+                onPlay: () => {
+                    isPlaying = true;
+                    updatePlayPauseButton();
+                },
+                onPause: () => {
+                    isPlaying = false;
+                    updatePlayPauseButton();
+                },
+                onEnded: () => {
+                    completePractice();
+                }
+            });
+            
+            // 初始化呼吸动画
+            breathingAnimation = new BreathingAnimation(
+                document.getElementById('breathingCircle'),
+                {
+                    inhaleTime: 4000,
+                    holdTime: 2000,
+                    exhaleTime: 6000
+                }
+            );
+            
+            // 显示模态框
+            document.getElementById('practiceModal').classList.remove('hidden');
+            document.getElementById('practiceModal').classList.add('flex');
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                timer.pause();
+                breathingAnimation.stop();
+            } else {
+                audioPlayer.play();
+                timer.start();
+                breathingAnimation.start();
+            }
+            updatePlayPauseButton();
+        }
+
+        function updatePlayPauseButton() {
+            const btn = document.getElementById('playPauseBtn');
+            btn.textContent = isPlaying ? '暂停' : '继续';
+        }
+
+        function completePractice() {
+            isPlaying = false;
+            audioPlayer.stop();
+            timer.stop();
+            breathingAnimation.stop();
+            
+            document.getElementById('breathingText').textContent = '练习完成';
+            document.getElementById('playPauseBtn').textContent = '重新开始';
+            
+            // 记录练习完成
+            recordPractice();
+        }
+
+        function closePractice() {
+            if (audioPlayer) {
+                audioPlayer.stop();
+            }
+            if (timer) {
+                timer.stop();
+            }
+            if (breathingAnimation) {
+                breathingAnimation.stop();
+            }
+            
+            document.getElementById('practiceModal').classList.add('hidden');
+            document.getElementById('practiceModal').classList.remove('flex');
+            
+            // 重置状态
+            isPlaying = false;
+            currentPractice = null;
+        }
+
+        async function recordPractice() {
+            if (!currentPractice) return;
+            
+            // 保存到本地存储
+            const records = JSON.parse(localStorage.getItem('practiceRecords') || '[]');
+            records.push({
+                practiceType: currentPractice.type,
+                duration: currentPractice.duration,
+                timestamp: new Date().toISOString()
+            });
+            localStorage.setItem('practiceRecords', JSON.stringify(records));
+            
+            // 更新统计
+            updateStats();
+            
+            // 尝试发送到服务器（如果可用）
+            try {
+                const response = await fetch('/api/practice/record', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        practiceType: currentPractice.type,
+                        duration: currentPractice.duration
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('练习记录同步成功');
+                }
+            } catch (error) {
+                console.log('服务器同步失败，数据已保存到本地');
+            }
+        }
+    </script>
+</body>
+</html>

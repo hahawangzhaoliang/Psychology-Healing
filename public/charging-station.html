@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5分钟充电站 - 心晴空间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--theme-background, #FDF8F3);
+            color: var(--theme-text, #4A4A4A);
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .slide-up {
+            animation: slideUp 0.5s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(125, 211, 192, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(125, 211, 192, 0.6); }
+        }
+        .content-card {
+            background: var(--theme-card, white);
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        .scenario-btn {
+            transition: all 0.3s ease;
+        }
+        .scenario-btn:hover {
+            transform: scale(1.05);
+        }
+        .scenario-btn.active {
+            background: var(--theme-primary, #7DD3C0);
+            color: white;
+        }
+        .image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+        .image-container img {
+            transition: transform 0.5s ease;
+        }
+        .image-container:hover img {
+            transform: scale(1.05);
+        }
+        .audio-visualizer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            height: 40px;
+        }
+        .audio-bar {
+            width: 4px;
+            background: var(--theme-primary, #7DD3C0);
+            border-radius: 2px;
+            animation: audioWave 1s ease-in-out infinite;
+        }
+        .audio-bar:nth-child(1) { animation-delay: 0s; height: 20px; }
+        .audio-bar:nth-child(2) { animation-delay: 0.1s; height: 30px; }
+        .audio-bar:nth-child(3) { animation-delay: 0.2s; height: 25px; }
+        .audio-bar:nth-child(4) { animation-delay: 0.3s; height: 35px; }
+        .audio-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
+        @keyframes audioWave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.5); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-2xl font-bold" style="color: var(--theme-primary, #7DD3C0)">心晴空间</a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+        <!-- 标题 -->
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-4xl font-bold mb-4">⚡ 5分钟充电站</h1>
+            <p class="text-lg text-gray-600">选择你的场景，获取专属能量包</p>
+        </div>
+
+        <!-- 场景选择 -->
+        <div class="flex justify-center gap-4 mb-8 fade-in">
+            <button onclick="selectScenario('morning')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="morning">
+                🌅 晨起
+            </button>
+            <button onclick="selectScenario('noon')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="noon">
+                ☀️ 午休
+            </button>
+            <button onclick="selectScenario('night')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="night">
+                🌙 睡前
+            </button>
+        </div>
+
+        <!-- 内容包 -->
+        <div id="content-pack" class="grid md:grid-cols-3 gap-6">
+            <!-- 治愈图片 -->
+            <div class="content-card p-6 slide-up" style="animation-delay: 0.1s">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold">📸 治愈图片</h3>
+                    <button onclick="refreshImage()" class="text-gray-400 hover:text-gray-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="image-container mb-4">
+                    <img id="healing-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" 
+                         alt="治愈图片" class="w-full h-48 object-cover">
+                </div>
+                <p id="image-caption" class="text-sm text-gray-600 text-center">山间的清晨，宁静而美好</p>
+            </div>
+
+            <!-- 神经音乐 -->
+            <div class="content-card p-6 slide-up" style="animation-delay: 0.2s">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold">🎵 神经音乐</h3>
+                    <button onclick="refreshMusic()" class="text-gray-400 hover:text-gray-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="audio-visualizer mb-4">
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                    <div class="audio-bar"></div>
+                </div>
+                <div class="text-center mb-4">
+                    <p id="music-title" class="font-semibold mb-1">晨间冥想</p>
+                    <p id="music-desc" class="text-sm text-gray-600">432Hz · 提升专注力</p>
+                </div>
+                <div class="flex items-center justify-center gap-4">
+                    <button onclick="prevTrack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                        </svg>
+                    </button>
+                    <button onclick="togglePlay()" id="play-btn" class="w-14 h-14 rounded-full flex items-center justify-center text-white pulse-glow" style="background: var(--theme-primary, #7DD3C0)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </button>
+                    <button onclick="nextTrack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 微故事 -->
+            <div class="content-card p-6 slide-up" style="animation-delay: 0.3s">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold">📖 微故事</h3>
+                    <button onclick="refreshStory()" class="text-gray-400 hover:text-gray-600 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <p id="story-content" class="text-gray-700 leading-relaxed mb-4">
+                        小狐狸每天都会在山顶等待日出。有一天，它问太阳："你为什么每天都来？"
+                        <br><br>
+                        太阳笑着说："因为有人在等我啊，就像你在等我一样。"
+                        <br><br>
+                        原来，被期待是一件温暖的事。
+                    </p>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-500">阅读时间：1分钟</span>
+                    <button onclick="shareStory()" class="text-sm px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                        分享故事
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速行动 -->
+        <div class="mt-8 text-center fade-in">
+            <button onclick="startQuickCharge()" class="px-8 py-4 rounded-full text-white font-semibold text-lg transition transform hover:scale-105" style="background: var(--theme-primary, #7DD3C0)">
+                开始5分钟充电 ⚡
+            </button>
+        </div>
+
+        <!-- 今日推荐 -->
+        <div class="mt-12 fade-in">
+            <h2 class="text-2xl font-bold mb-6 text-center">✨ 今日推荐</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="content-card p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">🧘</div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold mb-2">3分钟呼吸练习</h3>
+                            <p class="text-sm text-gray-600 mb-3">适合现在的你，快速恢复能量</p>
+                            <button onclick="window.location.href='practice.html'" class="text-sm px-4 py-2 rounded-full text-white" style="background: var(--theme-primary, #7DD3C0)">
+                                开始练习
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-card p-6">
+                    <div class="flex items-start gap-4">
+                        <div class="text-4xl">💭</div>
+                        <div class="flex-1">
+                            <h3 class="font-semibold mb-2">记录此刻心情</h3>
+                            <p class="text-sm text-gray-600 mb-3">写下你的感受，释放内心压力</p>
+                            <button onclick="window.location.href='emotion.html'" class="text-sm px-4 py-2 rounded-full text-white" style="background: var(--theme-primary, #7DD3C0)">
+                                开始记录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/theme-manager.js"></script>
+    <script>
+        // 内容数据
+        const contentData = {
+            morning: {
+                images: [
+                    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop', caption: '山间的清晨，宁静而美好' },
+                    { url: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=400&h=300&fit=crop', caption: '第一缕阳光，温暖而充满希望' },
+                    { url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=300&fit=crop', caption: '城市的早晨，新的开始' }
+                ],
+                music: [
+                    { title: '晨间冥想', desc: '432Hz · 提升专注力', freq: '432Hz' },
+                    { title: '日出之声', desc: '528Hz · 唤醒能量', freq: '528Hz' },
+                    { title: '清晨鸟鸣', desc: '自然白噪音 · 平静心绪', freq: 'nature' }
+                ],
+                stories: [
+                    '小狐狸每天都会在山顶等待日出。有一天，它问太阳："你为什么每天都来？"\n\n太阳笑着说："因为有人在等我啊，就像你在等我一样。"\n\n原来，被期待是一件温暖的事。',
+                    '种子在土壤里等待了很久。它问大地："我什么时候才能看到阳光？"\n\n大地说："当你准备好迎接世界的时候。"\n\n成长需要耐心，每一步都算数。',
+                    '清晨，露珠问花朵："你为什么这么美丽？"\n\n花朵回答："因为我每天都在努力绽放。"\n\n美丽来自每一天的坚持。'
+                ]
+            },
+            noon: {
+                images: [
+                    { url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=300&fit=crop', caption: '午后的湖面，平静如镜' },
+                    { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop', caption: '海边的午后，悠然自得' },
+                    { url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop', caption: '森林的午后，清新自然' }
+                ],
+                music: [
+                    { title: '午后小憩', desc: 'Alpha波 · 深度放松', freq: 'alpha' },
+                    { title: '咖啡时光', desc: '轻音乐 · 舒缓心情', freq: 'light' },
+                    { title: '自然之声', desc: '森林白噪音 · 恢复精力', freq: 'forest' }
+                ],
+                stories: [
+                    '猫咪在午后阳光下打盹。小鸟问它："你不觉得浪费时间吗？"\n\n猫咪懒洋洋地说："休息也是生活的一部分。"\n\n有时候，停下来是为了更好地出发。',
+                    '向日葵在中午总是昂首挺胸。小草问："你不累吗？"\n\n向日葵说："我在收集阳光，为了夜晚的绽放。"\n\n每一刻的努力，都在为未来积蓄力量。',
+                    '午后的云朵慢慢飘过。风问它："你要去哪里？"\n\n云朵回答："没有目的地，只是享受飘的过程。"\n\n有时候，享受当下就是最好的选择。'
+                ]
+            },
+            night: {
+                images: [
+                    { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=300&fit=crop', caption: '星空下的夜晚，宁静深邃' },
+                    { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=400&h=300&fit=crop', caption: '月光下的城市，安静祥和' },
+                    { url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop', caption: '海边的夜晚，星空璀璨' }
+                ],
+                music: [
+                    { title: '睡前冥想', desc: 'Theta波 · 助眠安神', freq: 'theta' },
+                    { title: '月光曲', desc: '古典音乐 · 宁静心灵', freq: 'classic' },
+                    { title: '雨声入眠', desc: '雨声白噪音 · 深度睡眠', freq: 'rain' }
+                ],
+                stories: [
+                    '月亮每晚都看着地上的孩子入睡。星星问："你不累吗？"\n\n月亮温柔地说："守护他们的梦，是我的使命。"\n\n你并不孤单，总有人在默默守护你。',
+                    '萤火虫在夜晚发出微弱的光。蛾子问："为什么这么努力？"\n\n萤火虫说："即使微小，也要照亮黑暗。"\n\n每一个小小的努力，都有它的意义。',
+                    '夜晚，小船停在港湾。海浪问："你不想去远方吗？"\n\n小船回答："今晚，我只想安静地休息。"\n\n给自己一个休息的夜晚，明天会更好。'
+                ]
+            }
+        };
+
+        let currentScenario = 'morning';
+        let currentImageIndex = 0;
+        let currentMusicIndex = 0;
+        let currentStoryIndex = 0;
+        let isPlaying = false;
+
+        // 选择场景
+        function selectScenario(scenario) {
+            currentScenario = scenario;
+            currentImageIndex = 0;
+            currentMusicIndex = 0;
+            currentStoryIndex = 0;
+            
+            // 更新按钮状态
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-scenario="${scenario}"]`).classList.add('active');
+            
+            // 更新内容
+            refreshImage();
+            refreshMusic();
+            refreshStory();
+        }
+
+        // 刷新图片
+        function refreshImage() {
+            const data = contentData[currentScenario];
+            currentImageIndex = (currentImageIndex + 1) % data.images.length;
+            const image = data.images[currentImageIndex];
+            
+            document.getElementById('healing-image').src = image.url;
+            document.getElementById('image-caption').textContent = image.caption;
+        }
+
+        // 刷新音乐
+        function refreshMusic() {
+            const data = contentData[currentScenario];
+            currentMusicIndex = (currentMusicIndex + 1) % data.music.length;
+            const music = data.music[currentMusicIndex];
+            
+            document.getElementById('music-title').textContent = music.title;
+            document.getElementById('music-desc').textContent = music.desc;
+        }
+
+        // 刷新故事
+        function refreshStory() {
+            const data = contentData[currentScenario];
+            currentStoryIndex = (currentStoryIndex + 1) % data.stories.length;
+            const story = data.stories[currentStoryIndex];
+            
+            document.getElementById('story-content').textContent = story;
+        }
+
+        // 播放控制
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('play-btn');
+            
+            if (isPlaying) {
+                btn.innerHTML = '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+                // 这里可以添加实际的音频播放逻辑
+            } else {
+                btn.innerHTML = '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+            }
+        }
+
+        function prevTrack() {
+            const data = contentData[currentScenario];
+            currentMusicIndex = (currentMusicIndex - 1 + data.music.length) % data.music.length;
+            const music = data.music[currentMusicIndex];
+            
+            document.getElementById('music-title').textContent = music.title;
+            document.getElementById('music-desc').textContent = music.desc;
+        }
+
+        function nextTrack() {
+            refreshMusic();
+        }
+
+        // 分享故事
+        function shareStory() {
+            const story = document.getElementById('story-content').textContent;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: '心晴空间 · 微故事',
+                    text: story
+                });
+            } else {
+                // 复制到剪贴板
+                navigator.clipboard.writeText(story).then(() => {
+                    alert('故事已复制到剪贴板');
+                });
+            }
+        }
+
+        // 开始快速充电
+        function startQuickCharge() {
+            alert('即将开始5分钟充电体验...\n\n包含：\n- 1分钟呼吸练习\n- 2分钟音乐放松\n- 2分钟故事冥想');
+            window.location.href = 'practice.html';
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            selectScenario('morning');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微光社区 - 心晴空间</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--theme-background, #FDF8F3);
+            color: var(--theme-text, #4A4A4A);
+            transition: all 0.3s ease;
+        }
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .float-up {
+            animation: floatUp 0.5s ease-out;
+        }
+        @keyframes floatUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .glow-card {
+            transition: all 0.3s ease;
+        }
+        .glow-card:hover {
+            box-shadow: 0 0 30px rgba(125, 211, 192, 0.2);
+        }
+        .encourage-btn {
+            transition: all 0.3s ease;
+        }
+        .encourage-btn:hover {
+            transform: scale(1.05);
+        }
+        .post-card {
+            background: var(--theme-card, white);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .checkin-card {
+            background: linear-gradient(135deg, var(--theme-primary, #7DD3C0), var(--theme-secondary, #F5A9B8));
+            color: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+        .streak-badge {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .encourage-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .encourage-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .encourage-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 300px;
+            text-align: center;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        .encourage-modal.active .encourage-card {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-2xl font-bold" style="color: var(--theme-primary, #7DD3C0)">心晴空间</a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
+        <!-- 标题 -->
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-4xl font-bold mb-4">✨ 微光社区</h1>
+            <p class="text-lg text-gray-600">在这里，每一份分享都是温暖的光</p>
+        </div>
+
+        <!-- 标签页切换 -->
+        <div class="flex justify-center mb-8 fade-in">
+            <div class="bg-white rounded-full p-1 shadow-md">
+                <button onclick="switchTab('treehole')" id="tab-treehole" class="px-6 py-2 rounded-full text-white font-medium transition" style="background: var(--theme-primary, #7DD3C0)">
+                    匿名树洞
+                </button>
+                <button onclick="switchTab('checkin')" id="tab-checkin" class="px-6 py-2 rounded-full text-gray-600 font-medium transition hover:text-primary-500">
+                    主题打卡
+                </button>
+            </div>
+        </div>
+
+        <!-- 匿名树洞 -->
+        <div id="content-treehole" class="fade-in">
+            <!-- 发布区域 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 glow-card">
+                <div class="flex items-start gap-4">
+                    <div class="avatar bg-gradient-to-br from-purple-400 to-pink-400">
+                        🌟
+                    </div>
+                    <div class="flex-1">
+                        <textarea id="post-content" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 resize-none" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="分享你的心情，这里只有温暖和理解..."></textarea>
+                        <div class="flex items-center justify-between mt-3">
+                            <div class="flex gap-2">
+                                <button onclick="addMood('happy')" class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm hover:bg-yellow-200 transition">😊 开心</button>
+                                <button onclick="addMood('calm')" class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm hover:bg-blue-200 transition">😌 平静</button>
+                                <button onclick="addMood('anxious')" class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-sm hover:bg-purple-200 transition">😰 焦虑</button>
+                            </div>
+                            <button onclick="submitPost()" class="px-6 py-2 rounded-full text-white font-medium transition transform hover:scale-105" style="background: var(--theme-primary, #7DD3C0)">
+                                发布
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 帖子列表 -->
+            <div id="posts-container">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+
+        <!-- 主题打卡 -->
+        <div id="content-checkin" class="hidden fade-in">
+            <!-- 今日主题 -->
+            <div class="checkin-card">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-1">今日主题</h2>
+                        <p class="text-sm opacity-90">每日三件小确幸</p>
+                    </div>
+                    <div class="streak-badge">
+                        <span>🔥</span>
+                        <span class="font-semibold">连续 <span id="streak-count">0</span> 天</span>
+                    </div>
+                </div>
+                <p class="text-sm opacity-90 mb-4">记录今天让你感到幸福的三件小事，培养感恩的习惯</p>
+                <button onclick="startCheckin()" class="w-full bg-white text-gray-700 py-3 rounded-full font-semibold hover:bg-gray-50 transition">
+                    开始今日打卡
+                </button>
+            </div>
+
+            <!-- 打卡历史 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">📅 打卡日历</h3>
+                <div id="checkin-calendar" class="grid grid-cols-7 gap-2">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+            <!-- 打卡记录 -->
+            <div class="bg-white rounded-2xl shadow-lg p-6">
+                <h3 class="text-xl font-bold mb-4">💝 我的打卡记录</h3>
+                <div id="checkin-records" class="space-y-4">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 鼓励卡片模态框 -->
+    <div id="encourage-modal" class="encourage-modal">
+        <div class="encourage-card">
+            <div class="text-6xl mb-4">💝</div>
+            <h3 class="text-xl font-bold mb-2">发送鼓励</h3>
+            <p class="text-gray-600 mb-4">选择一张鼓励卡片</p>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <button onclick="sendEncourage('hug')" class="p-3 rounded-lg bg-pink-50 hover:bg-pink-100 transition">
+                    <div class="text-3xl mb-1">🤗</div>
+                    <div class="text-sm text-gray-700">温暖拥抱</div>
+                </button>
+                <button onclick="sendEncourage('star')" class="p-3 rounded-lg bg-yellow-50 hover:bg-yellow-100 transition">
+                    <div class="text-3xl mb-1">⭐</div>
+                    <div class="text-sm text-gray-700">为你点赞</div>
+                </button>
+                <button onclick="sendEncourage('heart')" class="p-3 rounded-lg bg-red-50 hover:bg-red-100 transition">
+                    <div class="text-3xl mb-1">❤️</div>
+                    <div class="text-sm text-gray-700">送你爱心</div>
+                </button>
+                <button onclick="sendEncourage('flower')" class="p-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition">
+                    <div class="text-3xl mb-1">🌸</div>
+                    <div class="text-sm text-gray-700">美好祝福</div>
+                </button>
+            </div>
+            <button onclick="closeEncourageModal()" class="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+                取消
+            </button>
+        </div>
+    </div>
+
+    <!-- 打卡模态框 -->
+    <div id="checkin-modal" class="encourage-modal">
+        <div class="encourage-card" style="max-width: 400px">
+            <h3 class="text-xl font-bold mb-4">📝 今日三件小确幸</h3>
+            <div class="space-y-3 mb-4">
+                <input type="text" id="happiness-1" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="1. 第一件小确幸...">
+                <input type="text" id="happiness-2" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="2. 第二件小确幸...">
+                <input type="text" id="happiness-3" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="3. 第三件小确幸...">
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeCheckinModal()" class="flex-1 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
+                    取消
+                </button>
+                <button onclick="submitCheckin()" class="flex-1 py-2 rounded-lg text-white font-medium transition" style="background: var(--theme-primary, #7DD3C0)">
+                    完成打卡
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/theme-manager.js"></script>
+    <script>
+        // 状态管理
+        let currentTab = 'treehole';
+        let currentPostId = null;
+        let selectedMood = null;
+
+        // 示例帖子数据
+        const samplePosts = [
+            {
+                id: 1,
+                content: '今天工作压力很大，但是下班后看到了美丽的晚霞，突然觉得一切都值得了。',
+                mood: 'calm',
+                timestamp: new Date(Date.now() - 3600000).toISOString(),
+                encouragements: 12,
+                replies: 3
+            },
+            {
+                id: 2,
+                content: '终于完成了那个困扰我很久的项目，虽然过程很艰难，但是成长了很多。',
+                mood: 'happy',
+                timestamp: new Date(Date.now() - 7200000).toISOString(),
+                encouragements: 8,
+                replies: 2
+            },
+            {
+                id: 3,
+                content: '有时候觉得自己很渺小，但是想到还有人在默默支持我，就觉得很温暖。',
+                mood: 'anxious',
+                timestamp: new Date(Date.now() - 10800000).toISOString(),
+                encouragements: 15,
+                replies: 5
+            }
+        ];
+
+        // 切换标签页
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // 更新按钮状态
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('text-white');
+                btn.classList.add('text-gray-600');
+                btn.style.background = '';
+            });
+            const activeBtn = document.getElementById(`tab-${tab}`);
+            activeBtn.classList.add('text-white');
+            activeBtn.classList.remove('text-gray-600');
+            activeBtn.style.background = 'var(--theme-primary, #7DD3C0)';
+            
+            // 显示对应内容
+            document.querySelectorAll('[id^="content-"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById(`content-${tab}`).classList.remove('hidden');
+            
+            // 加载数据
+            if (tab === 'treehole') {
+                loadPosts();
+            } else if (tab === 'checkin') {
+                loadCheckinData();
+            }
+        }
+
+        // 添加心情标签
+        function addMood(mood) {
+            selectedMood = mood;
+            const textarea = document.getElementById('post-content');
+            const moods = {
+                happy: '😊 开心：',
+                calm: '😌 平静：',
+                anxious: '😰 焦虑：'
+            };
+            if (!textarea.value.startsWith('😊') && !textarea.value.startsWith('😌') && !textarea.value.startsWith('😰')) {
+                textarea.value = moods[mood] + textarea.value;
+            }
+        }
+
+        // 提交帖子
+        function submitPost() {
+            const content = document.getElementById('post-content').value.trim();
+            if (!content) {
+                alert('请输入内容');
+                return;
+            }
+            
+            const post = {
+                id: Date.now(),
+                content: content,
+                mood: selectedMood || 'calm',
+                timestamp: new Date().toISOString(),
+                encouragements: 0,
+                replies: 0
+            };
+            
+            // 保存到本地存储
+            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            posts.unshift(post);
+            localStorage.setItem('communityPosts', JSON.stringify(posts));
+            
+            // 清空输入
+            document.getElementById('post-content').value = '';
+            selectedMood = null;
+            
+            // 重新加载帖子
+            loadPosts();
+            
+            alert('发布成功！感谢你的分享 💝');
+        }
+
+        // 加载帖子
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            const allPosts = [...posts, ...samplePosts];
+            
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            
+            allPosts.forEach((post, index) => {
+                const moodEmojis = {
+                    happy: '😊',
+                    calm: '😌',
+                    anxious: '😰'
+                };
+                
+                const timeAgo = getTimeAgo(post.timestamp);
+                
+                container.innerHTML += `
+                    <div class="post-card float-up" style="animation-delay: ${index * 0.1}s">
+                        <div class="flex items-start gap-4">
+                            <div class="avatar bg-gradient-to-br from-blue-400 to-purple-400">
+                                ${moodEmojis[post.mood] || '🌟'}
+                            </div>
+                            <div class="flex-1">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-sm text-gray-500">匿名用户</span>
+                                    <span class="text-xs text-gray-400">${timeAgo}</span>
+                                </div>
+                                <p class="text-gray-700 mb-3">${post.content}</p>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="showEncourageModal(${post.id})" class="encourage-btn flex items-center gap-1 text-sm text-gray-500 hover:text-pink-500 transition">
+                                        <span>💝</span>
+                                        <span>${post.encouragements}</span>
+                                    </button>
+                                    <button onclick="toggleReplies(${post.id})" class="flex items-center gap-1 text-sm text-gray-500 hover:text-blue-500 transition">
+                                        <span>💬</span>
+                                        <span>${post.replies}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 显示鼓励模态框
+        function showEncourageModal(postId) {
+            currentPostId = postId;
+            document.getElementById('encourage-modal').classList.add('active');
+        }
+
+        // 关闭鼓励模态框
+        function closeEncourageModal() {
+            document.getElementById('encourage-modal').classList.remove('active');
+            currentPostId = null;
+        }
+
+        // 发送鼓励
+        function sendEncourage(type) {
+            // 更新鼓励数
+            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            const post = posts.find(p => p.id === currentPostId);
+            if (post) {
+                post.encouragements++;
+                localStorage.setItem('communityPosts', JSON.stringify(posts));
+            }
+            
+            closeEncourageModal();
+            
+            const messages = {
+                hug: '你发送了一个温暖的拥抱 🤗',
+                star: '你为TA点亮了一颗星 ⭐',
+                heart: '你送出了一颗爱心 ❤️',
+                flower: '你送上了美好的祝福 🌸'
+            };
+            
+            alert(messages[type]);
+            loadPosts();
+        }
+
+        // 切换回复显示
+        function toggleReplies(postId) {
+            alert('回复功能开发中...');
+        }
+
+        // 开始打卡
+        function startCheckin() {
+            document.getElementById('checkin-modal').classList.add('active');
+        }
+
+        // 关闭打卡模态框
+        function closeCheckinModal() {
+            document.getElementById('checkin-modal').classList.remove('active');
+        }
+
+        // 提交打卡
+        function submitCheckin() {
+            const h1 = document.getElementById('happiness-1').value.trim();
+            const h2 = document.getElementById('happiness-2').value.trim();
+            const h3 = document.getElementById('happiness-3').value.trim();
+            
+            if (!h1 || !h2 || !h3) {
+                alert('请填写三件小确幸');
+                return;
+            }
+            
+            const checkin = {
+                date: new Date().toISOString().split('T')[0],
+                items: [h1, h2, h3],
+                timestamp: new Date().toISOString()
+            };
+            
+            // 保存打卡记录
+            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            checkins.push(checkin);
+            localStorage.setItem('checkins', JSON.stringify(checkins));
+            
+            closeCheckinModal();
+            
+            // 清空输入
+            document.getElementById('happiness-1').value = '';
+            document.getElementById('happiness-2').value = '';
+            document.getElementById('happiness-3').value = '';
+            
+            alert('打卡成功！感谢记录今天的美好 💝');
+            loadCheckinData();
+        }
+
+        // 加载打卡数据
+        function loadCheckinData() {
+            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            
+            // 计算连续天数
+            let streak = 0;
+            const today = new Date().toISOString().split('T')[0];
+            const dates = checkins.map(c => c.date).reverse();
+            
+            for (let i = 0; i < dates.length; i++) {
+                const expectedDate = new Date();
+                expectedDate.setDate(expectedDate.getDate() - i);
+                const expectedDateStr = expectedDate.toISOString().split('T')[0];
+                
+                if (dates.includes(expectedDateStr)) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            
+            document.getElementById('streak-count').textContent = streak;
+            
+            // 渲染日历
+            renderCalendar(checkins);
+            
+            // 渲染打卡记录
+            renderCheckinRecords(checkins);
+        }
+
+        // 渲染日历
+        function renderCalendar(checkins) {
+            const calendar = document.getElementById('checkin-calendar');
+            calendar.innerHTML = '';
+            
+            const today = new Date();
+            const dates = checkins.map(c => c.date);
+            
+            // 显示最近30天
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateStr = date.toISOString().split('T')[0];
+                const hasCheckin = dates.includes(dateStr);
+                
+                calendar.innerHTML += `
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${hasCheckin ? 'text-white font-semibold' : 'text-gray-400'}" 
+                         style="background: ${hasCheckin ? 'var(--theme-primary, #7DD3C0)' : '#F3F4F6'}">
+                        ${date.getDate()}
+                    </div>
+                `;
+            }
+        }
+
+        // 渲染打卡记录
+        function renderCheckinRecords(checkins) {
+            const container = document.getElementById('checkin-records');
+            container.innerHTML = '';
+            
+            if (checkins.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-8">还没有打卡记录，开始你的第一次打卡吧！</p>';
+                return;
+            }
+            
+            checkins.slice(-5).reverse().forEach(checkin => {
+                const date = new Date(checkin.date);
+                const dateStr = `${date.getMonth() + 1}月${date.getDate()}日`;
+                
+                container.innerHTML += `
+                    <div class="border-l-4 pl-4 py-2" style="border-color: var(--theme-primary, #7DD3C0)">
+                        <div class="text-sm text-gray-500 mb-2">${dateStr}</div>
+                        <ul class="space-y-1">
+                            ${checkin.items.map(item => `<li class="text-gray-700">✨ ${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+        }
+
+        // 获取时间差
+        function getTimeAgo(timestamp) {
+            const now = new Date();
+            const then = new Date(timestamp);
+            const diff = Math.floor((now - then) / 1000);
+            
+            if (diff < 60) return '刚刚';
+            if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
+            return `${Math.floor(diff / 86400)}天前`;
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+        });
+    </script>
+</body>
+</html>
