@@ -110,41 +110,41 @@ class EmotionWheel {
         const ctx = this.ctx;
         const centerX = this.options.size / 2;
         const centerY = this.options.size / 2;
-        const maxRadius = (this.options.size / 2) - 20;
-        
+        const maxRadius = (this.options.size / 2) - 40; // 增加边距，从20改为40
+
         // 清空画布
         ctx.clearRect(0, 0, this.options.size, this.options.size);
-        
+
         // 绘制每个情绪花瓣
         this.emotionOrder.forEach((emotionKey, index) => {
             const emotion = this.emotions[emotionKey];
             const startAngle = (index * Math.PI / 4) - Math.PI / 8;
             const endAngle = startAngle + Math.PI / 4;
-            
+
             // 绘制3个强度层级（从外到内）
             for (let level = 0; level < 3; level++) {
                 const outerRadius = maxRadius - (level * maxRadius / 3);
                 const innerRadius = maxRadius - ((level + 1) * maxRadius / 3);
-                
+
                 // 计算颜色透明度（外层最浅，内层最深）
                 const alpha = 0.3 + (level * 0.35);
                 const color = this.hexToRgba(emotion.color, alpha);
-                
+
                 // 绘制花瓣
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, outerRadius, startAngle, endAngle);
                 ctx.arc(centerX, centerY, innerRadius, endAngle, startAngle, true);
                 ctx.closePath();
-                
+
                 // 填充颜色
                 ctx.fillStyle = color;
                 ctx.fill();
-                
+
                 // 描边
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
                 ctx.lineWidth = 1;
                 ctx.stroke();
-                
+
                 // 如果被选中，添加高亮效果
                 if (this.selectedEmotions.includes(emotionKey) && this.selectedIntensity === (3 - level)) {
                     ctx.strokeStyle = '#FFD700';
@@ -152,20 +152,20 @@ class EmotionWheel {
                     ctx.stroke();
                 }
             }
-            
-            // 绘制情绪标签
-            const labelRadius = maxRadius + 15;
+
+            // 绘制情绪标签（调整位置，确保不被裁剪）
+            const labelRadius = maxRadius + 20; // 从15改为20
             const labelAngle = startAngle + Math.PI / 8;
             const labelX = centerX + labelRadius * Math.cos(labelAngle);
             const labelY = centerY + labelRadius * Math.sin(labelAngle);
-            
+
             ctx.font = 'bold 14px "PingFang SC", "Microsoft YaHei", sans-serif';
             ctx.fillStyle = '#333';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(emotion.name, labelX, labelY);
         });
-        
+
         // 绘制中心圆
         ctx.beginPath();
         ctx.arc(centerX, centerY, maxRadius / 3 - 10, 0, Math.PI * 2);
@@ -174,7 +174,7 @@ class EmotionWheel {
         ctx.strokeStyle = '#ddd';
         ctx.lineWidth = 2;
         ctx.stroke();
-        
+
         // 如果选择了两个相邻情绪，显示组合情绪
         if (this.selectedEmotions.length === 2) {
             const combo = this.getCombinationName(this.selectedEmotions[0], this.selectedEmotions[1]);
@@ -192,6 +192,7 @@ class EmotionWheel {
             ctx.textBaseline = 'middle';
             ctx.fillText('点击选择情绪', centerX, centerY);
         }
+    }
     }
 
     handleClick(e) {

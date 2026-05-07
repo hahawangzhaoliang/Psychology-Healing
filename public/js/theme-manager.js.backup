@@ -123,6 +123,12 @@ class ThemeManager {
                     background: linear-gradient(to left, rgba(232, 184, 125, 0.15), transparent);
                     pointer-events: none;
                     z-index: -1;
+                }, rgba(232, 184, 125, 0.15), transparent);
+                    pointer-events: none;
+                    z-index: -1;
+                }, rgba(232, 184, 125, 0.15), transparent);
+                    pointer-events: none;
+                    z-index: 0;
                 }
                 .home-curtain::before {
                     content: '';
@@ -142,9 +148,9 @@ class ThemeManager {
                     cursor: pointer;
                     z-index: 10;
                     transition: all 0.3s ease;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
+                }
+                .home-lamp:hover {
+                    transform: scale(1.05);
                 }
                 .lamp-shade {
                     width: 60px;
@@ -152,9 +158,6 @@ class ThemeManager {
                     background: linear-gradient(135deg, #F5E6D3, #E8D5C4);
                     border-radius: 50% 50% 0 0;
                     position: relative;
-                }
-                .home-lamp:hover .lamp-shade {
-                    box-shadow: 0 0 20px rgba(255, 220, 150, 0.5);
                 }
                 .lamp-stand {
                     width: 4px;
@@ -196,6 +199,9 @@ class ThemeManager {
                     width: 20px;
                     height: 60px;
                     border-radius: 2px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    position: relative;
                 }
                 .book:hover {
                     transform: translateY(-5px);
@@ -230,7 +236,6 @@ class ThemeManager {
     createWorkEffects() {
         // 工作主题：情绪小球垃圾桶
         const container = document.createElement('div');
-        container.id = 'theme-effects';
         container.innerHTML = `
             <style>
                 .emotion-balls {
@@ -240,6 +245,7 @@ class ThemeManager {
                     display: flex;
                     gap: 12px;
                     z-index: 10;
+                }
                 }
                 .emotion-ball {
                     width: 50px;
@@ -273,6 +279,7 @@ class ThemeManager {
                     z-index: 10;
                     cursor: pointer;
                     transition: all 0.3s ease;
+                }
                 }
                 .trash-bin:hover {
                     transform: scale(1.05);
@@ -321,7 +328,7 @@ class ThemeManager {
                 </div>
             </div>
         `;
-        document.body.appendChild(container);
+        document.getElementById('theme-effects') || document.body.appendChild(container);
         
         this.setupDragAndDrop();
     }
@@ -338,6 +345,7 @@ class ThemeManager {
                     bottom: 20px;
                     right: 20px;
                     z-index: 10;
+                }
                 }
                 .game-btn {
                     background: linear-gradient(135deg, #7DD3C0, #5AB89F);
@@ -537,6 +545,7 @@ class ThemeManager {
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
+                }
                 }
                 .theme-btn {
                     width: 50px;
