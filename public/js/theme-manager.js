@@ -122,6 +122,9 @@ class ThemeManager {
                     height: 100%;
                     background: linear-gradient(to left, rgba(232, 184, 125, 0.15), transparent);
                     pointer-events: none;
+                    z-index: -1;
+                }, rgba(232, 184, 125, 0.15), transparent);
+                    pointer-events: none;
                     z-index: 0;
                 }
                 .home-curtain::before {
@@ -140,8 +143,9 @@ class ThemeManager {
                     width: 60px;
                     height: 80px;
                     cursor: pointer;
-                    z-index: 100;
+                    z-index: 10;
                     transition: all 0.3s ease;
+                }
                 }
                 .home-lamp:hover {
                     transform: scale(1.05);
@@ -187,7 +191,8 @@ class ThemeManager {
                     left: 20px;
                     display: flex;
                     gap: 8px;
-                    z-index: 100;
+                    z-index: 10;
+                }
                 }
                 .book {
                     width: 20px;
@@ -238,7 +243,8 @@ class ThemeManager {
                     left: 20px;
                     display: flex;
                     gap: 12px;
-                    z-index: 100;
+                    z-index: 10;
+                }
                 }
                 .emotion-ball {
                     width: 50px;
@@ -269,9 +275,10 @@ class ThemeManager {
                     right: 20px;
                     width: 80px;
                     height: 100px;
-                    z-index: 100;
+                    z-index: 10;
                     cursor: pointer;
                     transition: all 0.3s ease;
+                }
                 }
                 .trash-bin:hover {
                     transform: scale(1.05);
@@ -330,13 +337,14 @@ class ThemeManager {
         const container = document.createElement('div');
         container.id = 'theme-effects';
         container.innerHTML = `
-            <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;"></canvas>
+            <canvas id="particle-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;"></canvas>
             <style>
                 .game-entrance {
                     position: fixed;
                     bottom: 20px;
                     right: 20px;
-                    z-index: 100;
+                    z-index: 10;
+                }
                 }
                 .game-btn {
                     background: linear-gradient(135deg, #7DD3C0, #5AB89F);
@@ -532,10 +540,11 @@ class ThemeManager {
                     position: fixed;
                     top: 80px;
                     right: 20px;
-                    z-index: 1000;
+                    z-index: 50;
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
+                }
                 }
                 .theme-btn {
                     width: 50px;
