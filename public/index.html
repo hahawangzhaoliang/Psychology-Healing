@@ -3,534 +3,732 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心晴空间 - 碎片化疗愈，陪伴你的每一刻</title>
+    <title>心晴空间 — 碎片化疗愈，陪伴你的每一刻</title>
     <meta name="description" content="心晴空间是一个面向年轻人的公益心理疗愈平台，提供1-7分钟碎片化疗愈练习、情绪觉察、角色探索等功能。">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0faf7',
-                            100: '#d9f2eb',
-                            200: '#b5ddd3',
-                            300: '#8ac4b5',
-                            400: '#7CB8A8',
-                            500: '#5A9A8A',
-                            600: '#4a8a7a',
-                        },
-                        warm: {
-                            50: '#fdfbf9',
-                            100: '#F5E6D3',
-                            200: '#E8D5C4',
-                            300: '#d4c4b0',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Nunito Sans', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ---------- 页面级覆盖 ---------- */
         body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--theme-background, #FDF8F3);
-            color: var(--theme-text, #4A4A4A);
-            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
         }
+
+        /* ---------- Hero 沉浸式区域 ---------- */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(
+                160deg,
+                var(--color-primary-50) 0%,
+                var(--color-warm-50) 40%,
+                var(--color-primary-100) 100%
+            );
+            background-size: 200% 200%;
+            animation: gradientShift 12s ease-in-out infinite;
+            padding-top: 64px; /* 导航栏高度 */
         }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
+
+        /* 装饰性浮动气泡 */
+        .hero::before,
+        .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.12;
+            pointer-events: none;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .hero::before {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--color-primary-300), transparent 70%);
+            top: -100px;
+            right: -80px;
+            animation: float 8s ease-in-out infinite;
         }
-        .breathing {
-            animation: breathing 4s ease-in-out infinite;
+        .hero::after {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--color-warm-200), transparent 70%);
+            bottom: -60px;
+            left: -60px;
+            animation: float 10s ease-in-out infinite reverse;
         }
-        @keyframes breathing {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 5rem 1.5rem 4rem;
+            text-align: center;
         }
-        .card-hover {
-            transition: all 0.3s ease;
+
+        @media (min-width: 640px) {
+            .hero-inner {
+                padding: 7rem 2rem 5rem;
+            }
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(124, 184, 168, 0.15);
+
+        /* Hero 标题强调色 */
+        .hero-title {
+            font-size: clamp(2.2rem, 6vw, 4rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--theme-text);
+            margin-bottom: 1.5rem;
         }
-        .btn-primary {
-            transition: all 0.25s ease;
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(124, 184, 168, 0.3);
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.35rem);
+            color: var(--theme-text-light);
+            line-height: 1.8;
+            max-width: 40rem;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* Hero CTA 按钮 */
+        .hero-cta {
+            display: inline-flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ---------- 功能卡片网格 ---------- */
+        .features-grid {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .features-grid {
+                padding: 5rem 2rem;
+            }
+        }
+
+        .section-label {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-label h2 {
+            font-size: clamp(1.5rem, 4vw, 2.25rem);
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+        .section-label p {
+            color: var(--theme-text-light);
+            font-size: 1.05rem;
+        }
+
+        /* ---------- 功能卡片图标容器 ---------- */
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background var(--duration-normal) var(--ease-standard),
+                        transform var(--duration-normal) var(--ease-spring);
+        }
+        a:hover .feature-icon,
+        a:focus .feature-icon {
+            transform: scale(1.08) rotate(-3deg);
+        }
+
+        /* ---------- 新功能推荐网格 ---------- */
+        .new-features-grid {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+            background: linear-gradient(180deg, var(--color-primary-50), var(--theme-bg));
+        }
+
+        @media (min-width: 640px) {
+            .new-features-grid {
+                padding: 5rem 2rem;
+            }
+        }
+
+        /* 新功能卡片（数字徽章） */
+        .new-feature-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .new-feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+        }
+        .new-feature-card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        .new-feature-card .emoji {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .new-feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+        .new-feature-card p {
+            font-size: 0.9rem;
+            color: var(--theme-text-light);
+            margin-bottom: 1rem;
+        }
+        .new-feature-card .tags {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .new-feature-card .tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* ---------- 科学背书区域 ---------- */
+        .science-grid {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .science-grid {
+                padding: 5rem 2rem;
+            }
+        }
+
+        .science-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-xs);
+            transition: box-shadow var(--duration-normal) var(--ease-standard);
+        }
+        .science-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+        .science-card .icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .science-card h3 {
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+        .science-card .ref {
+            font-size: 0.75rem;
+            color: var(--theme-text-light);
+        }
+
+        /* ---------- 快速开始区域 ---------- */
+        .quick-start {
+            max-width: 48rem;
+            margin: 0 auto;
+            padding: 4rem 1.5rem 5rem;
+            text-align: center;
+        }
+
+        @media (min-width: 640px) {
+            .quick-start {
+                padding: 5rem 2rem 6rem;
+            }
+        }
+
+        /* ---------- 求助横幅 ---------- */
+        .help-banner {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+
+        /* ---------- 免责声明模态框 ---------- */
+        .disclaimer-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-normal) var(--ease-standard);
+        }
+        .disclaimer-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .disclaimer-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            max-width: 28rem;
+            width: 100%;
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-xl);
+            transform: scale(0.9) translateY(16px);
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+        .disclaimer-modal.active .disclaimer-card {
+            transform: scale(1) translateY(0);
+        }
+
+        /* ---------- 移动端菜单 ---------- */
+        .mobile-menu {
+            display: none;
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+        }
+        .mobile-menu.open {
+            display: block;
+            animation: fadeInDown 0.25s var(--ease-standard) both;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--theme-text-light);
+            text-decoration: none;
+            transition: background var(--duration-fast) var(--ease-standard),
+                        color var(--duration-fast) var(--ease-standard);
+        }
+        .mobile-menu a:hover,
+        .mobile-menu a:focus {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+        }
+        .mobile-menu a.active {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+            font-weight: 600;
         }
     </style>
 </head>
-<body class="bg-warm-50 text-gray-700 min-h-screen">
-    <!-- 免责声明弹窗 -->
-    <div id="disclaimerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-40 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl fade-in">
-            <div class="text-center mb-4">
-                <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg class="w-8 h-8 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<body>
+    <!-- ===== 免责声明模态框 ===== -->
+    <div id="disclaimerModal" class="disclaimer-modal" role="dialog" aria-modal="true" aria-labelledby="disclaimer-title">
+        <div class="disclaimer-card">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="width:64px;height:64px;border-radius:50%;background:var(--color-primary-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                    <svg style="width:32px;height:32px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">欢迎来到心晴空间</h2>
-                <p class="text-sm text-gray-500">请先了解我们的服务边界</p>
+                <h2 id="disclaimer-title" style="font-size:1.25rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">欢迎来到心晴空间</h2>
+                <p style="font-size:0.875rem;color:var(--theme-text-light);">请先了解我们的服务边界</p>
             </div>
-            
-            <div class="bg-warm-50 rounded-xl p-4 mb-4 text-sm">
-                <p class="font-medium text-gray-700 mb-3">我们提供：</p>
-                <ul class="space-y-2 text-gray-600 mb-4">
-                    <li class="flex items-center">
-                        <span class="text-primary-400 mr-2">✓</span>
-                        碎片化疗愈练习（1-7分钟）
-                    </li>
-                    <li class="flex items-center">
-                        <span class="text-primary-400 mr-2">✓</span>
-                        情绪觉察与记录
-                    </li>
-                    <li class="flex items-center">
-                        <span class="text-primary-400 mr-2">✓</span>
-                        心理知识科普
-                    </li>
-                </ul>
-                
-                <p class="font-medium text-gray-700 mb-3">我们不提供：</p>
-                <ul class="space-y-2 text-gray-600 mb-4">
-                    <li class="flex items-center">
-                        <span class="text-red-400 mr-2">✗</span>
-                        医学诊断或心理治疗
-                    </li>
-                    <li class="flex items-center">
-                        <span class="text-red-400 mr-2">✗</span>
-                        精神科诊疗服务
-                    </li>
-                </ul>
 
-                <div class="bg-white rounded-lg p-3 border border-primary-100">
-                    <p class="text-xs text-gray-500 mb-1">以下情况请寻求专业帮助：</p>
-                    <p class="text-xs text-gray-600">中重度抑郁/焦虑、自伤自杀念头、重性精神疾病</p>
+            <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1rem;font-size:0.875rem;">
+                <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">我们提供：</p>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;color:var(--theme-text-light);">
+                    <li style="display:flex;align-items:center;gap:0.5rem;"><span style="color:var(--color-primary-400);">✓</span>碎片化疗愈练习（1-7分钟）</li>
+                    <li style="display:flex;align-items:center;gap:0.5rem;"><span style="color:var(--color-primary-400);">✓</span>情绪觉察与记录</li>
+                    <li style="display:flex;align-items:center;gap:0.5rem;"><span style="color:var(--color-primary-400);">✓</span>心理知识科普</li>
+                </ul>
+                <p style="font-weight:600;color:var(--theme-text);margin-top:1rem;margin-bottom:0.75rem;">我们不提供：</p>
+                <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;color:var(--theme-text-light);">
+                    <li style="display:flex;align-items:center;gap:0.5rem;"><span style="color:#EF4444;">✗</span>医学诊断或心理治疗</li>
+                    <li style="display:flex;align-items:center;gap:0.5rem;"><span style="color:#EF4444;">✗</span>精神科诊疗服务</li>
+                </ul>
+                <div style="background:var(--theme-card);border-radius:var(--radius-md);padding:0.75rem;border:1px solid var(--color-primary-100);margin-top:1rem;">
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);">以下情况请寻求专业帮助：</p>
+                    <p style="font-size:0.75rem;color:var(--theme-text);">中重度抑郁/焦虑、自伤自杀念头、重性精神疾病</p>
                 </div>
             </div>
 
-            <div class="bg-primary-50 rounded-xl p-3 mb-4">
-                <p class="text-sm text-gray-700 text-center font-medium">
-                    全国心理援助热线：400-161-9995
-                </p>
-                <p class="text-xs text-gray-500 text-center">24小时免费服务</p>
+            <div style="background:var(--color-primary-50);border-radius:var(--radius-lg);padding:0.75rem;margin-bottom:1rem;text-align:center;">
+                <p style="font-size:0.875rem;font-weight:500;color:var(--color-primary-600);">全国心理援助热线：400-161-9995</p>
+                <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
             </div>
 
-            <button onclick="closeDisclaimer()" class="w-full bg-primary-400 text-white py-3 rounded-xl font-medium btn-primary hover:bg-primary-500">
-                我已了解，继续使用
-            </button>
+            <button onclick="closeDisclaimer()" class="btn btn-primary" style="width:100%;">我已了解，继续使用</button>
         </div>
     </div>
 
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-                <a href="index.html" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
-                    <span class="font-semibold text-gray-800">心晴空间</span>
-                </a>
-                
-                <!-- 桌面导航 -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-primary-500 font-medium">首页</a>
-                    <a href="practice.html" class="text-gray-600 hover:text-primary-500 transition-colors">疗愈练习</a>
-                    <a href="emotion.html" class="text-gray-600 hover:text-primary-500 transition-colors">情绪觉察</a>
-                    <a href="knowledge-graph.html" class="text-gray-600 hover:text-primary-500 transition-colors">知识图谱</a>
-                    <a href="about.html" class="text-gray-600 hover:text-primary-500 transition-colors">关于我们</a>
-                </div>
-
-                <!-- 移动端菜单按钮 -->
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" class="flex items-center gap-2" style="text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
-                </button>
+                </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+
+            <!-- 桌面导航 -->
+            <div style="display:none;align-items:center;gap:2rem;" class="md:flex">
+                <a href="index.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">首页</a>
+                <a href="practice.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
             </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="打开菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
 
         <!-- 移动端菜单 -->
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <div class="px-4 py-3 space-y-2">
-                <a href="index.html" class="block py-2 px-3 text-primary-500 bg-primary-50 rounded-lg font-medium">首页</a>
-                <a href="practice.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">疗愈练习</a>
-                <a href="emotion.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">情绪觉察</a>
-                <a href="knowledge-graph.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">知识图谱</a>
-                <a href="about.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">关于我们</a>
+        <div class="mobile-menu" id="mobileMenu">
+            <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
+                <a href="index.html" class="active">首页</a>
+                <a href="practice.html">疗愈练习</a>
+                <a href="emotion.html">情绪觉察</a>
+                <a href="knowledge-graph.html">知识图谱</a>
+                <a href="about.html">关于我们</a>
             </div>
         </div>
     </nav>
 
-    <!-- 主内容 -->
-    <main class="pt-16">
-        <!-- Hero 区域 -->
-        <section class="relative overflow-hidden bg-gradient-to-b from-primary-50 to-warm-50 py-20 sm:py-28">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6">
-                <div class="text-center max-w-3xl mx-auto fade-in">
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-800 mb-6 leading-tight">
-                        碎片化疗愈<br>陪伴你的每一刻
-                    </h1>
-                    <p class="text-lg sm:text-xl text-gray-600 mb-8 leading-relaxed">
-                        1-7分钟快速放松，在工作学习的间隙照顾自己<br>
-                        基于科学论文，温暖陪伴每一天
-                    </p>
-                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                        <a href="practice.html" class="w-full sm:w-auto bg-primary-400 text-white px-8 py-4 rounded-full font-medium btn-primary hover:bg-primary-500 text-center text-lg">
-                            开始疗愈练习
-                        </a>
-                        <a href="emotion.html" class="w-full sm:w-auto bg-white text-primary-500 px-8 py-4 rounded-full font-medium border-2 border-primary-200 hover:border-primary-300 hover:bg-primary-50 transition-all text-center">
-                            情绪觉察
-                        </a>
-                    </div>
+    <!-- ===== 主内容 ===== -->
+    <main>
+        <!-- Hero 沉浸式区域 -->
+        <section class="hero" data-reveal>
+            <div class="hero-inner fade-in-up" style="animation-delay:0.1s;">
+                <h1 class="hero-title">
+                    碎片化<span class="highlight">疗愈</span><br>陪伴你的每一刻
+                </h1>
+                <p class="hero-subtitle">
+                    1-7分钟快速放松，在工作学习的间隙照顾自己<br>
+                    基于科学论文，温暖陪伴每一天
+                </p>
+                <div class="hero-cta">
+                    <a href="practice.html" class="btn btn-primary btn-lg" style="text-decoration:none;">
+                        开始疗愈练习
+                    </a>
+                    <a href="emotion.html" class="btn btn-secondary btn-lg" style="text-decoration:none;">
+                        情绪觉察
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- 核心功能 -->
-        <section class="py-16 sm:py-20 bg-white">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">四大核心功能</h2>
-                    <p class="text-gray-600 text-lg">科学驱动，温暖陪伴</p>
-                </div>
+        <section class="features-grid">
+            <div class="section-label fade-in-up" style="animation-delay:0.15s;">
+                <h2>四大核心功能</h2>
+                <p>科学驱动，温暖陪伴</p>
+            </div>
 
-                <div class="grid md:grid-cols-2 gap-8">
-                    <!-- 疗愈练习 -->
-                    <a href="practice.html" class="bg-gradient-to-br from-primary-50 to-warm-50 rounded-2xl p-8 card-hover border border-primary-100">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-14 h-14 bg-primary-400 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">碎片化疗愈练习</h3>
-                                <p class="text-gray-600 mb-3">1分钟呼吸觉察、3分钟身体扫描、5分钟正念冥想、7分钟深度放松</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        科学依据
-                                    </span>
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        即时效果
-                                    </span>
-                                </div>
+            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-2" data-stagger="fade-in-up">
+                <!-- 疗愈练习 -->
+                <a href="practice.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                    <div style="display:flex;align-items:flex-start;gap:1rem;">
+                        <div class="feature-icon" style="background:var(--color-primary-100);">
+                            <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">碎片化疗愈练习</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;">1分钟呼吸觉察、3分钟身体扫描、5分钟正念冥想、7分钟深度放松</p>
+                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 即时效果</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                </a>
 
-                    <!-- 情绪觉察 -->
-                    <a href="emotion.html" class="bg-gradient-to-br from-warm-100 to-primary-50 rounded-2xl p-8 card-hover border border-warm-200">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-14 h-14 bg-warm-200 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">情绪觉察工具</h3>
-                                <p class="text-gray-600 mb-3">记录情绪日记、了解情绪模式、获得调节建议</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        自我觉察
-                                    </span>
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        数据分析
-                                    </span>
-                                </div>
+                <!-- 情绪觉察 -->
+                <a href="emotion.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                    <div style="display:flex;align-items:flex-start;gap:1rem;">
+                        <div class="feature-icon" style="background:var(--color-warm-100);">
+                            <svg style="width:28px;height:28px;color:#92400E;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">情绪觉察工具</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;">记录情绪日记、了解情绪模式、获得调节建议</p>
+                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 自我觉察</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 数据分析</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                </a>
 
-                    <!-- 角色探索 -->
-                    <a href="role.html" class="bg-gradient-to-br from-primary-50 to-warm-50 rounded-2xl p-8 card-hover border border-primary-100">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-14 h-14 bg-primary-300 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">身份角色探索</h3>
-                                <p class="text-gray-600 mb-3">识别多重角色、分析角色冲突、获得平衡建议</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        身份认同
-                                    </span>
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        角色平衡
-                                    </span>
-                                </div>
+                <!-- 角色探索 -->
+                <a href="role.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                    <div style="display:flex;align-items:flex-start;gap:1rem;">
+                        <div class="feature-icon" style="background:var(--color-primary-50);">
+                            <svg style="width:28px;height:28px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">身份角色探索</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;">识别多重角色、分析角色冲突、获得平衡建议</p>
+                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 身份认同</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 角色平衡</span>
                             </div>
                         </div>
-                    </a>
+                    </div>
+                </a>
 
-                    <!-- 知识图谱 -->
-                    <a href="knowledge-graph.html" class="bg-gradient-to-br from-warm-100 to-primary-50 rounded-2xl p-8 card-hover border border-warm-200">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-14 h-14 bg-warm-300 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-7 h-7 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">心理知识图谱</h3>
-                                <p class="text-gray-600 mb-3">可视化知识关联、个性化学习路径、论文来源标注</p>
-                                <div class="flex items-center space-x-4 text-sm text-gray-500">
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        系统学习
-                                    </span>
-                                    <span class="flex items-center">
-                                        <svg class="w-4 h-4 mr-1 text-primary-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
-                                        </svg>
-                                        科学依据
-                                    </span>
-                                </div>
+                <!-- 知识图谱 -->
+                <a href="knowledge-graph.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                    <div style="display:flex;align-items:flex-start;gap:1rem;">
+                        <div class="feature-icon" style="background:var(--color-warm-100);">
+                            <svg style="width:28px;height:28px;color:#92400E;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            </svg>
+                        </div>
+                        <div style="flex:1;">
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">心理知识图谱</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;">可视化知识关联、个性化学习路径、论文来源标注</p>
+                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 系统学习</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
                             </div>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
         </section>
 
         <!-- 新功能推荐 -->
-        <section class="py-16 sm:py-20 bg-gradient-to-br from-primary-50 to-warm-50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">✨ 全新体验</h2>
-                    <p class="text-gray-600 text-lg">更多温暖功能，陪伴你的每一刻</p>
-                </div>
-
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- 5分钟充电站 -->
-                    <a href="charging-station.html" class="bg-white rounded-2xl p-6 card-hover border border-primary-100">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">⚡</div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">5分钟充电站</h3>
-                            <p class="text-gray-600 text-sm mb-4">治愈图片 + 神经音乐 + 微故事</p>
-                            <div class="flex justify-center gap-2 text-xs">
-                                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 rounded-full">晨起</span>
-                                <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full">午休</span>
-                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">睡前</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- 情绪温度计 -->
-                    <a href="emotion.html" class="bg-white rounded-2xl p-6 card-hover border border-primary-100">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">🌡️</div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">情绪温度计</h3>
-                            <p class="text-gray-600 text-sm mb-4">滑动量表 + 情绪曲线 + 调节建议</p>
-                            <div class="flex justify-center gap-2 text-xs">
-                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full">自我觉察</span>
-                                <span class="px-3 py-1 bg-pink-100 text-pink-700 rounded-full">数据分析</span>
-                            </div>
-                        </div>
-                    </a>
-
-                    <!-- 微光社区 -->
-                    <a href="community.html" class="bg-white rounded-2xl p-6 card-hover border border-primary-100">
-                        <div class="text-center">
-                            <div class="text-5xl mb-4">✨</div>
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">微光社区</h3>
-                            <p class="text-gray-600 text-sm mb-4">匿名树洞 + 主题打卡 + 鼓励卡片</p>
-                            <div class="flex justify-center gap-2 text-xs">
-                                <span class="px-3 py-1 bg-purple-100 text-purple-700 rounded-full">温暖陪伴</span>
-                                <span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full">打卡习惯</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="text-center mt-8">
-                    <p class="text-sm text-gray-500">💡 点击右上角主题按钮，切换不同场景体验</p>
-                </div>
+        <section class="new-features-grid">
+            <div class="section-label fade-in-up" style="animation-delay:0.2s;">
+                <h2>✨ 全新体验</h2>
+                <p>更多温暖功能，陪伴你的每一刻</p>
             </div>
+
+            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
+                <a href="charging-station.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">⚡</span>
+                    <h3>5分钟充电站</h3>
+                    <p>治愈图片 + 神经音乐 + 微故事</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#FEF3C7;color:#92400E;">晨起</span>
+                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;">午休</span>
+                        <span class="tag" style="background:#E9D5FF;color:#6B21A8;">睡前</span>
+                    </div>
+                </a>
+
+                <a href="emotion.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">🌡️</span>
+                    <h3>情绪温度计</h3>
+                    <p>滑动量表 + 情绪曲线 + 调节建议</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#D1FAE5;color:#065F46;">自我觉察</span>
+                        <span class="tag" style="background:#FCE7F3;color:#9D174D;">数据分析</span>
+                    </div>
+                </a>
+
+                <a href="community.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">✨</span>
+                    <h3>微光社区</h3>
+                    <p>匿名树洞 + 主题打卡 + 鼓励卡片</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#E9D5FF;color:#6B21A8;">温暖陪伴</span>
+                        <span class="tag" style="background:#FED7AA;color:#9A3412;">打卡习惯</span>
+                    </div>
+                </a>
+            </div>
+
+            <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--theme-text-light);">
+                💡 点击右上角主题按钮，切换不同场景体验
+            </p>
         </section>
 
         <!-- 科学依据 -->
-        <section class="py-16 sm:py-20 bg-warm-50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-4">基于科学论文</h2>
-                    <p class="text-gray-600 text-lg">每个功能都有心理学和脑科学的研究支撑</p>
-                </div>
+        <section class="science-grid">
+            <div class="section-label fade-in-up" style="animation-delay:0.2s;">
+                <h2>基于科学论文</h2>
+                <p>每个功能都有心理学和脑科学的研究支撑</p>
+            </div>
 
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-2xl p-6 text-center">
-                        <div class="text-4xl mb-4">🧠</div>
-                        <h3 class="font-bold text-gray-800 mb-2">正念冥想神经科学</h3>
-                        <p class="text-sm text-gray-600 mb-3">Tang et al. (2015)</p>
-                        <p class="text-xs text-gray-500">Nature Reviews Neuroscience</p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 text-center">
-                        <div class="text-4xl mb-4">💚</div>
-                        <h3 class="font-bold text-gray-800 mb-2">积极心理学</h3>
-                        <p class="text-sm text-gray-600 mb-3">Seligman (2011)</p>
-                        <p class="text-xs text-gray-500">PERMA模型</p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-6 text-center">
-                        <div class="text-4xl mb-4">⚖️</div>
-                        <h3 class="font-bold text-gray-800 mb-2">情绪调节理论</h3>
-                        <p class="text-sm text-gray-600 mb-3">Gross (2015)</p>
-                        <p class="text-xs text-gray-500">Psychological Inquiry</p>
-                    </div>
+            <div style="display:grid;gap:2rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
+                <div class="science-card">
+                    <span class="icon">🧠</span>
+                    <h3>正念冥想神经科学</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Tang et al. (2015)</p>
+                    <p class="ref">Nature Reviews Neuroscience</p>
                 </div>
+                <div class="science-card">
+                    <span class="icon">💚</span>
+                    <h3>积极心理学</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Seligman (2011)</p>
+                    <p class="ref">PERMA模型</p>
+                </div>
+                <div class="science-card">
+                    <span class="icon">⚖️</span>
+                    <h3>情绪调节理论</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Gross (2015)</p>
+                    <p class="ref">Psychological Inquiry</p>
+                </div>
+            </div>
 
-                <div class="text-center mt-8">
-                    <a href="knowledge-graph.html" class="inline-flex items-center text-primary-500 hover:text-primary-600 font-medium">
-                        查看完整知识图谱
-                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </a>
-                </div>
+            <div style="text-align:center;margin-top:2rem;">
+                <a href="knowledge-graph.html" class="btn btn-ghost" style="text-decoration:none;">
+                    查看完整知识图谱 →
+                </a>
             </div>
         </section>
 
         <!-- 快速开始 -->
-        <section class="py-16 sm:py-20 bg-white">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-                <h2 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">给自己一分钟</h2>
-                <p class="text-lg text-gray-600 mb-8">
+        <section class="quick-start">
+            <div class="fade-in-up" style="animation-delay:0.25s;">
+                <h2 style="font-size:clamp(1.5rem,4vw,2.25rem);font-weight:700;color:var(--theme-text);margin-bottom:1.5rem;">给自己一分钟</h2>
+                <p style="font-size:1.05rem;color:var(--theme-text-light);margin-bottom:2rem;line-height:1.8;">
                     现在就开始，用1分钟呼吸觉察<br>
                     让忙碌的大脑休息一下
                 </p>
-                <a href="practice.html" class="inline-block bg-primary-400 text-white px-10 py-4 rounded-full font-medium btn-primary hover:bg-primary-500 text-lg">
+                <a href="practice.html" class="btn btn-primary btn-lg" style="text-decoration:none;">
                     立即开始
                 </a>
             </div>
         </section>
 
-        <!-- 求助热线 -->
-        <section class="py-12 bg-primary-50">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-                <p class="text-gray-600 mb-2">如果你正在经历困难，请记住</p>
-                <p class="text-2xl font-bold text-primary-600 mb-2">你不需要一个人面对</p>
-                <p class="text-lg font-semibold text-gray-800">全国心理援助热线：400-161-9995</p>
-                <p class="text-sm text-gray-500 mt-1">24小时免费服务</p>
-            </div>
+        <!-- 求助热线横幅 -->
+        <section class="help-banner">
+            <p style="color:var(--theme-text-light);margin-bottom:0.5rem;">如果你正在经历困难，请记住</p>
+            <p style="font-size:1.5rem;font-weight:700;color:var(--color-primary-600);margin-bottom:0.5rem;">你不需要一个人面对</p>
+            <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">全国心理援助热线：400-161-9995</p>
+            <p style="font-size:0.8rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
         </section>
     </main>
 
-    <!-- 页脚 -->
-    <footer class="bg-white border-t border-gray-100 py-12">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+    <!-- ===== 页脚 ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div style="display:grid;gap:2rem;" class="sm:grid-cols-2 lg:grid-cols-4">
                 <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+                        <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                            <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
                         </div>
-                        <span class="font-semibold text-gray-800">心晴空间</span>
+                        <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
                     </div>
-                    <p class="text-sm text-gray-600">公益心理疗愈平台<br>碎片化疗愈，陪伴你的每一刻</p>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);line-height:1.6;">
+                        公益心理疗愈平台<br>碎片化疗愈，陪伴你的每一刻
+                    </p>
                 </div>
+
                 <div>
-                    <h4 class="font-medium text-gray-800 mb-4">核心功能</h4>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><a href="practice.html" class="hover:text-primary-500 transition-colors">疗愈练习</a></li>
-                        <li><a href="emotion.html" class="hover:text-primary-500 transition-colors">情绪觉察</a></li>
-                        <li><a href="knowledge-graph.html" class="hover:text-primary-500 transition-colors">知识图谱</a></li>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">核心功能</h4>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
+                        <li><a href="practice.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">疗愈练习</a></li>
+                        <li><a href="emotion.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">情绪觉察</a></li>
+                        <li><a href="knowledge-graph.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">知识图谱</a></li>
                     </ul>
                 </div>
+
                 <div>
-                    <h4 class="font-medium text-gray-800 mb-4">关于我们</h4>
-                    <ul class="space-y-2 text-sm text-gray-600">
-                        <li><a href="about.html" class="hover:text-primary-500 transition-colors">平台介绍</a></li>
-                        <li><a href="about.html#disclaimer" class="hover:text-primary-500 transition-colors">免责声明</a></li>
-                        <li><a href="about.html#privacy" class="hover:text-primary-500 transition-colors">隐私政策</a></li>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">关于我们</h4>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
+                        <li><a href="about.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">平台介绍</a></li>
+                        <li><a href="about.html#disclaimer" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">免责声明</a></li>
+                        <li><a href="about.html#privacy" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">隐私政策</a></li>
                     </ul>
                 </div>
+
                 <div>
-                    <h4 class="font-medium text-gray-800 mb-4">求助热线</h4>
-                    <p class="text-sm text-gray-600 mb-2">全国心理援助热线</p>
-                    <p class="text-lg font-semibold text-primary-500">400-161-9995</p>
-                    <p class="text-xs text-gray-500 mt-1">24小时免费服务</p>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">求助热线</h4>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">全国心理援助热线</p>
+                    <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">400-161-9995</p>
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-100 pt-8">
-                <div class="bg-warm-50 rounded-xl p-4 mb-6">
-                    <p class="text-xs text-gray-600 text-center leading-relaxed">
+
+            <div style="border-top:1px solid var(--theme-border);padding-top:2rem;margin-top:2rem;">
+                <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
                         本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。如有严重心理困扰，请及时寻求专业帮助。
                     </p>
                 </div>
-                <p class="text-center text-sm text-gray-500">
+                <p style="text-align:center;font-size:0.875rem;color:var(--theme-text-light);">
                     © 2026 心晴空间 · 公益心理疗愈平台 · 碎片化疗愈，陪伴你的每一刻
                 </p>
             </div>
         </div>
     </footer>
 
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
     <script>
-        // 免责声明弹窗
+        /* ========== 免责声明 ========== */
         function closeDisclaimer() {
-            document.getElementById('disclaimerModal').classList.add('hidden');
-            localStorage.setItem('disclaimerAccepted', 'true');
+            const modal = document.getElementById('disclaimerModal');
+            modal.classList.remove('active');
+            try { localStorage.setItem('disclaimerAccepted', 'true'); } catch {}
         }
 
-        // 检查是否已同意
-        if (localStorage.getItem('disclaimerAccepted')) {
-            document.getElementById('disclaimerModal').classList.add('hidden');
+        // 只在首次访问时显示弹窗（未确认过免责条款才显示）
+        if (!localStorage.getItem('disclaimerAccepted')) {
+            // 延迟显示，让页面先加载
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    document.getElementById('disclaimerModal').classList.add('active');
+                });
+            });
         }
 
-        // 移动端菜单
+        /* ========== 移动端菜单 ========== */
         function toggleMobileMenu() {
             const menu = document.getElementById('mobileMenu');
-            menu.classList.toggle('hidden');
+            menu.classList.toggle('open');
         }
 
-        // 点击页面其他地方关闭菜单
-        document.addEventListener('click', function(e) {
+        /* 点击页面其他地方关闭菜单 */
+        document.addEventListener('click', (e) => {
             const menu = document.getElementById('mobileMenu');
-            const button = e.target.closest('button');
-            if (!menu.contains(e.target) && !button?.onclick?.toString().includes('toggleMobileMenu')) {
-                menu.classList.add('hidden');
+            const btn = e.target.closest('button');
+            if (!menu.contains(e.target) && !(btn && btn.onclick && btn.onclick.toString().includes('toggleMobileMenu'))) {
+                menu.classList.remove('open');
             }
         });
+
+        /* ========== 导航栏滚动效果（备用，JS已处理） ========== */
+        // neuroaesthetics.js 已处理，此处无需重复
     </script>
-    <script src="js/theme-manager.js"></script>
 </body>
 </html>

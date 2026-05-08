@@ -3,161 +3,677 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微光社区 - 心晴空间</title>
+    <title>微光社区 — 心晴空间</title>
+    <meta name="description" content="匿名树洞、主题打卡、鼓励卡片，在这里分享温暖，接收温暖。">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ---------- 页面级覆盖 ---------- */
         body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--theme-background, #FDF8F3);
-            color: var(--theme-text, #4A4A4A);
-            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
         }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
+
+        /* ---------- 页面头部区域 ---------- */
+        .page-hero {
+            background: linear-gradient(160deg, var(--color-heal-50) 0%, var(--color-primary-50) 100%);
+            padding-top: 80px;
+            padding-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 装饰性光晕 */
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color-heal-100), transparent 60%);
+            opacity: 0.2;
+            top: -150px;
+            right: -100px;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
         }
-        .float-up {
-            animation: floatUp 0.5s ease-out;
+
+        /* ---------- 标签页切换 ---------- */
+        .tab-bar {
+            display: inline-flex;
+            background: var(--theme-card);
+            border-radius: var(--radius-full);
+            padding: 4px;
+            box-shadow: var(--shadow-sm);
         }
-        @keyframes floatUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--theme-text-light);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-spring);
+            white-space: nowrap;
         }
-        .glow-card {
-            transition: all 0.3s ease;
+        .tab-btn:hover {
+            color: var(--color-primary-500);
+            background: var(--color-primary-50);
         }
-        .glow-card:hover {
-            box-shadow: 0 0 30px rgba(125, 211, 192, 0.2);
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.3);
         }
-        .encourage-btn {
-            transition: all 0.3s ease;
+
+        /* ---------- 主内容区域 ---------- */
+        .main-content {
+            max-width: 64rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
         }
-        .encourage-btn:hover {
-            transform: scale(1.05);
+
+        @media (min-width: 640px) {
+            .main-content {
+                padding: 3rem 2rem;
+            }
         }
-        .post-card {
-            background: var(--theme-card, white);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+
+        /* ---------- 发布卡片 ---------- */
+        .post-compose {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+            transition: box-shadow var(--duration-normal) var(--ease-standard);
         }
-        .post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        .post-compose:focus-within {
+            box-shadow: var(--shadow-md);
+        }
+
+        .compose-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
         }
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 1.25rem;
+            flex-shrink: 0;
         }
-        .checkin-card {
-            background: linear-gradient(135deg, var(--theme-primary, #7DD3C0), var(--theme-secondary, #F5A9B8));
+        .compose-textarea {
+            flex: 1;
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            padding: 0.75rem 1rem;
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            color: var(--theme-text);
+            background: var(--theme-bg);
+            resize: none;
+            min-height: 80px;
+            outline: none;
+            transition: border-color var(--duration-fast) var(--ease-standard),
+                        background var(--duration-fast) var(--ease-standard);
+        }
+        .compose-textarea:focus {
+            border-color: var(--color-primary-200);
+            background: var(--theme-card);
+        }
+        .compose-textarea::placeholder {
+            color: var(--theme-text-light);
+            opacity: 0.6;
+        }
+
+        .compose-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .mood-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .mood-tag {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .mood-tag:hover {
+            transform: scale(1.05);
+        }
+        .mood-tag.selected {
             color: white;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 20px;
         }
-        .streak-badge {
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 8px 16px;
+
+        /* ---------- 帖子卡片 ---------- */
+        .post-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-xs);
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard),
+                        border-color var(--duration-normal) var(--ease-standard);
+            opacity: 0;
+            transform: translateY(12px);
+        }
+        .post-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .post-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-primary-100);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        .post-meta {
+            flex: 1;
+        }
+        .post-author {
+            font-size: 0.85rem;
+            color: var(--theme-text);
+            font-weight: 500;
+        }
+        .post-time {
+            font-size: 0.75rem;
+            color: var(--theme-text-light);
+        }
+        .post-content {
+            font-size: 0.95rem;
+            color: var(--theme-text);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+        .post-actions {
+            display: flex;
+            gap: 1.25rem;
+        }
+        .action-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 0.375rem;
+            font-size: 0.85rem;
+            color: var(--theme-text-light);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.375rem 0.5rem;
+            border-radius: var(--radius-md);
+            transition: all var(--duration-fast) var(--ease-standard);
         }
-        .encourage-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
+        .action-btn:hover {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+        }
+        .action-btn.encourage:hover {
+            background: #FCE7F3;
+            color: #9D174D;
+        }
+
+        /* ---------- 打卡卡片 ---------- */
+        .checkin-hero {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .checkin-hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            top: -60px;
+            right: -60px;
+        }
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            padding: 0.375rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .checkin-hero h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: 0.75rem;
+            margin-bottom: 0.375rem;
+        }
+        .checkin-hero p {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+        .checkin-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius-full);
+            background: white;
+            color: var(--color-primary-500);
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .checkin-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+
+        /* ---------- 打卡日历 ---------- */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.375rem;
+        }
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+        }
+        .calendar-day.checked {
+            background: var(--color-primary-400);
+            color: white;
+            font-weight: 600;
+        }
+        .calendar-day.today {
+            border: 2px solid var(--color-primary-400);
+            color: var(--color-primary-500);
+            font-weight: 600;
+        }
+
+        /* ---------- 打卡记录列表 ---------- */
+        .checkin-record {
+            border-left: 3px solid var(--color-primary-300);
+            padding-left: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .checkin-record-date {
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            margin-bottom: 0.375rem;
+        }
+        .checkin-record ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .checkin-record li {
+            font-size: 0.9rem;
+            color: var(--theme-text);
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+        }
+
+        /* ---------- 模态框 ---------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity var(--duration-normal) var(--ease-standard);
         }
-        .encourage-modal.active {
+        .modal-overlay.active {
             opacity: 1;
             pointer-events: auto;
         }
-        .encourage-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            max-width: 300px;
+        .modal-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 360px;
+            width: 100%;
             text-align: center;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
+            transform: scale(0.88) translateY(16px);
+            transition: transform var(--duration-normal) var(--ease-spring);
         }
-        .encourage-modal.active .encourage-card {
-            transform: scale(1);
+        .modal-overlay.active .modal-card {
+            transform: scale(1) translateY(0);
+        }
+        .modal-emoji {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+        .modal-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+        .modal-card p {
+            font-size: 0.9rem;
+            color: var(--theme-text-light);
+            margin-bottom: 1.25rem;
+        }
+        .encourage-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .encourage-option {
+            padding: 0.75rem;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--theme-border);
+            background: transparent;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .encourage-option:hover {
+            border-color: var(--color-primary-300);
+            background: var(--color-primary-50);
+            transform: scale(1.03);
+        }
+        .encourage-option .icon {
+            font-size: 1.75rem;
+        }
+        .encourage-option .label {
+            font-size: 0.8rem;
+            color: var(--theme-text);
+        }
+        .cancel-btn {
+            width: 100%;
+            padding: 0.625rem;
+            border-radius: var(--radius-lg);
+            background: var(--theme-bg);
+            border: none;
+            color: var(--theme-text-light);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+        .cancel-btn:hover {
+            background: var(--color-primary-50);
+        }
+
+        /* ---------- 打卡模态框 ---------- */
+        .checkin-modal .modal-card {
+            max-width: 400px;
+        }
+        .checkin-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--theme-border);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            outline: none;
+            transition: border-color var(--duration-fast) var(--ease-standard);
+        }
+        .checkin-input:focus {
+            border-color: var(--color-primary-400);
+        }
+        .checkin-input::placeholder {
+            color: var(--theme-text-light);
+            opacity: 0.6;
+        }
+        .checkin-submit {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .checkin-submit:hover {
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+            transform: scale(1.02);
+        }
+
+        /* ---------- 隐藏类 ---------- */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        /* ---------- 话题筛选按钮 ---------- */
+        .topic-filter {
+            padding: 0.375rem 0.875rem;
+            border-radius: var(--radius-full);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1.5px solid var(--theme-border);
+            background: var(--theme-card);
+            color: var(--theme-text-light);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .topic-filter:hover {
+            border-color: var(--color-primary-300);
+            color: var(--color-primary-500);
+        }
+        .topic-filter.active {
+            background: var(--color-primary-400);
+            border-color: var(--color-primary-400);
+            color: white;
+        }
+
+        /* ---------- 主题打卡切换 ---------- */
+        .theme-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .theme-option {
+            flex: 1;
+            min-width: 140px;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--theme-border);
+            background: var(--theme-card);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+            text-align: center;
+        }
+        .theme-option:hover {
+            border-color: var(--color-primary-300);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .theme-option.active {
+            border-color: var(--color-primary-400);
+            background: var(--color-primary-50);
+        }
+        .theme-option .theme-emoji {
+            font-size: 1.75rem;
+            display: block;
+            margin-bottom: 0.375rem;
+        }
+        .theme-option .theme-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+        .theme-option .theme-desc {
+            font-size: 0.7rem;
+            color: var(--theme-text-light);
+        }
+
+        /* ---------- 鼓励卡动画 ---------- */
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            50% { opacity: 1; transform: translateY(-20px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(0.8); }
+        }
+        .encourage-float {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 999;
+            animation: floatUp 1.5s ease-out forwards;
+        }
+
+        /* ---------- 帖子话题标签 ---------- */
+        .post-topic-tag {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        /* ---------- 页脚 ---------- */
+        .site-footer {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 2rem 1rem;
+        }
+        .site-footer .inner {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+        .site-footer .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold" style="color: var(--theme-primary, #7DD3C0)">心晴空间</a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
-            </div>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+            <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.9rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">返回首页</a>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
-        <!-- 标题 -->
-        <div class="text-center mb-8 fade-in">
-            <h1 class="text-4xl font-bold mb-4">✨ 微光社区</h1>
-            <p class="text-lg text-gray-600">在这里，每一份分享都是温暖的光</p>
-        </div>
+    <!-- ===== 页面头部 ===== -->
+    <section class="page-hero">
+        <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1;">
+            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up">✨ 微光社区</h1>
+            <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);" class="fade-in-up" style="animation-delay:0.1s;">在这里，每一份分享都是温暖的光</p>
 
-        <!-- 标签页切换 -->
-        <div class="flex justify-center mb-8 fade-in">
-            <div class="bg-white rounded-full p-1 shadow-md">
-                <button onclick="switchTab('treehole')" id="tab-treehole" class="px-6 py-2 rounded-full text-white font-medium transition" style="background: var(--theme-primary, #7DD3C0)">
-                    匿名树洞
-                </button>
-                <button onclick="switchTab('checkin')" id="tab-checkin" class="px-6 py-2 rounded-full text-gray-600 font-medium transition hover:text-primary-500">
-                    主题打卡
-                </button>
+            <!-- 标签页 -->
+            <div class="tab-bar fade-in-up" style="animation-delay:0.2s;margin-top:1.5rem;">
+                <button class="tab-btn active" onclick="switchTab('treehole')" data-tab="treehole">🌳 匿名树洞</button>
+                <button class="tab-btn" onclick="switchTab('checkin')" data-tab="checkin">📅 主题打卡</button>
             </div>
         </div>
+    </section>
 
-        <!-- 匿名树洞 -->
-        <div id="content-treehole" class="fade-in">
+    <!-- ===== 主内容 ===== -->
+    <main class="main-content">
+        <!-- ===== 匿名树洞 ===== -->
+        <div class="tab-content active" id="tab-treehole">
+            <!-- 隐私声明条 -->
+            <div style="display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1rem;background:rgba(90,154,138,0.08);border-radius:var(--radius-lg);margin-bottom:1rem;font-size:0.8rem;color:var(--color-primary-600);" class="fade-in-up">
+                <svg style="width:14px;height:14px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                匿名树洞 · 所有帖子均完全匿名，不可追溯，友善互动，禁止评判
+            </div>
+
+            <!-- 话题筛选 -->
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;" id="topic-filters" class="fade-in-up">
+                <button class="topic-filter active" onclick="filterPosts('all')" data-topic="all">全部</button>
+                <button class="topic-filter" onclick="filterPosts('joy')" data-topic="joy">😊 开心</button>
+                <button class="topic-filter" onclick="filterPosts('calm')" data-topic="calm">😌 平静</button>
+                <button class="topic-filter" onclick="filterPosts('anxious')" data-topic="anxious">😰 焦虑</button>
+                <button class="topic-filter" onclick="filterPosts('sad')" data-topic="sad">😢 难过</button>
+                <button class="topic-filter" onclick="filterPosts('grateful')" data-topic="grateful">🙏 感恩</button>
+            </div>
+
             <!-- 发布区域 -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 glow-card">
-                <div class="flex items-start gap-4">
-                    <div class="avatar bg-gradient-to-br from-purple-400 to-pink-400">
-                        🌟
-                    </div>
-                    <div class="flex-1">
-                        <textarea id="post-content" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 resize-none" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="分享你的心情，这里只有温暖和理解..."></textarea>
-                        <div class="flex items-center justify-between mt-3">
-                            <div class="flex gap-2">
-                                <button onclick="addMood('happy')" class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm hover:bg-yellow-200 transition">😊 开心</button>
-                                <button onclick="addMood('calm')" class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm hover:bg-blue-200 transition">😌 平静</button>
-                                <button onclick="addMood('anxious')" class="px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-sm hover:bg-purple-200 transition">😰 焦虑</button>
-                            </div>
-                            <button onclick="submitPost()" class="px-6 py-2 rounded-full text-white font-medium transition transform hover:scale-105" style="background: var(--theme-primary, #7DD3C0)">
-                                发布
-                            </button>
-                        </div>
-                    </div>
+            <div class="post-compose fade-in-up" style="animation-delay:0.15s;">
+                <div class="compose-header">
+                    <div class="avatar" id="compose-avatar" style="background:linear-gradient(135deg,#C084FC,#F472B6);">🌟</div>
+                    <textarea id="post-content" class="compose-textarea" rows="3" placeholder="分享你的心情，这里只有温暖和理解..."></textarea>
                 </div>
+                <div class="compose-footer">
+                    <div class="mood-tags">
+                        <button class="mood-tag" style="background:#FEF3C7;color:#92400E;" onclick="addMood(this, 'joy')" data-mood="joy">😊 开心</button>
+                        <button class="mood-tag" style="background:#DBEAFE;color:#1E40AF;" onclick="addMood(this, 'calm')" data-mood="calm">😌 平静</button>
+                        <button class="mood-tag" style="background:#E9D5FF;color:#6B21A8;" onclick="addMood(this, 'anxious')" data-mood="anxious">😰 焦虑</button>
+                        <button class="mood-tag" style="background:#E0E7FF;color:#3730A3;" onclick="addMood(this, 'sad')" data-mood="sad">😢 难过</button>
+                        <button class="mood-tag" style="background:#FEE2E2;color:#991B1B;" onclick="addMood(this, 'grateful')" data-mood="grateful">🙏 感恩</button>
+                    </div>
+                    <button onclick="submitPost()" class="btn btn-primary" style="font-size:0.9rem;">发布</button>
+                </div>
+            </div>
+
+            <!-- 匿名身份切换 -->
+            <div style="display:flex;align-items:center;justify-content:flex-end;gap:0.5rem;margin-bottom:1rem;" class="fade-in-up">
+                <span style="font-size:0.75rem;color:var(--theme-text-light);">你的匿名身份：</span>
+                <button onclick="changeAnonymousId()" style="background:var(--theme-bg);border:1px solid var(--theme-border);border-radius:var(--radius-full);padding:0.25rem 0.75rem;font-size:0.8rem;cursor:pointer;color:var(--theme-text);display:inline-flex;align-items:center;gap:0.375rem;">
+                    <span id="anon-emoji">🌟</span>
+                    <span id="anon-name">微光旅人</span>
+                    <svg style="width:12px;height:12px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                </button>
             </div>
 
             <!-- 帖子列表 -->
@@ -166,427 +682,622 @@
             </div>
         </div>
 
-        <!-- 主题打卡 -->
-        <div id="content-checkin" class="hidden fade-in">
-            <!-- 今日主题 -->
-            <div class="checkin-card">
-                <div class="flex items-center justify-between mb-4">
+        <!-- ===== 主题打卡 ===== -->
+        <div class="tab-content" id="tab-checkin">
+            <!-- 今日打卡卡片 -->
+            <div class="checkin-hero fade-in-up" style="animation-delay:0.1s;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
                     <div>
-                        <h2 class="text-2xl font-bold mb-1">今日主题</h2>
-                        <p class="text-sm opacity-90">每日三件小确幸</p>
+                        <p style="font-size:0.8rem;opacity:0.85;margin-bottom:0.25rem;">今日主题</p>
+                        <h2 style="font-size:1.35rem;font-weight:700;margin:0;" id="checkin-theme-name">每日三件小确幸</h2>
                     </div>
                     <div class="streak-badge">
                         <span>🔥</span>
-                        <span class="font-semibold">连续 <span id="streak-count">0</span> 天</span>
+                        <span id="streak-count">0</span>天
                     </div>
                 </div>
-                <p class="text-sm opacity-90 mb-4">记录今天让你感到幸福的三件小事，培养感恩的习惯</p>
-                <button onclick="startCheckin()" class="w-full bg-white text-gray-700 py-3 rounded-full font-semibold hover:bg-gray-50 transition">
-                    开始今日打卡
-                </button>
+                <p style="font-size:0.875rem;opacity:0.9;margin-bottom:1rem;" id="checkin-theme-desc">记录今天让你感到幸福的三件小事，培养感恩的习惯</p>
+                <button onclick="startCheckin()" class="checkin-btn" id="checkin-btn">开始今日打卡</button>
             </div>
 
-            <!-- 打卡历史 -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-                <h3 class="text-xl font-bold mb-4">📅 打卡日历</h3>
-                <div id="checkin-calendar" class="grid grid-cols-7 gap-2">
+            <!-- 主题选择器 -->
+            <div class="card fade-in-up" style="animation-delay:0.15s;margin-bottom:1.5rem;">
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">📌 选择打卡主题</h3>
+                <div class="theme-selector" id="theme-selector">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+
+            <!-- 打卡日历 -->
+            <div class="card fade-in-up" style="animation-delay:0.2s;margin-bottom:1.5rem;">
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">📅 打卡日历</h3>
+                <div class="calendar-grid" id="checkin-calendar">
                     <!-- 动态生成 -->
                 </div>
             </div>
 
             <!-- 打卡记录 -->
-            <div class="bg-white rounded-2xl shadow-lg p-6">
-                <h3 class="text-xl font-bold mb-4">💝 我的打卡记录</h3>
-                <div id="checkin-records" class="space-y-4">
+            <div class="card fade-in-up" style="animation-delay:0.3s;">
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">💝 我的打卡记录</h3>
+                <div id="checkin-records">
                     <!-- 动态生成 -->
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- 鼓励卡片模态框 -->
-    <div id="encourage-modal" class="encourage-modal">
-        <div class="encourage-card">
-            <div class="text-6xl mb-4">💝</div>
-            <h3 class="text-xl font-bold mb-2">发送鼓励</h3>
-            <p class="text-gray-600 mb-4">选择一张鼓励卡片</p>
-            <div class="grid grid-cols-2 gap-3 mb-4">
-                <button onclick="sendEncourage('hug')" class="p-3 rounded-lg bg-pink-50 hover:bg-pink-100 transition">
-                    <div class="text-3xl mb-1">🤗</div>
-                    <div class="text-sm text-gray-700">温暖拥抱</div>
+    <!-- ===== 鼓励模态框 ===== -->
+    <div class="modal-overlay" id="encourageModal">
+        <div class="modal-card">
+            <span class="modal-emoji">💝</span>
+            <h3>发送鼓励</h3>
+            <p>选择一张鼓励卡片</p>
+            <div class="encourage-grid">
+                <button class="encourage-option" onclick="sendEncourage('hug')">
+                    <span class="icon">🤗</span>
+                    <span class="label">温暖拥抱</span>
                 </button>
-                <button onclick="sendEncourage('star')" class="p-3 rounded-lg bg-yellow-50 hover:bg-yellow-100 transition">
-                    <div class="text-3xl mb-1">⭐</div>
-                    <div class="text-sm text-gray-700">为你点赞</div>
+                <button class="encourage-option" onclick="sendEncourage('star')">
+                    <span class="icon">⭐</span>
+                    <span class="label">为你点赞</span>
                 </button>
-                <button onclick="sendEncourage('heart')" class="p-3 rounded-lg bg-red-50 hover:bg-red-100 transition">
-                    <div class="text-3xl mb-1">❤️</div>
-                    <div class="text-sm text-gray-700">送你爱心</div>
+                <button class="encourage-option" onclick="sendEncourage('heart')">
+                    <span class="icon">❤️</span>
+                    <span class="label">送你爱心</span>
                 </button>
-                <button onclick="sendEncourage('flower')" class="p-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition">
-                    <div class="text-3xl mb-1">🌸</div>
-                    <div class="text-sm text-gray-700">美好祝福</div>
+                <button class="encourage-option" onclick="sendEncourage('flower')">
+                    <span class="icon">🌸</span>
+                    <span class="label">美好祝福</span>
                 </button>
             </div>
-            <button onclick="closeEncourageModal()" class="w-full py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
-                取消
-            </button>
+            <button onclick="closeEncourageModal()" class="cancel-btn">取消</button>
         </div>
     </div>
 
-    <!-- 打卡模态框 -->
-    <div id="checkin-modal" class="encourage-modal">
-        <div class="encourage-card" style="max-width: 400px">
-            <h3 class="text-xl font-bold mb-4">📝 今日三件小确幸</h3>
-            <div class="space-y-3 mb-4">
-                <input type="text" id="happiness-1" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="1. 第一件小确幸...">
-                <input type="text" id="happiness-2" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="2. 第二件小确幸...">
-                <input type="text" id="happiness-3" class="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2" style="--tw-ring-color: var(--theme-primary, #7DD3C0)" placeholder="3. 第三件小确幸...">
-            </div>
-            <div class="flex gap-3">
-                <button onclick="closeCheckinModal()" class="flex-1 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition">
-                    取消
-                </button>
-                <button onclick="submitCheckin()" class="flex-1 py-2 rounded-lg text-white font-medium transition" style="background: var(--theme-primary, #7DD3C0)">
-                    完成打卡
-                </button>
-            </div>
+    <!-- ===== 打卡模态框 ===== -->
+    <div class="modal-overlay checkin-modal" id="checkinModal">
+        <div class="modal-card">
+            <span class="modal-emoji" id="checkin-modal-emoji">📝</span>
+            <h3 id="checkin-modal-title">今日三件小确幸</h3>
+            <p id="checkin-modal-desc">记录今天让你感到幸福的事</p>
+            <input type="text" id="checkin-input-1" class="checkin-input" placeholder="1. ...">
+            <input type="text" id="checkin-input-2" class="checkin-input" placeholder="2. ...">
+            <input type="text" id="checkin-input-3" class="checkin-input" placeholder="3. ...">
+            <button onclick="submitCheckin()" class="checkin-submit">完成打卡</button>
+            <button onclick="closeCheckinModal()" class="cancel-btn" style="margin-top:0.5rem;">取消</button>
         </div>
     </div>
 
+    <!-- ===== 页脚 ===== -->
+    <footer class="site-footer">
+        <div class="inner">
+            <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
+                <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
+                    🔒 <strong>隐私保护</strong>：社区所有内容均为匿名发布，平台不记录任何可识别个人信息，请放心分享。<br>
+                    ⚠️ <strong>非诊断工具</strong>：本平台不能替代专业心理咨询。如需帮助，请联系专业心理咨询师或拨打心理援助热线。
+                </p>
+            </div>
+            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
+        </div>
+    </footer>
+
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
     <script src="js/theme-manager.js"></script>
     <script>
-        // 状态管理
+        /* ========== 状态 ========== */
         let currentTab = 'treehole';
         let currentPostId = null;
         let selectedMood = null;
+        let currentTopic = 'all';
 
-        // 示例帖子数据
-        const samplePosts = [
-            {
-                id: 1,
-                content: '今天工作压力很大，但是下班后看到了美丽的晚霞，突然觉得一切都值得了。',
-                mood: 'calm',
-                timestamp: new Date(Date.now() - 3600000).toISOString(),
-                encouragements: 12,
-                replies: 3
-            },
-            {
-                id: 2,
-                content: '终于完成了那个困扰我很久的项目，虽然过程很艰难，但是成长了很多。',
-                mood: 'happy',
-                timestamp: new Date(Date.now() - 7200000).toISOString(),
-                encouragements: 8,
-                replies: 2
-            },
-            {
-                id: 3,
-                content: '有时候觉得自己很渺小，但是想到还有人在默默支持我，就觉得很温暖。',
-                mood: 'anxious',
-                timestamp: new Date(Date.now() - 10800000).toISOString(),
-                encouragements: 15,
-                replies: 5
-            }
+        /* ========== 匿名身份系统 ========== */
+        const ANON_IDENTITIES = [
+            { emoji: '🌟', name: '微光旅人' },
+            { emoji: '🌙', name: '深夜旅人' },
+            { emoji: '🍃', name: '清风过客' },
+            { emoji: '🌈', name: '彩虹拾光者' },
+            { emoji: '🕊️', name: '自由飞鸟' },
+            { emoji: '🌸', name: '春日使者' },
+            { emoji: '🦋', name: '蝴蝶旅人' },
+            { emoji: '🌊', name: '海岸漫游者' },
+            { emoji: '🍀', name: '幸运旅人' },
+            { emoji: '⛰️', name: '山间行者' },
+            { emoji: '🌻', name: '向阳旅人' },
+            { emoji: '❄️', name: '雪夜归人' },
         ];
 
-        // 切换标签页
+        function getCurrentAnonIdentity() {
+            const saved = localStorage.getItem('anonIdentity');
+            if (saved) {
+                const idx = parseInt(saved);
+                return ANON_IDENTITIES[idx] || ANON_IDENTITIES[0];
+            }
+            return ANON_IDENTITIES[0];
+        }
+
+        function changeAnonymousId() {
+            const current = getCurrentAnonIdentity();
+            const currentIdx = ANON_IDENTITIES.indexOf(current);
+            const nextIdx = (currentIdx + 1) % ANON_IDENTITIES.length;
+            localStorage.setItem('anonIdentity', nextIdx.toString());
+            const next = ANON_IDENTITIES[nextIdx];
+            document.getElementById('anon-emoji').textContent = next.emoji;
+            document.getElementById('anon-name').textContent = next.name;
+            document.getElementById('compose-avatar').textContent = next.emoji;
+        }
+
+        function initAnonIdentity() {
+            const identity = getCurrentAnonIdentity();
+            document.getElementById('anon-emoji').textContent = identity.emoji;
+            document.getElementById('anon-name').textContent = identity.name;
+            document.getElementById('compose-avatar').textContent = identity.emoji;
+        }
+
+        /* ========== 示例帖子数据 ========== */
+        const samplePosts = [
+            { id: 1, content: '今天工作压力很大，但是下班后看到了美丽的晚霞，突然觉得一切都值得了。', mood: 'calm', timestamp: new Date(Date.now() - 3600000).toISOString(), encouragements: 12, replies: 3 },
+            { id: 2, content: '终于完成了那个困扰我很久的项目，虽然过程很艰难，但是成长了很多。', mood: 'joy', timestamp: new Date(Date.now() - 7200000).toISOString(), encouragements: 8, replies: 2 },
+            { id: 3, content: '有时候觉得自己很渺小，但是想到还有人在默默支持我，就觉得很温暖。', mood: 'anxious', timestamp: new Date(Date.now() - 10800000).toISOString(), encouragements: 15, replies: 5 },
+            { id: 4, content: '今天和家人吃了一顿很久没吃的团圆饭，聊了很多以前的事，感觉心里暖暖的。', mood: 'grateful', timestamp: new Date(Date.now() - 14400000).toISOString(), encouragements: 22, replies: 7 },
+            { id: 5, content: '最近有点迷茫，不知道自己想要什么。但至少今天好好吃了一顿饭，善待了自己。', mood: 'sad', timestamp: new Date(Date.now() - 18000000).toISOString(), encouragements: 18, replies: 4 },
+        ];
+
+        const moodConfig = {
+            joy:      { emoji: '😊', tag: '😊 开心',   bg: '#FEF3C7', color: '#92400E' },
+            calm:     { emoji: '😌', tag: '😌 平静',   bg: '#DBEAFE', color: '#1E40AF' },
+            anxious:  { emoji: '😰', tag: '😰 焦虑',   bg: '#E9D5FF', color: '#6B21A8' },
+            sad:      { emoji: '😢', tag: '😢 难过',   bg: '#E0E7FF', color: '#3730A3' },
+            grateful: { emoji: '🙏', tag: '🙏 感恩',   bg: '#FEE2E2', color: '#991B1B' },
+        };
+
+        /* ========== 打卡主题配置 ========== */
+        const CHECKIN_THEMES = [
+            { id: 'happiness', emoji: '✨', name: '每日三件小确幸', desc: '记录今天让你感到幸福的三件小事', inputLabels: ['第一件小确幸', '第二件小确幸', '第三件小确幸'] },
+            { id: 'gratitude', emoji: '🙏', name: '感恩日记', desc: '写下今天你想感谢的人和事', inputLabels: ['想感谢的人', '感谢的原因', '想对TA说的话'] },
+            { id: 'progress', emoji: '🌱', name: '今日进步', desc: '记录今天你做到的一件事', inputLabels: ['做到了什么', '过程中克服的困难', '给自己的鼓励'] },
+            { id: 'emotion', emoji: '🌡️', name: '情绪温度计', desc: '今天你的心情几分？（1-10分）', inputLabels: ['今天的心情分数（1-10）', '最高兴的瞬间', '最想改善的事'] },
+        ];
+
+        /* ========== 标签页切换 ========== */
         function switchTab(tab) {
             currentTab = tab;
-            
-            // 更新按钮状态
-            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-                btn.classList.remove('text-white');
-                btn.classList.add('text-gray-600');
-                btn.style.background = '';
-            });
-            const activeBtn = document.getElementById(`tab-${tab}`);
-            activeBtn.classList.add('text-white');
-            activeBtn.classList.remove('text-gray-600');
-            activeBtn.style.background = 'var(--theme-primary, #7DD3C0)';
-            
-            // 显示对应内容
-            document.querySelectorAll('[id^="content-"]').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById(`content-${tab}`).classList.remove('hidden');
-            
-            // 加载数据
+
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+
             if (tab === 'treehole') {
                 loadPosts();
-            } else if (tab === 'checkin') {
+            } else {
                 loadCheckinData();
             }
         }
 
-        // 添加心情标签
-        function addMood(mood) {
+        /* ========== 心情标签 ========== */
+        function addMood(btn, mood) {
             selectedMood = mood;
             const textarea = document.getElementById('post-content');
-            const moods = {
-                happy: '😊 开心：',
-                calm: '😌 平静：',
-                anxious: '😰 焦虑：'
-            };
-            if (!textarea.value.startsWith('😊') && !textarea.value.startsWith('😌') && !textarea.value.startsWith('😰')) {
-                textarea.value = moods[mood] + textarea.value;
+            const config = moodConfig[mood];
+
+            /* 重置所有按钮 */
+            document.querySelectorAll('.mood-tag').forEach(b => {
+                const m = b.dataset.mood || '';
+                const c = moodConfig[m] || {};
+                b.style.background = c.bg || '';
+                b.style.color = c.color || '';
+                if (m) {
+                    const labels = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
+                    b.innerHTML = c.emoji ? `${c.emoji} ${labels[m] || ''}` : b.innerText;
+                }
+            });
+
+            /* 高亮选中按钮 */
+            btn.style.background = config.bg;
+            btn.style.color = 'white';
+            btn.innerHTML = config.emoji + ' 已选';
+
+            /* 前缀文本（不重复添加） */
+            if (!textarea.value.startsWith(config.emoji)) {
+                textarea.value = config.tag + ' ' + textarea.value;
             }
         }
 
-        // 提交帖子
+        /* ========== 话题筛选 ========== */
+        function filterPosts(topic) {
+            currentTopic = topic;
+            document.querySelectorAll('.topic-filter').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.topic === topic);
+            });
+            loadPosts();
+        }
+
+        /* ========== 发布帖子 ========== */
         function submitPost() {
             const content = document.getElementById('post-content').value.trim();
             if (!content) {
-                alert('请输入内容');
+                showToast('请输入内容', 'warning');
                 return;
             }
-            
+
             const post = {
                 id: Date.now(),
-                content: content,
+                content,
                 mood: selectedMood || 'calm',
                 timestamp: new Date().toISOString(),
                 encouragements: 0,
-                replies: 0
+                replies: 0,
             };
-            
-            // 保存到本地存储
+
             const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
             posts.unshift(post);
             localStorage.setItem('communityPosts', JSON.stringify(posts));
-            
-            // 清空输入
+
             document.getElementById('post-content').value = '';
             selectedMood = null;
-            
-            // 重新加载帖子
+
+            /* 重置心情标签 */
+            document.querySelectorAll('.mood-tag').forEach(b => {
+                const m = b.dataset.mood || '';
+                const c = moodConfig[m] || {};
+                b.style.background = c.bg || '';
+                b.style.color = c.color || '';
+                if (m) {
+                    const labels = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
+                    b.innerHTML = `${c.emoji} ${labels[m] || ''}`;
+                }
+            });
+
             loadPosts();
-            
-            alert('发布成功！感谢你的分享 💝');
+            showToast('发布成功，感谢你的分享 💝', 'success');
         }
 
-        // 加载帖子
+        /* ========== 加载帖子 ========== */
         function loadPosts() {
             const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
-            const allPosts = [...posts, ...samplePosts];
-            
+            // 用户自己发的帖子用真实匿名身份，其他用样本身份
+            const currentIdentity = getCurrentAnonIdentity();
+            const postsWithIdentity = posts.map((post, idx) => ({
+                ...post,
+                _identity: currentIdentity,
+            }));
+            const allPosts = [...postsWithIdentity, ...samplePosts];
+
+            // 话题筛选
+            const filtered = currentTopic === 'all'
+                ? allPosts
+                : allPosts.filter(p => p.mood === currentTopic);
+
             const container = document.getElementById('posts-container');
-            container.innerHTML = '';
-            
-            allPosts.forEach((post, index) => {
-                const moodEmojis = {
-                    happy: '😊',
-                    calm: '😌',
-                    anxious: '😰'
-                };
-                
-                const timeAgo = getTimeAgo(post.timestamp);
-                
-                container.innerHTML += `
-                    <div class="post-card float-up" style="animation-delay: ${index * 0.1}s">
-                        <div class="flex items-start gap-4">
-                            <div class="avatar bg-gradient-to-br from-blue-400 to-purple-400">
-                                ${moodEmojis[post.mood] || '🌟'}
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center gap-2 mb-2">
-                                    <span class="text-sm text-gray-500">匿名用户</span>
-                                    <span class="text-xs text-gray-400">${timeAgo}</span>
-                                </div>
-                                <p class="text-gray-700 mb-3">${post.content}</p>
-                                <div class="flex items-center gap-4">
-                                    <button onclick="showEncourageModal(${post.id})" class="encourage-btn flex items-center gap-1 text-sm text-gray-500 hover:text-pink-500 transition">
-                                        <span>💝</span>
-                                        <span>${post.encouragements}</span>
-                                    </button>
-                                    <button onclick="toggleReplies(${post.id})" class="flex items-center gap-1 text-sm text-gray-500 hover:text-blue-500 transition">
-                                        <span>💬</span>
-                                        <span>${post.replies}</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+
+            if (filtered.length === 0) {
+                const topicNames = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
+                container.innerHTML = `
+                    <div style="text-align:center;padding:3rem 1rem;color:var(--theme-text-light);">
+                        <div style="font-size:3rem;opacity:0.6;margin-bottom:1rem;">🌳</div>
+                        <p>${currentTopic === 'all' ? '还没有帖子，成为第一个分享的人吧' : `暂时没有「${topicNames[currentTopic] || currentTopic}」话题的帖子`}</p>
                     </div>
                 `;
+                return;
+            }
+
+            container.innerHTML = filtered.map((post, i) => {
+                const mood = moodConfig[post.mood] || moodConfig.calm;
+                const topicNames = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
+                const isUserPost = posts.some(p => p.id === post.id);
+                const identity = isUserPost ? currentIdentity : ANON_IDENTITIES[post.id % ANON_IDENTITIES.length];
+                return `
+                    <article class="post-card" style="transition-delay:${i * 60}ms;" data-post-id="${post.id}">
+                        <div class="post-header">
+                            <div class="avatar" style="background:linear-gradient(135deg,${mood.bg},${mood.color}30);font-size:1.1rem;">${identity.emoji}</div>
+                            <div class="post-meta">
+                                <div class="post-author">${identity.name}</div>
+                                <div class="post-time">${getTimeAgo(post.timestamp)}</div>
+                            </div>
+                            <span class="post-topic-tag" style="background:${mood.bg}20;color:${mood.color};">${topicNames[post.mood] || post.mood}</span>
+                        </div>
+                        <p class="post-content">${escapeHtml(post.content)}</p>
+                        <div class="post-actions">
+                            <button class="action-btn encourage" onclick="showEncourageModal(${post.id})">
+                                <span>💝</span>
+                                <span>${post.encouragements}</span>
+                            </button>
+                            <button class="action-btn" onclick="toggleReplies(${post.id})">
+                                <span>💬</span>
+                                <span>${post.replies}</span>
+                            </button>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            /* 触发动画 */
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.post-card').forEach((card, i) => {
+                    setTimeout(() => card.classList.add('visible'), i * 60);
+                });
             });
         }
 
-        // 显示鼓励模态框
+        /* ========== 鼓励模态框 ========== */
         function showEncourageModal(postId) {
             currentPostId = postId;
-            document.getElementById('encourage-modal').classList.add('active');
+            document.getElementById('encourageModal').classList.add('active');
         }
 
-        // 关闭鼓励模态框
         function closeEncourageModal() {
-            document.getElementById('encourage-modal').classList.remove('active');
+            document.getElementById('encourageModal').classList.remove('active');
             currentPostId = null;
         }
 
-        // 发送鼓励
         function sendEncourage(type) {
-            // 更新鼓励数
+            // 查找并更新点赞数
             const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
             const post = posts.find(p => p.id === currentPostId);
             if (post) {
                 post.encouragements++;
                 localStorage.setItem('communityPosts', JSON.stringify(posts));
             }
-            
-            closeEncourageModal();
-            
+
+            // 鼓励卡浮动动画
+            const emojis = { hug: '🤗', star: '⭐', heart: '❤️', flower: '🌸' };
+            const modal = document.getElementById('encourageModal');
+            const rect = modal.querySelector(`.encourage-option:nth-child(${['hug','star','heart','flower'].indexOf(type)+1})`).getBoundingClientRect();
+            const floater = document.createElement('div');
+            floater.className = 'encourage-float';
+            floater.textContent = emojis[type];
+            floater.style.left = (rect.left + rect.width / 2 - 16) + 'px';
+            floater.style.top = (rect.top + rect.height / 2 - 16) + 'px';
+            document.body.appendChild(floater);
+            setTimeout(() => floater.remove(), 1500);
+
             const messages = {
-                hug: '你发送了一个温暖的拥抱 🤗',
-                star: '你为TA点亮了一颗星 ⭐',
-                heart: '你送出了一颗爱心 ❤️',
-                flower: '你送上了美好的祝福 🌸'
+                hug:    '你发送了一个温暖的拥抱 🤗',
+                star:   '你为TA点亮了一颗星 ⭐',
+                heart:  '你送出了一颗爱心 ❤️',
+                flower: '你送上了美好的祝福 🌸',
             };
-            
-            alert(messages[type]);
+
+            closeEncourageModal();
+            showToast(messages[type], 'success');
             loadPosts();
         }
 
-        // 切换回复显示
-        function toggleReplies(postId) {
-            alert('回复功能开发中...');
-        }
+        let currentCheckinTheme = CHECKIN_THEMES[0];
 
-        // 开始打卡
+        /* ========== 打卡 ========== */
         function startCheckin() {
-            document.getElementById('checkin-modal').classList.add('active');
+            const modal = document.getElementById('checkinModal');
+            document.getElementById('checkin-modal-emoji').textContent = currentCheckinTheme.emoji;
+            document.getElementById('checkin-modal-title').textContent = currentCheckinTheme.name;
+            document.getElementById('checkin-modal-desc').textContent = currentCheckinTheme.desc;
+            // 设置输入框占位符
+            const labels = currentCheckinTheme.inputLabels;
+            document.getElementById('checkin-input-1').placeholder = labels[0] + '...';
+            document.getElementById('checkin-input-2').placeholder = labels[1] + '...';
+            document.getElementById('checkin-input-3').placeholder = labels[2] + '...';
+            modal.classList.add('active');
         }
 
-        // 关闭打卡模态框
         function closeCheckinModal() {
-            document.getElementById('checkin-modal').classList.remove('active');
+            document.getElementById('checkinModal').classList.remove('active');
+            document.getElementById('checkin-input-1').value = '';
+            document.getElementById('checkin-input-2').value = '';
+            document.getElementById('checkin-input-3').value = '';
         }
 
-        // 提交打卡
         function submitCheckin() {
-            const h1 = document.getElementById('happiness-1').value.trim();
-            const h2 = document.getElementById('happiness-2').value.trim();
-            const h3 = document.getElementById('happiness-3').value.trim();
-            
+            const h1 = document.getElementById('checkin-input-1').value.trim();
+            const h2 = document.getElementById('checkin-input-2').value.trim();
+            const h3 = document.getElementById('checkin-input-3').value.trim();
+
             if (!h1 || !h2 || !h3) {
-                alert('请填写三件小确幸');
+                showToast(`请填写${currentCheckinTheme.name}的三个内容`, 'warning');
                 return;
             }
-            
+
             const checkin = {
                 date: new Date().toISOString().split('T')[0],
+                themeId: currentCheckinTheme.id,
+                themeName: currentCheckinTheme.name,
                 items: [h1, h2, h3],
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
             };
-            
-            // 保存打卡记录
+
             const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            // 检查今天是否已经打过这个主题的卡
+            const today = new Date().toISOString().split('T')[0];
+            const alreadyCheckedIn = checkins.some(c => c.date === today && c.themeId === currentCheckinTheme.id);
+            if (alreadyCheckedIn) {
+                showToast(`今天已经完成过「${currentCheckinTheme.name}」打卡了！明天再来吧 😊`, 'info');
+                closeCheckinModal();
+                return;
+            }
+
             checkins.push(checkin);
             localStorage.setItem('checkins', JSON.stringify(checkins));
-            
+
             closeCheckinModal();
-            
-            // 清空输入
-            document.getElementById('happiness-1').value = '';
-            document.getElementById('happiness-2').value = '';
-            document.getElementById('happiness-3').value = '';
-            
-            alert('打卡成功！感谢记录今天的美好 💝');
+            showToast('打卡成功，感谢记录今天的美好 💝', 'success');
             loadCheckinData();
         }
 
-        // 加载打卡数据
+        function renderThemeSelector() {
+            const container = document.getElementById('theme-selector');
+            container.innerHTML = CHECKIN_THEMES.map(theme => `
+                <div class="theme-option ${theme.id === currentCheckinTheme.id ? 'active' : ''}"
+                     onclick="selectCheckinTheme('${theme.id}')" data-theme-id="${theme.id}">
+                    <span class="theme-emoji">${theme.emoji}</span>
+                    <span class="theme-name">${theme.name}</span>
+                    <span class="theme-desc">${theme.desc.substring(0, 15)}...</span>
+                </div>
+            `).join('');
+        }
+
+        function selectCheckinTheme(themeId) {
+            const theme = CHECKIN_THEMES.find(t => t.id === themeId);
+            if (!theme) return;
+            currentCheckinTheme = theme;
+
+            // 更新卡片显示
+            document.getElementById('checkin-theme-name').textContent = theme.name;
+            document.getElementById('checkin-theme-desc').textContent = theme.desc;
+
+            // 更新按钮样式
+            document.querySelectorAll('.theme-option').forEach(el => {
+                el.classList.toggle('active', el.dataset.themeId === themeId);
+            });
+
+            // 更新按钮文字
+            const today = new Date().toISOString().split('T')[0];
+            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            const alreadyDone = checkins.some(c => c.date === today && c.themeId === themeId);
+            document.getElementById('checkin-btn').textContent = alreadyDone ? '✓ 今日已打卡' : '开始今日打卡';
+            document.getElementById('checkin-btn').style.background = alreadyDone ? '#10B981' : 'white';
+        }
+
+        /* ========== 加载打卡数据 ========== */
         function loadCheckinData() {
             const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
-            
-            // 计算连续天数
+
+            /* 计算连续天数 */
             let streak = 0;
             const today = new Date().toISOString().split('T')[0];
             const dates = checkins.map(c => c.date).reverse();
-            
+
             for (let i = 0; i < dates.length; i++) {
-                const expectedDate = new Date();
-                expectedDate.setDate(expectedDate.getDate() - i);
-                const expectedDateStr = expectedDate.toISOString().split('T')[0];
-                
-                if (dates.includes(expectedDateStr)) {
+                const expected = new Date();
+                expected.setDate(expected.getDate() - i);
+                const expectedStr = expected.toISOString().split('T')[0];
+                if (dates.includes(expectedStr)) {
                     streak++;
                 } else {
                     break;
                 }
             }
-            
+
             document.getElementById('streak-count').textContent = streak;
-            
-            // 渲染日历
+
+            /* 渲染主题选择器 */
+            renderThemeSelector();
+            selectCheckinTheme(currentCheckinTheme.id);
+
+            /* 渲染日历 */
             renderCalendar(checkins);
-            
-            // 渲染打卡记录
+
+            /* 渲染记录 */
             renderCheckinRecords(checkins);
         }
 
-        // 渲染日历
         function renderCalendar(checkins) {
             const calendar = document.getElementById('checkin-calendar');
             calendar.innerHTML = '';
-            
-            const today = new Date();
+            const today = new Date().toISOString().split('T')[0];
             const dates = checkins.map(c => c.date);
-            
-            // 显示最近30天
+            const weekDays = ['日','一','二','三','四','五','六'];
+
+            /* 星期标题 */
+            weekDays.forEach(d => {
+                calendar.innerHTML += `<div class="calendar-day" style="font-weight:600;color:var(--theme-text-light);">${d}</div>`;
+            });
+
+            /* 日期格子 */
             for (let i = 29; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(date.getDate() - i);
                 const dateStr = date.toISOString().split('T')[0];
                 const hasCheckin = dates.includes(dateStr);
-                
+                const isToday = dateStr === today;
+                const dayNum = date.getDate();
+
                 calendar.innerHTML += `
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${hasCheckin ? 'text-white font-semibold' : 'text-gray-400'}" 
-                         style="background: ${hasCheckin ? 'var(--theme-primary, #7DD3C0)' : '#F3F4F6'}">
-                        ${date.getDate()}
-                    </div>
+                    <div class="calendar-day ${hasCheckin ? 'checked' : ''} ${isToday ? 'today' : ''}">${dayNum}</div>
                 `;
             }
         }
 
-        // 渲染打卡记录
         function renderCheckinRecords(checkins) {
             const container = document.getElementById('checkin-records');
-            container.innerHTML = '';
-            
+
             if (checkins.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-center py-8">还没有打卡记录，开始你的第一次打卡吧！</p>';
+                container.innerHTML = `<p style="color:var(--theme-text-light);text-align:center;padding:2rem;">还没有打卡记录，开始你的第一次打卡吧！</p>`;
                 return;
             }
-            
-            checkins.slice(-5).reverse().forEach(checkin => {
+
+            container.innerHTML = checkins.slice(-10).reverse().map(checkin => {
                 const date = new Date(checkin.date);
                 const dateStr = `${date.getMonth() + 1}月${date.getDate()}日`;
-                
-                container.innerHTML += `
-                    <div class="border-l-4 pl-4 py-2" style="border-color: var(--theme-primary, #7DD3C0)">
-                        <div class="text-sm text-gray-500 mb-2">${dateStr}</div>
-                        <ul class="space-y-1">
-                            ${checkin.items.map(item => `<li class="text-gray-700">✨ ${item}</li>`).join('')}
+                const theme = CHECKIN_THEMES.find(t => t.id === checkin.themeId) || { emoji: '📝', name: checkin.themeName || '打卡' };
+                const itemIcons = ['✨', '💫', '🌟'];
+                return `
+                    <div class="checkin-record">
+                        <div class="checkin-record-date">${theme.emoji} ${checkin.themeName || '打卡'} · ${dateStr}</div>
+                        <ul>
+                            ${checkin.items.map((item, i) => `<li>${itemIcons[i] || '•'} ${escapeHtml(item)}</li>`).join('')}
                         </ul>
                     </div>
                 `;
-            });
+            }).join('');
         }
 
-        // 获取时间差
+        /* ========== 工具函数 ========== */
         function getTimeAgo(timestamp) {
-            const now = new Date();
-            const then = new Date(timestamp);
-            const diff = Math.floor((now - then) / 1000);
-            
+            const diff = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
             if (diff < 60) return '刚刚';
             if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
             if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
             return `${Math.floor(diff / 86400)}天前`;
         }
 
-        // 页面加载时初始化
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function toggleReplies(postId) {
+            showToast('回复功能开发中...', 'info');
+        }
+
+        function showToast(message, type = 'info') {
+            const colors = { success: 'var(--color-primary-400)', info: 'var(--color-primary-500)', warning: '#F59E0B', error: '#EF4444' };
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:${colors[type] || colors.info};color:white;padding:0.75rem 1.5rem;border-radius:9999px;font-size:0.95rem;z-index:9999;box-shadow:var(--shadow-lg);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;white-space:nowrap;`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', () => {
+            initAnonIdentity(); // 初始化匿名身份
             loadPosts();
+
+            /* ESC 关闭模态框 */
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeEncourageModal();
+                    closeCheckinModal();
+                }
+            });
+
+            /* 点击遮罩关闭 */
+            document.getElementById('encourageModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('encourageModal')) closeEncourageModal();
+            });
+            document.getElementById('checkinModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('checkinModal')) closeCheckinModal();
+            });
         });
     </script>
 </body>

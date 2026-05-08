@@ -3,547 +3,730 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>放松练习 - 心晴空间</title>
+    <title>放松练习 — 心晴空间</title>
     <meta name="description" content="呼吸训练、冥想引导，让身心休息一下。简单的放松练习，帮助你缓解压力，找回平静。">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0faf7',
-                            100: '#d9f2eb',
-                            200: '#b5ddd3',
-                            300: '#8ac4b5',
-                            400: '#7CB8A8',
-                            500: '#5A9A8A',
-                            600: '#4a8a7a',
-                        },
-                        warm: {
-                            50: '#fdfbf9',
-                            100: '#F5E6D3',
-                            200: '#E8D5C4',
-                            300: '#d4c4b0',
-                        },
-                        accent: {
-                            orange: '#F4A261',
-                            coral: '#E57373',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Nunito Sans', 'PingFang SC', 'Microsoft YaHei', 'sans-serif'],
-                    },
-                    borderRadius: {
-                        'soft': '12px',
-                        'card': '16px',
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* ---------- 页面级覆盖 ---------- */
         body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out;
+
+        /* ---------- 页面头部区域 ---------- */
+        .page-hero {
+            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-calm-50) 100%);
+            padding-top: 80px;
+            padding-bottom: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%;
+            background: radial-gradient(circle, var(--color-primary-100), transparent 70%);
+            opacity: 0.15;
+            bottom: -100px;
+            left: -80px;
+            animation: fluidMorph 12s ease-in-out infinite;
+            pointer-events: none;
         }
-        .card-hover {
-            transition: all 0.3s ease;
+
+        @keyframes fluidMorph {
+            0%, 100% { border-radius: 40% 60% 60% 40% / 60% 40% 60% 40%; }
+            33%       { border-radius: 55% 45% 40% 60% / 50% 55% 45% 50%; }
+            66%       { border-radius: 50% 50% 55% 45% / 45% 50% 50% 55%; }
         }
-        .card-hover:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(124, 184, 168, 0.15);
+
+        /* ---------- 练习卡片网格 ---------- */
+        .practice-grid {
+            max-width: 64rem;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
         }
-        /* 呼吸动画 */
-        .breathing-circle {
-            transition: transform 4s ease-in-out;
+
+        @media (min-width: 640px) {
+            .practice-grid {
+                padding: 4rem 2rem;
+            }
         }
-        .breathing-circle.inhale {
-            transform: scale(1.3);
+
+        /* ---------- 练习选择卡片 ---------- */
+        .practice-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            border: 1px solid transparent;
         }
-        .breathing-circle.exhale {
+        .practice-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-100);
+        }
+        .practice-card:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+
+        .practice-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+        .practice-card:hover .practice-icon {
+            transform: scale(1.08) rotate(-4deg);
+        }
+
+        /* ---------- 呼吸练习核心区域 ---------- */
+        .exercise-view {
+            max-width: 32rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            text-align: center;
+        }
+
+        /* 呼吸圆 — 核心视觉元素 */
+        .breath-circle-wrapper {
+            position: relative;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 2rem;
+        }
+        .breath-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: var(--color-primary-100);
+            opacity: 0.5;
+        }
+        .breath-ring-2 {
+            position: absolute;
+            inset: 12px;
+            border-radius: 50%;
+            background: var(--color-primary-200);
+            opacity: 0.3;
+        }
+        .breath-core {
+            position: absolute;
+            inset: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-primary-300), var(--color-primary-400));
+            box-shadow: 0 8px 32px rgba(90, 154, 138, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            transition: transform 4s cubic-bezier(0.45, 0.05, 0.55, 0.95),
+                        box-shadow 4s var(--ease-standard);
+            will-change: transform;
+        }
+        /* 呼吸动画状态 */
+        .breath-core.inhale {
+            transform: scale(1.18);
+            box-shadow: 0 12px 48px rgba(90, 154, 138, 0.45);
+        }
+        .breath-core.hold {
+            transform: scale(1.18);
+            box-shadow: 0 12px 48px rgba(90, 154, 138, 0.45);
+        }
+        .breath-core.exhale {
             transform: scale(1);
+            box-shadow: 0 8px 32px rgba(90, 154, 138, 0.3);
         }
-        .breathing-circle.hold {
-            transform: scale(1.3);
+
+        /* ---------- 进度环 ---------- */
+        .progress-ring-wrapper {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            margin: 0 auto 1.5rem;
         }
-        /* 脉冲动画 */
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
-        }
-        .pulse-bg {
-            animation: pulse 4s ease-in-out infinite;
-        }
-        /* 进度环 */
-        .progress-ring {
+        .progress-ring-svg {
             transform: rotate(-90deg);
         }
-        .progress-ring-circle {
-            transition: stroke-dashoffset 0.5s ease;
+        .progress-ring-track {
+            fill: none;
+            stroke: var(--color-primary-100);
+            stroke-width: 8;
         }
+        .progress-ring-fill {
+            fill: none;
+            stroke: var(--color-primary-400);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s var(--ease-standard);
+        }
+        .progress-ring-text {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary-500);
+        }
+
+        /* ---------- 五感卡片 ---------- */
+        .sense-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid var(--theme-border);
+            transition: all var(--duration-normal) var(--ease-standard);
+            text-align: left;
+        }
+        .sense-card:hover {
+            border-color: var(--color-primary-200);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-2px);
+        }
+        .sense-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* ---------- 科学背书卡片 ---------- */
+        .science-card {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-calm-50));
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+            border: 1px solid var(--color-primary-100);
+        }
+        .science-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--color-primary-600);
+            margin-bottom: 0.5rem;
+        }
+        .science-card p {
+            font-size: 0.85rem;
+            color: var(--theme-text);
+            line-height: 1.7;
+        }
+
+        /* ---------- 引导文字区域 ---------- */
+        .guide-box {
+            background: var(--theme-card);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem 1rem;
+            box-shadow: var(--shadow-xs);
+            border: 1px solid var(--theme-border);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .guide-box p {
+            font-size: 1.05rem;
+            color: var(--theme-text);
+            line-height: 1.7;
+        }
+
+        /* ---------- 练习详情弹窗 ---------- */
+        .exercise-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-normal) var(--ease-standard);
+        }
+        .exercise-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .exercise-modal-panel {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: scale(0.92) translateY(16px);
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+        .exercise-modal.active .exercise-modal-panel {
+            transform: scale(1) translateY(0);
+        }
+
+        /* ---------- 更多练习列表 ---------- */
+        .more-section {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 3rem 1.5rem;
+        }
+
+        /* ---------- 页脚覆盖 ---------- */
+        .site-footer {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 2rem 1rem;
+        }
+        .site-footer .inner {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+        .site-footer .disclaimer-box {
+            background: var(--color-warm-50);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .site-footer .disclaimer-box p {
+            font-size: 0.75rem;
+            color: var(--theme-text-light);
+            line-height: 1.6;
+            text-align: center;
+        }
+        .site-footer .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+        }
+
+        /* ---------- 隐藏类辅助 ---------- */
+        .hidden { display: none !important; }
     </style>
 </head>
-<body class="bg-warm-50 text-gray-700 min-h-screen">
-    <!-- 导航栏 -->
-    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="flex items-center justify-between h-16">
-                <a href="index.html" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-br from-primary-400 to-primary-500 rounded-lg flex items-center justify-center">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
-                    <span class="font-semibold text-gray-800">心晴空间</span>
-                </a>
-                
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors">首页</a>
-                    <a href="emotion.html" class="text-gray-600 hover:text-primary-500 transition-colors">情绪觉察</a>
-                    <a href="article.html" class="text-gray-600 hover:text-primary-500 transition-colors">疗愈内容</a>
-                    <a href="relax.html" class="text-primary-500 font-medium">放松练习</a>
-                    <a href="about.html" class="text-gray-600 hover:text-primary-500 transition-colors">关于我们</a>
-                </div>
-
-                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+<body>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
-                </button>
+                </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+
+            <div style="display:none;align-items:center;gap:2rem;" class="md:flex">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;">首页</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
+                <a href="practice.html" style="color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;">关于我们</a>
             </div>
+
+            <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100">
-            <div class="px-4 py-3 space-y-2">
-                <a href="index.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">首页</a>
-                <a href="emotion.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">情绪觉察</a>
-                <a href="article.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">疗愈内容</a>
-                <a href="relax.html" class="block py-2 px-3 text-primary-500 bg-primary-50 rounded-lg font-medium">放松练习</a>
-                <a href="about.html" class="block py-2 px-3 text-gray-600 hover:bg-gray-50 rounded-lg">关于我们</a>
-            </div>
+        <div id="mobileMenu" style="display:none;background:var(--theme-card);border-top:1px solid var(--theme-border);padding:0.75rem 1rem;" class="md:hidden">
+            <a href="index.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">首页</a>
+            <a href="emotion.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
+            <a href="practice.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
+            <a href="knowledge-graph.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
+            <a href="about.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">关于我们</a>
         </div>
     </nav>
 
-    <!-- 主内容 -->
-    <main class="pt-16">
-        <!-- 页面标题 -->
-        <section class="bg-gradient-to-b from-primary-50 to-warm-50 py-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">放松练习</h1>
-                <p class="text-gray-600 max-w-xl mx-auto">让身心休息一下。简单的呼吸训练和冥想引导，帮助你找回平静。</p>
-            </div>
-        </section>
+    <!-- ===== 页面头部 ===== -->
+    <section class="page-hero">
+        <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;">
+            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up">放松练习</h1>
+            <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);" class="fade-in-up" style="animation-delay:0.1s;">让身心休息一下。简单的呼吸训练和冥想引导，帮助你找回平静。</p>
+        </div>
+    </section>
 
-        <!-- 练习选择 -->
-        <section id="practiceList" class="py-12">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6">
-                <div class="grid sm:grid-cols-2 gap-6">
-                    <!-- 呼吸训练 -->
-                    <button onclick="startBreathing()" class="bg-white rounded-card p-6 text-left card-hover border border-gray-100 group">
-                        <div class="w-16 h-16 bg-primary-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-colors">
-                            <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-gray-800 text-lg mb-2">呼吸训练</h3>
-                        <p class="text-sm text-gray-600 mb-4">4-7-8呼吸法，帮助身体放松，缓解紧张情绪</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            约5分钟
-                        </div>
-                    </button>
-
-                    <!-- 身体扫描 -->
-                    <button onclick="startBodyScan()" class="bg-white rounded-card p-6 text-left card-hover border border-gray-100 group">
-                        <div class="w-16 h-16 bg-warm-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-warm-200 transition-colors">
-                            <svg class="w-8 h-8 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-gray-800 text-lg mb-2">身体扫描</h3>
-                        <p class="text-sm text-gray-600 mb-4">从头到脚放松身体，释放紧张与疲惫</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            约10分钟
-                        </div>
-                    </button>
-
-                    <!-- 正念冥想 -->
-                    <button onclick="startMindfulness()" class="bg-white rounded-card p-6 text-left card-hover border border-gray-100 group">
-                        <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-indigo-200 transition-colors">
-                            <svg class="w-8 h-8 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-gray-800 text-lg mb-2">正念冥想</h3>
-                        <p class="text-sm text-gray-600 mb-4">专注于当下，让思绪慢慢安静下来</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            约8分钟
-                        </div>
-                    </button>
-
-                    <!-- 五感放松 -->
-                    <button onclick="startFiveSenses()" class="bg-white rounded-card p-6 text-left card-hover border border-gray-100 group">
-                        <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-pink-200 transition-colors">
-                            <svg class="w-8 h-8 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="font-semibold text-gray-800 text-lg mb-2">五感放松</h3>
-                        <p class="text-sm text-gray-600 mb-4">通过五感回到当下，缓解焦虑</p>
-                        <div class="flex items-center text-sm text-gray-500">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            约3分钟
-                        </div>
-                    </button>
+    <!-- ===== 练习选择列表 ===== -->
+    <section id="practiceList" class="practice-grid fade-in-up" style="animation-delay:0.15s;">
+        <div style="display:grid;gap:1.25rem;" class="sm:grid-cols-2">
+            <!-- 呼吸训练 -->
+            <div class="practice-card" onclick="startBreathing()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startBreathing()">
+                <div class="practice-icon" style="background:var(--color-primary-100);">
+                    <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
                 </div>
-            </div>
-        </section>
-
-        <!-- 呼吸训练界面 -->
-        <section id="breathingExercise" class="py-12 hidden">
-            <div class="max-w-lg mx-auto px-4 sm:px-6 text-center">
-                <div class="mb-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">腹式呼吸放松法</h2>
-                    <p class="text-gray-600">跟着圆圈的节奏呼吸，快速平复生理性紧张</p>
-                </div>
-
-                <!-- 呼吸圆圈 -->
-                <div class="relative w-64 h-64 mx-auto mb-8">
-                    <div class="absolute inset-0 bg-primary-100 rounded-full pulse-bg"></div>
-                    <div id="breathingCircle" class="absolute inset-4 bg-gradient-to-br from-primary-300 to-primary-400 rounded-full flex items-center justify-center breathing-circle shadow-lg">
-                        <div class="text-center">
-                            <p id="breathingPhase" class="text-white text-lg font-medium">准备开始</p>
-                            <p id="breathingCount" class="text-white text-3xl font-bold mt-1"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 说明 -->
-                <div id="breathingInstruction" class="bg-white rounded-card p-4 mb-6 border border-gray-100">
-                    <p class="text-gray-600">点击开始按钮，跟随引导进行呼吸练习</p>
-                </div>
-
-                <!-- 控制按钮 -->
-                <div class="flex justify-center gap-4">
-                    <button id="startBreathingBtn" onclick="toggleBreathing()" class="px-8 py-3 bg-primary-400 text-white rounded-full font-medium hover:bg-primary-500 transition-colors">
-                        开始练习
-                    </button>
-                    <button onclick="exitExercise()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-50 transition-colors">
-                        返回
-                    </button>
-                </div>
-
-                <!-- 科学依据 -->
-                <div class="mt-8 p-4 bg-primary-50 rounded-soft text-left">
-                    <p class="text-sm font-medium text-primary-600 mb-2">科学依据</p>
-                    <p class="text-sm text-gray-600 mb-2">
-                        通过缓慢的深呼吸，吸气时腹部鼓起，呼气时收缩，可快速平复生理性紧张。
-                    </p>
-                    <p class="text-sm text-gray-600">
-                        <strong>神经科学发现：</strong>激活副交感神经系统，降低杏仁核过度活跃，促进前额叶皮层功能恢复。
-                    </p>
-                    <p class="text-xs text-gray-400 mt-2">数据来源：神经科学研究证实可降低杏仁核活跃度</p>
-                </div>
-
-                <!-- 练习提示 -->
-                <div class="mt-4 p-4 bg-warm-50 rounded-soft">
-                    <p class="text-sm text-gray-600">
-                        <strong class="text-accent-orange">练习要点：</strong>
-                        将一只手放在胸口，另一只手放在腹部。缓慢吸气，感受腹部像气球一样鼓起；屏息2-3秒；缓慢呼气，感受腹部收缩。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 身体扫描界面 -->
-        <section id="bodyScanExercise" class="py-12 hidden">
-            <div class="max-w-lg mx-auto px-4 sm:px-6 text-center">
-                <div class="mb-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">身体扫描</h2>
-                    <p class="text-gray-600">感受身体的每一个部分</p>
-                </div>
-
-                <!-- 进度显示 -->
-                <div class="mb-8">
-                    <div class="w-32 h-32 mx-auto relative">
-                        <svg class="w-32 h-32 progress-ring">
-                            <circle class="text-gray-200" stroke-width="4" stroke="currentColor" fill="transparent" r="58" cx="64" cy="64"/>
-                            <circle id="scanProgress" class="text-primary-400 progress-ring-circle" stroke-width="4" stroke="currentColor" fill="transparent" r="58" cx="64" cy="64" stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">呼吸训练</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;">4-7-8呼吸法，帮助身体放松，缓解紧张情绪</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span id="scanStep" class="text-2xl font-bold text-primary-500">0/10</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 引导文字 -->
-                <div id="scanInstruction" class="bg-white rounded-card p-6 mb-6 border border-gray-100 min-h-[120px] flex items-center justify-center">
-                    <p class="text-gray-700 text-lg">点击开始，我们将从头到脚扫描身体的每个部位</p>
-                </div>
-
-                <!-- 控制按钮 -->
-                <div class="flex justify-center gap-4">
-                    <button id="startScanBtn" onclick="toggleBodyScan()" class="px-8 py-3 bg-primary-400 text-white rounded-full font-medium hover:bg-primary-500 transition-colors">
-                        开始练习
-                    </button>
-                    <button onclick="exitExercise()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-50 transition-colors">
-                        返回
-                    </button>
+                        约5分钟
+                    </span>
                 </div>
             </div>
-        </section>
 
-        <!-- 正念冥想界面 -->
-        <section id="mindfulnessExercise" class="py-12 hidden">
-            <div class="max-w-lg mx-auto px-4 sm:px-6 text-center">
-                <div class="mb-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">正念冥想</h2>
-                    <p class="text-gray-600">专注于此刻的呼吸</p>
+            <!-- 身体扫描 -->
+            <div class="practice-card" onclick="startBodyScan()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startBodyScan()">
+                <div class="practice-icon" style="background:var(--color-warm-100);">
+                    <svg style="width:28px;height:28px;color:#92400E;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
                 </div>
-
-                <!-- 计时器 -->
-                <div class="mb-8">
-                    <div id="mindfulnessTimer" class="text-6xl font-light text-primary-500 mb-4">08:00</div>
-                    <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div id="mindfulnessProgress" class="h-full bg-primary-400 rounded-full transition-all duration-1000" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <!-- 引导文字 -->
-                <div id="mindfulnessInstruction" class="bg-white rounded-card p-6 mb-6 border border-gray-100">
-                    <p class="text-gray-700">闭上眼睛，把注意力放在呼吸上。不需要改变呼吸，只是观察它。</p>
-                </div>
-
-                <!-- 控制按钮 -->
-                <div class="flex justify-center gap-4">
-                    <button id="startMindfulnessBtn" onclick="toggleMindfulness()" class="px-8 py-3 bg-primary-400 text-white rounded-full font-medium hover:bg-primary-500 transition-colors">
-                        开始练习
-                    </button>
-                    <button onclick="exitExercise()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-50 transition-colors">
-                        返回
-                    </button>
-                </div>
-
-                <!-- 提示 -->
-                <div class="mt-8 p-4 bg-indigo-50 rounded-soft">
-                    <p class="text-sm font-medium text-indigo-600 mb-2">科学依据</p>
-                    <p class="text-sm text-gray-600 mb-2">
-                        正念练习可降低杏仁核过度活跃，8周系统练习可建立稳定的情绪调节神经通路。
-                    </p>
-                    <p class="text-sm text-gray-600">
-                        如果思绪飘走了，没关系，温柔地把注意力带回呼吸就好。正念不是要清空大脑，而是学会观察自己的想法。
-                    </p>
-                    <p class="text-xs text-gray-400 mt-2">数据来源：Nature·心理健康 2026年元分析，超过1200项临床研究支持</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 五感放松界面 -->
-        <section id="fiveSensesExercise" class="py-12 hidden">
-            <div class="max-w-lg mx-auto px-4 sm:px-6 text-center">
-                <div class="mb-8">
-                    <h2 class="text-xl font-semibold text-gray-800 mb-2">五感放松</h2>
-                    <p class="text-gray-600">通过五感回到当下</p>
-                </div>
-
-                <!-- 五感卡片 -->
-                <div id="sensesContainer" class="space-y-4 mb-8">
-                    <div class="sense-card bg-white rounded-card p-4 border border-gray-100 text-left" data-sense="see">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">看 - 5样东西</p>
-                                <p class="text-sm text-gray-500">环顾四周，找出5样你能看到的东西</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sense-card bg-white rounded-card p-4 border border-gray-100 text-left" data-sense="touch">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">触 - 4样东西</p>
-                                <p class="text-sm text-gray-500">感受4样你能触摸到的东西</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sense-card bg-white rounded-card p-4 border border-gray-100 text-left" data-sense="hear">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">听 - 3种声音</p>
-                                <p class="text-sm text-gray-500">聆听3种你能听到的声音</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sense-card bg-white rounded-card p-4 border border-gray-100 text-left" data-sense="smell">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">闻 - 2种气味</p>
-                                <p class="text-sm text-gray-500">感受2种你能闻到的气味</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="sense-card bg-white rounded-card p-4 border border-gray-100 text-left" data-sense="taste">
-                        <div class="flex items-center">
-                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
-                                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                            </div>
-                            <div>
-                                <p class="font-medium text-gray-800">尝 - 1种味道</p>
-                                <p class="text-sm text-gray-500">感受1种你能尝到的味道</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 控制按钮 -->
-                <div class="flex justify-center gap-4">
-                    <button onclick="exitExercise()" class="px-6 py-3 border border-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-50 transition-colors">
-                        返回
-                    </button>
-                </div>
-
-                <!-- 提示 -->
-                <div class="mt-8 p-4 bg-pink-50 rounded-soft">
-                    <p class="text-sm text-gray-600">
-                        这个练习可以帮助你从焦虑的思绪中回到当下。慢慢来，不着急。
-                    </p>
-                </div>
-            </div>
-        </section>
-        <!-- 更多疗愈练习 -->
-        <section id="moreExercises" class="py-12 bg-white">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6">
-                <h2 class="text-xl font-semibold text-gray-800 mb-6 text-center">更多疗愈练习</h2>
-                
-                <!-- 加载状态 -->
-                <div id="exercisesLoading" class="text-center py-8">
-                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-                    <p class="text-gray-500 mt-4">加载中...</p>
-                </div>
-
-                <!-- 练习列表 -->
-                <div id="exercisesList" class="grid sm:grid-cols-2 gap-4 hidden">
-                    <!-- 动态加载 -->
-                </div>
-            </div>
-        </section>
-
-        <!-- 练习详情弹窗 -->
-        <div id="exerciseModal" class="fixed inset-0 z-50 hidden">
-            <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeExerciseModal()"></div>
-            <div class="absolute inset-4 sm:inset-8 md:inset-16 lg:inset-24 bg-white rounded-card overflow-hidden flex flex-col">
-                <div class="flex items-center justify-between p-4 border-b border-gray-100">
-                    <div>
-                        <h2 id="modalExerciseTitle" class="font-semibold text-gray-800">练习标题</h2>
-                        <p id="modalExerciseMeta" class="text-sm text-gray-500"></p>
-                    </div>
-                    <button onclick="closeExerciseModal()" class="p-2 text-gray-400 hover:text-gray-600">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">身体扫描</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;">从头到脚放松身体，释放紧张与疲惫</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                    </button>
+                        约10分钟
+                    </span>
                 </div>
-                <div id="modalExerciseContent" class="flex-1 overflow-y-auto p-6 sm:p-8 text-gray-700">
-                    <!-- 练习内容 -->
+            </div>
+
+            <!-- 正念冥想 -->
+            <div class="practice-card" onclick="startMindfulness()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startMindfulness()">
+                <div class="practice-icon" style="background:var(--color-calm-100);">
+                    <svg style="width:28px;height:28px;color:#1E40AF;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </div>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">正念冥想</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;">专注于当下，让思绪慢慢安静下来</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        约8分钟
+                    </span>
+                </div>
+            </div>
+
+            <!-- 五感放松 -->
+            <div class="practice-card" onclick="startFiveSenses()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startFiveSenses()">
+                <div class="practice-icon" style="background:#FCE7F3;">
+                    <svg style="width:28px;height:28px;color:#9D174D;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">五感放松</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;">通过五感回到当下，缓解焦虑</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        约3分钟
+                    </span>
                 </div>
             </div>
         </div>
-    </main>
+    </section>
 
-    <!-- 页脚 -->
-    <footer class="bg-white border-t border-gray-100 py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="bg-warm-50 rounded-soft p-4 mb-6">
-                <p class="text-xs text-gray-600 text-center leading-relaxed">
-                    本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。
-                </p>
+    <!-- ===== 呼吸训练界面 ===== -->
+    <section id="breathingExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">腹式呼吸放松法</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);">跟着圆圈的节奏呼吸，快速平复生理性紧张</p>
+        </div>
+
+        <!-- 呼吸圆 -->
+        <div class="breath-circle-wrapper">
+            <div class="breath-ring"></div>
+            <div class="breath-ring-2"></div>
+            <div class="breath-core" id="breathCore">
+                <span id="breathingPhase" style="font-size:1.1rem;font-weight:500;margin-bottom:0.25rem;">准备开始</span>
+                <span id="breathingCount" style="font-size:2.5rem;font-weight:700;"></span>
             </div>
-            <p class="text-center text-sm text-gray-500">
-                © 2024 心晴空间 · 公益心理疗愈平台
+        </div>
+
+        <!-- 引导文字 -->
+        <div class="guide-box" style="margin-bottom:1.5rem;">
+            <p id="breathingInstruction" style="font-size:1rem;">点击开始按钮，跟随引导进行呼吸练习</p>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;">
+            <button onclick="toggleBreathing()" class="btn btn-primary" id="startBreathingBtn">开始练习</button>
+            <button onclick="exitExercise()" class="btn btn-secondary">返回</button>
+        </div>
+
+        <!-- 科学依据 -->
+        <div class="science-card">
+            <h4>🧬 科学依据</h4>
+            <p>通过缓慢的深呼吸，激活副交感神经系统，降低皮质醇水平，减少杏仁核过度活跃。</p>
+        </div>
+
+        <!-- 练习要点 -->
+        <div style="margin-top:1rem;padding:1rem;background:var(--color-warm-50);border-radius:var(--radius-lg);">
+            <p style="font-size:0.875rem;color:var(--theme-text);line-height:1.7;">
+                <strong style="color:#92400E;">练习要点：</strong>
+                将一只手放在胸口，另一只手放在腹部。缓慢吸气，感受腹部像气球一样鼓起；屏息2-3秒；缓慢呼气，感受腹部收缩。
             </p>
+        </div>
+    </section>
+
+    <!-- ===== 身体扫描界面 ===== -->
+    <section id="bodyScanExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">身体扫描</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);">感受身体的每一个部分</p>
+        </div>
+
+        <!-- 进度环 -->
+        <div class="progress-ring-wrapper">
+            <svg class="progress-ring-svg" width="128" height="128" viewBox="0 0 128 128">
+                <circle class="progress-ring-track" cx="64" cy="64" r="56"></circle>
+                <circle class="progress-ring-fill" id="scanProgressRing" cx="64" cy="64" r="56"
+                    stroke-dasharray="351.86" stroke-dashoffset="351.86"></circle>
+            </svg>
+            <div class="progress-ring-text" id="scanStep">0/10</div>
+        </div>
+
+        <!-- 引导文字 -->
+        <div class="guide-box" style="margin-bottom:1.5rem;min-height:100px;">
+            <p id="scanInstruction">点击开始，我们将从头到脚扫描身体的每个部位</p>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div style="display:flex;justify-content:center;gap:1rem;">
+            <button onclick="toggleBodyScan()" class="btn btn-primary" id="startScanBtn">开始练习</button>
+            <button onclick="exitExercise()" class="btn btn-secondary">返回</button>
+        </div>
+    </section>
+
+    <!-- ===== 正念冥想界面 ===== -->
+    <section id="mindfulnessExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">正念冥想</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);">专注于此刻的呼吸</p>
+        </div>
+
+        <!-- 计时器 -->
+        <div style="margin-bottom:1.5rem;">
+            <div id="mindfulnessTimer" style="font-size:3.5rem;font-weight:300;color:var(--color-primary-500);margin-bottom:1rem;">08:00</div>
+            <div style="height:6px;background:var(--color-primary-100);border-radius:var(--radius-full);overflow:hidden;">
+                <div id="mindfulnessProgress" style="height:100%;background:linear-gradient(90deg,var(--color-primary-300),var(--color-primary-500));border-radius:var(--radius-full);transition:width 1s var(--ease-standard);width:0%;"></div>
+            </div>
+        </div>
+
+        <!-- 引导文字 -->
+        <div class="guide-box" style="margin-bottom:1.5rem;">
+            <p id="mindfulnessInstruction">闭上眼睛，把注意力放在呼吸上。不需要改变呼吸，只是观察它。</p>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;">
+            <button onclick="toggleMindfulness()" class="btn btn-primary" id="startMindfulnessBtn">开始练习</button>
+            <button onclick="exitExercise()" class="btn btn-secondary">返回</button>
+        </div>
+
+        <!-- 科学依据 -->
+        <div class="science-card" style="background:linear-gradient(135deg,var(--color-calm-50),var(--color-primary-50));">
+            <h4>🧠 神经科学发现</h4>
+            <p>正念练习可降低杏仁核过度活跃，8周系统练习可建立稳定的情绪调节神经通路。如果思绪飘走了，温柔地把注意力带回呼吸就好。</p>
+        </div>
+    </section>
+
+    <!-- ===== 五感放松界面 ===== -->
+    <section id="fiveSensesExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;">五感放松</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);">通过五感回到当下</p>
+        </div>
+
+        <!-- 五感卡片 -->
+        <div style="display:flex;flex-direction:column;gap:0.75rem;margin-bottom:2rem;" id="sensesContainer">
+            <div class="sense-card">
+                <div class="sense-icon" style="background:#FCE7F3;">
+                    <svg style="width:20px;height:20px;color:#9D174D;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">看 — 5样东西</p>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);">环顾四周，找出5样你能看到的东西</p>
+                </div>
+            </div>
+            <div class="sense-card">
+                <div class="sense-icon" style="background:#DBEAFE;">
+                    <svg style="width:20px;height:20px;color:#1E40AF;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">触 — 4样东西</p>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);">感受4样你能触摸到的东西</p>
+                </div>
+            </div>
+            <div class="sense-card">
+                <div class="sense-icon" style="background:#D1FAE5;">
+                    <svg style="width:20px;height:20px;color:#065F46;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">听 — 3种声音</p>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);">聆听3种你能听到的声音</p>
+                </div>
+            </div>
+            <div class="sense-card">
+                <div class="sense-icon" style="background:#FEF3C7;">
+                    <svg style="width:20px;height:20px;color:#92400E;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">闻 — 2种气味</p>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);">感受2种你能闻到的气味</p>
+                </div>
+            </div>
+            <div class="sense-card">
+                <div class="sense-icon" style="background:#FED7AA;">
+                    <svg style="width:20px;height:20px;color:#9A3412;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">尝 — 1种味道</p>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);">感受1种你能尝到的味道</p>
+                </div>
+            </div>
+        </div>
+
+        <p style="font-size:0.9rem;color:var(--theme-text-light);line-height:1.7;margin-bottom:1.5rem;">
+            这个练习可以帮助你从焦虑的思绪中回到当下。慢慢来，不着急。
+        </p>
+
+        <button onclick="exitExercise()" class="btn btn-secondary">返回</button>
+    </section>
+
+    <!-- ===== 更多疗愈练习 ===== -->
+    <section id="moreExercises" class="more-section">
+        <div style="max-width:64rem;margin:0 auto;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:1.5rem;text-align:center;">更多疗愈练习</h2>
+
+            <div id="exercisesLoading" style="text-align:center;padding:2rem;">
+                <div style="width:32px;height:32px;border:3px solid var(--color-primary-100);border-top-color:var(--color-primary-400);border-radius:50%;animation:spinSlow 1s linear infinite;display:inline-block;"></div>
+                <p style="color:var(--theme-text-light);margin-top:1rem;font-size:0.9rem;">加载中...</p>
+            </div>
+
+            <div id="exercisesList" class="hidden" style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));">
+                <!-- 动态生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 练习详情弹窗 ===== -->
+    <div id="exerciseModal" class="exercise-modal">
+        <div class="exercise-modal-panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--theme-border);">
+                <div>
+                    <h2 id="modalExerciseTitle" style="font-size:1.1rem;font-weight:600;color:var(--theme-text);">练习标题</h2>
+                    <p id="modalExerciseMeta" style="font-size:0.85rem;color:var(--theme-text-light);"></p>
+                </div>
+                <button onclick="closeExerciseModal()" style="padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;">
+                    <svg style="width:20px;height:20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="modalExerciseContent" style="padding:1.5rem;overflow-y:auto;max-height:60vh;color:var(--theme-text);line-height:1.7;">
+                <!-- 练习内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 页脚 ===== -->
+    <footer class="site-footer">
+        <div class="inner">
+            <div class="disclaimer-box">
+                <p>本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。</p>
+            </div>
+            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
         </div>
     </footer>
 
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
     <script>
-        // 移动端菜单
-        function toggleMobileMenu() {
-            document.getElementById('mobileMenu').classList.toggle('hidden');
-        }
-
-        // 隐藏所有练习界面
+        /* ========== 工具函数 ========== */
         function hideAllExercises() {
             document.getElementById('practiceList').classList.add('hidden');
             document.getElementById('breathingExercise').classList.add('hidden');
             document.getElementById('bodyScanExercise').classList.add('hidden');
             document.getElementById('mindfulnessExercise').classList.add('hidden');
             document.getElementById('fiveSensesExercise').classList.add('hidden');
+            document.getElementById('moreExercises').classList.add('hidden');
         }
 
-        // 退出练习
+        function showView(id) {
+            hideAllExercises();
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+        }
+
         function exitExercise() {
             stopBreathing();
             stopBodyScan();
             stopMindfulness();
-            hideAllExercises();
-            document.getElementById('practiceList').classList.remove('hidden');
+            showView('practiceList');
+            document.getElementById('moreExercises').classList.remove('hidden');
         }
 
-        // ==================== 呼吸训练 ====================
+        /* ========== 呼吸训练 ========== */
         let breathingInterval = null;
         let breathingRunning = false;
         let breathingCycle = 0;
 
         function startBreathing() {
-            hideAllExercises();
-            document.getElementById('breathingExercise').classList.remove('hidden');
+            showView('breathingExercise');
             breathingCycle = 0;
+            resetBreathCircle();
+        }
+
+        function resetBreathCircle() {
+            const core = document.getElementById('breathCore');
+            core.classList.remove('inhale', 'hold', 'exhale');
+            document.getElementById('breathingPhase').textContent = '准备开始';
+            document.getElementById('breathingCount').textContent = '';
+            document.getElementById('startBreathingBtn').textContent = '开始练习';
+            document.getElementById('breathingInstruction').textContent = '点击开始按钮，跟随引导进行呼吸练习';
         }
 
         function toggleBreathing() {
@@ -557,49 +740,41 @@
         function runBreathing() {
             breathingRunning = true;
             document.getElementById('startBreathingBtn').textContent = '暂停';
-            
+
             const phases = [
-                { name: '吸气', duration: 4, class: 'inhale' },
-                { name: '屏息', duration: 7, class: 'hold' },
-                { name: '呼气', duration: 8, class: 'exhale' }
+                { name: '吸气', duration: 4, cls: 'inhale', guide: '慢慢吸气，感受空气进入身体...' },
+                { name: '屏息', duration: 7, cls: 'hold',   guide: '保持住，让身体吸收氧气...' },
+                { name: '呼气', duration: 8, cls: 'exhale', guide: '慢慢呼气，释放紧张...' },
             ];
-            
+
             let phaseIndex = 0;
             let count = phases[0].duration;
-            
-            function updateBreathing() {
+
+            function updateBreath() {
                 const phase = phases[phaseIndex];
-                const circle = document.getElementById('breathingCircle');
-                
+                const core = document.getElementById('breathCore');
+
                 document.getElementById('breathingPhase').textContent = phase.name;
                 document.getElementById('breathingCount').textContent = count;
-                
-                // 更新圆圈大小
-                circle.classList.remove('inhale', 'hold', 'exhale');
-                circle.classList.add(phase.class);
-                
-                // 更新说明
-                const instructions = {
-                    '吸气': '慢慢吸气，感受空气进入身体...',
-                    '屏息': '保持住，让身体吸收氧气...',
-                    '呼气': '慢慢呼气，释放紧张...'
-                };
-                document.getElementById('breathingInstruction').innerHTML = `<p class="text-gray-600">${instructions[phase.name]}</p>`;
-                
+                document.getElementById('breathingInstruction').textContent = phase.guide;
+
+                core.classList.remove('inhale', 'hold', 'exhale');
+                core.classList.add(phase.cls);
+
                 count--;
-                
+
                 if (count < 0) {
                     phaseIndex = (phaseIndex + 1) % phases.length;
                     count = phases[phaseIndex].duration;
-                    
+
                     if (phaseIndex === 0) {
                         breathingCycle++;
                         if (breathingCycle >= 4) {
                             stopBreathing();
                             document.getElementById('breathingInstruction').innerHTML = `
-                                <div class="text-center">
-                                    <p class="text-primary-600 font-medium mb-2">练习完成</p>
-                                    <p class="text-gray-600">你已完成4个呼吸循环，感觉怎么样？</p>
+                                <div style="text-align:center;">
+                                    <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">练习完成 🌟</p>
+                                    <p style="font-size:0.9rem;">你已完成4个呼吸循环，感觉怎么样？</p>
                                 </div>
                             `;
                             return;
@@ -607,9 +782,9 @@
                     }
                 }
             }
-            
-            updateBreathing();
-            breathingInterval = setInterval(updateBreathing, 1000);
+
+            updateBreath();
+            breathingInterval = setInterval(updateBreath, 1000);
         }
 
         function stopBreathing() {
@@ -619,14 +794,13 @@
                 breathingInterval = null;
             }
             document.getElementById('startBreathingBtn').textContent = '开始练习';
-            document.getElementById('breathingCircle').classList.remove('inhale', 'hold', 'exhale');
+            resetBreathCircle();
         }
 
-        // ==================== 身体扫描 ====================
+        /* ========== 身体扫描 ========== */
         let scanInterval = null;
         let scanRunning = false;
         let scanStep = 0;
-
         const scanSteps = [
             { part: '头顶', instruction: '把注意力放在头顶，感受这里的温度和触感。有没有紧张？让它慢慢放松。' },
             { part: '额头', instruction: '感受你的额头。有没有皱着眉头？让它舒展开来，放松。' },
@@ -637,68 +811,64 @@
             { part: '胸部', instruction: '感受你的胸部。随着呼吸，感受它轻轻起伏。' },
             { part: '腹部', instruction: '把注意力放在腹部。让呼吸自然地来到这里，感受腹部的起伏。' },
             { part: '双腿', instruction: '从大腿到小腿，一直到脚趾。感受双腿的存在，让它们完全放松。' },
-            { part: '全身', instruction: '现在感受整个身体。从头到脚，完全放松。享受这份宁静。' }
+            { part: '全身', instruction: '现在感受整个身体。从头到脚，完全放松。享受这份宁静。' },
         ];
 
         function startBodyScan() {
-            hideAllExercises();
-            document.getElementById('bodyScanExercise').classList.remove('hidden');
+            showView('bodyScanExercise');
             scanStep = 0;
             updateScanProgress();
         }
 
         function toggleBodyScan() {
-            if (scanRunning) {
-                stopBodyScan();
-            } else {
-                runBodyScan();
-            }
+            if (scanRunning) stopBodyScan(); else runBodyScan();
         }
 
         function runBodyScan() {
             scanRunning = true;
             document.getElementById('startScanBtn').textContent = '暂停';
-            
+
             let secondsInStep = 0;
-            const stepDuration = 10; // 每个部位10秒
-            
+            const stepDuration = 10;
+
             function updateScan() {
                 if (scanStep >= scanSteps.length) {
                     stopBodyScan();
                     document.getElementById('scanInstruction').innerHTML = `
-                        <div class="text-center">
-                            <p class="text-primary-600 font-medium mb-2">扫描完成</p>
-                            <p class="text-gray-600">你的身体已经从头到脚放松了一遍。感受一下现在的状态。</p>
+                        <div style="text-align:center;">
+                            <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">扫描完成 🌟</p>
+                            <p style="font-size:0.9rem;">你的身体已经从头到脚放松了一遍。感受一下现在的状态。</p>
                         </div>
                     `;
                     return;
                 }
-                
+
                 const step = scanSteps[scanStep];
                 document.getElementById('scanInstruction').innerHTML = `
-                    <div class="text-center">
-                        <p class="text-primary-600 font-medium mb-2">${step.part}</p>
-                        <p class="text-gray-700">${step.instruction}</p>
+                    <div style="text-align:center;">
+                        <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">${step.part}</p>
+                        <p>${step.instruction}</p>
                     </div>
                 `;
-                
+
                 secondsInStep++;
                 updateScanProgress();
-                
+
                 if (secondsInStep >= stepDuration) {
                     scanStep++;
                     secondsInStep = 0;
                 }
             }
-            
+
             updateScan();
             scanInterval = setInterval(updateScan, 1000);
         }
 
         function updateScanProgress() {
             const total = scanSteps.length;
-            const progress = (scanStep / total) * 364.4;
-            document.getElementById('scanProgress').style.strokeDashoffset = 364.4 - progress;
+            const circumference = 351.86;
+            const offset = circumference - (scanStep / total) * circumference;
+            document.getElementById('scanProgressRing').style.strokeDashoffset = offset;
             document.getElementById('scanStep').textContent = `${Math.min(scanStep + 1, total)}/${total}`;
         }
 
@@ -711,30 +881,25 @@
             document.getElementById('startScanBtn').textContent = '开始练习';
         }
 
-        // ==================== 正念冥想 ====================
+        /* ========== 正念冥想 ========== */
         let mindfulnessInterval = null;
         let mindfulnessRunning = false;
-        let mindfulnessSeconds = 480; // 8分钟
+        let mindfulnessSeconds = 480;
 
         function startMindfulness() {
-            hideAllExercises();
-            document.getElementById('mindfulnessExercise').classList.remove('hidden');
+            showView('mindfulnessExercise');
             mindfulnessSeconds = 480;
             updateMindfulnessTimer();
         }
 
         function toggleMindfulness() {
-            if (mindfulnessRunning) {
-                stopMindfulness();
-            } else {
-                runMindfulness();
-            }
+            if (mindfulnessRunning) stopMindfulness(); else runMindfulness();
         }
 
         function runMindfulness() {
             mindfulnessRunning = true;
             document.getElementById('startMindfulnessBtn').textContent = '暂停';
-            
+
             const instructions = [
                 '闭上眼睛，把注意力放在呼吸上。',
                 '感受空气进入鼻腔，充满胸腔。',
@@ -743,43 +908,41 @@
                 '每一次呼吸，都让自己更加放松。',
                 '此刻，只有你和你的呼吸。',
                 '让身体完全放松，让思绪慢慢安静。',
-                '你做得很好，继续专注于呼吸。'
+                '你做得很好，继续专注于呼吸。',
             ];
-            
+
             let instructionIndex = 0;
-            
+
             function updateMindfulness() {
                 mindfulnessSeconds--;
                 updateMindfulnessTimer();
-                
-                // 每60秒更换引导语
-                if (mindfulnessSeconds % 60 === 0) {
+
+                if (mindfulnessSeconds % 60 === 0 && mindfulnessSeconds > 0) {
                     instructionIndex = (instructionIndex + 1) % instructions.length;
-                    document.getElementById('mindfulnessInstruction').innerHTML = `<p class="text-gray-700">${instructions[instructionIndex]}</p>`;
+                    document.getElementById('mindfulnessInstruction').textContent = instructions[instructionIndex];
                 }
-                
+
                 if (mindfulnessSeconds <= 0) {
                     stopMindfulness();
                     document.getElementById('mindfulnessInstruction').innerHTML = `
-                        <div class="text-center">
-                            <p class="text-primary-600 font-medium mb-2">冥想结束</p>
-                            <p class="text-gray-600">慢慢睁开眼睛，感受此刻的自己。</p>
+                        <div style="text-align:center;">
+                            <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">冥想结束 🌟</p>
+                            <p>慢慢睁开眼睛，感受此刻的自己。</p>
                         </div>
                     `;
                 }
             }
-            
+
             mindfulnessInterval = setInterval(updateMindfulness, 1000);
         }
 
         function updateMindfulnessTimer() {
-            const minutes = Math.floor(mindfulnessSeconds / 60);
-            const seconds = mindfulnessSeconds % 60;
-            document.getElementById('mindfulnessTimer').textContent = 
-                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            
-            const progress = ((480 - mindfulnessSeconds) / 480) * 100;
-            document.getElementById('mindfulnessProgress').style.width = `${progress}%`;
+            const m = Math.floor(mindfulnessSeconds / 60);
+            const s = mindfulnessSeconds % 60;
+            document.getElementById('mindfulnessTimer').textContent =
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            const pct = ((480 - mindfulnessSeconds) / 480) * 100;
+            document.getElementById('mindfulnessProgress').style.width = `${pct}%`;
         }
 
         function stopMindfulness() {
@@ -791,143 +954,102 @@
             document.getElementById('startMindfulnessBtn').textContent = '开始练习';
         }
 
-        // ==================== 五感放松 ====================
+        /* ========== 五感放松 ========== */
         function startFiveSenses() {
-            hideAllExercises();
-            document.getElementById('fiveSensesExercise').classList.remove('hidden');
+            showView('fiveSensesExercise');
         }
 
-        // ==================== 动态加载疗愈练习 ====================
-        let allExercises = [];
-
-        // 分类颜色映射
-        const exerciseCategoryColors = {
-            '正念冥想': { bg: 'bg-indigo-100', text: 'text-indigo-600', icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z' },
-            '呼吸练习': { bg: 'bg-primary-100', text: 'text-primary-600', icon: 'M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4' },
-            '身体放松': { bg: 'bg-warm-100', text: 'text-accent-orange', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
-            '情绪调节': { bg: 'bg-pink-100', text: 'text-pink-600', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' },
-            '认知行为': { bg: 'bg-purple-100', text: 'text-purple-600', icon: 'M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z' },
-            '积极心理学': { bg: 'bg-green-100', text: 'text-green-600', icon: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-            '表达性写作': { bg: 'bg-blue-100', text: 'text-blue-600', icon: 'M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z' },
-            '传统养生': { bg: 'bg-amber-100', text: 'text-amber-600', icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707' },
-            '传统功法': { bg: 'bg-amber-100', text: 'text-amber-600', icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707' },
-            '艺术疗愈': { bg: 'bg-rose-100', text: 'text-rose-600', icon: 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' },
-            'default': { bg: 'bg-primary-100', text: 'text-primary-600', icon: 'M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z' }
-        };
-
+        /* ========== 更多练习加载 ========== */
         async function loadExercises() {
             try {
                 const response = await fetch('/api/knowledge/exercises');
                 const data = await response.json();
-                
+
+                const loading = document.getElementById('exercisesLoading');
+                const list = document.getElementById('exercisesList');
+
                 if (data.exercises && data.exercises.length > 0) {
-                    allExercises = data.exercises;
-                    renderExercises(allExercises);
+                    loading.classList.add('hidden');
+                    list.classList.remove('hidden');
+                    list.style.display = 'grid';
+
+                    const categoryColors = {
+                        '正念冥想': { bg: 'var(--color-calm-100)', color: '#1E40AF' },
+                        '呼吸练习': { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
+                        '身体放松': { bg: 'var(--color-warm-100)', color: '#92400E' },
+                        '情绪调节': { bg: '#FCE7F3', color: '#9D174D' },
+                    };
+
+                    list.innerHTML = data.exercises.map(ex => {
+                        const c = categoryColors[ex.category] || { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' };
+                        return `
+                            <div class="practice-card" onclick='showExerciseDetail(${JSON.stringify(ex).replace(/'/g, "\\'")})'>
+                                <div class="practice-icon" style="background:${c.bg};">
+                                    <svg style="width:24px;height:24px;color:${c.color};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <div style="flex:1;min-width:0;">
+                                    <h3 style="font-size:0.95rem;font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">${ex.title}</h3>
+                                    <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.5rem;">${(ex.description || '').substring(0, 50)}...</p>
+                                    <span style="font-size:0.75rem;color:var(--theme-text-light);">${ex.duration || '5-10分钟'} · ${ex.difficulty || '入门'}</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
                 } else {
-                    document.getElementById('exercisesLoading').innerHTML = '<p class="text-gray-500">暂无更多练习</p>';
+                    loading.innerHTML = '<p style="color:var(--theme-text-light);">暂无更多练习</p>';
                 }
             } catch (error) {
                 console.error('加载练习失败:', error);
-                document.getElementById('exercisesLoading').innerHTML = '<p class="text-gray-500">加载失败，请稍后重试</p>';
+                document.getElementById('exercisesLoading').innerHTML = '<p style="color:var(--theme-text-light);">加载失败，请稍后重试</p>';
             }
-        }
-
-        function renderExercises(exercises) {
-            const container = document.getElementById('exercisesList');
-            const loading = document.getElementById('exercisesLoading');
-            
-            loading.classList.add('hidden');
-            container.classList.remove('hidden');
-
-            container.innerHTML = exercises.map(exercise => {
-                const colors = exerciseCategoryColors[exercise.category] || exerciseCategoryColors['default'];
-                const duration = exercise.duration || '5-10分钟';
-                const difficulty = exercise.difficulty || '入门';
-                
-                return `
-                    <div class="bg-warm-50 rounded-card p-4 cursor-pointer hover:shadow-md transition-shadow" onclick='showExerciseDetail(${JSON.stringify(exercise).replace(/'/g, "\\'")})'>
-                        <div class="flex items-start">
-                            <div class="w-12 h-12 ${colors.bg} rounded-xl flex items-center justify-center mr-3 flex-shrink-0">
-                                <svg class="w-6 h-6 ${colors.text}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${colors.icon}"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h3 class="font-medium text-gray-800 mb-1">${exercise.title}</h3>
-                                <p class="text-sm text-gray-600 line-clamp-2 mb-2">${exercise.description || ''}</p>
-                                <div class="flex items-center gap-3 text-xs text-gray-500">
-                                    <span>${duration}</span>
-                                    <span>·</span>
-                                    <span>${difficulty}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         function showExerciseDetail(exercise) {
             const modal = document.getElementById('exerciseModal');
-            const title = document.getElementById('modalExerciseTitle');
-            const meta = document.getElementById('modalExerciseMeta');
-            const content = document.getElementById('modalExerciseContent');
+            document.getElementById('modalExerciseTitle').textContent = exercise.title;
+            document.getElementById('modalExerciseMeta').textContent =
+                `${exercise.duration || '5-10分钟'} · ${exercise.difficulty || '入门'}`;
 
-            title.textContent = exercise.title;
-            meta.textContent = `${exercise.duration || '5-10分钟'} · ${exercise.difficulty || '入门'}`;
-
-            let html = `<p class="text-gray-600 mb-4">${exercise.description || ''}</p>`;
+            let html = `<p style="color:var(--theme-text-light);margin-bottom:1rem;">${exercise.description || ''}</p>`;
 
             if (exercise.steps && exercise.steps.length > 0) {
-                html += `
-                    <h4 class="font-semibold text-gray-800 mb-3">练习步骤</h4>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-600 mb-4">
-                        ${exercise.steps.map(step => `<li>${step}</li>`).join('')}
-                    </ol>
-                `;
-            }
-
-            if (exercise.benefits && exercise.benefits.length > 0) {
-                html += `
-                    <h4 class="font-semibold text-gray-800 mb-3 mt-6">练习益处</h4>
-                    <div class="flex flex-wrap gap-2">
-                        ${exercise.benefits.map(benefit => `<span class="text-sm bg-primary-50 text-primary-600 px-3 py-1 rounded-full">${benefit}</span>`).join('')}
-                    </div>
-                `;
+                html += `<h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">练习步骤</h3><ol style="list-style:decimal;padding-left:1.25rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem;color:var(--theme-text);">${exercise.steps.map(s => `<li>${s}</li>`).join('')}</ol>`;
             }
 
             if (exercise.neuroscienceBasis) {
-                html += `
-                    <div class="mt-6 p-4 bg-primary-50 rounded-soft">
-                        <p class="text-sm font-medium text-primary-600 mb-2">科学依据</p>
-                        <p class="text-sm text-gray-600">${exercise.neuroscienceBasis}</p>
-                    </div>
-                `;
+                html += `<div style="margin-top:1rem;padding:1rem;background:var(--color-primary-50);border-radius:var(--radius-lg);">
+                    <p style="font-weight:600;color:var(--color-primary-600);margin-bottom:0.25rem;font-size:0.875rem;">科学依据</p>
+                    <p style="font-size:0.875rem;color:var(--theme-text);">${exercise.neuroscienceBasis}</p>
+                </div>`;
             }
 
-            if (exercise.source) {
-                html += `<p class="text-xs text-gray-400 mt-4">来源：${exercise.source}</p>`;
-            }
-
-            content.innerHTML = html;
-            modal.classList.remove('hidden');
+            document.getElementById('modalExerciseContent').innerHTML = html;
+            modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeExerciseModal() {
-            document.getElementById('exerciseModal').classList.add('hidden');
+            document.getElementById('exerciseModal').classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // ESC键关闭弹窗
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeExerciseModal();
-            }
+        /* ========== 移动端菜单 ========== */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        /* ========== ESC 关闭弹窗 ========== */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeExerciseModal();
         });
 
-        // 页面加载时获取练习数据
-        document.addEventListener('DOMContentLoaded', loadExercises);
+        /* ========== 初始化 ========== */
+        document.addEventListener('DOMContentLoaded', () => {
+            loadExercises();
+        });
     </script>
 </body>
 </html>

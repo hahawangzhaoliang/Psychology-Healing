@@ -3,412 +3,815 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5分钟充电站 - 心晴空间</title>
+    <title>5分钟充电站 — 心晴空间</title>
+    <meta name="description" content="治愈图片、神经音乐、微故事，随时随地给自己一个能量补给。">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ---------- 页面级覆盖 ---------- */
         body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: var(--theme-background, #FDF8F3);
-            color: var(--theme-text, #4A4A4A);
-            transition: all 0.3s ease;
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
         }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
+
+        /* ---------- 页面头部区域 ---------- */
+        .page-hero {
+            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 50%, var(--color-primary-100) 100%);
+            padding-top: 80px;
+            padding-bottom: 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 动态渐变气泡 */
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color-primary-200), transparent 60%);
+            opacity: 0.1;
+            top: -200px;
+            right: -150px;
+            animation: float 10s ease-in-out infinite;
+            pointer-events: none;
         }
-        .slide-up {
-            animation: slideUp 0.5s ease-out;
+        .page-hero::after {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
+            background: radial-gradient(circle, var(--color-warm-200), transparent 60%);
+            opacity: 0.12;
+            bottom: -100px;
+            left: -100px;
+            animation: fluidMorph 14s ease-in-out infinite;
+            pointer-events: none;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        /* ---------- 场景选择器 ---------- */
+        .scenario-tabs {
+            display: inline-flex;
+            background: var(--theme-card);
+            border-radius: var(--radius-full);
+            padding: 4px;
+            box-shadow: var(--shadow-sm);
+            gap: 4px;
         }
-        .pulse-glow {
-            animation: pulseGlow 2s ease-in-out infinite;
+        .scenario-btn {
+            padding: 0.625rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--theme-text-light);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-spring);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
         }
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(125, 211, 192, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(125, 211, 192, 0.6); }
+        .scenario-btn:hover {
+            color: var(--color-primary-500);
+            background: var(--color-primary-50);
         }
+        .scenario-btn.active {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+        }
+
+        /* ---------- 内容网格 ---------- */
+        .content-grid {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+
+        @media (min-width: 640px) {
+            .content-grid {
+                padding: 3rem 2rem;
+            }
+        }
+
+        /* ---------- 内容卡片 ---------- */
         .content-card {
-            background: var(--theme-card, white);
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            opacity: 0;
+            transform: translateY(16px);
+        }
+        .content-card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         .content-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            box-shadow: var(--shadow-lg);
         }
-        .scenario-btn {
-            transition: all 0.3s ease;
+
+        /* 卡片头部 */
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
         }
-        .scenario-btn:hover {
-            transform: scale(1.05);
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .scenario-btn.active {
-            background: var(--theme-primary, #7DD3C0);
-            color: white;
+
+        /* 刷新按钮 */
+        .refresh-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--color-primary-50);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary-400);
+            transition: all var(--duration-fast) var(--ease-spring);
         }
+        .refresh-btn:hover {
+            background: var(--color-primary-100);
+            transform: rotate(30deg);
+        }
+        .refresh-btn:active {
+            transform: rotate(180deg) scale(0.9);
+        }
+
+        /* ---------- 治愈图片 ---------- */
         .image-container {
             position: relative;
+            border-radius: var(--radius-lg);
             overflow: hidden;
-            border-radius: 15px;
+            aspect-ratio: 4/3;
+            margin-bottom: 1rem;
         }
         .image-container img {
-            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform var(--duration-slow) var(--ease-standard);
         }
         .image-container:hover img {
             transform: scale(1.05);
         }
-        .audio-visualizer {
+        .image-caption {
+            font-size: 0.85rem;
+            color: var(--theme-text-light);
+            text-align: center;
+        }
+
+        /* ---------- 神经音乐播放器 ---------- */
+        .music-visualizer {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 3px;
+            gap: 4px;
             height: 40px;
+            margin-bottom: 1.25rem;
         }
         .audio-bar {
-            width: 4px;
-            background: var(--theme-primary, #7DD3C0);
-            border-radius: 2px;
-            animation: audioWave 1s ease-in-out infinite;
+            width: 5px;
+            border-radius: 3px;
+            background: linear-gradient(to top, var(--color-primary-300), var(--color-primary-500));
+            transition: height 0.3s var(--ease-standard);
         }
-        .audio-bar:nth-child(1) { animation-delay: 0s; height: 20px; }
-        .audio-bar:nth-child(2) { animation-delay: 0.1s; height: 30px; }
-        .audio-bar:nth-child(3) { animation-delay: 0.2s; height: 25px; }
-        .audio-bar:nth-child(4) { animation-delay: 0.3s; height: 35px; }
-        .audio-bar:nth-child(5) { animation-delay: 0.4s; height: 20px; }
+        .audio-bar:nth-child(1) { height: 20px; animation: audioWave 1.2s ease-in-out infinite; }
+        .audio-bar:nth-child(2) { height: 30px; animation: audioWave 1.2s ease-in-out infinite 0.1s; }
+        .audio-bar:nth-child(3) { height: 25px; animation: audioWave 1.2s ease-in-out infinite 0.2s; }
+        .audio-bar:nth-child(4) { height: 35px; animation: audioWave 1.2s ease-in-out infinite 0.3s; }
+        .audio-bar:nth-child(5) { height: 18px; animation: audioWave 1.2s ease-in-out infinite 0.4s; }
+        .audio-bar:nth-child(6) { height: 28px; animation: audioWave 1.2s ease-in-out infinite 0.15s; }
+        .audio-bar:nth-child(7) { height: 22px; animation: audioWave 1.2s ease-in-out infinite 0.25s; }
+
         @keyframes audioWave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.5); }
+            0%, 100% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(0.45); opacity: 0.7; }
+        }
+
+        .music-info {
+            text-align: center;
+            margin-bottom: 1.25rem;
+        }
+        .music-title {
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 0.25rem;
+        }
+        .music-desc {
+            font-size: 0.85rem;
+            color: var(--theme-text-light);
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .ctrl-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--color-primary-50);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary-500);
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .ctrl-btn:hover {
+            background: var(--color-primary-100);
+            transform: scale(1.08);
+        }
+        .ctrl-btn:active {
+            transform: scale(0.95);
+        }
+        .play-btn {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+        }
+        .play-btn:hover {
+            box-shadow: 0 6px 24px rgba(90, 154, 138, 0.45);
+            transform: scale(1.08);
+        }
+        .play-btn.playing {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        /* ---------- 微故事 ---------- */
+        .story-content {
+            font-size: 0.95rem;
+            color: var(--theme-text);
+            line-height: 1.9;
+            margin-bottom: 1.25rem;
+            white-space: pre-line;
+        }
+        .story-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .story-time {
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+        }
+        .share-btn {
+            padding: 0.375rem 1rem;
+            border-radius: var(--radius-full);
+            background: var(--color-primary-50);
+            border: none;
+            color: var(--color-primary-500);
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .share-btn:hover {
+            background: var(--color-primary-100);
+            transform: scale(1.03);
+        }
+
+        /* ---------- 快速行动按钮 ---------- */
+        .quick-action {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+        .charge-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 6px 24px rgba(90, 154, 138, 0.35);
+            transition: all var(--duration-normal) var(--ease-spring);
+        }
+        .charge-btn:hover {
+            box-shadow: 0 8px 32px rgba(90, 154, 138, 0.45);
+            transform: translateY(-2px);
+        }
+        .charge-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* ---------- 今日推荐 ---------- */
+        .recommend-section {
+            background: linear-gradient(180deg, var(--color-primary-50), var(--theme-bg));
+            padding: 3rem 1.5rem;
+            border-top: 1px solid var(--theme-border);
+        }
+        .recommend-grid {
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        /* ---------- 页脚 ---------- */
+        .site-footer {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 2rem 1rem;
+        }
+        .site-footer .inner {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+        .site-footer .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
         }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm fixed w-full top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold" style="color: var(--theme-primary, #7DD3C0)">心晴空间</a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+
+            <div style="display:none;align-items:center;gap:2rem;" class="md:flex">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;">首页</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
+                <a href="practice.html" style="color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;">关于我们</a>
             </div>
+
+            <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <div id="mobileMenu" style="display:none;background:var(--theme-card);border-top:1px solid var(--theme-border);padding:0.75rem 1rem;" class="md:hidden">
+            <a href="index.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">首页</a>
+            <a href="emotion.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
+            <a href="practice.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
+            <a href="knowledge-graph.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
+            <a href="about.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">关于我们</a>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main class="max-w-6xl mx-auto px-4 pt-24 pb-12">
-        <!-- 标题 -->
-        <div class="text-center mb-8 fade-in">
-            <h1 class="text-4xl font-bold mb-4">⚡ 5分钟充电站</h1>
-            <p class="text-lg text-gray-600">选择你的场景，获取专属能量包</p>
+    <!-- ===== 页面头部 ===== -->
+    <section class="page-hero">
+        <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1;">
+            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up">⚡ 5分钟充电站</h1>
+            <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);margin-bottom:2rem;" class="fade-in-up" style="animation-delay:0.1s;">选择你的场景，获取专属能量包</p>
+
+            <!-- 场景选择器 -->
+            <div class="scenario-tabs fade-in-up" style="animation-delay:0.2s;">
+                <button class="scenario-btn active" data-scenario="morning" onclick="selectScenario('morning')">🌅 晨起</button>
+                <button class="scenario-btn" data-scenario="noon" onclick="selectScenario('noon')">☀️ 午休</button>
+                <button class="scenario-btn" data-scenario="evening" onclick="selectScenario('evening')">🌆 黄昏</button>
+                <button class="scenario-btn" data-scenario="sleep" onclick="selectScenario('sleep')">🌙 睡前</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== 内容网格 ===== -->
+    <div class="content-grid" id="contentPack">
+        <!-- 治愈图片 -->
+        <div class="content-card" id="imageCard" style="transition-delay:0.05s;">
+            <div class="card-header">
+                <h2 class="card-title">📸 治愈图片</h2>
+                <button class="refresh-btn" onclick="refreshImage()" title="换一张">
+                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="image-container">
+                <img id="healing-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=450&fit=crop" alt="治愈图片">
+            </div>
+            <p id="image-caption" class="image-caption">山间的清晨，宁静而美好</p>
         </div>
 
-        <!-- 场景选择 -->
-        <div class="flex justify-center gap-4 mb-8 fade-in">
-            <button onclick="selectScenario('morning')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="morning">
-                🌅 晨起
-            </button>
-            <button onclick="selectScenario('noon')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="noon">
-                ☀️ 午休
-            </button>
-            <button onclick="selectScenario('night')" class="scenario-btn px-6 py-3 rounded-full border-2 border-gray-200 bg-white" data-scenario="night">
-                🌙 睡前
-            </button>
-        </div>
-
-        <!-- 内容包 -->
-        <div id="content-pack" class="grid md:grid-cols-3 gap-6">
-            <!-- 治愈图片 -->
-            <div class="content-card p-6 slide-up" style="animation-delay: 0.1s">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold">📸 治愈图片</h3>
-                    <button onclick="refreshImage()" class="text-gray-400 hover:text-gray-600 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="image-container mb-4">
-                    <img id="healing-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop" 
-                         alt="治愈图片" class="w-full h-48 object-cover">
-                </div>
-                <p id="image-caption" class="text-sm text-gray-600 text-center">山间的清晨，宁静而美好</p>
+        <!-- 神经音乐 -->
+        <div class="content-card" id="musicCard" style="transition-delay:0.15s;">
+            <div class="card-header">
+                <h2 class="card-title">🎵 神经音乐</h2>
+                <button class="refresh-btn" onclick="refreshMusic()" title="换一首">
+                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
             </div>
 
-            <!-- 神经音乐 -->
-            <div class="content-card p-6 slide-up" style="animation-delay: 0.2s">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold">🎵 神经音乐</h3>
-                    <button onclick="refreshMusic()" class="text-gray-400 hover:text-gray-600 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="audio-visualizer mb-4">
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                    <div class="audio-bar"></div>
-                </div>
-                <div class="text-center mb-4">
-                    <p id="music-title" class="font-semibold mb-1">晨间冥想</p>
-                    <p id="music-desc" class="text-sm text-gray-600">432Hz · 提升专注力</p>
-                </div>
-                <div class="flex items-center justify-center gap-4">
-                    <button onclick="prevTrack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                        </svg>
-                    </button>
-                    <button onclick="togglePlay()" id="play-btn" class="w-14 h-14 rounded-full flex items-center justify-center text-white pulse-glow" style="background: var(--theme-primary, #7DD3C0)">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                        </svg>
-                    </button>
-                    <button onclick="nextTrack()" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                        </svg>
-                    </button>
-                </div>
+            <div class="music-visualizer" id="musicVisualizer">
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
+                <div class="audio-bar"></div>
             </div>
 
-            <!-- 微故事 -->
-            <div class="content-card p-6 slide-up" style="animation-delay: 0.3s">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold">📖 微故事</h3>
-                    <button onclick="refreshStory()" class="text-gray-400 hover:text-gray-600 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                        </svg>
-                    </button>
-                </div>
-                <div class="mb-4">
-                    <p id="story-content" class="text-gray-700 leading-relaxed mb-4">
-                        小狐狸每天都会在山顶等待日出。有一天，它问太阳："你为什么每天都来？"
-                        <br><br>
-                        太阳笑着说："因为有人在等我啊，就像你在等我一样。"
-                        <br><br>
-                        原来，被期待是一件温暖的事。
-                    </p>
-                </div>
-                <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500">阅读时间：1分钟</span>
-                    <button onclick="shareStory()" class="text-sm px-4 py-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
-                        分享故事
-                    </button>
-                </div>
+            <div class="music-info">
+                <p id="music-title" class="music-title">晨间冥想</p>
+                <p id="music-desc" class="music-desc">432Hz · 提升专注力</p>
+                <p id="music-meta" style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;"></p>
+            </div>
+
+            <div class="music-controls">
+                <button class="ctrl-btn" onclick="prevTrack()" title="上一首">
+                    <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
+                    </svg>
+                </button>
+                <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()" title="播放/暂停">
+                    <svg id="playIcon" style="width:22px;height:22px;fill:currentColor;" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </button>
+                <button class="ctrl-btn" onclick="nextTrack()" title="下一首">
+                    <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
+                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
-        <!-- 快速行动 -->
-        <div class="mt-8 text-center fade-in">
-            <button onclick="startQuickCharge()" class="px-8 py-4 rounded-full text-white font-semibold text-lg transition transform hover:scale-105" style="background: var(--theme-primary, #7DD3C0)">
-                开始5分钟充电 ⚡
-            </button>
+        <!-- 微故事 -->
+        <div class="content-card" id="storyCard" style="transition-delay:0.25s;">
+            <div class="card-header">
+                <h2 class="card-title">📖 微故事</h2>
+                <button class="refresh-btn" onclick="refreshStory()" title="换一个">
+                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                </button>
+            </div>
+            <p id="story-theme" style="font-size:0.75rem;color:var(--color-primary-500);margin-bottom:0.75rem;font-weight:500;"></p>
+            <p id="story-content" class="story-content"></p>
+            <p id="story-moral" style="font-size:0.85rem;color:var(--color-warm-500);margin-top:0.75rem;font-style:italic;padding-top:0.75rem;border-top:1px solid var(--theme-border);"></p>
+            <div class="story-meta">
+                <span class="story-time" id="story-time">阅读时间：约3分钟</span>
+                <button class="share-btn" onclick="shareStory()">分享故事</button>
+            </div>
         </div>
+    </div>
 
-        <!-- 今日推荐 -->
-        <div class="mt-12 fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-center">✨ 今日推荐</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="content-card p-6">
-                    <div class="flex items-start gap-4">
-                        <div class="text-4xl">🧘</div>
-                        <div class="flex-1">
-                            <h3 class="font-semibold mb-2">3分钟呼吸练习</h3>
-                            <p class="text-sm text-gray-600 mb-3">适合现在的你，快速恢复能量</p>
-                            <button onclick="window.location.href='practice.html'" class="text-sm px-4 py-2 rounded-full text-white" style="background: var(--theme-primary, #7DD3C0)">
-                                开始练习
-                            </button>
-                        </div>
+    <!-- 快速行动 -->
+    <div class="quick-action">
+        <button class="charge-btn" onclick="startQuickCharge()">
+            开始5分钟充电 ⚡
+        </button>
+    </div>
+
+    <!-- 今日推荐 -->
+    <section class="recommend-section">
+        <div class="recommend-grid">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:1.5rem;text-align:center;" class="fade-in-up">✨ 今日推荐</h2>
+            <div style="display:grid;gap:1rem;" class="md:grid-cols-2" data-stagger="fade-in-up">
+                <a href="practice.html" style="background:var(--theme-card);border-radius:var(--radius-xl);padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;text-decoration:none;color:inherit;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow=''">
+                    <div style="font-size:2.5rem;">🧘</div>
+                    <div>
+                        <h3 style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">3分钟呼吸练习</h3>
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:0.75rem;">适合现在的你，快速恢复能量</p>
+                        <span class="btn btn-sm" style="background:var(--color-primary-400);color:white;">开始练习</span>
                     </div>
-                </div>
-                <div class="content-card p-6">
-                    <div class="flex items-start gap-4">
-                        <div class="text-4xl">💭</div>
-                        <div class="flex-1">
-                            <h3 class="font-semibold mb-2">记录此刻心情</h3>
-                            <p class="text-sm text-gray-600 mb-3">写下你的感受，释放内心压力</p>
-                            <button onclick="window.location.href='emotion.html'" class="text-sm px-4 py-2 rounded-full text-white" style="background: var(--theme-primary, #7DD3C0)">
-                                开始记录
-                            </button>
-                        </div>
+                </a>
+                <a href="emotion.html" style="background:var(--theme-card);border-radius:var(--radius-xl);padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;text-decoration:none;color:inherit;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1),box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='translateY(0)';this.style.boxShadow=''">
+                    <div style="font-size:2.5rem;">💭</div>
+                    <div>
+                        <h3 style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">记录此刻心情</h3>
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:0.75rem;">写下你的感受，释放内心压力</p>
+                        <span class="btn btn-sm" style="background:var(--color-primary-400);color:white;">开始记录</span>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
-    </main>
+    </section>
 
+    <!-- ===== 页脚 ===== -->
+    <footer class="site-footer">
+        <div class="inner">
+            <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
+                <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
+                    ⚠️ <strong>非诊断工具</strong>：本平台内容仅供心理科普与情绪陪伴使用，不能替代专业心理咨询或医学诊断。如需帮助，请联系专业心理咨询师。
+                </p>
+            </div>
+            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
+        </div>
+    </footer>
+
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
     <script src="js/theme-manager.js"></script>
+    <!-- 内容库 -->
+    <script src="data/music.js"></script>
+    <script src="data/stories.js"></script>
     <script>
-        // 内容数据
-        const contentData = {
-            morning: {
-                images: [
-                    { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop', caption: '山间的清晨，宁静而美好' },
-                    { url: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=400&h=300&fit=crop', caption: '第一缕阳光，温暖而充满希望' },
-                    { url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=400&h=300&fit=crop', caption: '城市的早晨，新的开始' }
-                ],
-                music: [
-                    { title: '晨间冥想', desc: '432Hz · 提升专注力', freq: '432Hz' },
-                    { title: '日出之声', desc: '528Hz · 唤醒能量', freq: '528Hz' },
-                    { title: '清晨鸟鸣', desc: '自然白噪音 · 平静心绪', freq: 'nature' }
-                ],
-                stories: [
-                    '小狐狸每天都会在山顶等待日出。有一天，它问太阳："你为什么每天都来？"\n\n太阳笑着说："因为有人在等我啊，就像你在等我一样。"\n\n原来，被期待是一件温暖的事。',
-                    '种子在土壤里等待了很久。它问大地："我什么时候才能看到阳光？"\n\n大地说："当你准备好迎接世界的时候。"\n\n成长需要耐心，每一步都算数。',
-                    '清晨，露珠问花朵："你为什么这么美丽？"\n\n花朵回答："因为我每天都在努力绽放。"\n\n美丽来自每一天的坚持。'
-                ]
-            },
-            noon: {
-                images: [
-                    { url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&h=300&fit=crop', caption: '午后的湖面，平静如镜' },
-                    { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&h=300&fit=crop', caption: '海边的午后，悠然自得' },
-                    { url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400&h=300&fit=crop', caption: '森林的午后，清新自然' }
-                ],
-                music: [
-                    { title: '午后小憩', desc: 'Alpha波 · 深度放松', freq: 'alpha' },
-                    { title: '咖啡时光', desc: '轻音乐 · 舒缓心情', freq: 'light' },
-                    { title: '自然之声', desc: '森林白噪音 · 恢复精力', freq: 'forest' }
-                ],
-                stories: [
-                    '猫咪在午后阳光下打盹。小鸟问它："你不觉得浪费时间吗？"\n\n猫咪懒洋洋地说："休息也是生活的一部分。"\n\n有时候，停下来是为了更好地出发。',
-                    '向日葵在中午总是昂首挺胸。小草问："你不累吗？"\n\n向日葵说："我在收集阳光，为了夜晚的绽放。"\n\n每一刻的努力，都在为未来积蓄力量。',
-                    '午后的云朵慢慢飘过。风问它："你要去哪里？"\n\n云朵回答："没有目的地，只是享受飘的过程。"\n\n有时候，享受当下就是最好的选择。'
-                ]
-            },
-            night: {
-                images: [
-                    { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&h=300&fit=crop', caption: '星空下的夜晚，宁静深邃' },
-                    { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=400&h=300&fit=crop', caption: '月光下的城市，安静祥和' },
-                    { url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=400&h=300&fit=crop', caption: '海边的夜晚，星空璀璨' }
-                ],
-                music: [
-                    { title: '睡前冥想', desc: 'Theta波 · 助眠安神', freq: 'theta' },
-                    { title: '月光曲', desc: '古典音乐 · 宁静心灵', freq: 'classic' },
-                    { title: '雨声入眠', desc: '雨声白噪音 · 深度睡眠', freq: 'rain' }
-                ],
-                stories: [
-                    '月亮每晚都看着地上的孩子入睡。星星问："你不累吗？"\n\n月亮温柔地说："守护他们的梦，是我的使命。"\n\n你并不孤单，总有人在默默守护你。',
-                    '萤火虫在夜晚发出微弱的光。蛾子问："为什么这么努力？"\n\n萤火虫说："即使微小，也要照亮黑暗。"\n\n每一个小小的努力，都有它的意义。',
-                    '夜晚，小船停在港湾。海浪问："你不想去远方吗？"\n\n小船回答："今晚，我只想安静地休息。"\n\n给自己一个休息的夜晚，明天会更好。'
-                ]
-            }
+        /* ========== 图片资源池（按场景分类）========== */
+        const imagePool = {
+            morning: [
+                { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=450&fit=crop', caption: '山间的清晨，宁静而美好' },
+                { url: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=600&h=450&fit=crop', caption: '第一缕阳光，温柔而充满希望' },
+                { url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&h=450&fit=crop', caption: '城市的早晨，新的开始' },
+                { url: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&h=450&fit=crop', caption: '清晨田野，露珠闪耀着光芒' },
+            ],
+            noon: [
+                { url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=450&fit=crop', caption: '午后的湖面，平静如镜' },
+                { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=450&fit=crop', caption: '海边的午后，悠然自得' },
+                { url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=450&fit=crop', caption: '森林的午后，清新自然' },
+                { url: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&h=450&fit=crop', caption: '午后的咖啡馆，慵懒时光' },
+            ],
+            evening: [
+                { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=450&fit=crop', caption: '星空下的夜晚，宁静深邃' },
+                { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=450&fit=crop', caption: '月光下的城市，安静祥和' },
+                { url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&h=450&fit=crop', caption: '海边的夜晚，星空璀璨' },
+                { url: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600&h=450&fit=crop', caption: '黄昏的海面，金光闪闪' },
+            ],
+            sleep: [
+                { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=450&fit=crop', caption: '星空下的夜晚，宁静深邃' },
+                { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=450&fit=crop', caption: '月光如水，温柔洒落' },
+                { url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=450&fit=crop', caption: '夜晚的森林，静谧安详' },
+                { url: 'https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=600&h=450&fit=crop', caption: '月色朦胧，如梦似幻' },
+            ],
         };
 
+        /* ========== 每日刷新机制 ========== */
+        function getDailySeed() {
+            const today = new Date().toISOString().split('T')[0];
+            const saved = localStorage.getItem('chargingStationSeed');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.date === today) return data;
+            }
+            const seed = {
+                date: today,
+                // 每天生成固定的随机索引（基于日期种子，保证同一内容整天不变）
+                morning: { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 1 + today.charCodeAt(1) * 2 + today.charCodeAt(3) * 3 + today.charCodeAt(5) * 4)) * imagePool.morning.length) % imagePool.morning.length },
+                noon:    { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 2 + today.charCodeAt(1) * 3 + today.charCodeAt(3) * 4 + today.charCodeAt(5) * 5)) * imagePool.noon.length) % imagePool.noon.length },
+                evening: { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 3 + today.charCodeAt(1) * 4 + today.charCodeAt(3) * 5 + today.charCodeAt(5) * 6)) * imagePool.evening.length) % imagePool.evening.length },
+                sleep:   { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 4 + today.charCodeAt(1) * 5 + today.charCodeAt(3) * 6 + today.charCodeAt(5) * 7)) * imagePool.sleep.length) % imagePool.sleep.length },
+            };
+            localStorage.setItem('chargingStationSeed', JSON.stringify(seed));
+            return seed;
+        }
+
+        const dailySeed = getDailySeed();
+
+        /* ========== 场景内容管理 ========== */
         let currentScenario = 'morning';
         let currentImageIndex = 0;
         let currentMusicIndex = 0;
         let currentStoryIndex = 0;
         let isPlaying = false;
 
-        // 选择场景
+        /* 获取场景对应的音乐和故事（基于内容库）*/
+        function getScenarioMusic(scenario, idx) {
+            const tracks = getMusicByScenario(scenario, 5);
+            return tracks[idx % tracks.length];
+        }
+
+        function getScenarioStory(scenario, idx) {
+            const stories = getStoriesByScenario(scenario, 3);
+            return stories[idx % stories.length];
+        }
+
+        /* ========== 场景选择 ========== */
         function selectScenario(scenario) {
+            if (scenario === currentScenario) return;
             currentScenario = scenario;
-            currentImageIndex = 0;
-            currentMusicIndex = 0;
-            currentStoryIndex = 0;
-            
-            // 更新按钮状态
+
+            /* 更新按钮状态 */
             document.querySelectorAll('.scenario-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.querySelector(`[data-scenario="${scenario}"]`).classList.add('active');
-            
-            // 更新内容
-            refreshImage();
+
+            /* 停止播放 */
+            if (isPlaying) togglePlay();
+
+            /* 使用每日种子的图片索引 */
+            const seed = dailySeed[scenario];
+            const images = imagePool[scenario] || imagePool.morning;
+            currentImageIndex = seed.image;
+            const img = images[currentImageIndex];
+            document.getElementById('healing-image').src = img.url;
+            document.getElementById('image-caption').textContent = img.caption;
+
+            /* 重置索引 */
+            currentMusicIndex = 0;
+            currentStoryIndex = 0;
+
+            /* 刷新音乐和故事 */
             refreshMusic();
+            refreshStory();
+
+            /* 隐藏内容卡片 */
+            const cards = document.querySelectorAll('.content-card');
+            cards.forEach(c => c.classList.remove('visible'));
+
+            /* 延迟显示卡片（流体效果） */
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add('visible'), 50 + i * 100);
+            });
+        }
+
+        /* ========== 刷新图片 ========== */
+        function refreshImage() {
+            const images = imagePool[currentScenario] || imagePool.morning;
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            const img = images[currentImageIndex];
+
+            const imgEl = document.getElementById('healing-image');
+            imgEl.style.opacity = '0';
+            imgEl.style.transform = 'scale(0.95)';
+
+            setTimeout(() => {
+                imgEl.src = img.url;
+                imgEl.alt = img.caption;
+                document.getElementById('image-caption').textContent = img.caption;
+                imgEl.style.opacity = '1';
+                imgEl.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        /* ========== 刷新音乐（对接内容库）========== */
+        function refreshMusic() {
+            currentMusicIndex = (currentMusicIndex + 1) % 5;
+            const music = getScenarioMusic(currentScenario, currentMusicIndex);
+
+            const waveLabels = { alpha: 'α波', theta: 'θ波', delta: 'δ波', beta: 'β波' };
+            const waveLabel = waveLabels[music.wave] || music.wave;
+            const bpmLabel = music.bpm > 0 ? `${music.bpm} BPM` : '无节拍冥想';
+
+            document.getElementById('music-title').textContent = music.title;
+            document.getElementById('music-desc').textContent = `${music.duration} · ${music.composer}`;
+            document.getElementById('music-meta').textContent = `${waveLabel} · ${bpmLabel}`;
+        }
+
+        /* ========== 刷新故事（对接内容库）========== */
+        function refreshStory() {
+            currentStoryIndex = (currentStoryIndex + 1) % 3;
+            const story = getScenarioStory(currentScenario, currentStoryIndex);
+
+            const storyEl = document.getElementById('story-content');
+            const themeEl = document.getElementById('story-theme');
+            const moralEl = document.getElementById('story-moral');
+            const timeEl = document.getElementById('story-time');
+
+            storyEl.style.opacity = '0';
+            storyEl.style.transform = 'translateY(8px)';
+
+            setTimeout(() => {
+                themeEl.textContent = `📌 ${story.theme} · ${story.tags.slice(0,2).join(' · ')}`;
+                storyEl.textContent = story.content;
+                moralEl.textContent = `💬 ${story.moral}`;
+                timeEl.textContent = `阅读时间：约${story.duration}分钟`;
+                storyEl.style.opacity = '1';
+                storyEl.style.transform = 'translateY(0)';
+            }, 200);
+        }
+
+        /* ========== 初始化每日内容 ========== */
+        function initDailyContent() {
+            // 使用每日种子初始化内容
+            const seed = dailySeed[currentScenario];
+            currentImageIndex = seed.image;
+            const images = imagePool[currentScenario] || imagePool.morning;
+            const img = images[currentImageIndex];
+            document.getElementById('healing-image').src = img.url;
+            document.getElementById('image-caption').textContent = img.caption;
+
+            // 初始化音乐
+            currentMusicIndex = Math.floor(Math.random() * 5);
+            refreshMusic();
+
+            // 初始化故事
+            currentStoryIndex = Math.floor(Math.random() * 3);
             refreshStory();
         }
 
-        // 刷新图片
-        function refreshImage() {
-            const data = contentData[currentScenario];
-            currentImageIndex = (currentImageIndex + 1) % data.images.length;
-            const image = data.images[currentImageIndex];
-            
-            document.getElementById('healing-image').src = image.url;
-            document.getElementById('image-caption').textContent = image.caption;
-        }
-
-        // 刷新音乐
-        function refreshMusic() {
-            const data = contentData[currentScenario];
-            currentMusicIndex = (currentMusicIndex + 1) % data.music.length;
-            const music = data.music[currentMusicIndex];
-            
-            document.getElementById('music-title').textContent = music.title;
-            document.getElementById('music-desc').textContent = music.desc;
-        }
-
-        // 刷新故事
-        function refreshStory() {
-            const data = contentData[currentScenario];
-            currentStoryIndex = (currentStoryIndex + 1) % data.stories.length;
-            const story = data.stories[currentStoryIndex];
-            
-            document.getElementById('story-content').textContent = story;
-        }
-
-        // 播放控制
+        /* ========== 播放控制 ========== */
         function togglePlay() {
             isPlaying = !isPlaying;
-            const btn = document.getElementById('play-btn');
-            
+            const btn = document.getElementById('playBtn');
+            const icon = document.getElementById('playIcon');
+
             if (isPlaying) {
-                btn.innerHTML = '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-                // 这里可以添加实际的音频播放逻辑
+                btn.classList.add('playing');
+                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
             } else {
-                btn.innerHTML = '<svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+                btn.classList.remove('playing');
+                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
             }
         }
 
         function prevTrack() {
-            const data = contentData[currentScenario];
-            currentMusicIndex = (currentMusicIndex - 1 + data.music.length) % data.music.length;
-            const music = data.music[currentMusicIndex];
-            
+            currentMusicIndex = (currentMusicIndex - 1 + 5) % 5;
+            const music = getScenarioMusic(currentScenario, currentMusicIndex);
+            const waveLabels = { alpha: 'α波', theta: 'θ波', delta: 'δ波', beta: 'β波' };
+            const waveLabel = waveLabels[music.wave] || music.wave;
+            const bpmLabel = music.bpm > 0 ? `${music.bpm} BPM` : '无节拍冥想';
             document.getElementById('music-title').textContent = music.title;
-            document.getElementById('music-desc').textContent = music.desc;
+            document.getElementById('music-desc').textContent = `${music.duration} · ${music.composer}`;
+            document.getElementById('music-meta').textContent = `${waveLabel} · ${bpmLabel}`;
         }
 
         function nextTrack() {
             refreshMusic();
         }
 
-        // 分享故事
+        /* ========== 分享故事 ========== */
         function shareStory() {
             const story = document.getElementById('story-content').textContent;
-            
             if (navigator.share) {
-                navigator.share({
-                    title: '心晴空间 · 微故事',
-                    text: story
-                });
+                navigator.share({ title: '心晴空间 · 微故事', text: story });
             } else {
-                // 复制到剪贴板
                 navigator.clipboard.writeText(story).then(() => {
-                    alert('故事已复制到剪贴板');
+                    showToast('故事已复制到剪贴板 🌟', 'success');
                 });
             }
         }
 
-        // 开始快速充电
+        /* ========== 开始快速充电 ========== */
         function startQuickCharge() {
-            alert('即将开始5分钟充电体验...\n\n包含：\n- 1分钟呼吸练习\n- 2分钟音乐放松\n- 2分钟故事冥想');
-            window.location.href = 'practice.html';
+            showToast('即将开始5分钟充电体验...', 'info');
+            setTimeout(() => { window.location.href = 'practice.html'; }, 1500);
         }
 
-        // 页面加载时初始化
+        /* ========== Toast ========== */
+        function showToast(message, type = 'info') {
+            const colors = { success: 'var(--color-primary-400)', info: 'var(--color-primary-500)', warning: '#F59E0B', error: '#EF4444' };
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:${colors[type] || colors.info};color:white;padding:0.75rem 1.5rem;border-radius:9999px;font-size:0.95rem;z-index:9999;box-shadow:var(--shadow-lg);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;white-space:nowrap;`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        /* ========== 移动端菜单 ========== */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', () => {
-            selectScenario('morning');
+            // 初始化每日内容
+            initDailyContent();
+
+            /* 初始显示卡片 */
+            setTimeout(() => {
+                document.querySelectorAll('.content-card').forEach((card, i) => {
+                    setTimeout(() => card.classList.add('visible'), i * 120);
+                });
+            }, 300);
+
+            /* 图片过渡样式 */
+            document.getElementById('healing-image').style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            document.getElementById('story-content').style.transition = 'opacity 0.3s ease, transform 0.3s ease';
         });
     </script>
 </body>

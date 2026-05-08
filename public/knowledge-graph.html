@@ -3,113 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心理知识图谱 - 心晴空间</title>
+    <title>心理知识图谱 — 心晴空间</title>
     <meta name="description" content="基于认知行为疗法和积极心理学的可视化知识图谱">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0faf7',
-                            100: '#d9f2eb',
-                            200: '#b5ddd3',
-                            300: '#8ac4b5',
-                            400: '#7CB8A8',
-                            500: '#5A9A8A',
-                            600: '#4a8a7a',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Nunito Sans', 'PingFang SC', sans-serif; }
-        .node { cursor: pointer; transition: all 0.3s ease; }
-        .node:hover { filter: brightness(1.1); }
-        .node-label { font-size: 12px; font-weight: 600; pointer-events: none; }
-        .link { stroke-opacity: 0.6; }
-        #graph-container { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); }
-        .detail-panel { transition: transform 0.3s ease; }
-        .detail-panel.hidden { transform: translateX(100%); }
+        /* ---------- 页面级覆盖 ---------- */
+        body {
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
+            overflow: hidden;
+        }
+
+        /* ---------- 全屏布局 ---------- */
+        .graph-layout {
+            display: flex;
+            height: 100vh;
+            padding-top: 64px;
+        }
+
+        /* ---------- 图形容器 ---------- */
+        .graph-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-warm-50) 100%);
+        }
+        .graph-canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ---------- 图例面板 ---------- */
+        .legend-panel {
+            position: absolute;
+            top: 1.25rem;
+            left: 1.25rem;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+            min-width: 160px;
+        }
+        .legend-panel h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 0.75rem;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .legend-hint {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--theme-border);
+            font-size: 0.75rem;
+            color: var(--theme-text-light);
+            line-height: 1.6;
+        }
+
+        /* ---------- 详情面板 ---------- */
+        .detail-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            max-width: 400px;
+            height: 100vh;
+            background: var(--theme-card);
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
+            transform: translateX(100%);
+            transition: transform var(--duration-normal) var(--ease-spring);
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .detail-panel.open {
+            transform: translateX(0);
+        }
+
+        .detail-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--theme-border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+        .detail-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        .detail-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--color-primary-50);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-primary-500);
+            flex-shrink: 0;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .detail-close:hover {
+            background: var(--color-primary-100);
+            transform: scale(1.08);
+        }
+
+        .detail-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .detail-section {
+            margin-bottom: 1.5rem;
+        }
+        .detail-section h3 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--theme-text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+        .detail-section p {
+            font-size: 0.95rem;
+            color: var(--theme-text);
+            line-height: 1.8;
+        }
+        .detail-reference {
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            font-style: italic;
+            line-height: 1.6;
+        }
+
+        /* ---------- 遮罩（侧边栏打开时） ---------- */
+        .detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 199;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-normal) var(--ease-standard);
+        }
+        .detail-overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- 导航栏覆盖 ---------- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+        }
+        .navbar-inner {
+            max-width: 100%;
+            padding: 0 1.5rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* ---------- D3 节点样式（通过 CSS 覆盖） ---------- */
+        .node circle {
+            stroke-width: 3px;
+            stroke: white;
+            cursor: pointer;
+            transition: filter 0.2s ease;
+        }
+        .node circle:hover {
+            filter: brightness(1.1);
+        }
+        .node.selected circle {
+            stroke: var(--color-primary-400) !important;
+            stroke-width: 4px !important;
+        }
+        .node text {
+            font-family: var(--font-sans);
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--theme-text);
+            pointer-events: none;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+        .link {
+            stroke: var(--color-primary-200);
+            stroke-width: 1.5px;
+            fill: none;
+            opacity: 0.6;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-700 min-h-screen">
-    <nav class="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold text-primary-500">心晴空间</a>
-                <div class="flex items-center gap-4">
-                    <span class="text-gray-600">心理知识图谱</span>
-                    <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+<body>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
                 </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+
+            <div style="display:flex;align-items:center;gap:1.5rem;">
+                <span style="color:var(--theme-text);font-weight:500;font-size:0.95rem;">心理知识图谱</span>
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.9rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">返回首页</a>
             </div>
         </div>
     </nav>
 
-    <div class="pt-16 flex h-screen">
-        <div class="flex-1 relative">
-            <div id="graph-container" class="w-full h-full"></div>
-            
-            <div class="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-4">
-                <h3 class="text-sm font-semibold text-gray-700 mb-3">图例</h3>
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full" style="background: #5A9A8A"></div>
-                        <span class="text-xs text-gray-600">治疗方法</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full" style="background: #6B9BD1"></div>
-                        <span class="text-xs text-gray-600">核心概念</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full" style="background: #7DD3C0"></div>
-                        <span class="text-xs text-gray-600">实践技术</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded-full" style="background: #E8B87D"></div>
-                        <span class="text-xs text-gray-600">评估工具</span>
-                    </div>
+    <!-- ===== 主布局 ===== -->
+    <div class="graph-layout">
+        <!-- 图形区域 -->
+        <div class="graph-container">
+            <!-- 图例 -->
+            <div class="legend-panel fade-in-down" style="animation-delay:0.2s;">
+                <h3>图例</h3>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#5A9A8A;"></div>
+                    <span>治疗方法</span>
                 </div>
-                <div class="mt-4 pt-3 border-t border-gray-200">
-                    <p class="text-xs text-gray-500">点击节点查看详情</p>
-                    <p class="text-xs text-gray-500">拖拽节点调整位置</p>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#6B9BD1;"></div>
+                    <span>核心概念</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#7DD3C0;"></div>
+                    <span>实践技术</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot" style="background:#E8B87D;"></div>
+                    <span>评估工具</span>
+                </div>
+                <div class="legend-hint">
+                    · 点击节点查看详情<br>
+                    · 拖拽节点调整位置<br>
+                    · 滚轮缩放图形
                 </div>
             </div>
-        </div>
 
-        <div id="detail-panel" class="detail-panel hidden w-96 bg-white shadow-xl overflow-y-auto">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 id="detail-title" class="text-2xl font-bold text-gray-800"></h2>
-                    <button onclick="closeDetailPanel()" class="text-gray-400 hover:text-gray-600">✕</button>
-                </div>
-                <div id="detail-category" class="mb-4"></div>
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-sm font-semibold text-gray-500 mb-2">概述</h3>
-                        <p id="detail-description" class="text-gray-700 leading-relaxed"></p>
-                    </div>
-                    <div id="detail-reference-section" class="hidden">
-                        <h3 class="text-sm font-semibold text-gray-500 mb-2">科学依据</h3>
-                        <p id="detail-reference" class="text-xs text-gray-600 italic"></p>
-                    </div>
-                    <div id="detail-evidence-section" class="hidden">
-                        <h3 class="text-sm font-semibold text-gray-500 mb-2">研究证据</h3>
-                        <p id="detail-evidence" class="text-sm text-gray-700"></p>
-                    </div>
-                    <div id="detail-practices-section" class="hidden">
-                        <h3 class="text-sm font-semibold text-gray-500 mb-2">实践方法</h3>
-                        <div id="detail-practices" class="space-y-2"></div>
-                    </div>
-                </div>
-            </div>
+            <!-- SVG 图形 -->
+            <svg id="graph-svg" class="graph-canvas"></svg>
         </div>
     </div>
 
+    <!-- 遮罩 -->
+    <div class="detail-overlay" id="detailOverlay" onclick="closeDetailPanel()"></div>
+
+    <!-- 详情面板 -->
+    <aside class="detail-panel" id="detailPanel">
+        <div class="detail-header">
+            <div>
+                <h2 id="detail-title" style="font-size:1.15rem;font-weight:700;color:var(--theme-text);"></h2>
+                <div id="detail-category"></div>
+            </div>
+            <button class="detail-close" onclick="closeDetailPanel()" aria-label="关闭">
+                <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="detail-body">
+            <div class="detail-section" id="detail-overview">
+                <h3>概述</h3>
+                <p id="detail-description"></p>
+            </div>
+            <div class="detail-section" id="detail-reference-section">
+                <h3>科学依据</h3>
+                <p id="detail-reference" class="detail-reference"></p>
+            </div>
+            <div class="detail-section" id="detail-evidence-section">
+                <h3>研究证据</h3>
+                <p id="detail-evidence"></p>
+            </div>
+            <div class="detail-section" id="detail-practices-section">
+                <h3>实践方法</h3>
+                <div id="detail-practices"></div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- 知识图谱逻辑 -->
     <script src="js/knowledge-graph.js"></script>
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script>
+        /* ========== 详情面板控制 ========== */
+        function openDetailPanel(data) {
+            const panel = document.getElementById('detailPanel');
+            const overlay = document.getElementById('detailOverlay');
+
+            document.getElementById('detail-title').textContent = data.title || '';
+
+            const categoryColors = {
+                '治疗方法': { bg: 'rgba(90,154,138,0.15)', color: '#5A9A8A' },
+                '核心概念': { bg: 'rgba(107,155,209,0.15)', color: '#6B9BD1' },
+                '实践技术': { bg: 'rgba(125,211,192,0.15)', color: '#7DD3C0' },
+                '评估工具': { bg: 'rgba(232,184,125,0.15)', color: '#E8B87D' },
+            };
+            const c = categoryColors[data.category] || { bg: 'rgba(90,154,138,0.15)', color: '#5A9A8A' };
+            document.getElementById('detail-category').innerHTML = `
+                <span class="detail-category-badge" style="background:${c.bg};color:${c.color};">
+                    <span style="width:8px;height:8px;border-radius:50%;background:${c.color};"></span>
+                    ${data.category || ''}
+                </span>
+            `;
+
+            document.getElementById('detail-description').textContent = data.description || '';
+
+            /* 科学依据 */
+            const refSection = document.getElementById('detail-reference-section');
+            if (data.reference) {
+                refSection.style.display = 'block';
+                document.getElementById('detail-reference').textContent = data.reference;
+            } else {
+                refSection.style.display = 'none';
+            }
+
+            /* 研究证据 */
+            const evSection = document.getElementById('detail-evidence-section');
+            if (data.evidence) {
+                evSection.style.display = 'block';
+                document.getElementById('detail-evidence').textContent = data.evidence;
+            } else {
+                evSection.style.display = 'none';
+            }
+
+            /* 实践方法 */
+            const prSection = document.getElementById('detail-practices-section');
+            if (data.practices && data.practices.length > 0) {
+                prSection.style.display = 'block';
+                document.getElementById('detail-practices').innerHTML = data.practices.map(p =>
+                    `<div style="padding:0.75rem;background:var(--color-primary-50);border-radius:var(--radius-md);margin-bottom:0.5rem;">
+                        <p style="font-size:0.9rem;color:var(--theme-text);">${p}</p>
+                    </div>`
+                ).join('');
+            } else {
+                prSection.style.display = 'none';
+            }
+
+            panel.classList.add('open');
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetailPanel() {
+            document.getElementById('detailPanel').classList.remove('open');
+            document.getElementById('detailOverlay').classList.remove('open');
+            document.body.style.overflow = '';
+
+            /* 取消节点选中状态 */
+            d3.selectAll('.node').classed('selected', false);
+        }
+
+        /* ESC 关闭 */
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDetailPanel();
+        });
+    </script>
 </body>
 </html>

@@ -3,276 +3,592 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>情绪觉察 - 心晴空间</title>
+    <title>情绪觉察 — 心晴空间</title>
     <meta name="description" content="基于Plutchik情绪轮盘，可视化探索和理解你的情绪">
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0faf7',
-                            100: '#d9f2eb',
-                            200: '#b5ddd3',
-                            300: '#8ac4b5',
-                            400: '#7CB8A8',
-                            500: '#5A9A8A',
-                            600: '#4a8a7a',
-                        },
-                        warm: {
-                            50: '#fdfbf9',
-                            100: '#F5E6D3',
-                            200: '#E8D5C4',
-                            300: '#d4c4b0',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* ---------- 页面级覆盖 ---------- */
         body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
         }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .emotion-tag {
-            transition: all 0.3s ease;
-        }
-        .emotion-tag:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-        .emotion-tag.selected {
-            background-color: var(--tag-color);
-            color: white;
-            border-color: var(--tag-color);
-        }
-        #emotion-wheel-container {
+
+        /* ---------- 页面头部区域 ---------- */
+        .page-hero {
+            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 100%);
+            padding-top: 80px; /* 导航栏高度 */
+            padding-bottom: 3rem;
+            text-align: center;
             position: relative;
+            overflow: hidden;
+        }
+        /* 装饰性流体形状 */
+        .page-hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+            background: radial-gradient(circle, var(--color-primary-200), transparent 70%);
+            opacity: 0.1;
+            top: -60px;
+            right: -80px;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .page-title {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+        .page-subtitle {
+            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            color: var(--theme-text-light);
+            line-height: 1.7;
+        }
+
+        /* ---------- 标签页切换 ---------- */
+        .tab-bar {
+            display: inline-flex;
+            background: var(--theme-card);
+            border-radius: var(--radius-full);
+            padding: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+        .tab-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--theme-text-light);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-spring);
+            white-space: nowrap;
+        }
+        .tab-btn:hover {
+            color: var(--color-primary-500);
+            background: var(--color-primary-50);
+        }
+        .tab-btn.active {
+            background: var(--color-primary-400);
+            color: white;
+            box-shadow: 0 2px 12px rgba(90, 154, 138, 0.3);
+        }
+
+        /* ---------- 情绪轮盘容器 ---------- */
+        .wheel-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 30px;
-            margin: 20px 0;
+            padding: 2rem 1rem;
+            position: relative;
         }
-        .wheel-hint {
+        .wheel-container {
+            position: relative;
+            display: inline-block;
+        }
+        /* 外圈光晕 */
+        .wheel-glow {
             position: absolute;
-            bottom: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 12px;
-            color: #999;
+            inset: -20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color-primary-100), transparent 70%);
+            opacity: 0.5;
+            pointer-events: none;
+            animation: breatheGlow 6s var(--ease-breathe) infinite;
+        }
+
+        /* ---------- 情绪温度计 ---------- */
+        .thermometer {
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .thermometer-track {
+            width: 100%;
+            height: 8px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(90deg, #10B981, #FBBF24, #EF4444);
+            position: relative;
+            margin: 1.5rem 0;
+        }
+        .thermometer-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--theme-card);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: left var(--duration-fast) var(--ease-standard);
+            cursor: pointer;
+            z-index: 2;
+            user-select: none;
+        }
+        .thermometer-input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 3;
+        }
+
+        /* ---------- 情绪标签 ---------- */
+        .emotion-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all var(--duration-normal) var(--ease-spring);
+            animation: fadeInUp 0.4s var(--ease-standard) both;
+        }
+        .emotion-tag.selected {
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ---------- 卡片内部区域 ---------- */
+        .form-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow var(--duration-normal) var(--ease-standard);
+        }
+        .form-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        @media (min-width: 640px) {
+            .form-card {
+                padding: 2.5rem 2rem;
+            }
+        }
+
+        /* ---------- 文本域 ---------- */
+        .text-area {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--theme-border);
+            border-radius: var(--radius-md);
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            color: var(--theme-text);
+            background: var(--theme-bg);
+            resize: vertical;
+            min-height: 80px;
+            transition: border-color var(--duration-fast) var(--ease-standard),
+                        box-shadow var(--duration-fast) var(--ease-standard);
+            outline: none;
+        }
+        .text-area:focus {
+            border-color: var(--color-primary-400);
+            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.15);
+            background: var(--theme-card);
+        }
+        .text-area::placeholder {
+            color: var(--theme-text-light);
+            opacity: 0.6;
+        }
+
+        /* ---------- 标签选择按钮 ---------- */
+        .tag-select-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid var(--theme-border);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            color: var(--theme-text-light);
+            background: var(--theme-card);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-spring);
+            user-select: none;
+        }
+        .tag-select-btn:hover {
+            border-color: var(--color-primary-300);
+            color: var(--color-primary-500);
+            background: var(--color-primary-50);
+        }
+        .tag-select-btn.selected {
+            background: var(--color-primary-400);
+            color: white;
+            border-color: var(--color-primary-400);
+            box-shadow: 0 2px 8px rgba(90, 154, 138, 0.3);
+        }
+
+        /* ---------- 情绪分布条 ---------- */
+        .emotion-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .emotion-bar-label {
+            font-size: 0.85rem;
+            color: var(--theme-text);
+            min-width: 3.5rem;
+            text-align: right;
+            flex-shrink: 0;
+        }
+        .emotion-bar-track {
+            flex: 1;
+            height: 10px;
+            border-radius: var(--radius-full);
+            background: var(--color-primary-100);
+            overflow: hidden;
+        }
+        .emotion-bar-fill {
+            height: 100%;
+            border-radius: var(--radius-full);
+            background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
+            transition: width 0.8s var(--ease-standard);
+            width: 0%;
+        }
+        .emotion-bar-pct {
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            min-width: 2.5rem;
+        }
+
+        /* ---------- 分析卡片 ---------- */
+        .analysis-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            padding: 2rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .analysis-card {
+                padding: 2rem;
+            }
+        }
+
+        /* ---------- 建议卡片 ---------- */
+        .suggestion-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            border-left: 4px solid var(--color-primary-400);
+            box-shadow: var(--shadow-xs);
+            transition: all var(--duration-normal) var(--ease-spring);
+            cursor: pointer;
+        }
+        .suggestion-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ---------- 空状态 ---------- */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--theme-text-light);
+        }
+        .empty-state .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        /* ---------- 隐藏内容面板 ---------- */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.4s var(--ease-standard) both;
+        }
+
+        /* ---------- 页脚覆盖 ---------- */
+        .site-footer {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        .site-footer .inner {
+            max-width: 72rem;
+            margin: 0 auto;
+        }
+        .site-footer .disclaimer-box {
+            background: var(--color-warm-50);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .site-footer .disclaimer-box p {
+            font-size: 0.75rem;
+            color: var(--theme-text-light);
+            line-height: 1.6;
+            text-align: center;
+        }
+        .site-footer .copyright {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
         }
     </style>
 </head>
-<body class="bg-warm-50 text-gray-700 min-h-screen">
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold text-primary-500">心晴空间</a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+<body>
+    <!-- ===== 导航栏 ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+            </a>
+
+            <div style="display:flex;align-items:center;gap:1.5rem;">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
+                <a href="practice.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
             </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="打开菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div id="mobileMenu" style="display:none;background:var(--theme-card);border-top:1px solid var(--theme-border);padding:0.75rem 1rem;" class="md:hidden">
+            <a href="index.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">首页</a>
+            <a href="practice.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">疗愈练习</a>
+            <a href="knowledge-graph.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">知识图谱</a>
+            <a href="about.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">关于我们</a>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main class="max-w-4xl mx-auto px-4 py-12">
+    <!-- ===== 页面头部 ===== -->
+    <section class="page-hero">
+        <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;">
+            <h1 class="page-title fade-in-up" style="animation-delay:0.1s;">探索你的情绪世界</h1>
+            <p class="page-subtitle fade-in-up" style="animation-delay:0.2s;">
+                基于 Plutchik 情绪轮盘理论，可视化探索和理解你的情绪
+            </p>
+        </div>
+    </section>
+
+    <!-- ===== 主内容 ===== -->
+    <main style="max-width:64rem;margin:0 auto;padding:2rem 1.5rem;">
         <!-- 标签页切换 -->
-        <div class="flex justify-center mb-8 fade-in">
-            <div class="bg-white rounded-full p-1 shadow-md">
-                <button onclick="switchTab('record')" id="tab-record" class="px-6 py-2 rounded-full bg-primary-500 text-white font-medium transition">
-                    记录情绪
-                </button>
-                <button onclick="switchTab('analysis')" id="tab-analysis" class="px-6 py-2 rounded-full text-gray-600 font-medium transition hover:text-primary-500">
-                    情绪分析
-                </button>
-                <button onclick="switchTab('suggestions')" id="tab-suggestions" class="px-6 py-2 rounded-full text-gray-600 font-medium transition hover:text-primary-500">
-                    调节建议
-                </button>
+        <div style="display:flex;justify-content:center;margin-bottom:2rem;" class="fade-in-up" style="animation-delay:0.15s;">
+            <div class="tab-bar" role="tablist">
+                <button class="tab-btn active" data-tab="record" role="tab" aria-selected="true">📝 记录情绪</button>
+                <button class="tab-btn" data-tab="analysis" role="tab" aria-selected="false">📊 情绪分析</button>
+                <button class="tab-btn" data-tab="suggestions" role="tab" aria-selected="false">💡 调节建议</button>
             </div>
         </div>
 
-        <!-- 记录情绪 -->
-        <div id="content-record" class="fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">探索你的情绪世界</h2>
-                <p class="text-gray-500 text-center mb-6">点击轮盘选择情绪，最多可选2个相邻情绪</p>
-                
-                <!-- Plutchik情绪轮盘 -->
-                <div class="mb-8">
-                    <div id="emotion-wheel-container" class="flex justify-center items-center mb-8">
-                        <!-- Canvas will be inserted here -->
+        <!-- ===== 记录情绪面板 ===== -->
+        <div class="tab-content active" id="tab-record">
+            <div class="form-card fade-in-up" style="animation-delay:0.2s;">
+                <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">选择你的情绪</h2>
+                <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:1.5rem;">点击轮盘选择情绪，最多可选2个相邻情绪</p>
+
+                <!-- 情绪轮盘 -->
+                <div class="wheel-wrapper">
+                    <div class="wheel-glow"></div>
+                    <div class="wheel-container" id="emotion-wheel-container">
+                        <!-- Canvas 由 emotion-wheel.js 插入 -->
                     </div>
-                    <p class="text-center text-sm text-gray-400">基于Plutchik情绪轮盘理论</p>
                 </div>
+                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;">基于 Plutchik 情绪轮盘理论</p>
 
                 <!-- 已选情绪展示 -->
-                <div id="selected-emotions" class="mb-8 hidden">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-3">已选情绪</h3>
-                    <div id="emotion-tags" class="flex flex-wrap gap-3">
+                <div id="selected-emotions" style="display:none;margin-top:2rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">已选情绪</h3>
+                    <div id="emotion-tags" style="display:flex;flex-wrap:wrap;gap:0.5rem;">
                         <!-- 动态生成 -->
                     </div>
                 </div>
 
                 <!-- 情绪温度计 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">情绪温度计</h3>
-                    <p class="text-gray-600 mb-4 text-sm">评估当前情绪的整体强度</p>
-                    <div class="max-w-md mx-auto">
-                        <div class="relative h-16 mb-4">
-                            <div class="absolute inset-0 flex items-center">
-                                <div class="w-full h-2 bg-gradient-to-r from-green-200 via-yellow-200 to-red-200 rounded-full"></div>
-                            </div>
-                            <input type="range" id="emotion-slider" min="1" max="10" value="5" 
-                                   class="absolute inset-0 w-full h-2 opacity-0 cursor-pointer"
-                                   oninput="updateEmotionSlider(this.value)">
-                            <div id="slider-thumb" class="absolute top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center text-2xl transition-all duration-200" style="left: calc(50% - 24px)">
-                                😐
-                            </div>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-500">
-                            <span>1 极好</span>
-                            <span>5 平静</span>
-                            <span>10 很糟糕</span>
-                        </div>
-                        <div class="text-center mt-3">
-                            <span id="emotion-level-text" class="text-lg font-semibold" style="color: var(--theme-primary, #5A9A8A)">情绪平稳</span>
-                        </div>
+                <div style="margin-top:2.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">情绪温度计</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.5rem;">评估当前情绪的整体强度</p>
+
+                    <div class="thermometer">
+                        <div class="thermometer-track"></div>
+                        <div class="thermometer-thumb" id="thermometer-thumb">😐</div>
+                        <input type="range" id="emotion-slider" min="1" max="10" value="5"
+                               class="thermometer-input"
+                               aria-label="情绪强度">
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--theme-text-light);margin-top:0.5rem;">
+                        <span>1 极好</span>
+                        <span>5 平静</span>
+                        <span>10 很糟糕</span>
+                    </div>
+                    <div style="text-align:center;margin-top:0.75rem;">
+                        <span id="emotion-level-text" style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">情绪平稳</span>
                     </div>
                 </div>
 
                 <!-- 情境描述 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">发生了什么？</h3>
-                    <p class="text-gray-600 mb-4 text-sm">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
-                    <textarea id="context" rows="3" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400" placeholder="今天发生了什么让你有这种感觉？"></textarea>
+                <div style="margin-top:2.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">发生了什么？</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
+                    <textarea id="context" class="text-area" rows="3" placeholder="今天发生了什么让你有这种感觉？"></textarea>
                 </div>
 
                 <!-- 标签选择 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">相关标签</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="工作">
-                            工作
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="学业">
-                            学业
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="人际关系">
-                            人际关系
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="家庭">
-                            家庭
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="健康">
-                            健康
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="财务">
-                            财务
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="自我">
-                            自我
-                        </button>
-                        <button onclick="toggleTag(this)" class="tag-btn px-4 py-2 border border-gray-200 rounded-full text-sm text-gray-600 hover:border-primary-400 hover:text-primary-500 transition" data-tag="其他">
-                            其他
-                        </button>
+                <div style="margin-top:2.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">相关标签</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                        <button class="tag-select-btn" data-tag="工作">工作</button>
+                        <button class="tag-select-btn" data-tag="学业">学业</button>
+                        <button class="tag-select-btn" data-tag="人际关系">人际关系</button>
+                        <button class="tag-select-btn" data-tag="家庭">家庭</button>
+                        <button class="tag-select-btn" data-tag="健康">健康</button>
+                        <button class="tag-select-btn" data-tag="财务">财务</button>
+                        <button class="tag-select-btn" data-tag="自我">自我</button>
+                        <button class="tag-select-btn" data-tag="其他">其他</button>
                     </div>
                 </div>
 
                 <!-- 保存按钮 -->
-                <button onclick="saveEmotion()" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                <button onclick="saveEmotion()" class="btn btn-primary" style="width:100%;margin-top:2rem;font-size:1rem;">
                     保存记录
                 </button>
             </div>
         </div>
 
-        <!-- 情绪分析 -->
-        <div id="content-analysis" class="hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">过去7天的情绪趋势</h2>
-                
+        <!-- ===== 情绪分析面板 ===== -->
+        <div class="tab-content" id="tab-analysis">
+            <div id="analysis-empty" class="empty-state fade-in-up">
+                <span class="icon">📊</span>
+                <p>还没有记录，开始记录你的情绪吧</p>
+            </div>
+
+            <div id="analysis-data" style="display:none;">
                 <!-- 情绪分布 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">情绪分布</h3>
-                    <div id="emotion-distribution" class="space-y-3">
+                <div class="analysis-card fade-in-up" style="animation-delay:0.1s;">
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">情绪分布</h3>
+                    <div id="emotion-distribution">
                         <!-- 动态生成 -->
                     </div>
                 </div>
 
                 <!-- 常见触发因素 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">常见触发因素</h3>
-                    <div id="trigger-factors" class="space-y-2">
+                <div class="analysis-card fade-in-up" style="animation-delay:0.2s;">
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">常见触发因素</h3>
+                    <div id="trigger-factors">
                         <!-- 动态生成 -->
                     </div>
                 </div>
 
                 <!-- 情绪趋势图 -->
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">情绪变化曲线</h3>
-                    <div id="emotion-trend" class="h-64 relative">
+                <div class="analysis-card fade-in-up" style="animation-delay:0.3s;">
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">情绪变化曲线</h3>
+                    <div style="height:220px;position:relative;" id="emotion-chart-wrapper">
                         <canvas id="emotion-chart"></canvas>
                     </div>
-                    <div class="flex justify-center gap-4 mt-4">
-                        <button onclick="loadTrendData('week')" class="px-4 py-2 rounded-full bg-primary-100 text-primary-600 text-sm font-medium">近7天</button>
-                        <button onclick="loadTrendData('month')" class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-sm font-medium">近30天</button>
+                    <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;">
+                        <button onclick="switchTrendPeriod('week')" id="btn-week" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--color-primary-400);color:white;border:none;border-radius:var(--radius-full);">近7天</button>
+                        <button onclick="switchTrendPeriod('month')" id="btn-month" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--theme-bg);color:var(--theme-text-light);border:1px solid var(--theme-border);border-radius:var(--radius-full);">近30天</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 调节建议 -->
-        <div id="content-suggestions" class="hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">情绪调节建议</h2>
-                
-                <div id="suggestions-container" class="space-y-4">
+        <!-- ===== 调节建议面板 ===== -->
+        <div class="tab-content" id="tab-suggestions">
+            <div id="suggestions-empty" class="empty-state fade-in-up">
+                <span class="icon">💡</span>
+                <p>记录情绪后，将为你生成个性化调节建议</p>
+            </div>
+            <div id="suggestions-data" style="display:none;">
+                <div id="suggestions-container">
                     <!-- 动态生成 -->
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- ===== 页脚 ===== -->
+    <footer class="site-footer">
+        <div class="inner">
+            <div class="disclaimer-box">
+                <p>
+                    🔒 <strong>数据隐私</strong>：您的情绪记录仅存储在本地设备（localStorage），不会上传至任何服务器，平台无法访问您的个人数据。<br>
+                    ⚠️ <strong>非诊断工具</strong>：本平台为公益心理健康科普与情绪陪伴服务，不提供任何医学诊断或疾病诊疗。如有严重心理困扰，请及时前往正规医疗机构就诊。
+                </p>
+            </div>
+            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
+        </div>
+    </footer>
+
+    <!-- Chart.js 趋势图 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- 情绪曲线绘制工具 -->
+    <script src="js/emotion-chart.js"></script>
+    <!-- 内容库 -->
+    <script src="data/papers.js"></script>
+    <script src="data/music.js"></script>
+    <script src="data/stories.js"></script>
     <!-- 引入情绪轮盘组件 -->
     <script src="js/emotion-wheel.js"></script>
-    
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
+    <!-- 主题管理器 -->
+    <script src="js/theme-manager.js"></script>
     <script>
-        // 状态管理
+        /* ========== 状态管理 ========== */
         let emotionWheel = null;
         let selectedEmotions = [];
         let selectedIntensity = 5;
         let selectedTags = [];
         let emotionChart = null;
 
-        // 情绪温度计相关
+        /* ========== 情绪温度计配置 ========== */
         const emotionLevels = {
-            1: { emoji: '😊', text: '心情极好', color: '#10B981' },
-            2: { emoji: '😊', text: '心情很好', color: '#34D399' },
-            3: { emoji: '🙂', text: '心情不错', color: '#6EE7B7' },
-            4: { emoji: '🙂', text: '比较平静', color: '#A7F3D0' },
-            5: { emoji: '😐', text: '情绪平稳', color: '#FCD34D' },
-            6: { emoji: '😐', text: '有点烦躁', color: '#FBBF24' },
-            7: { emoji: '😕', text: '心情低落', color: '#F59E0B' },
-            8: { emoji: '😕', text: '比较难过', color: '#EF4444' },
-            9: { emoji: '😢', text: '心情糟糕', color: '#DC2626' },
-            10: { emoji: '😢', text: '情绪很差', color: '#B91C1C' }
+            1:  { emoji: '😊', text: '心情极好', color: '#10B981' },
+            2:  { emoji: '😊', text: '心情很好', color: '#34D399' },
+            3:  { emoji: '🙂', text: '心情不错', color: '#6EE7B7' },
+            4:  { emoji: '🙂', text: '比较平静', color: '#A7F3D0' },
+            5:  { emoji: '😐', text: '情绪平稳', color: '#FBBF24' },
+            6:  { emoji: '😐', text: '有点烦躁', color: '#F59E0B' },
+            7:  { emoji: '😕', text: '心情低落', color: '#F59E0B' },
+            8:  { emoji: '😕', text: '比较难过', color: '#EF4444' },
+            9:  { emoji: '😢', text: '心情糟糕', color: '#DC2626' },
+            10: { emoji: '😢', text: '情绪很差', color: '#B91C1C' },
         };
 
-        // 初始化情绪轮盘
+        /* ========== 初始化情绪轮盘 ========== */
         function initEmotionWheel() {
             const container = document.getElementById('emotion-wheel-container');
-            
-            // 响应式尺寸
-            const size = window.innerWidth < 640 ? 320 : 400;
-            
+            container.innerHTML = ''; /* 清空旧内容 */
+
+            const size = window.innerWidth < 640 ? 280 : 360;
+
             emotionWheel = new EmotionWheel('emotion-wheel-container', {
                 size: size,
                 onEmotionSelect: (selection) => {
@@ -282,286 +598,604 @@
             });
         }
 
-        // 更新已选情绪展示
+        /* ========== 更新已选情绪展示 ========== */
         function updateSelectedEmotionsDisplay(selection) {
             const container = document.getElementById('selected-emotions');
             const tagsContainer = document.getElementById('emotion-tags');
-            
+
             if (selection.emotions.length === 0) {
-                container.classList.add('hidden');
+                container.style.display = 'none';
                 return;
             }
-            
-            container.classList.remove('hidden');
-            
+
+            container.style.display = 'block';
             let html = '';
-            selection.emotions.forEach(emotion => {
+
+            selection.emotions.forEach((emotion, i) => {
                 html += `
-                    <div class="emotion-tag px-4 py-2 rounded-full border-2 text-sm font-medium" 
-                         style="--tag-color: ${emotion.color}; background-color: ${emotion.color}20; border-color: ${emotion.color}; color: ${emotion.color}">
-                        ${emotion.name} - ${emotion.levelName}
+                    <div class="emotion-tag" style="background:${emotion.color}20; border:2px solid ${emotion.color}; color:${emotion.color}; animation-delay:${i * 80}ms;">
+                        ${emotion.name} — ${emotion.levelName}
                     </div>
                 `;
             });
-            
-            // 如果有组合情绪
+
             if (selection.combination) {
                 html += `
-                    <div class="emotion-tag px-4 py-2 rounded-full border-2 text-sm font-medium" 
-                         style="--tag-color: ${selection.combination.color}; background-color: ${selection.combination.color}; border-color: ${selection.combination.color}; color: white">
+                    <div class="emotion-tag selected" style="background:${selection.combination.color}; border-color:${selection.combination.color}; animation-delay:${selection.emotions.length * 80}ms;">
                         ${selection.combination.name}
                     </div>
                 `;
             }
-            
+
             tagsContainer.innerHTML = html;
         }
 
-        // 更新情绪滑动条
-        function updateEmotionSlider(value) {
+        /* ========== 温度计交互 ========== */
+        function updateThermometer(value) {
             const level = emotionLevels[value];
-            const thumb = document.getElementById('slider-thumb');
+            const thumb = document.getElementById('thermometer-thumb');
             const text = document.getElementById('emotion-level-text');
-            
-            // 更新位置
-            const percentage = ((value - 1) / 9) * 100;
-            thumb.style.left = `calc(${percentage}% - 24px)`;
-            
-            // 更新表情和文字
+
+            const pct = ((value - 1) / 9) * 100;
+            thumb.style.left = `${pct}%`;
             thumb.textContent = level.emoji;
             text.textContent = level.text;
             text.style.color = level.color;
-            
+
             selectedIntensity = parseInt(value);
         }
 
-        // 切换标签页
-        function switchTab(tab) {
-            // 隐藏所有内容
-            document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
-            // 显示选中的内容
-            document.getElementById(`content-${tab}`).classList.remove('hidden');
-            
-            // 更新标签按钮样式
-            document.querySelectorAll('[id^="tab-"]').forEach(el => {
-                el.classList.remove('bg-primary-500', 'text-white');
-                el.classList.add('text-gray-600');
+        /* ========== 标签页切换 ========== */
+        function initTabs() {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const contents = document.querySelectorAll('.tab-content');
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tab = btn.dataset.tab;
+
+                    /* 更新按钮状态 */
+                    buttons.forEach(b => {
+                        b.classList.remove('active');
+                        b.setAttribute('aria-selected', 'false');
+                    });
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+
+                    /* 切换内容（带淡入动画） */
+                    contents.forEach(c => {
+                        c.classList.remove('active');
+                    });
+                    const target = document.getElementById(`tab-${tab}`);
+                    /* 强制回流以重新触发动画 */
+                    void target.offsetWidth;
+                    target.classList.add('active');
+
+                    /* 加载对应数据 */
+                    if (tab === 'analysis') {
+                        loadAnalysis();
+                        // 延迟初始化图表，等容器渲染完成
+                        setTimeout(() => loadTrendData('week'), 100);
+                    }
+                    if (tab === 'suggestions') loadSuggestions();
+                });
             });
-            document.getElementById(`tab-${tab}`).classList.add('bg-primary-500', 'text-white');
-            document.getElementById(`tab-${tab}`).classList.remove('text-gray-600');
-
-            // 加载对应数据
-            if (tab === 'analysis') {
-                loadAnalysis();
-            } else if (tab === 'suggestions') {
-                loadSuggestions();
-            }
         }
 
-        // 切换标签
-        function toggleTag(btn) {
-            const tag = btn.dataset.tag;
-            if (selectedTags.includes(tag)) {
-                selectedTags = selectedTags.filter(t => t !== tag);
-                btn.classList.remove('bg-primary-500', 'text-white', 'border-primary-500');
-            } else {
-                selectedTags.push(tag);
-                btn.classList.add('bg-primary-500', 'text-white', 'border-primary-500');
-            }
+        /* ========== 标签选择 ========== */
+        function initTagButtons() {
+            document.querySelectorAll('.tag-select-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tag = btn.dataset.tag;
+                    if (selectedTags.includes(tag)) {
+                        selectedTags = selectedTags.filter(t => t !== tag);
+                        btn.classList.remove('selected');
+                    } else {
+                        selectedTags.push(tag);
+                        btn.classList.add('selected');
+                    }
+                });
+            });
         }
 
-        // 保存情绪记录
+        /* ========== 保存情绪记录 ========== */
         async function saveEmotion() {
             if (selectedEmotions.length === 0) {
-                alert('请先在轮盘上选择至少一个情绪');
+                showToast('请先在轮盘上选择至少一个情绪', 'warning');
                 return;
             }
 
             const context = document.getElementById('context').value;
-            
+
             const record = {
                 emotions: selectedEmotions.map(e => ({
                     key: e.key,
                     name: e.name,
                     level: e.level,
                     levelName: e.levelName,
-                    color: e.color
+                    color: e.color,
                 })),
-                combination: emotionWheel.getSelection().combination,
+                combination: emotionWheel ? emotionWheel.getSelection().combination : null,
                 intensity: selectedIntensity,
                 context: context,
-                tags: selectedTags,
-                timestamp: new Date().toISOString()
+                tags: [...selectedTags],
+                timestamp: new Date().toISOString(),
             };
 
             try {
-                // 保存到本地存储
                 const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
                 records.push(record);
                 localStorage.setItem('emotionRecords', JSON.stringify(records));
 
-                alert('记录保存成功！');
-                
-                // 重置表单
+                showToast('记录保存成功 🌟', 'success');
+
+                /* 重置表单 */
                 selectedEmotions = [];
                 selectedIntensity = 5;
                 selectedTags = [];
                 document.getElementById('context').value = '';
-                document.getElementById('emotion-slider').value = 5;
-                updateEmotionSlider(5);
-                emotionWheel.reset();
-                document.getElementById('selected-emotions').classList.add('hidden');
-                document.querySelectorAll('.tag-btn').forEach(btn => {
-                    btn.classList.remove('bg-primary-500', 'text-white', 'border-primary-500');
-                });
+                updateThermometer(5);
+                if (emotionWheel) emotionWheel.reset();
+                const container = document.getElementById('selected-emotions');
+                container.style.display = 'none';
+                document.querySelectorAll('.tag-select-btn').forEach(b => b.classList.remove('selected'));
             } catch (error) {
                 console.error('保存失败:', error);
-                alert('保存失败，请重试');
+                showToast('保存失败，请重试', 'error');
             }
         }
 
-        // 加载情绪分析
+        /* ========== 加载情绪分析 ========== */
         function loadAnalysis() {
             const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
-            
+            const emptyEl = document.getElementById('analysis-empty');
+            const dataEl = document.getElementById('analysis-data');
+
             if (records.length === 0) {
-                document.getElementById('emotion-distribution').innerHTML = '<p class="text-gray-400 text-center py-8">还没有记录，开始记录你的情绪吧</p>';
-                document.getElementById('trigger-factors').innerHTML = '';
+                emptyEl.style.display = 'block';
+                dataEl.style.display = 'none';
                 return;
             }
 
-            // 统计情绪分布
+            emptyEl.style.display = 'none';
+            dataEl.style.display = 'block';
+
+            /* 统计情绪分布 */
             const emotionCounts = {};
             const tagCounts = {};
-            
+
             records.forEach(record => {
-                record.emotions.forEach(emotion => {
-                    emotionCounts[emotion.name] = (emotionCounts[emotion.name] || 0) + 1;
+                record.emotions.forEach(em => {
+                    emotionCounts[em.name] = (emotionCounts[em.name] || 0) + 1;
                 });
-                record.tags.forEach(tag => {
+                (record.tags || []).forEach(tag => {
                     tagCounts[tag] = (tagCounts[tag] || 0) + 1;
                 });
             });
 
-            // 显示情绪分布
             const total = records.length;
-            let distributionHTML = '';
-            Object.entries(emotionCounts)
-                .sort((a, b) => b[1] - a[1])
-                .forEach(([emotion, count]) => {
-                    const percentage = Math.round((count / total) * 100);
-                    distributionHTML += `
-                        <div class="flex items-center gap-3">
-                            <span class="text-sm text-gray-600 w-16">${emotion}</span>
-                            <div class="flex-1 bg-gray-200 rounded-full h-3">
-                                <div class="bg-primary-500 h-3 rounded-full" style="width: ${percentage}%"></div>
-                            </div>
-                            <span class="text-sm text-gray-600 w-12">${percentage}%</span>
-                        </div>
-                    `;
-                });
-            document.getElementById('emotion-distribution').innerHTML = distributionHTML;
 
-            // 显示常见触发因素
-            let factorsHTML = '';
-            Object.entries(tagCounts)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 5)
-                .forEach(([tag, count], index) => {
-                    factorsHTML += `
-                        <div class="flex items-center gap-2">
-                            <span class="text-primary-500 font-semibold">${index + 1}.</span>
-                            <span class="text-gray-700">${tag}</span>
-                            <span class="text-gray-400 text-sm">(${count}次)</span>
+            /* 渲染情绪分布条 */
+            const distEl = document.getElementById('emotion-distribution');
+            const sorted = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1]);
+            distEl.innerHTML = sorted.map(([name, count], i) => {
+                const pct = Math.round((count / total) * 100);
+                return `
+                    <div class="emotion-bar-row" style="animation-delay:${i * 80}ms;">
+                        <span class="emotion-bar-label">${name}</span>
+                        <div class="emotion-bar-track">
+                            <div class="emotion-bar-fill" data-width="${pct}"></div>
                         </div>
-                    `;
+                        <span class="emotion-bar-pct">${pct}%</span>
+                    </div>
+                `;
+            }).join('');
+
+            /* 触发分布条动画 */
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.emotion-bar-fill').forEach(el => {
+                    el.style.width = el.dataset.width + '%';
                 });
-            document.getElementById('trigger-factors').innerHTML = factorsHTML || '<p class="text-gray-400">暂无数据</p>';
+            });
+
+            /* 渲染触发因素 */
+            const trigEl = document.getElementById('trigger-factors');
+            const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (sortedTags.length === 0) {
+                trigEl.innerHTML = '<p style="color:var(--theme-text-light);font-size:0.9rem;">暂无数据</p>';
+            } else {
+                trigEl.innerHTML = sortedTags.map(([tag, count], i) => `
+                    <div style="display:flex;align-items:center;gap:0.5rem;animation-delay:${i * 60}ms;" class="fade-in-up">
+                        <span style="color:var(--color-primary-500);font-weight:600;">${i + 1}.</span>
+                        <span style="color:var(--theme-text);">${tag}</span>
+                        <span style="color:var(--theme-text-light);font-size:0.8rem;">(${count}次)</span>
+                    </div>
+                `).join('');
+            }
         }
 
-        // 加载调节建议
+        /* ========== 加载调节建议 + 内容推荐 ========== */
         function loadSuggestions() {
             const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
-            
-            // 获取最近的情绪
+            const emptyEl = document.getElementById('suggestions-empty');
+            const dataEl = document.getElementById('suggestions-data');
+
+            if (records.length === 0) {
+                emptyEl.style.display = 'block';
+                dataEl.style.display = 'none';
+                return;
+            }
+
+            emptyEl.style.display = 'none';
+            dataEl.style.display = 'block';
+
             const recentEmotions = records.length > 0 ? records[records.length - 1].emotions : [];
             const primaryEmotion = recentEmotions.length > 0 ? recentEmotions[0].key : 'fear';
-            
-            const suggestions = {
+
+            // 基础练习推荐
+            const practiceSuggestions = {
                 joy: [
                     { title: '感恩练习', desc: '记录3件让你感恩的事，延续积极情绪', action: 'practice.html' },
-                    { title: '分享快乐', desc: '和朋友分享你的喜悦，增强幸福感', action: '#' },
-                    { title: '正念冥想', desc: '5分钟正念练习，深化当下的美好', action: 'practice.html' }
+                    { title: '分享快乐', desc: '和朋友分享你的喜悦，增强幸福感', action: 'community.html' },
+                    { title: '正念冥想', desc: '5分钟正念练习，深化当下的美好', action: 'practice.html' },
                 ],
                 trust: [
-                    { title: '建立连接', desc: '与信任的人深入交流，强化关系', action: '#' },
-                    { title: '感恩日记', desc: '记录今天让你感到安全的事', action: '#' },
-                    { title: '身体扫描', desc: '3分钟身体觉察，感受当下的安全感', action: 'practice.html' }
+                    { title: '建立连接', desc: '与信任的人深入交流，强化关系', action: 'community.html' },
+                    { title: '感恩日记', desc: '记录今天让你感到安全的事', action: 'community.html' },
+                    { title: '身体扫描', desc: '3分钟身体觉察，感受当下的安全感', action: 'practice.html' },
                 ],
                 fear: [
-                    { title: '5-4-3-2-1接地法', desc: '快速平静神经系统，缓解焦虑', action: '#' },
-                    { title: '呼吸觉察', desc: '1分钟快速放松，降低心率', action: 'practice.html' },
-                    { title: '认知重评', desc: '改变看待问题的方式，减少恐惧', action: '#' }
+                    { title: '5-4-3-2-1接地法', desc: '快速平静神经系统，缓解焦虑', action: 'relax.html' },
+                    { title: '呼吸觉察', desc: '1分钟快速放松，降低心率', action: 'relax.html' },
+                    { title: '认知重评', desc: '改变看待问题的方式，减少恐惧', action: 'practice.html' },
                 ],
                 surprise: [
                     { title: '正念觉察', desc: '观察这种惊讶感，不评判', action: 'practice.html' },
-                    { title: '记录发现', desc: '写下今天让你惊讶的事', action: '#' },
-                    { title: '深呼吸', desc: '3次深呼吸，平复心情', action: 'practice.html' }
+                    { title: '记录发现', desc: '写下今天让你惊讶的事', action: 'community.html' },
+                    { title: '深呼吸', desc: '3次深呼吸，平复心情', action: 'relax.html' },
                 ],
                 sadness: [
-                    { title: '自我关怀', desc: '对自己温柔，接纳当下的情绪', action: '#' },
-                    { title: '身体扫描', desc: '3分钟身体觉察，连接内在感受', action: 'practice.html' },
-                    { title: '寻求支持', desc: '和朋友聊聊，不要独自承受', action: '#' }
+                    { title: '自我关怀', desc: '对自己温柔，接纳当下的情绪', action: 'practice.html' },
+                    { title: '身体扫描', desc: '3分钟身体觉察，连接内在感受', action: 'relax.html' },
+                    { title: '寻求支持', desc: '和朋友聊聊，不要独自承受', action: 'community.html' },
                 ],
                 disgust: [
-                    { title: '认知重评', desc: '重新审视让你不适的事物', action: '#' },
-                    { title: '呼吸练习', desc: '1分钟呼吸，释放负面感受', action: 'practice.html' },
-                    { title: '转移注意', desc: '做一些让你愉悦的事', action: '#' }
+                    { title: '认知重评', desc: '重新审视让你不适的事物', action: 'practice.html' },
+                    { title: '呼吸练习', desc: '1分钟呼吸，释放负面感受', action: 'relax.html' },
+                    { title: '转移注意', desc: '做一些让你愉悦的事', action: 'charging-station.html' },
                 ],
                 anger: [
-                    { title: '深呼吸', desc: '1分钟呼吸练习，平复情绪', action: 'practice.html' },
+                    { title: '深呼吸', desc: '1分钟呼吸练习，平复情绪', action: 'relax.html' },
                     { title: '身体运动', desc: '释放愤怒能量，运动10分钟', action: '#' },
-                    { title: '写下感受', desc: '把愤怒写下来，理清思绪', action: '#' }
+                    { title: '写下感受', desc: '把愤怒写下来，理清思绪', action: 'community.html' },
                 ],
                 anticipation: [
                     { title: '正念冥想', desc: '5分钟冥想，享受期待的感觉', action: 'practice.html' },
                     { title: '制定计划', desc: '为期待的事做准备', action: '#' },
-                    { title: '感恩练习', desc: '感谢这份期待带来的动力', action: '#' }
-                ]
+                    { title: '感恩练习', desc: '感谢这份期待带来的动力', action: 'community.html' },
+                ],
             };
 
-            const emotionSuggestions = suggestions[primaryEmotion] || suggestions.fear;
-            
-            let suggestionsHTML = '';
-            emotionSuggestions.forEach(suggestion => {
-                suggestionsHTML += `
-                    <div class="border border-gray-200 rounded-xl p-6 hover:border-primary-400 hover:shadow-md transition cursor-pointer" onclick="window.location.href='${suggestion.action}'">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">${suggestion.title}</h3>
-                        <p class="text-gray-600">${suggestion.desc}</p>
-                    </div>
-                `;
+            // 情绪关键词映射 → 论文/音乐/故事推荐
+            const emotionContentMap = {
+                joy: 'joy',
+                sadness: 'sadness',
+                anger: 'anger',
+                fear: 'fear',
+                surprise: 'anxiety',
+                disgust: 'anger',
+                anticipation: 'anxiety',
+                trust: 'calm',
+            };
+
+            const mappedEmotion = emotionContentMap[primaryEmotion] || 'anxiety';
+
+            // 获取推荐内容
+            const recMusic = getMusicByEmotion(mappedEmotion, 2);
+            const recStories = getStoriesByEmotion(mappedEmotion, 1);
+            const recPapers = PAPERS.filter(p =>
+                p.tags.some(tag => {
+                    const lower = tag.toLowerCase();
+                    return lower.includes(mappedEmotion) || lower.includes('情绪') || lower.includes('焦虑') || lower.includes('调节');
+                })
+            ).slice(0, 1);
+
+            const practiceList = practiceSuggestions[primaryEmotion] || practiceSuggestions.fear;
+            const container = document.getElementById('suggestions-container');
+
+            let html = '';
+
+            // 第一部分：调节建议
+            html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">🧭 调节建议</h3>`;
+            practiceList.forEach((s, i) => {
+                html += `
+                    <div class="suggestion-card" style="animation-delay:${i * 80}ms;" onclick="if('${s.action}' !== '#') window.location.href='${s.action}'">
+                        <h3 style="font-size:1.05rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">${s.title}</h3>
+                        <p style="font-size:0.9rem;color:var(--theme-text-light);">${s.desc}</p>
+                    </div>`;
             });
-            
-            document.getElementById('suggestions-container').innerHTML = suggestionsHTML;
+            html += `</div>`;
+
+            // 第二部分：推荐音乐
+            if (recMusic.length > 0) {
+                html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">🎵 适合你的疗愈音乐</h3>`;
+                recMusic.forEach((m, i) => {
+                    html += `
+                        <div class="suggestion-card" style="animation-delay:${(practiceList.length + i) * 80}ms;">
+                            <div style="display:flex;align-items:center;gap:0.75rem;">
+                                <div style="width:40px;height:40px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">🎧</div>
+                                <div style="flex:1;min-width:0;">
+                                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">${m.title}</h3>
+                                    <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.25rem;">${m.composer} · ${m.duration}</p>
+                                    <p style="font-size:0.8rem;color:var(--color-primary-500);">${m.tags.slice(0,2).join(' · ')}</p>
+                                </div>
+                            </div>
+                            <p style="font-size:0.85rem;color:var(--theme-text-light);margin-top:0.75rem;line-height:1.6;">${m.description.substring(0, 80)}…</p>
+                        </div>`;
+                });
+                html += `</div>`;
+            }
+
+            // 第三部分：推荐故事
+            if (recStories.length > 0) {
+                const story = recStories[0];
+                html += `
+                    <div style="margin-bottom:1.5rem;">
+                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 一篇疗愈故事</h3>
+                        <div class="suggestion-card" style="animation-delay:${(practiceList.length + recMusic.length) * 80}ms;">
+                            <h3 style="font-size:1.05rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">「${story.title}」</h3>
+                            <p style="font-size:0.8rem;color:var(--color-primary-500);margin-bottom:0.75rem;">${story.theme} · 约${story.duration}分钟阅读</p>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);line-height:1.7;">${story.content.substring(0, 120)}…</p>
+                            <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--theme-border);">
+                                <p style="font-size:0.85rem;color:var(--color-warm-500);font-style:italic;">💬 ${story.moral}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            }
+
+            // 第四部分：推荐论文
+            if (recPapers.length > 0) {
+                const paper = recPapers[0];
+                html += `
+                    <div style="margin-bottom:1.5rem;">
+                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📚 循证心理学</h3>
+                        <div class="suggestion-card" style="animation-delay:${(practiceList.length + recMusic.length + recStories.length) * 80}ms;">
+                            <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">「${paper.title}」</h3>
+                            <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.5rem;">${paper.author} (${paper.year}) · ${paper.journal}</p>
+                            <p style="font-size:0.85rem;color:var(--theme-text-light);line-height:1.7;">${paper.abstract.substring(0, 140)}…</p>
+                        </div>
+                    </div>`;
+            }
+
+            // 伦理提示
+            html += `
+                <div style="margin-top:1.5rem;padding:1rem;background:rgba(251,191,36,0.1);border-radius:var(--radius-lg);border-left:3px solid #FBBF24;">
+                    <p style="font-size:0.8rem;color:#92400E;line-height:1.6;">
+                        ⚠️ <strong>温馨提示：</strong>以上建议基于心理学研究和文献整理，仅供参考，不能替代专业心理咨询或医学诊断。如你感到持续的困扰，请联系专业心理咨询师或医疗机构。
+                    </p>
+                </div>`;
+
+            container.innerHTML = html;
         }
 
-        // 页面加载时初始化
+        /* ========== Toast 提示 ========== */
+        function showToast(message, type = 'info') {
+            const colors = {
+                success: 'var(--color-primary-400)',
+                warning: '#F59E0B',
+                error: '#EF4444',
+                info: 'var(--color-primary-500)',
+            };
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);
+                background:${colors[type] || colors.info};color:white;padding:0.75rem 1.5rem;
+                border-radius:var(--radius-full);font-size:0.95rem;z-index:9999;
+                box-shadow:var(--shadow-lg);opacity:0;
+                transition:all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                pointer-events:none;white-space:nowrap;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+            });
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+
+        /* ========== 趋势数据（Chart.js 渲染）========== */
+        let emotionTrendChart = null;
+
+        function loadTrendData(period) {
+            const days = period === 'week' ? 7 : 30;
+            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+
+            // 准备数据：每天的平均情绪强度
+            const labels = [];
+            const dataPoints = [];
+            const today = new Date();
+
+            for (let i = days - 1; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(date.getDate() - i);
+                date.setHours(0, 0, 0, 0);
+                const dateStr = date.toISOString().split('T')[0];
+
+                const dayRecords = records.filter(r => {
+                    const rDate = new Date(r.timestamp);
+                    rDate.setHours(0, 0, 0, 0);
+                    return rDate.getTime() === date.getTime();
+                });
+
+                const avg = dayRecords.length > 0
+                    ? dayRecords.reduce((sum, r) => sum + (r.intensity || 5), 0) / dayRecords.length
+                    : null;
+
+                labels.push(`${date.getMonth() + 1}/${date.getDate()}`);
+                dataPoints.push(avg);
+            }
+
+            // 如果没有数据，显示空状态
+            if (records.length === 0) {
+                renderEmptyChart();
+                return;
+            }
+
+            renderTrendChart(labels, dataPoints, days);
+        }
+
+        function renderTrendChart(labels, data, days) {
+            const ctx = document.getElementById('emotion-chart').getContext('2d');
+
+            // 销毁旧图表
+            if (emotionTrendChart) {
+                emotionTrendChart.destroy();
+            }
+
+            // 过滤掉空数据点
+            const validData = data.map((v, i) => v !== null ? v : (i > 0 && data[i-1] !== null ? data[i-1] : 5));
+
+            emotionTrendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '情绪强度',
+                        data: validData,
+                        borderColor: '#5A9A8A',
+                        backgroundColor: 'rgba(90, 154, 138, 0.1)',
+                        borderWidth: 2.5,
+                        pointBackgroundColor: '#5A9A8A',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        tension: 0.4,
+                        fill: true,
+                        spanGaps: true,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (ctx) => {
+                                    const val = ctx.raw;
+                                    const level = Object.entries(emotionLevels).find(([k, v]) => parseInt(k) === Math.round(val));
+                                    return `情绪强度: ${val.toFixed(1)} (${level ? level[1].text : ''})`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 1,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1,
+                                callback: (val) => `${val} ${val <= 3 ? '😊' : val <= 5 ? '😐' : val <= 7 ? '😕' : '😢'}`,
+                                font: { size: 11 },
+                                color: '#9CA3AF',
+                            },
+                            grid: { color: 'rgba(0,0,0,0.05)' },
+                            title: {
+                                display: true,
+                                text: '情绪强度 (1=极好, 10=很糟糕)',
+                                font: { size: 11 },
+                                color: '#9CA3AF',
+                            }
+                        },
+                        x: {
+                            ticks: { font: { size: 10 }, color: '#9CA3AF', maxTicksLimit: 7 },
+                            grid: { display: false },
+                        }
+                    }
+                }
+            });
+        }
+
+        function switchTrendPeriod(period) {
+            // 更新按钮样式
+            ['week', 'month'].forEach(p => {
+                const btn = document.getElementById(`btn-${p}`);
+                if (p === period) {
+                    btn.style.background = 'var(--color-primary-400)';
+                    btn.style.color = 'white';
+                    btn.style.border = 'none';
+                } else {
+                    btn.style.background = 'var(--theme-bg)';
+                    btn.style.color = 'var(--theme-text-light)';
+                    btn.style.border = '1px solid var(--theme-border)';
+                }
+            });
+            loadTrendData(period);
+        }
+
+        function renderEmptyChart() {
+            const canvas = document.getElementById('emotion-chart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            if (emotionTrendChart) emotionTrendChart.destroy();
+            ctx.clearRect(0, 0, canvas.width || 400, canvas.height || 200);
+            ctx.fillStyle = '#9CA3AF';
+            ctx.font = '14px Nunito Sans, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('记录更多情绪后可查看趋势图 📊', (canvas.width || 400) / 2, (canvas.height || 200) / 2);
+        }
+            const ctx = document.getElementById('emotion-chart').getContext('2d');
+            if (emotionTrendChart) emotionTrendChart.destroy();
+            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+            ctx.fillStyle = '#9CA3AF';
+            ctx.font = '14px Nunito Sans, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('记录更多情绪后可查看趋势图 📊', ctx.canvas.width / 2, ctx.canvas.height / 2);
+        }
+
+        /* ========== 移动端菜单 ========== */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        /* ========== 滑块事件绑定 ========== */
+        function initSlider() {
+            const slider = document.getElementById('emotion-slider');
+            slider.addEventListener('input', (e) => {
+                updateThermometer(parseInt(e.target.value));
+            });
+            updateThermometer(5);
+        }
+
+        /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', () => {
             initEmotionWheel();
-            updateEmotionSlider(5);
-        });
+            initTabs();
+            initTagButtons();
+            initSlider();
 
-        // 响应窗口大小变化
-        window.addEventListener('resize', () => {
-            if (emotionWheel) {
-                const container = document.getElementById('emotion-wheel-container');
-                container.innerHTML = '';
-                initEmotionWheel();
-            }
+            /* 窗口大小变化时重新初始化轮盘 */
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    if (emotionWheel) {
+                        const container = document.getElementById('emotion-wheel-container');
+                        container.innerHTML = '';
+                        initEmotionWheel();
+                    }
+                }, 250);
+            });
         });
     </script>
-
-    <!-- 引入主题管理器 -->
-    <script src="js/theme-manager.js"></script>
 </body>
 </html>

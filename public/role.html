@@ -5,591 +5,714 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>角色探索 - 心晴空间</title>
     <meta name="description" content="理解你的不同角色，更好地平衡它们">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: {
-                            50: '#f0faf7',
-                            100: '#d9f2eb',
-                            200: '#b5ddd3',
-                            300: '#8ac4b5',
-                            400: '#7CB8A8',
-                            500: '#5A9A8A',
-                            600: '#4a8a7a',
-                        },
-                        warm: {
-                            50: '#fdfbf9',
-                            100: '#F5E6D3',
-                            200: '#E8D5C4',
-                            300: '#d4c4b0',
-                        }
+                        primary: { 50: '#f0faf7', 100: '#d9f2eb', 200: '#b5ddd3', 300: '#8ac4b5', 400: '#7CB8A8', 500: '#5A9A8A', 600: '#4a8a7a' },
+                        warm: { 50: '#fdfbf9', 100: '#F5E6D3', 200: '#E8D5C4', 300: '#d4c4b0' }
                     }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            font-family: 'Nunito Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        }
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .role-card.selected {
-            border-color: #5A9A8A;
-            background-color: #f0faf7;
-        }
-        .step-indicator.active {
-            background-color: #5A9A8A;
-            color: white;
-        }
-        .step-indicator.completed {
-            background-color: #5A9A8A;
-            color: white;
-        }
-    </style>
 </head>
-<body class="bg-warm-50 text-gray-700 min-h-screen">
+<body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
+
     <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm">
+    <nav class="navbar" id="mainNav">
         <div class="max-w-6xl mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <a href="index.html" class="text-2xl font-bold text-primary-500">心晴空间</a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition">返回首页</a>
+                <a href="index.html" class="flex items-center gap-2 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-800 group-hover:text-primary-500 transition-colors">心晴空间</span>
+                </a>
+                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+                    返回首页
+                </a>
             </div>
         </div>
     </nav>
 
     <!-- 主要内容 -->
-    <main class="max-w-4xl mx-auto px-4 py-12">
+    <main class="max-w-4xl mx-auto px-4 py-10">
         <!-- 进度指示器 -->
-        <div class="flex justify-center mb-8 fade-in">
-            <div class="flex items-center gap-4">
-                <div class="step-indicator active w-10 h-10 rounded-full flex items-center justify-center font-semibold" id="step-1">1</div>
-                <div class="w-16 h-1 bg-gray-200 rounded"></div>
-                <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-600" id="step-2">2</div>
-                <div class="w-16 h-1 bg-gray-200 rounded"></div>
-                <div class="step-indicator w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-600" id="step-3">3</div>
+        <div class="step-progress stagger-child" style="--stagger-index: 0">
+            <div class="step-track">
+                <div class="step-dot active" id="step-1" data-step="1">
+                    <span class="step-number">1</span>
+                    <span class="step-label">选择角色</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-dot" id="step-2" data-step="2">
+                    <span class="step-number">2</span>
+                    <span class="step-label">冲突分析</span>
+                </div>
+                <div class="step-line"></div>
+                <div class="step-dot" id="step-3" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">平衡建议</span>
+                </div>
             </div>
         </div>
 
         <!-- 步骤1：角色识别 -->
-        <div id="step-1-content" class="fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">你在生活中扮演哪些角色？</h2>
-                <p class="text-gray-600 text-center mb-8">选择你目前扮演的角色，帮助我们更好地理解你</p>
+        <div id="step-1-content" class="step-content stagger-child" style="--stagger-index: 1">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-icon" style="background: linear-gradient(135deg, #d9f2eb 0%, #b5ddd3 100%);">
+                        <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="step-title">你在生活中扮演哪些角色？</h2>
+                        <p class="step-subtitle">选择你目前扮演的角色，帮助我们更好地理解你</p>
+                    </div>
+                </div>
                 
                 <!-- 家庭角色 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                        <span class="text-2xl mr-2">🏠</span>
+                <div class="role-section">
+                    <h3 class="role-section-title">
+                        <span class="role-section-icon">🏠</span>
                         家庭角色
                     </h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div onclick="toggleRole(this, 'child')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">子女</h4>
-                                    <p class="text-sm text-gray-600">与父母的关系</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                    <div class="role-grid" data-category="family">
+                        <div class="role-item" onclick="toggleRole(this, 'child')" data-touch-feedback>
+                            <div class="role-item-icon">👨‍👩‍👧</div>
+                            <div class="role-item-info">
+                                <h4>子女</h4>
+                                <p>与父母的关系</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'partner')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">伴侣</h4>
-                                    <p class="text-sm text-gray-600">恋爱/婚姻关系</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'partner')" data-touch-feedback>
+                            <div class="role-item-icon">💑</div>
+                            <div class="role-item-info">
+                                <h4>伴侣</h4>
+                                <p>恋爱/婚姻关系</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'parent')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">父母</h4>
-                                    <p class="text-sm text-gray-600">育儿责任</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'parent')" data-touch-feedback>
+                            <div class="role-item-icon">👶</div>
+                            <div class="role-item-info">
+                                <h4>父母</h4>
+                                <p>育儿责任</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'sibling')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">兄弟姐妹</h4>
-                                    <p class="text-sm text-gray-600">手足关系</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'sibling')" data-touch-feedback>
+                            <div class="role-item-icon">👨‍👩‍👧‍👦</div>
+                            <div class="role-item-info">
+                                <h4>兄弟姐妹</h4>
+                                <p>手足关系</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 社会角色 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                        <span class="text-2xl mr-2">💼</span>
+                <div class="role-section">
+                    <h3 class="role-section-title">
+                        <span class="role-section-icon">💼</span>
                         社会角色
                     </h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div onclick="toggleRole(this, 'student')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">学生</h4>
-                                    <p class="text-sm text-gray-600">学业、同伴关系</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                    <div class="role-grid" data-category="social">
+                        <div class="role-item" onclick="toggleRole(this, 'student')" data-touch-feedback>
+                            <div class="role-item-icon">📚</div>
+                            <div class="role-item-info">
+                                <h4>学生</h4>
+                                <p>学业、同伴关系</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'employee')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">职场人</h4>
-                                    <p class="text-sm text-gray-600">工作、同事关系</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'employee')" data-touch-feedback>
+                            <div class="role-item-icon">💻</div>
+                            <div class="role-item-info">
+                                <h4>职场人</h4>
+                                <p>工作、同事关系</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'freelancer')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">自由职业者</h4>
-                                    <p class="text-sm text-gray-600">自我管理</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'freelancer')" data-touch-feedback>
+                            <div class="role-item-icon">🎨</div>
+                            <div class="role-item-info">
+                                <h4>自由职业者</h4>
+                                <p>自我管理</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'entrepreneur')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">创业者</h4>
-                                    <p class="text-sm text-gray-600">创业压力</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'entrepreneur')" data-touch-feedback>
+                            <div class="role-item-icon">🚀</div>
+                            <div class="role-item-info">
+                                <h4>创业者</h4>
+                                <p>创业压力</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 自我角色 -->
-                <div class="mb-8">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center">
-                        <span class="text-2xl mr-2">✨</span>
+                <div class="role-section">
+                    <h3 class="role-section-title">
+                        <span class="role-section-icon">✨</span>
                         自我角色
                     </h3>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <div onclick="toggleRole(this, 'learner')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">学习者</h4>
-                                    <p class="text-sm text-gray-600">终身学习</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                    <div class="role-grid" data-category="self">
+                        <div class="role-item" onclick="toggleRole(this, 'learner')" data-touch-feedback>
+                            <div class="role-item-icon">📖</div>
+                            <div class="role-item-info">
+                                <h4>学习者</h4>
+                                <p>终身学习</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'creator')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">创造者</h4>
-                                    <p class="text-sm text-gray-600">兴趣爱好</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'creator')" data-touch-feedback>
+                            <div class="role-item-icon">🎭</div>
+                            <div class="role-item-info">
+                                <h4>创造者</h4>
+                                <p>兴趣爱好</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'volunteer')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">志愿者</h4>
-                                    <p class="text-sm text-gray-600">社会参与</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'volunteer')" data-touch-feedback>
+                            <div class="role-item-icon">🤝</div>
+                            <div class="role-item-info">
+                                <h4>志愿者</h4>
+                                <p>社会参与</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div onclick="toggleRole(this, 'explorer')" class="role-card border-2 border-gray-200 rounded-xl p-4 cursor-pointer hover:border-primary-400 transition">
-                            <div class="flex items-center justify-between">
-                                <div>
-                                    <h4 class="font-semibold text-gray-800">探索者</h4>
-                                    <p class="text-sm text-gray-600">自我发现</p>
-                                </div>
-                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-primary-500 hidden check-icon" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
+                        <div class="role-item" onclick="toggleRole(this, 'explorer')" data-touch-feedback>
+                            <div class="role-item-icon">🌟</div>
+                            <div class="role-item-info">
+                                <h4>探索者</h4>
+                                <p>自我发现</p>
+                            </div>
+                            <div class="role-item-check">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <button onclick="nextStep(2)" class="w-full bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                <button onclick="nextStep(2)" class="step-btn-primary" data-touch-feedback>
                     下一步
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
             </div>
         </div>
 
         <!-- 步骤2：角色冲突分析 -->
-        <div id="step-2-content" class="hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">角色冲突分析</h2>
-                <p class="text-gray-600 text-center mb-8">看看你的角色之间是否存在冲突</p>
-                
-                <div id="conflict-analysis" class="space-y-6">
-                    <!-- 动态生成 -->
+        <div id="step-2-content" class="step-content hidden" style="--stagger-index: 1">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                        <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="step-title">角色冲突分析</h2>
+                        <p class="step-subtitle">看看你的角色之间是否存在冲突</p>
+                    </div>
                 </div>
+                
+                <div id="conflict-analysis" class="conflict-list"></div>
 
-                <div class="mt-8 flex gap-4">
-                    <button onclick="prevStep(1)" class="flex-1 border-2 border-primary-500 text-primary-500 py-3 rounded-lg hover:bg-primary-50 transition font-medium">
+                <div class="step-btn-group">
+                    <button onclick="prevStep(1)" class="step-btn-secondary" data-touch-feedback>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         上一步
                     </button>
-                    <button onclick="nextStep(3)" class="flex-1 bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    <button onclick="nextStep(3)" class="step-btn-primary" data-touch-feedback>
                         查看建议
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- 步骤3：角色平衡建议 -->
-        <div id="step-3-content" class="hidden fade-in">
-            <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">角色平衡建议</h2>
-                <p class="text-gray-600 text-center mb-8">帮助你更好地平衡不同角色</p>
-                
-                <div id="balance-suggestions" class="space-y-6">
-                    <!-- 动态生成 -->
+        <div id="step-3-content" class="step-content hidden" style="--stagger-index: 1">
+            <div class="step-card">
+                <div class="step-header">
+                    <div class="step-icon" style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="step-title">角色平衡建议</h2>
+                        <p class="step-subtitle">帮助你更好地平衡不同角色</p>
+                    </div>
                 </div>
+                
+                <div id="balance-suggestions" class="suggestion-grid"></div>
 
-                <div class="mt-8 flex gap-4">
-                    <button onclick="prevStep(2)" class="flex-1 border-2 border-primary-500 text-primary-500 py-3 rounded-lg hover:bg-primary-50 transition font-medium">
+                <div class="step-btn-group">
+                    <button onclick="prevStep(2)" class="step-btn-secondary" data-touch-feedback>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         上一步
                     </button>
-                    <button onclick="saveAndFinish()" class="flex-1 bg-primary-500 text-white py-3 rounded-lg hover:bg-primary-600 transition font-medium">
+                    <button onclick="saveAndFinish()" class="step-btn-primary" data-touch-feedback>
                         完成
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </button>
                 </div>
             </div>
         </div>
     </main>
 
+    <script src="js/neuroaesthetics.js"></script>
     <script>
-        // 状态管理
         let selectedRoles = [];
         let currentStep = 1;
 
-        // 角色信息
         const roleInfo = {
             child: { name: '子女', category: '家庭', emoji: '👨‍👩‍👧' },
             partner: { name: '伴侣', category: '家庭', emoji: '💑' },
             parent: { name: '父母', category: '家庭', emoji: '👶' },
             sibling: { name: '兄弟姐妹', category: '家庭', emoji: '👨‍👩‍👧‍👦' },
             student: { name: '学生', category: '社会', emoji: '📚' },
-            employee: { name: '职场人', category: '社会', emoji: '💼' },
-            freelancer: { name: '自由职业者', category: '社会', emoji: '💻' },
+            employee: { name: '职场人', category: '社会', emoji: '💻' },
+            freelancer: { name: '自由职业者', category: '社会', emoji: '🎨' },
             entrepreneur: { name: '创业者', category: '社会', emoji: '🚀' },
             learner: { name: '学习者', category: '自我', emoji: '📖' },
-            creator: { name: '创造者', category: '自我', emoji: '🎨' },
+            creator: { name: '创造者', category: '自我', emoji: '🎭' },
             volunteer: { name: '志愿者', category: '自我', emoji: '🤝' },
             explorer: { name: '探索者', category: '自我', emoji: '🌟' }
         };
 
-        // 角色冲突定义
         const conflicts = {
-            'employee-learner': {
-                roles: ['职场人', '学习者'],
-                description: '工作与学习的平衡',
-                suggestion: '设定固定学习时间，利用碎片化时间学习'
-            },
-            'employee-creator': {
-                roles: ['职场人', '创造者'],
-                description: '工作与兴趣爱好的冲突',
-                suggestion: '下班后留出1小时做自己喜欢的事，周末安排创作时间'
-            },
-            'employee-explorer': {
-                roles: ['职场人', '探索者'],
-                description: '工作与自我探索的矛盾',
-                suggestion: '定期反思，设定个人成长目标'
-            },
-            'student-employee': {
-                roles: ['学生', '职场人'],
-                description: '学业与工作的双重压力',
-                suggestion: '合理规划时间，优先处理重要任务'
-            },
-            'parent-employee': {
-                roles: ['父母', '职场人'],
-                description: '育儿与工作的平衡',
-                suggestion: '设定工作边界，保证家庭时间'
-            },
-            'partner-employee': {
-                roles: ['伴侣', '职场人'],
-                description: '亲密关系与工作的冲突',
-                suggestion: '每天留出专属时间给伴侣，周末约会'
-            },
-            'child-employee': {
-                roles: ['子女', '职场人'],
-                description: '家庭责任与工作的矛盾',
-                suggestion: '定期与父母沟通，平衡家庭和工作需求'
-            }
+            'employee-learner': { roles: ['职场人', '学习者'], description: '工作与学习的平衡', suggestion: '设定固定学习时间，利用碎片化时间学习' },
+            'employee-creator': { roles: ['职场人', '创造者'], description: '工作与兴趣爱好的冲突', suggestion: '下班后留出1小时做自己喜欢的事，周末安排创作时间' },
+            'employee-explorer': { roles: ['职场人', '探索者'], description: '工作与自我探索的矛盾', suggestion: '定期反思，设定个人成长目标' },
+            'student-employee': { roles: ['学生', '职场人'], description: '学业与工作的双重压力', suggestion: '合理规划时间，优先处理重要任务' },
+            'parent-employee': { roles: ['父母', '职场人'], description: '育儿与工作的平衡', suggestion: '设定工作边界，保证家庭时间' },
+            'partner-employee': { roles: ['伴侣', '职场人'], description: '亲密关系与工作的冲突', suggestion: '每天留出专属时间给伴侣，周末约会' },
+            'child-employee': { roles: ['子女', '职场人'], description: '家庭责任与工作的矛盾', suggestion: '定期与父母沟通，平衡家庭和工作需求' }
         };
 
-        // 切换角色选择
+        function showToast(message, type = 'info') {
+            const colors = { success: 'var(--color-primary-400)', info: 'var(--color-blue-400)', warning: 'var(--color-accent-orange)', error: 'var(--color-accent-coral)' };
+            const toast = document.createElement('div');
+            toast.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:${colors[type] || colors.info};color:white;padding:0.875rem 1.5rem;border-radius:9999px;font-weight:500;z-index:10000;opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);box-shadow:var(--shadow-lg);`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => { toast.style.opacity='1'; toast.style.transform='translateX(-50%) translateY(0)'; });
+            setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(-50%) translateY(-10px)'; setTimeout(() => toast.remove(), 300); }, 2500);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            NeuroAesthetics.initStaggerAnimations();
+            NeuroAesthetics.initNavbarScroll('mainNav');
+        });
+
         function toggleRole(card, role) {
             if (selectedRoles.includes(role)) {
                 selectedRoles = selectedRoles.filter(r => r !== role);
                 card.classList.remove('selected');
-                card.querySelector('.check-icon').classList.add('hidden');
             } else {
                 selectedRoles.push(role);
                 card.classList.add('selected');
-                card.querySelector('.check-icon').classList.remove('hidden');
             }
         }
 
-        // 下一步
+        function updateStepIndicator(step) {
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`step-${i}`);
+                if (i < step) {
+                    dot.classList.add('completed');
+                    dot.classList.remove('active');
+                } else if (i === step) {
+                    dot.classList.add('active');
+                    dot.classList.remove('completed');
+                } else {
+                    dot.classList.remove('active', 'completed');
+                }
+            }
+        }
+
         function nextStep(step) {
             if (step === 2 && selectedRoles.length === 0) {
-                alert('请至少选择一个角色');
+                showToast('请至少选择一个角色', 'warning');
                 return;
             }
-
             currentStep = step;
-            
-            // 更新进度指示器
-            for (let i = 1; i <= 3; i++) {
-                const indicator = document.getElementById(`step-${i}`);
-                if (i < step) {
-                    indicator.classList.add('completed');
-                    indicator.classList.remove('active');
-                } else if (i === step) {
-                    indicator.classList.add('active');
-                    indicator.classList.remove('completed');
-                } else {
-                    indicator.classList.remove('active', 'completed');
-                }
-            }
-
-            // 显示对应内容
-            document.querySelectorAll('[id^="step-"][id$="-content"]').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById(`step-${step}-content`).classList.remove('hidden');
-
-            // 生成对应内容
-            if (step === 2) {
-                generateConflictAnalysis();
-            } else if (step === 3) {
-                generateBalanceSuggestions();
-            }
+            updateStepIndicator(step);
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`step-${step}-content`);
+            target.classList.remove('hidden');
+            void target.offsetWidth;
+            target.classList.add('visible');
+            if (step === 2) generateConflictAnalysis();
+            else if (step === 3) generateBalanceSuggestions();
         }
 
-        // 上一步
         function prevStep(step) {
             currentStep = step;
-            
-            // 更新进度指示器
-            for (let i = 1; i <= 3; i++) {
-                const indicator = document.getElementById(`step-${i}`);
-                if (i < step) {
-                    indicator.classList.add('completed');
-                    indicator.classList.remove('active');
-                } else if (i === step) {
-                    indicator.classList.add('active');
-                    indicator.classList.remove('completed');
-                } else {
-                    indicator.classList.remove('active', 'completed');
-                }
-            }
-
-            // 显示对应内容
-            document.querySelectorAll('[id^="step-"][id$="-content"]').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById(`step-${step}-content`).classList.remove('hidden');
+            updateStepIndicator(step);
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById(`step-${step}-content`);
+            target.classList.remove('hidden');
+            void target.offsetWidth;
+            target.classList.add('visible');
         }
 
-        // 生成冲突分析
         function generateConflictAnalysis() {
             const container = document.getElementById('conflict-analysis');
             let html = '';
-
-            // 检查角色冲突
             const foundConflicts = [];
             selectedRoles.forEach((role1, i) => {
                 selectedRoles.slice(i + 1).forEach(role2 => {
-                    const conflictKey1 = `${role1}-${role2}`;
-                    const conflictKey2 = `${role2}-${role1}`;
-                    
-                    if (conflicts[conflictKey1]) {
-                        foundConflicts.push({ key: conflictKey1, ...conflicts[conflictKey1] });
-                    } else if (conflicts[conflictKey2]) {
-                        foundConflicts.push({ key: conflictKey2, ...conflicts[conflictKey2] });
-                    }
+                    const key1 = `${role1}-${role2}`;
+                    const key2 = `${role2}-${role1}`;
+                    if (conflicts[key1]) foundConflicts.push({ key: key1, ...conflicts[key1] });
+                    else if (conflicts[key2]) foundConflicts.push({ key: key2, ...conflicts[key2] });
                 });
             });
-
             if (foundConflicts.length === 0) {
-                html = `
-                    <div class="text-center py-8">
-                        <div class="text-6xl mb-4">✨</div>
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">太棒了！</h3>
-                        <p class="text-gray-600">你的角色之间没有明显的冲突</p>
-                    </div>
-                `;
+                html = `<div class="conflict-empty">
+                    <div class="conflict-empty-icon">✨</div>
+                    <h3 class="conflict-empty-title">太棒了！</h3>
+                    <p class="conflict-empty-text">你的角色之间没有明显的冲突</p>
+                </div>`;
             } else {
-                foundConflicts.forEach(conflict => {
-                    html += `
-                        <div class="border-l-4 border-primary-500 pl-6 py-2">
-                            <h3 class="text-lg font-semibold text-gray-800 mb-2">${conflict.roles[0]} vs ${conflict.roles[1]}</h3>
-                            <p class="text-gray-600 mb-2">${conflict.description}</p>
-                            <p class="text-sm text-primary-600">${conflict.suggestion}</p>
-                        </div>
-                    `;
+                foundConflicts.forEach((c, i) => {
+                    html += `<div class="conflict-item" style="animation-delay:${i * 0.1}s">
+                        <div class="conflict-badge">${c.roles[0]} vs ${c.roles[1]}</div>
+                        <p class="conflict-desc">${c.description}</p>
+                        <p class="conflict-suggestion">💡 ${c.suggestion}</p>
+                    </div>`;
                 });
             }
-
-            // 显示角色地图
-            html += `
-                <div class="mt-8 pt-6 border-t border-gray-200">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-4">你的角色地图</h3>
-                    <div class="flex flex-wrap gap-3">
-                        ${selectedRoles.map(role => `
-                            <div class="bg-primary-50 px-4 py-2 rounded-full">
-                                <span class="mr-2">${roleInfo[role].emoji}</span>
-                                <span class="text-gray-700">${roleInfo[role].name}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-
+            html += `<div class="role-map">
+                <h3 class="role-map-title">你的角色地图</h3>
+                <div class="role-map-tags">${selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${roleInfo[r].name}</span>`).join('')}</div>
+            </div>`;
             container.innerHTML = html;
+            requestAnimationFrame(() => {
+                container.querySelectorAll('.conflict-item').forEach((item, i) => {
+                    setTimeout(() => item.classList.add('visible'), i * 100);
+                });
+            });
         }
 
-        // 生成平衡建议
         function generateBalanceSuggestions() {
             const container = document.getElementById('balance-suggestions');
-            let html = '';
-
             const suggestions = [
-                {
-                    title: '设定边界',
-                    icon: '🚧',
-                    items: [
-                        '下班后关闭工作通知',
-                        '周末至少半天完全属于自己',
-                        '学会说"不"，拒绝不必要的请求'
-                    ]
-                },
-                {
-                    title: '时间管理',
-                    icon: '⏰',
-                    items: [
-                        '使用番茄工作法提高效率',
-                        '每天留出1小时做自己喜欢的事',
-                        '为不同角色分配专属时间'
-                    ]
-                },
-                {
-                    title: '自我关怀',
-                    icon: '💝',
-                    items: [
-                        '每周至少一次自我奖励',
-                        '定期运动，保持身心健康',
-                        '给自己犯错和休息的空间'
-                    ]
-                },
-                {
-                    title: '寻求支持',
-                    icon: '🤝',
-                    items: [
-                        '和家人朋友分享你的感受',
-                        '必要时寻求专业帮助',
-                        '加入支持小组，和有相似经历的人交流'
-                    ]
-                }
+                { title: '设定边界', icon: '🚧', color: '#fef3c7', items: ['下班后关闭工作通知', '周末至少半天完全属于自己', '学会说"不"，拒绝不必要的请求'] },
+                { title: '时间管理', icon: '⏰', color: '#dbeafe', items: ['使用番茄工作法提高效率', '每天留出1小时做自己喜欢的事', '为不同角色分配专属时间'] },
+                { title: '自我关怀', icon: '💝', color: '#fce7f3', items: ['每周至少一次自我奖励', '定期运动，保持身心健康', '给自己犯错和休息的空间'] },
+                { title: '寻求支持', icon: '🤝', color: '#d1fae5', items: ['和家人朋友分享你的感受', '必要时寻求专业帮助', '加入支持小组，和有相似经历的人交流'] }
             ];
-
-            suggestions.forEach(suggestion => {
-                html += `
-                    <div class="border border-gray-200 rounded-xl p-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center">
-                            <span class="text-2xl mr-2">${suggestion.icon}</span>
-                            ${suggestion.title}
-                        </h3>
-                        <ul class="space-y-2">
-                            ${suggestion.items.map(item => `
-                                <li class="flex items-start">
-                                    <span class="text-primary-500 mr-2">•</span>
-                                    <span class="text-gray-600">${item}</span>
-                                </li>
-                            `).join('')}
-                        </ul>
-                    </div>
-                `;
+            container.innerHTML = suggestions.map((s, i) => `<div class="suggestion-card" style="--card-index:${i};background:${s.color}" data-touch-feedback>
+                <div class="suggestion-icon">${s.icon}</div>
+                <h3 class="suggestion-title">${s.title}</h3>
+                <ul class="suggestion-list">${s.items.map(item => `<li>• ${item}</li>`).join('')}</ul>
+            </div>`).join('');
+            requestAnimationFrame(() => {
+                container.querySelectorAll('.suggestion-card').forEach((card, i) => {
+                    setTimeout(() => card.classList.add('visible'), i * 80);
+                });
             });
-
-            container.innerHTML = html;
         }
 
-        // 保存并完成
         function saveAndFinish() {
-            // 保存到本地存储
             localStorage.setItem('userRoles', JSON.stringify(selectedRoles));
-            
-            alert('角色探索完成！我们会根据你的角色提供个性化的内容推荐。');
-            
-            // 跳转到首页
-            window.location.href = 'index.html';
+            showToast('角色探索完成！🌟', 'success');
+            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
         }
     </script>
+
+    <style>
+        .neuro-aesthetic-body { animation: fadeIn 0.5s var(--ease-out); }
+
+        /* 步骤进度 */
+        .step-progress {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+        .step-track {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .step-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .step-dot .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--color-gray-200);
+            color: var(--color-gray-500);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s var(--ease-spring);
+        }
+        .step-dot .step-label {
+            font-size: 0.75rem;
+            color: var(--color-gray-500);
+            transition: all 0.3s;
+        }
+        .step-dot.active .step-number {
+            background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(90, 154, 138, 0.4);
+        }
+        .step-dot.active .step-label { color: var(--color-primary-500); font-weight: 600; }
+        .step-dot.completed .step-number {
+            background: var(--color-primary-400);
+            color: white;
+        }
+        .step-line {
+            width: 60px;
+            height: 2px;
+            background: var(--color-gray-200);
+            margin: 0 0.5rem;
+            margin-bottom: 1.5rem;
+            transition: background 0.3s;
+        }
+        @media (max-width: 480px) {
+            .step-label { display: none; }
+            .step-line { width: 40px; margin-bottom: 0; }
+        }
+
+        /* 步骤卡片 */
+        .step-content { opacity: 0; transform: translateY(20px); transition: all 0.4s var(--ease-spring); }
+        .step-content.visible { opacity: 1; transform: translateY(0); }
+        .step-card {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .step-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--color-gray-100);
+        }
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .step-title { font-size: 1.5rem; font-weight: 700; color: var(--color-gray-800); margin-bottom: 0.25rem; }
+        .step-subtitle { color: var(--color-gray-500); }
+
+        /* 角色区块 */
+        .role-section { margin-bottom: 1.5rem; }
+        .role-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-gray-700);
+            margin-bottom: 1rem;
+        }
+        .role-section-icon { font-size: 1.25rem; }
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        @media (max-width: 640px) { .role-grid { grid-template-columns: 1fr; } }
+
+        /* 角色项 */
+        .role-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            border: 2px solid var(--color-gray-200);
+            border-radius: var(--radius-xl);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-spring);
+        }
+        .role-item:hover { border-color: var(--color-primary-300); background: var(--color-primary-50); }
+        .role-item.selected { border-color: var(--color-primary-400); background: var(--color-primary-50); }
+        .role-item-icon { font-size: 1.5rem; flex-shrink: 0; }
+        .role-item-info { flex: 1; min-width: 0; }
+        .role-item-info h4 { font-weight: 600; color: var(--color-gray-800); font-size: 0.9375rem; }
+        .role-item-info p { font-size: 0.75rem; color: var(--color-gray-500); }
+        .role-item-check {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--color-gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            color: transparent;
+        }
+        .role-item.selected .role-item-check {
+            background: var(--color-primary-400);
+            border-color: var(--color-primary-400);
+            color: white;
+        }
+
+        /* 冲突分析 */
+        .conflict-list { margin-bottom: 1.5rem; }
+        .conflict-empty {
+            text-align: center;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: var(--radius-xl);
+        }
+        .conflict-empty-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+        .conflict-empty-title { font-size: 1.25rem; font-weight: 700; color: var(--color-gray-800); margin-bottom: 0.25rem; }
+        .conflict-empty-text { color: var(--color-gray-600); }
+        .conflict-item {
+            background: white;
+            border-left: 4px solid var(--color-accent-orange);
+            padding: 1.25rem;
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.4s var(--ease-spring);
+        }
+        .conflict-item.visible { opacity: 1; transform: translateX(0); }
+        .conflict-badge {
+            display: inline-block;
+            background: var(--color-accent-orange);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.625rem;
+            border-radius: var(--radius-full);
+            margin-bottom: 0.5rem;
+        }
+        .conflict-desc { font-weight: 500; color: var(--color-gray-700); margin-bottom: 0.25rem; }
+        .conflict-suggestion { font-size: 0.875rem; color: var(--color-gray-600); }
+        .role-map {
+            background: var(--color-primary-50);
+            padding: 1.25rem;
+            border-radius: var(--radius-xl);
+            margin-top: 1rem;
+        }
+        .role-map-title { font-weight: 700; color: var(--color-gray-800); margin-bottom: 0.75rem; }
+        .role-map-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+        .role-map-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: white;
+            padding: 0.375rem 0.75rem;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            color: var(--color-gray-700);
+        }
+
+        /* 建议卡片 */
+        .suggestion-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 640px) { .suggestion-grid { grid-template-columns: 1fr; } }
+        .suggestion-card {
+            padding: 1.25rem;
+            border-radius: var(--radius-xl);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s var(--ease-spring);
+        }
+        .suggestion-card.visible { opacity: 1; transform: translateY(0); }
+        .suggestion-card:hover { transform: translateY(-2px); }
+        .suggestion-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .suggestion-title { font-weight: 700; color: var(--color-gray-800); margin-bottom: 0.5rem; }
+        .suggestion-list { list-style: none; padding: 0; margin: 0; }
+        .suggestion-list li { font-size: 0.875rem; color: var(--color-gray-600); margin-bottom: 0.25rem; }
+
+        /* 按钮 */
+        .step-btn-primary {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
+            color: white;
+            font-weight: 600;
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius-xl);
+            transition: all 0.2s var(--ease-spring);
+            box-shadow: 0 2px 12px rgba(90, 154, 138, 0.35);
+        }
+        .step-btn-primary:hover { transform: scale(1.02); box-shadow: 0 4px 20px rgba(90, 154, 138, 0.45); }
+        .step-btn-group { display: flex; gap: 1rem; }
+        .step-btn-secondary {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--color-gray-100);
+            color: var(--color-gray-600);
+            font-weight: 600;
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius-xl);
+            transition: all 0.2s var(--ease-spring);
+        }
+        .step-btn-secondary:hover { background: var(--color-gray-200); }
+        .step-btn-group .step-btn-primary { flex: 1; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .step-content, .conflict-item, .suggestion-card { transition: none; animation: none !important; }
+            .step-content, .conflict-item, .suggestion-card { opacity: 1; transform: none; }
+        }
+    </style>
 </body>
 </html>
