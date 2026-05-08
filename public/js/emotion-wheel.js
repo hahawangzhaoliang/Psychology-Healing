@@ -193,7 +193,6 @@ class EmotionWheel {
             ctx.fillText('点击选择情绪', centerX, centerY);
         }
     }
-    }
 
     handleClick(e) {
         const rect = this.canvas.getBoundingClientRect();

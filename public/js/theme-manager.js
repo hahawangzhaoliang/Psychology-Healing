@@ -135,10 +135,10 @@ class ThemeManager {
                 }
                 .home-lamp {
                     position: fixed;
-                    top: 20px;
+                    bottom: 20px;
                     right: 20px;
-                    width: 60px;
-                    height: 80px;
+                    width: 80px;
+                    height: 120px;
                     cursor: pointer;
                     z-index: 10;
                     transition: all 0.3s ease;
@@ -147,42 +147,133 @@ class ThemeManager {
                     align-items: center;
                 }
                 .lamp-shade {
-                    width: 60px;
-                    height: 40px;
-                    background: linear-gradient(135deg, #F5E6D3, #E8D5C4);
+                    width: 70px;
+                    height: 45px;
+                    background: linear-gradient(135deg, #FFE4B5, #DEB887);
                     border-radius: 50% 50% 0 0;
                     position: relative;
+                    border: 3px solid #CD853F;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.3);
+                }
+                .lamp-shade::before {
+                    content: '';
+                    position: absolute;
+                    top: 8px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 50px;
+                    height: 3px;
+                    background: #CD853F;
+                    border-radius: 2px;
                 }
                 .home-lamp:hover .lamp-shade {
-                    box-shadow: 0 0 20px rgba(255, 220, 150, 0.5);
+                    box-shadow: 0 0 30px rgba(255, 200, 100, 0.6), 0 4px 12px rgba(0,0,0,0.2);
                 }
                 .lamp-stand {
-                    width: 4px;
-                    height: 40px;
-                    background: #8B7355;
+                    width: 6px;
+                    height: 50px;
+                    background: linear-gradient(to right, #8B4513, #A0522D, #8B4513);
                     margin: 0 auto;
+                    border-radius: 3px;
+                    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
                 }
                 .lamp-base {
-                    width: 30px;
-                    height: 8px;
-                    background: #8B7355;
+                    width: 50px;
+                    height: 12px;
+                    background: linear-gradient(to bottom, #A0522D, #8B4513);
                     margin: 0 auto;
-                    border-radius: 2px;
+                    border-radius: 3px;
+                    border: 2px solid #6B4423;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
                 }
                 .lamp-light {
                     position: absolute;
-                    bottom: -100px;
+                    bottom: -120px;
                     left: 50%;
                     transform: translateX(-50%);
-                    width: 150px;
-                    height: 150px;
-                    background: radial-gradient(circle, rgba(255, 220, 150, 0.3), transparent 70%);
+                    width: 180px;
+                    height: 180px;
+                    background: radial-gradient(circle, rgba(255, 220, 150, 0.4), transparent 70%);
                     pointer-events: none;
                     opacity: 1;
                     transition: opacity 0.5s ease;
                 }
                 .lamp-light.off {
                     opacity: 0;
+                }
+                .lamp-icon {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    font-size: 28px;
+                    opacity: 1;
+                    transition: opacity 0.3s ease;
+                }
+                .home-lamp.off .lamp-icon {
+                    opacity: 0.4;
+                }
+                .home-lamp.off .lamp-shade {
+                    opacity: 0.7;
+                }
+                .night-sky {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    pointer-events: none;
+                    z-index: 0;
+                    opacity: 0;
+                    transition: opacity 1s ease;
+                }
+                .night-sky.active {
+                    opacity: 1;
+                }
+                .star {
+                    position: absolute;
+                    width: 3px;
+                    height: 3px;
+                    background: white;
+                    border-radius: 50%;
+                    animation: twinkle 2s ease-in-out infinite;
+                    box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+                }
+                @keyframes twinkle {
+                    0%, 100% { opacity: 0.3; transform: scale(1); }
+                    50% { opacity: 1; transform: scale(1.2); }
+                }
+                .firefly {
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: radial-gradient(circle, #FFE4B5, transparent);
+                    border-radius: 50%;
+                    animation: float 6s ease-in-out infinite;
+                    box-shadow: 0 0 10px rgba(255, 228, 181, 0.6);
+                }
+                @keyframes float {
+                    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+                    25% { transform: translate(20px, -30px) scale(1.1); opacity: 1; }
+                    50% { transform: translate(-10px, -50px) scale(0.9); opacity: 0.8; }
+                    75% { transform: translate(15px, -20px) scale(1.05); opacity: 1; }
+                }
+                .moon {
+                    position: fixed;
+                    top: 50px;
+                    left: 50px;
+                    width: 80px;
+                    height: 80px;
+                    background: radial-gradient(circle at 30% 30%, #FFF9E6, #FFE4B5);
+                    border-radius: 50%;
+                    box-shadow: 0 0 40px rgba(255, 249, 230, 0.4), 0 0 80px rgba(255, 228, 181, 0.2);
+                    opacity: 0;
+                    transition: opacity 1.5s ease;
+                    pointer-events: none;
+                    z-index: 1;
+                }
+                .moon.active {
+                    opacity: 1;
                 }
                 .home-bookshelf {
                     position: fixed;
@@ -209,6 +300,7 @@ class ThemeManager {
             <div class="home-curtain"></div>
             <div class="home-lamp" onclick="themeManager.toggleLamp()">
                 <div class="lamp-shade">
+                    <div class="lamp-icon">💡</div>
                     <div class="lamp-light" id="lamp-light"></div>
                 </div>
                 <div class="lamp-stand"></div>
@@ -369,13 +461,113 @@ class ThemeManager {
     
     toggleLamp() {
         const light = document.getElementById('lamp-light');
-        if (light) {
+        const lamp = document.querySelector('.home-lamp');
+        if (light && lamp) {
             this.lampOn = !this.lampOn;
             light.classList.toggle('off', !this.lampOn);
+            lamp.classList.toggle('off', !this.lampOn);
             
-            // 调整页面亮度
-            document.body.style.transition = 'filter 0.5s ease';
-            document.body.style.filter = this.lampOn ? 'brightness(1)' : 'brightness(0.7)';
+            // 关灯效果：星空、萤火虫、月亮
+            if (!this.lampOn) {
+                this.createNightSky();
+                this.createMoon();
+                this.playRelaxingMusic();
+            } else {
+                this.removeNightSky();
+                this.removeMoon();
+                this.stopRelaxingMusic();
+            }
+        }
+    }
+    
+    createNightSky() {
+        // 创建星空背景
+        let nightSky = document.getElementById('night-sky');
+        if (!nightSky) {
+            nightSky = document.createElement('div');
+            nightSky.id = 'night-sky';
+            nightSky.className = 'night-sky';
+            
+            // 添加星星
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                nightSky.appendChild(star);
+            }
+            
+            // 添加萤火虫
+            for (let i = 0; i < 15; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = Math.random() * 100 + '%';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.animationDelay = Math.random() * 6 + 's';
+                firefly.style.animationDuration = (4 + Math.random() * 4) + 's';
+                nightSky.appendChild(firefly);
+            }
+            
+            document.body.appendChild(nightSky);
+        }
+        
+        setTimeout(() => nightSky.classList.add('active'), 50);
+    }
+    
+    removeNightSky() {
+        const nightSky = document.getElementById('night-sky');
+        if (nightSky) {
+            nightSky.classList.remove('active');
+            setTimeout(() => nightSky.remove(), 1000);
+        }
+    }
+    
+    createMoon() {
+        let moon = document.getElementById('night-moon');
+        if (!moon) {
+            moon = document.createElement('div');
+            moon.id = 'night-moon';
+            moon.className = 'moon';
+            document.body.appendChild(moon);
+        }
+        setTimeout(() => moon.classList.add('active'), 50);
+    }
+    
+    removeMoon() {
+        const moon = document.getElementById('night-moon');
+        if (moon) {
+            moon.classList.remove('active');
+            setTimeout(() => moon.remove(), 1500);
+        }
+    }
+    
+    playRelaxingMusic() {
+        // 创建或获取音频元素
+        let audio = document.getElementById('relaxing-music');
+        if (!audio) {
+            audio = document.createElement('audio');
+            audio.id = 'relaxing-music';
+            audio.loop = true;
+            audio.volume = 0.3;
+            
+            // 使用免费的放松音乐（如果没有本地文件，使用在线资源）
+            // 这里使用一个占位URL，实际应该使用本地音频文件
+            audio.src = 'https://www.soundjay.com/misc/sounds/magic-chime-01.mp3';
+            
+            document.body.appendChild(audio);
+        }
+        
+        audio.play().catch(err => {
+            console.log('自动播放被阻止，需要用户交互');
+        });
+    }
+    
+    stopRelaxingMusic() {
+        const audio = document.getElementById('relaxing-music');
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
         }
     }
     
