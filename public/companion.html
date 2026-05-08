@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的伙伴 - 心晴空间</title>
+    <meta name="description" content="选择你的专属虚拟动物伙伴，开启温暖的心理疗愈陪伴之旅">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: { 50: '#f0faf7', 100: '#d9f2eb', 200: '#b5ddd3', 300: '#8ac4b5', 400: '#7CB8A8', 500: '#5A9A8A', 600: '#4a8a7a' },
+                        warm: { 50: '#fdfbf9', 100: '#F5E6D3', 200: '#E8D5C4', 300: '#d4c4b0' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 动物动效样式 */
+        .companion-float {
+            animation: companionFloat 3s ease-in-out infinite;
+        }
+        .companion-bounce {
+            animation: companionBounce 1.5s ease-in-out infinite;
+        }
+        .companion-sway {
+            animation: companionSway 2.5s ease-in-out infinite;
+        }
+        .companion-breathe {
+            animation: companionBreathe 4s ease-in-out infinite;
+        }
+        
+        @keyframes companionFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+        @keyframes companionBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+        @keyframes companionSway {
+            0%, 100% { transform: translateX(0) rotate(-5deg); }
+            50% { transform: translateX(10px) rotate(5deg); }
+        }
+        @keyframes companionBreathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        /* 选择卡片样式 */
+        .companion-card {
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+        .companion-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px -10px rgba(92, 184, 168, 0.3);
+        }
+        .companion-card.selected {
+            border-color: var(--color-primary-400, #5cb8a8);
+            box-shadow: 0 0 0 3px rgba(92, 184, 168, 0.3), 0 10px 30px -10px rgba(92, 184, 168, 0.4);
+        }
+        .companion-card.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--color-primary-400, #5cb8a8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        /* 预览区域 */
+        .preview-stage {
+            background: linear-gradient(135deg, #f0faf7 0%, #d9f2eb 50%, #b5ddd3 100%);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .preview-stage::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(92, 184, 168, 0.1), transparent);
+            border-radius: 0 0 24px 24px;
+        }
+        .preview-companion {
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+        }
+        
+        /* 星星装饰 */
+        .sparkle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        /* 心动效果 */
+        .heart-effect {
+            position: absolute;
+            font-size: 20px;
+            animation: floatUp 1s ease-out forwards;
+            pointer-events: none;
+        }
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(0.5); }
+        }
+        
+        /* 引导提示 */
+        .guide-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--color-primary-400, #5cb8a8);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
+
+    <!-- 导航栏 -->
+    <nav class="navbar" id="mainNav">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-2 group">
+                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="font-semibold text-gray-800 group-hover:text-primary-500 transition-colors">心晴空间</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="nav-link">首页</a>
+                    <a href="emotion.html" class="nav-link">情绪觉察</a>
+                    <a href="article.html" class="nav-link">疗愈内容</a>
+                    <a href="relax.html" class="nav-link">放松练习</a>
+                    <a href="companion.html" class="nav-link active">我的伙伴</a>
+                </div>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-gray-600" aria-label="菜单" data-touch-feedback>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-gray-100 mobile-menu">
+            <div class="px-4 py-3 space-y-1">
+                <a href="index.html" class="mobile-nav-link">首页</a>
+                <a href="emotion.html" class="mobile-nav-link">情绪觉察</a>
+                <a href="article.html" class="mobile-nav-link">疗愈内容</a>
+                <a href="relax.html" class="mobile-nav-link">放松练习</a>
+                <a href="companion.html" class="mobile-nav-link active">我的伙伴</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="pt-16 pb-16">
+        <!-- 页面标题 -->
+        <section class="hero-gradient py-14">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center stagger-child" style="--stagger-index: 0">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/80 shadow-sm mb-4">
+                    <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">我的伙伴</h1>
+                <p class="text-gray-600">选择一个专属的虚拟动物伙伴，陪伴你走过每一段疗愈之旅</p>
+            </div>
+        </section>
+
+        <!-- 内容区域 -->
+        <section class="py-10">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6">
+                
+                <!-- 预览区域 -->
+                <div class="preview-stage h-64 sm:h-80 mb-10 flex items-center justify-center relative" id="previewStage">
+                    <div class="preview-companion" id="previewCompanion">
+                        <!-- 选中的动物会显示在这里 -->
+                    </div>
+                    <div class="absolute top-4 left-4 text-sm text-primary-600 font-medium">
+                        <span class="guide-dot inline-block mr-2"></span>
+                        预览动效
+                    </div>
+                </div>
+                
+                <!-- 动物选择网格 -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6 mb-10" id="companionGrid">
+                    <!-- 动物卡片会动态生成 -->
+                </div>
+                
+                <!-- 保存按钮 -->
+                <div class="text-center">
+                    <button onclick="saveCompanion()" class="btn-primary px-8 py-3 text-lg">
+                        <svg class="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        确认选择
+                    </button>
+                    <p class="text-sm text-gray-500 mt-3">选择后，你的伙伴会在各页面陪伴你</p>
+                </div>
+                
+                <!-- 已选伙伴提示（如果有） -->
+                <div id="currentCompanionHint" class="hidden mt-10 p-6 bg-white rounded-2xl shadow-sm border border-primary-100">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-16 h-16 rounded-xl overflow-hidden bg-gradient-to-br from-primary-100 to-primary-200 p-2" id="currentCompanionThumb">
+                                <!-- 当前选中显示在这里 -->
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">当前伙伴</p>
+                                <p class="font-semibold text-gray-800" id="currentCompanionName">-</p>
+                            </div>
+                        </div>
+                        <button onclick="clearCompanion()" class="text-sm text-gray-500 hover:text-red-500 transition-colors">
+                            取消伙伴
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部导航（移动端） -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 md:hidden z-50">
+        <div class="flex justify-around py-2">
+            <a href="index.html" class="flex flex-col items-center py-2 px-4 text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="text-xs mt-1">首页</span>
+            </a>
+            <a href="emotion.html" class="flex flex-col items-center py-2 px-4 text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                <span class="text-xs mt-1">情绪</span>
+            </a>
+            <a href="companion.html" class="flex flex-col items-center py-2 px-4 text-primary-500">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+                <span class="text-xs mt-1 font-medium">伙伴</span>
+            </a>
+            <a href="relax.html" class="flex flex-col items-center py-2 px-4 text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="text-xs mt-1">放松</span>
+            </a>
+            <a href="article.html" class="flex flex-col items-center py-2 px-4 text-gray-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                <span class="text-xs mt-1">内容</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Toast 提示 -->
+    <div id="toast" class="fixed top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 bg-primary-500 text-white rounded-full shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none z-50">
+        <span id="toastMessage"></span>
+    </div>
+
+    <script src="js/neuroaesthetics.js"></script>
+    <script>
+        // 动物数据 - 使用原始 PNG 图片
+        const companions = [
+            { id: 'otter', name: '海洋水獭', filename: '海洋水獭.png', animation: 'float', emoji: '🦦', color: '#5DADE2', personality: '温暖治愈' },
+            { id: 'penguin', name: '极光企鹅', filename: '极光企鹅.png', animation: 'bounce', emoji: '🐧', color: '#85C1E9', personality: '沉稳陪伴' },
+            { id: 'fox', name: '森林灵狐', filename: '森林灵狐.png', animation: 'sway', emoji: '🦊', color: '#E67E22', personality: '聪慧灵动' },
+            { id: 'turtle', name: '时光龟龟', filename: '时光龟龟.png', animation: 'breathe', emoji: '🐢', color: '#82E0AA', personality: '静谧守护' },
+            { id: 'rabbit', name: '甜心兔兔', filename: '甜心兔兔.png', animation: 'bounce', emoji: '🐰', color: '#F5B7B1', personality: '甜蜜可爱' },
+            { id: 'sheep', name: '云朵绵羊', filename: '云朵绵羊.png', animation: 'float', emoji: '🐑', color: '#D7DBDD', personality: '柔软安心' }
+        ];
+        
+        let selectedCompanion = null;
+        let tempSelected = null; // 临时选择（未保存）
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCurrentCompanion();
+            renderCompanionGrid();
+            
+            // 检查是否有已保存的伙伴
+            const saved = localStorage.getItem('xinqing_companion');
+            if (saved) {
+                const companion = companions.find(c => c.id === saved);
+                if (companion) {
+                    showCurrentCompanionHint(companion);
+                }
+            }
+        });
+        
+        // 加载当前伙伴
+        function loadCurrentCompanion() {
+            const saved = localStorage.getItem('xinqing_companion');
+            if (saved) {
+                selectedCompanion = companions.find(c => c.id === saved);
+                tempSelected = selectedCompanion;
+                // 默认选中已保存的伙伴
+                setTimeout(() => {
+                    const card = document.querySelector(`[data-companion-id="${saved}"]`);
+                    if (card) card.classList.add('selected');
+                    updatePreview(tempSelected);
+                }, 100);
+            }
+        }
+        
+        // 渲染动物选择网格
+        function renderCompanionGrid() {
+            const grid = document.getElementById('companionGrid');
+            grid.innerHTML = companions.map((c, index) => `
+                <div class="companion-card relative bg-white rounded-2xl p-4 border-2 border-transparent shadow-sm" 
+                     data-companion-id="${c.id}"
+                     onclick="selectCompanion('${c.id}')"
+                     style="--stagger-index: ${index}">
+                    <div class="aspect-square rounded-xl overflow-hidden mb-3 bg-gradient-to-br from-${getGradientColor(c.color)} to-${getGradientColorEnd(c.color)} p-4 flex items-center justify-center">
+                        <img src="images/companions/${c.filename}" 
+                             alt="${c.name}" 
+                             class="w-full h-full object-contain companion-${c.animation}"
+                             onerror="this.parentElement.innerHTML='<span class=\\'text-5xl\\'>${c.emoji}</span>'">
+                    </div>
+                    <h3 class="font-semibold text-gray-800 text-center mb-1">${c.name}</h3>
+                    <p class="text-xs text-gray-500 text-center">${c.personality}</p>
+                </div>
+            `).join('');
+        }
+        
+        // 获取渐变色类名
+        function getGradientColor(hex) {
+            const colors = {
+                '#5DADE2': 'blue-100',
+                '#85C1E9': 'sky-100',
+                '#E67E22': 'orange-100',
+                '#82E0AA': 'green-100',
+                '#F5B7B1': 'pink-100',
+                '#D7DBDD': 'gray-100'
+            };
+            return colors[hex] || 'gray-100';
+        }
+        function getGradientColorEnd(hex) {
+            const colors = {
+                '#5DADE2': 'blue-200',
+                '#85C1E9': 'sky-200',
+                '#E67E22': 'orange-200',
+                '#82E0AA': 'green-200',
+                '#F5B7B1': 'pink-200',
+                '#D7DBDD': 'gray-200'
+            };
+            return colors[hex] || 'gray-200';
+        }
+        
+        function getGradientColorEnd(hex) {
+            const colors = {
+                '#5DADE2': 'blue-200',
+                '#85C1E9': 'sky-200',
+                '#E67E22': 'orange-200',
+                '#82E0AA': 'green-200',
+                '#F5B7B1': 'pink-200',
+                '#D7DBDD': 'gray-200'
+            };
+            return colors[hex] || 'gray-200';
+        }
+        
+        // 选择动物
+        function selectCompanion(id) {
+            // 移除其他选中状态
+            document.querySelectorAll('.companion-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            const card = document.querySelector(`[data-companion-id="${id}"]`);
+            card.classList.add('selected');
+            
+            // 更新临时选择
+            tempSelected = companions.find(c => c.id === id);
+            
+            // 更新预览
+            updatePreview(tempSelected);
+            
+            // 添加心动效果
+            addHeartEffect();
+        }
+        
+        // 更新预览
+        function updatePreview(companion) {
+            const preview = document.getElementById('previewCompanion');
+            if (!companion) {
+                preview.innerHTML = `
+                    <div class="text-center text-gray-400">
+                        <svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        <p>选择一个伙伴</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            preview.innerHTML = `
+                <img src="images/companions/${companion.filename}" 
+                     alt="${companion.name}" 
+                     class="w-40 h-40 sm:w-48 sm:h-48 object-contain companion-${companion.animation}"
+                     onerror="this.parentElement.innerHTML='<span class=\\'text-8xl companion-${companion.animation}\\">${companion.emoji}</span>'">
+            `;
+            
+            // 添加星星装饰
+            addSparkles();
+        }
+        
+        // 添加星星装饰
+        function addSparkles() {
+            const stage = document.getElementById('previewStage');
+            for (let i = 0; i < 5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = `${20 + Math.random() * 60}%`;
+                sparkle.style.top = `${20 + Math.random() * 60}%`;
+                sparkle.style.animationDelay = `${Math.random() * 1.5}s`;
+                sparkle.style.background = ['#ffd700', '#ff69b4', '#87ceeb', '#98fb98'][Math.floor(Math.random() * 4)];
+                stage.appendChild(sparkle);
+            }
+        }
+        
+        // 心动效果
+        function addHeartEffect() {
+            const stage = document.getElementById('previewStage');
+            const hearts = ['💕', '💗', '💖', '✨', '💫'];
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-effect';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = `${30 + Math.random() * 40}%`;
+                heart.style.top = `${40 + Math.random() * 20}%`;
+                heart.style.animationDelay = `${i * 0.2}s`;
+                stage.appendChild(heart);
+                setTimeout(() => heart.remove(), 1000);
+            }
+        }
+        
+        // 保存选择
+        function saveCompanion() {
+            if (!tempSelected) {
+                showToast('请先选择一个伙伴', 'warning');
+                return;
+            }
+            
+            localStorage.setItem('xinqing_companion', tempSelected.id);
+            showToast(`${tempSelected.name} 已成为你的专属伙伴！`, 'success');
+            showCurrentCompanionHint(tempSelected);
+            
+            // 添加保存成功动画
+            const btn = document.querySelector('.btn-primary');
+            btn.classList.add('scale-110');
+            setTimeout(() => btn.classList.remove('scale-110'), 300);
+        }
+        
+        // 显示当前伙伴提示
+        function showCurrentCompanionHint(companion) {
+            const hint = document.getElementById('currentCompanionHint');
+            const thumb = document.getElementById('currentCompanionThumb');
+            const name = document.getElementById('currentCompanionName');
+            
+            hint.classList.remove('hidden');
+            thumb.innerHTML = `<img src="images/companions/${companion.filename}" alt="${companion.name}" class="w-full h-full object-contain" onerror="this.parentElement.innerHTML='<span class=\\'text-3xl flex items-center justify-center h-full\\'>${companion.emoji}</span>'">`;
+            name.textContent = companion.name;
+        }
+        
+        // 清除伙伴
+        function clearCompanion() {
+            localStorage.removeItem('xinqing_companion');
+            selectedCompanion = null;
+            tempSelected = null;
+            
+            // 移除选中状态
+            document.querySelectorAll('.companion-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 清空预览
+            updatePreview(null);
+            
+            // 隐藏提示
+            document.getElementById('currentCompanionHint').classList.add('hidden');
+            
+            showToast('已取消伙伴陪伴', 'info');
+        }
+        
+        // Toast 提示
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            toast.className = 'fixed top-20 left-1/2 transform -translate-x-1/2 px-6 py-3 text-white rounded-full shadow-lg transition-opacity duration-300 pointer-events-none z-50';
+            
+            const colors = {
+                success: 'bg-primary-500',
+                warning: 'bg-yellow-500',
+                error: 'bg-red-500',
+                info: 'bg-blue-500'
+            };
+            
+            toast.classList.add(colors[type] || colors.info);
+            toastMessage.textContent = message;
+            toast.style.opacity = '1';
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+        
+        // 移动端菜单
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // 页面加载动画
+        NeuroAesthetics.initStaggerAnimations();
+    </script>
+</body>
+</html>
