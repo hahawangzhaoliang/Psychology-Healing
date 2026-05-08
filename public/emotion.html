@@ -364,7 +364,7 @@
 
             <div style="display:flex;align-items:center;gap:1.5rem;">
                 <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="practice.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
                 <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
                 <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
             </div>
@@ -380,7 +380,7 @@
         <!-- 移动端菜单 -->
         <div id="mobileMenu" style="display:none;background:var(--theme-card);border-top:1px solid var(--theme-border);padding:0.75rem 1rem;" class="md:hidden">
             <a href="index.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">首页</a>
-            <a href="practice.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">疗愈练习</a>
+            <a href="relax.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">疗愈练习</a>
             <a href="knowledge-graph.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">知识图谱</a>
             <a href="about.html" style="display:block;padding:0.5rem 0.75rem;border-radius:var(--radius-md);color:var(--theme-text-light);text-decoration:none;font-size:0.95rem;">关于我们</a>
         </div>
@@ -835,32 +835,32 @@
             // 基础练习推荐
             const practiceSuggestions = {
                 joy: [
-                    { title: '感恩练习', desc: '记录3件让你感恩的事，延续积极情绪', action: 'practice.html' },
+                    { title: '感恩练习', desc: '记录3件让你感恩的事，延续积极情绪', action: 'relax.html' },
                     { title: '分享快乐', desc: '和朋友分享你的喜悦，增强幸福感', action: 'community.html' },
-                    { title: '正念冥想', desc: '5分钟正念练习，深化当下的美好', action: 'practice.html' },
+                    { title: '正念冥想', desc: '5分钟正念练习，深化当下的美好', action: 'relax.html' },
                 ],
                 trust: [
                     { title: '建立连接', desc: '与信任的人深入交流，强化关系', action: 'community.html' },
                     { title: '感恩日记', desc: '记录今天让你感到安全的事', action: 'community.html' },
-                    { title: '身体扫描', desc: '3分钟身体觉察，感受当下的安全感', action: 'practice.html' },
+                    { title: '身体扫描', desc: '3分钟身体觉察，感受当下的安全感', action: 'relax.html' },
                 ],
                 fear: [
                     { title: '5-4-3-2-1接地法', desc: '快速平静神经系统，缓解焦虑', action: 'relax.html' },
                     { title: '呼吸觉察', desc: '1分钟快速放松，降低心率', action: 'relax.html' },
-                    { title: '认知重评', desc: '改变看待问题的方式，减少恐惧', action: 'practice.html' },
+                    { title: '认知重评', desc: '改变看待问题的方式，减少恐惧', action: 'relax.html' },
                 ],
                 surprise: [
-                    { title: '正念觉察', desc: '观察这种惊讶感，不评判', action: 'practice.html' },
+                    { title: '正念觉察', desc: '观察这种惊讶感，不评判', action: 'relax.html' },
                     { title: '记录发现', desc: '写下今天让你惊讶的事', action: 'community.html' },
                     { title: '深呼吸', desc: '3次深呼吸，平复心情', action: 'relax.html' },
                 ],
                 sadness: [
-                    { title: '自我关怀', desc: '对自己温柔，接纳当下的情绪', action: 'practice.html' },
+                    { title: '自我关怀', desc: '对自己温柔，接纳当下的情绪', action: 'relax.html' },
                     { title: '身体扫描', desc: '3分钟身体觉察，连接内在感受', action: 'relax.html' },
                     { title: '寻求支持', desc: '和朋友聊聊，不要独自承受', action: 'community.html' },
                 ],
                 disgust: [
-                    { title: '认知重评', desc: '重新审视让你不适的事物', action: 'practice.html' },
+                    { title: '认知重评', desc: '重新审视让你不适的事物', action: 'relax.html' },
                     { title: '呼吸练习', desc: '1分钟呼吸，释放负面感受', action: 'relax.html' },
                     { title: '转移注意', desc: '做一些让你愉悦的事', action: 'charging-station.html' },
                 ],
@@ -870,7 +870,7 @@
                     { title: '写下感受', desc: '把愤怒写下来，理清思绪', action: 'community.html' },
                 ],
                 anticipation: [
-                    { title: '正念冥想', desc: '5分钟冥想，享受期待的感觉', action: 'practice.html' },
+                    { title: '正念冥想', desc: '5分钟冥想，享受期待的感觉', action: 'relax.html' },
                     { title: '制定计划', desc: '为期待的事做准备', action: '#' },
                     { title: '感恩练习', desc: '感谢这份期待带来的动力', action: 'community.html' },
                 ],
@@ -1151,14 +1151,6 @@
             ctx.font = '14px Nunito Sans, sans-serif';
             ctx.textAlign = 'center';
             ctx.fillText('记录更多情绪后可查看趋势图 📊', (canvas.width || 400) / 2, (canvas.height || 200) / 2);
-        }
-            const ctx = document.getElementById('emotion-chart').getContext('2d');
-            if (emotionTrendChart) emotionTrendChart.destroy();
-            ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-            ctx.fillStyle = '#9CA3AF';
-            ctx.font = '14px Nunito Sans, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('记录更多情绪后可查看趋势图 📊', ctx.canvas.width / 2, ctx.canvas.height / 2);
         }
 
         /* ========== 移动端菜单 ========== */
