@@ -67,7 +67,7 @@
         </div>
 
         <!-- 步骤1：角色识别 -->
-        <div id="step-1-content" class="step-content stagger-child" style="--stagger-index: 1">
+        <div id="step-1-content" class="step-content" style="--stagger-index: 1">
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-icon" style="background: linear-gradient(135deg, #d9f2eb 0%, #b5ddd3 100%);">
@@ -337,6 +337,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             NeuroAesthetics.initStaggerAnimations();
             NeuroAesthetics.initNavbarScroll('mainNav');
+            // 初始化步骤1为可见状态
+            document.getElementById('step-1-content').classList.add('visible');
         });
 
         function toggleRole(card, role) {
@@ -518,9 +520,8 @@
             .step-line { width: 40px; margin-bottom: 0; }
         }
 
-        /* 步骤卡片 */
-        .step-content { opacity: 0; transform: translateY(20px); transition: all 0.4s var(--ease-spring); }
-        .step-content.visible { opacity: 1; transform: translateY(0); }
+        /* 步骤卡片 - 页面加载时立即可见，避免被动画引擎隐藏 */
+        .step-content { opacity: 1 !important; transform: translateY(0); transition: all 0.4s var(--ease-spring); }
         .step-card {
             background: white;
             border-radius: var(--radius-2xl);
