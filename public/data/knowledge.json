@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "updated": "2026-05-09",
+  "articles": {
+    "breathing": {
+      "title": "🌬️ 呼吸放松法",
+      "category": "放松技巧",
+      "duration": "5分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">4-7-8呼吸法是一个简单但强大的放松技术：</p><div style=\"background:#FFF8F0;padding:16px;border-radius:12px;margin-bottom:16px;\"><div style=\"display:flex;align-items:center;gap:12px;margin-bottom:12px;\"><span style=\"background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;\">1</span><span><strong>吸气</strong> 4秒 - 通过鼻子慢慢吸气</span></div><div style=\"display:flex;align-items:center;gap:12px;margin-bottom:12px;\"><span style=\"background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;\">2</span><span><strong>屏息</strong> 7秒 - 保持呼吸</span></div><div style=\"display:flex;align-items:center;gap:12px;\"><span style=\"background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;\">3</span><span><strong>呼气</strong> 8秒 - 通过嘴巴慢慢呼出</span></div></div><p style=\"font-size:13px;color:#8B7355;\">重复3-4次，能有效激活副交感神经，帮助你从紧张状态中放松下来。</p></div>"
+    },
+    "gratitude": {
+      "title": "🙏 感恩练习",
+      "category": "积极心理学",
+      "duration": "10分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">每天晚上睡前，写下三件让你感恩的事：</p><div style=\"background:#E8F5E9;padding:16px;border-radius:12px;margin-bottom:16px;\"><p style=\"margin:0 0 8px;font-style:italic;\">\"今天的好事...\"</p><p style=\"margin:0 0 8px;font-style:italic;\">1. 早上喝到一杯热咖啡 ☕</p><p style=\"margin:0 0 8px;font-style:italic;\">2. 和朋友愉快的聊天 💬</p><p style=\"margin:0;font-style:italic;\">3. 完成了一件困难的任务 ✨</p></div><p style=\"font-size:13px;color:#8B7355;\">研究表明，坚持感恩日记能显著提升幸福感，减少抑郁情绪。</p></div>"
+    },
+    "body-scan": {
+      "title": "🧘 身体扫描冥想",
+      "category": "正念冥想",
+      "duration": "15分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">找一个舒适的姿势，从脚趾开始向上扫描：</p><div style=\"background:#E3F2FD;padding:16px;border-radius:12px;margin-bottom:16px;\"><p style=\"margin:0 0 8px;\">① 关注脚趾 - 感受温度、触感</p><p style=\"margin:0 0 8px;\">② 慢慢上移 - 小腿、膝盖、大腿</p><p style=\"margin:0 0 8px;\">③ 感受躯干 - 腹部、胸部、背部</p><p style=\"margin:0;\">④ 放松头部 - 脸部肌肉、头皮</p></div><p style=\"font-size:13px;color:#8B7355;\">当注意力在某处发现紧绷时，轻声说\"放松\"，让该处自然松弛。</p></div>"
+    },
+    "self-compassion": {
+      "title": "💕 自我慈悲",
+      "category": "自我关怀",
+      "duration": "10分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">当遇到困难时，尝试对自己说：</p><div style=\"background:#FFF0F5;padding:16px;border-radius:12px;margin-bottom:16px;\"><p style=\"margin:0 0 10px;\">\"这是艰难的时刻，痛苦是人类共同经历的一部分。\"</p><p style=\"margin:0 0 10px;\">\"我可以对自己温柔一些，就像对待好朋友一样。\"</p><p style=\"margin:0;\">\"愿我有力量度过这个难关。\"</p></div><p style=\"font-size:13px;color:#8B7355;\">自我慈悲不是自我放纵，而是承认自己的不完美，并给予理解和支持。</p></div>"
+    },
+    "grounding": {
+      "title": "🌱 5-4-3-2-1 接地法",
+      "category": "焦虑缓解",
+      "duration": "5分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">当你感到焦虑或恐慌时，用感官重新连接当下：</p><div style=\"background:#E0F7FA;padding:16px;border-radius:12px;margin-bottom:16px;\"><p style=\"margin:0 0 8px;\">👁️ <strong>5样</strong> 看到的 - 房间里的物品</p><p style=\"margin:0 0 8px;\">✋ <strong>4样</strong> 触摸的 - 身边的物体</p><p style=\"margin:0 0 8px;\">👂 <strong>3样</strong> 听到的 - 周围的声音</p><p style=\"margin:0 0 8px;\">👃 <strong>2样</strong> 闻到的 - 气味的来源</p><p style=\"margin:0;\">👅 <strong>1样</strong> 尝到的 - 嘴里的味道</p></div><p style=\"font-size:13px;color:#8B7355;\">这个练习能把注意力从担忧拉回现实，快速缓解焦虑感。</p></div>"
+    },
+    "positive": {
+      "title": "✨ 积极日记",
+      "category": "认知重构",
+      "duration": "15分钟",
+      "content": "<div style=\"text-align:left;padding:10px 0;\"><p style=\"margin-bottom:16px;font-size:14px;color:#666;\">尝试用积极的角度重新解读负面事件：</p><div style=\"background:#FFF8E1;padding:16px;border-radius:12px;margin-bottom:16px;\"><p style=\"margin:0 0 8px;\"><strong>事件：</strong>今天被老板批评了</p><p style=\"margin:0 0 8px;\"><strong>消极思维：</strong>我真没用，什么都做不好</p><p style=\"margin:0;\"><strong>积极重构：</strong>这次反馈帮助我发现了改进空间，下次会做得更好</p></div><p style=\"font-size:13px;color:#8B7355;\">思维模式的改变需要练习，但坚持会让你看到积极的变化。</p></div>"
+    }
+  }
+}

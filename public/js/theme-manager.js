@@ -84,147 +84,73 @@ class ThemeManager {
             }
         };
 
-        this.emotionData = {
-            happiness: { icon: '😊', title: '幸福感', quote: '幸福不是拥有最好的一切，而是把当下的一切都变得最好。' },
-            calm:      { icon: '🧘', title: '平静',   quote: '让心静下来，如同清澈的湖水，映照出真实的自己。' },
-            courage:   { icon: '🦁', title: '勇气',   quote: '勇气不是没有恐惧，而是即使恐惧也能前行。' },
-            gratitude: { icon: '🙏', title: '感恩',   quote: '感恩生活中的每一份美好，它们都在滋养着你的心灵。' },
-            anxiety:   { icon: '🌿', title: '焦虑',   quote: '焦虑只是提醒你，有些事情需要被看见和接纳。深呼吸，慢慢来。' },
-            sadness:   { icon: '🌧️', title: '悲伤',  quote: '悲伤是爱的代价，允许自己难过，也是一种温柔。' }
-        };
-
-        this.teaEncouragements = [
-            '一切都会好起来的 🌸', '你比自己想象的更强大 💪',
-            '慢下来，享受这一刻 🌿', '给自己一个微笑 😊',
-            '你值得被爱 💕', '今天也很棒呢 ✨',
-            '休息一下也没关系 🌙', '保持呼吸，感受当下 🧘'
-        ];
-
-        /* ===== 宠物伙伴数据 ===== */
-        this.petNames     = ['爱心兔兔', '金毛陪伴犬', '困困猫咪', '绿光灵狐', '漂浮柯基', '水波水獭'];
-        this.petEmojis    = ['🐰', '🐕', '🐱', '🦊', '🐶', '🦦'];
-        this.petMoodTexts = ['✨ 心情愉悦', '😊 很开心', '🥰 感到被爱', '😺 慵懒放松', '🌟 充满能量', '💫 平静安宁'];
-        this.petGreetings = [
-            '嗨～看到你真开心！今天过得怎么样？',
-            '好久不见！你最近在忙什么呢？',
-            '呀！是你呀，想我了没？',
-            '欢迎回来～今天感觉如何？',
-            '嘿！今天的天气真不错呢～',
-            'hi～来和我玩会儿吧！'
-        ];
-        this.petInteractions = {
-            pat: {
-                msg: ['好舒服呀～你真温柔', '被摸摸好开心！', '再摸摸嘛～'],
-                mood: '😊 心情愉悦'
-            },
-            hug: {
-                msg: ['抱抱～感觉好温暖', '被抱住好安心', '我们心连心呢'],
-                mood: '🥰 感到被爱'
-            },
-            play: {
-                msg: ['太好玩了！再来再来！', '嘻嘻，好开心呀～', '我们来玩个够！'],
-                mood: '🌟 充满能量'
-            }
-        };
-
-        /* ===== 疗愈知识库 ===== */
-        this.knowledgeLibrary = {
-            breathing: {
-                title: '🌬️ 呼吸放松法',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">4-7-8呼吸法是一个简单但强大的放松技术：</p>
-                    <div style="background:#FFF8F0;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">1</span>
-                            <span><strong>吸气</strong> 4秒 - 通过鼻子慢慢吸气</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">2</span>
-                            <span><strong>屏息</strong> 7秒 - 保持呼吸</span>
-                        </div>
-                        <div style="display:flex;align-items:center;gap:12px;">
-                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">3</span>
-                            <span><strong>呼气</strong> 8秒 - 通过嘴巴慢慢呼出</span>
-                        </div>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">重复3-4次，能有效激活副交感神经，帮助你从紧张状态中放松下来。</p>
-                </div>`
-            },
-            gratitude: {
-                title: '🙏 感恩练习',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">每天晚上睡前，写下三件让你感恩的事：</p>
-                    <div style="background:#E8F5E9;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <p style="margin:0 0 8px;font-style:italic;">"今天的好事..."</p>
-                        <p style="margin:0 0 8px;font-style:italic;">1. 早上喝到一杯热咖啡 ☕</p>
-                        <p style="margin:0 0 8px;font-style:italic;">2. 和朋友愉快的聊天 💬</p>
-                        <p style="margin:0;font-style:italic;">3. 完成了一件困难的任务 ✨</p>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">研究表明，坚持感恩日记能显著提升幸福感，减少抑郁情绪。</p>
-                </div>`
-            },
-            'body-scan': {
-                title: '🧘 身体扫描冥想',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">找一个舒适的姿势，从脚趾开始向上扫描：</p>
-                    <div style="background:#E3F2FD;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <p style="margin:0 0 8px;">① 关注脚趾 - 感受温度、触感</p>
-                        <p style="margin:0 0 8px;">② 慢慢上移 - 小腿、膝盖、大腿</p>
-                        <p style="margin:0 0 8px;">③ 感受躯干 - 腹部、胸部、背部</p>
-                        <p style="margin:0;">④ 放松头部 - 脸部肌肉、头皮</p>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">当注意力在某处发现紧绷时，轻声说"放松"，让该处自然松弛。</p>
-                </div>`
-            },
-            'self-compassion': {
-                title: '💕 自我慈悲',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">当遇到困难时，尝试对自己说：</p>
-                    <div style="background:#FFF0F5;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <p style="margin:0 0 10px;">"这是艰难的时刻，痛苦是人类共同经历的一部分。"</p>
-                        <p style="margin:0 0 10px;">"我可以对自己温柔一些，就像对待好朋友一样。"</p>
-                        <p style="margin:0;">"愿我有力量度过这个难关。"</p>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">自我慈悲不是自我放纵，而是承认自己的不完美，并给予理解和支持。</p>
-                </div>`
-            },
-            grounding: {
-                title: '🌱 5-4-3-2-1 接地法',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">当你感到焦虑或恐慌时，用感官重新连接当下：</p>
-                    <div style="background:#E0F7FA;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <p style="margin:0 0 8px;">👁️ <strong>5样</strong> 看到的 - 房间里的物品</p>
-                        <p style="margin:0 0 8px;">✋ <strong>4样</strong> 触摸的 - 身边的物体</p>
-                        <p style="margin:0 0 8px;">👂 <strong>3样</strong> 听到的 - 周围的声音</p>
-                        <p style="margin:0 0 8px;">👃 <strong>2样</strong> 闻到的 - 气味的来源</p>
-                        <p style="margin:0;">👅 <strong>1样</strong> 尝到的 - 嘴里的味道</p>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">这个练习能把注意力从担忧拉回现实，快速缓解焦虑感。</p>
-                </div>`
-            },
-            positive: {
-                title: '✨ 积极日记',
-                content: `<div style="text-align:left;padding:10px 0;">
-                    <p style="margin-bottom:16px;font-size:14px;color:#666;">尝试用积极的角度重新解读负面事件：</p>
-                    <div style="background:#FFF8E1;padding:16px;border-radius:12px;margin-bottom:16px;">
-                        <p style="margin:0 0 8px;"><strong>事件：</strong>今天被老板批评了</p>
-                        <p style="margin:0 0 8px;"><strong>消极思维：</strong>我真没用，什么都做不好</p>
-                        <p style="margin:0;"><strong>积极重构：</strong>这次反馈帮助我发现了改进空间，下次会做得更好</p>
-                    </div>
-                    <p style="font-size:13px;color:#8B7355;">思维模式的改变需要练习，但坚持会让你看到积极的变化。</p>
-                </div>`
-            }
-        };
+        // 数据将在 init() 中从 JSON 文件异步加载
+        this.emotionData = {};
+        this.teaEncouragements = [];
+        this.petNames = [];
+        this.petEmojis = [];
+        this.petMoodTexts = [];
+        this.petGreetings = [];
+        this.petInteractions = {};
+        this.knowledgeLibrary = {};
+        this.knowledgeCategories = {};
 
         this.init();
     }
 
     init() {
+        // 异步加载外部数据
+        this.loadTextData();
+        
         this.applyTheme(this.currentTheme);
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', () => this.createThemeSwitcher());
         } else {
             this.createThemeSwitcher();
+        }
+    }
+
+    /**
+     * 从 JSON 文件加载文本数据
+     */
+    async loadTextData() {
+        try {
+            const [emotions, companions, encouragements, knowledge] = await Promise.all([
+                fetch('data/emotions.json').then(r => r.json()),
+                fetch('data/companions.json').then(r => r.json()),
+                fetch('data/encouragements.json').then(r => r.json()),
+                fetch('data/knowledge.json').then(r => r.json())
+            ]);
+
+            // 填充情绪数据
+            this.emotionData = emotions.emotions || {};
+
+            // 填充静心茶语录
+            this.teaEncouragements = encouragements.tea || [];
+
+            // 填充宠物数据
+            if (companions.companions) {
+                this.petNames     = companions.companions.map(c => c.name);
+                this.petEmojis    = companions.companions.map(c => c.emoji);
+                this.petMoodTexts = companions.companions.map(c => c.mood);
+                this.petGreetings = companions.companions.map(c => c.greeting);
+            }
+            this.petInteractions = companions.interactions || {};
+
+            // 填充知识库
+            this.knowledgeLibrary = knowledge.articles || {};
+
+            // 构建分类索引
+            this.knowledgeCategories = {};
+            Object.entries(this.knowledgeLibrary).forEach(([key, item]) => {
+                const cat = item.category || '其他';
+                if (!this.knowledgeCategories[cat]) this.knowledgeCategories[cat] = [];
+                this.knowledgeCategories[cat].push({ key, ...item });
+            });
+
+            console.log('[ThemeManager] 文本数据加载完成');
+        } catch (e) {
+            console.error('[ThemeManager] 数据加载失败:', e);
         }
     }
 
@@ -613,11 +539,15 @@ class ThemeManager {
     /* ===== 切换宠物弹窗 ===== */
     togglePet() {
         const petIdx = Math.floor(Math.random() * this.petNames.length);
-        const petName = this.petNames[petIdx];
-        const petEmoji = this.petEmojis[petIdx];
+        const petName = this.petNames[petIdx] || '爱心兔兔';
+        const petEmoji = this.petEmojis[petIdx] || '🐰';
+        const petMood = this.petMoodTexts[petIdx] || '✨ 心情愉悦';
+        const petMsg = this.petGreetings[petIdx] || '嗨～看到你真开心！';
+        
         document.getElementById('petName').textContent = petName;
-        document.getElementById('petMood').textContent = this.petMoodTexts[petIdx];
-        document.getElementById('petMsg').textContent = this.petGreetings[petIdx];
+        document.getElementById('petMood').textContent = petMood;
+        document.getElementById('petMsg').textContent = petMsg;
+        
         // 更新宠物头像
         const petAvatar = document.querySelector('#petPopup .pet-avatar');
         if (petAvatar) {
@@ -636,8 +566,8 @@ class ThemeManager {
     /* ===== 宠物互动 ===== */
     petInteract(action) {
         const data = this.petInteractions[action];
-        if (!data) return;
-        const msg = data.msg[Math.floor(Math.random() * data.msg.length)];
+        if (!data || !data.messages) return;
+        const msg = data.messages[Math.floor(Math.random() * data.messages.length)];
         document.getElementById('petMsg').textContent = msg;
         document.getElementById('petMood').textContent = data.mood;
     }
