@@ -282,12 +282,18 @@
     <script>
         // 动物数据 - 使用原始 PNG 图片
         const companions = [
-            { id: 'otter', name: '海洋水獭', filename: '海洋水獭.png', animation: 'float', emoji: '🦦', color: '#5DADE2', personality: '温暖治愈' },
-            { id: 'penguin', name: '极光企鹅', filename: '极光企鹅.png', animation: 'bounce', emoji: '🐧', color: '#85C1E9', personality: '沉稳陪伴' },
-            { id: 'fox', name: '森林灵狐', filename: '森林灵狐.png', animation: 'sway', emoji: '🦊', color: '#E67E22', personality: '聪慧灵动' },
-            { id: 'turtle', name: '时光龟龟', filename: '时光龟龟.png', animation: 'breathe', emoji: '🐢', color: '#82E0AA', personality: '静谧守护' },
-            { id: 'rabbit', name: '甜心兔兔', filename: '甜心兔兔.png', animation: 'bounce', emoji: '🐰', color: '#F5B7B1', personality: '甜蜜可爱' },
-            { id: 'sheep', name: '云朵绵羊', filename: '云朵绵羊.png', animation: 'float', emoji: '🐑', color: '#D7DBDD', personality: '柔软安心' }
+            { id: 'rabbit',   name: '爱心兔兔',    filename: '爱心兔兔.png',    animation: 'bounce',  color: '#E879A9', emoji: '🐰', personality: '爱心守护者',      story: '来自爱之森林的守护兔，胸前总是发着温暖的粉红光芒。她相信每一颗心都值得被珍爱，每一滴眼泪都能化为成长的养分。' },
+            { id: 'dog',      name: '金毛陪伴犬',  filename: '金毛陪伴犬.png',  animation: 'sway',   color: '#E8A838', emoji: '🐕', personality: '无言的拥抱',      story: '曾经在无数个深夜默默守候在主人床边的大金毛，离开汪星球后化为一缕阳光，永远守在你身边。它不懂复杂的道理，只懂得：你在，我就安心。' },
+            { id: 'cat',      name: '困困猫咪',    filename: '困困猫咪.png',    animation: 'breathe', color: '#9B8EC4', emoji: '🐱', personality: '慵懒治愈师',      story: '一只总是睁不开眼睛的小猫咪，来自梦的边缘。它告诉你：不必每时每刻都充满能量，困了就睡，休息也是前进的一部分。' },
+            { id: 'fox',      name: '绿光灵狐',    filename: '绿光灵狐.png',    animation: 'sway',   color: '#4DB87A', emoji: '🦊', personality: '智慧引路人',      story: '穿梭于现实与梦境边界的灵狐，双眼闪烁着古老的绿光。它看过太多迷失方向的灵魂，学会了用最温柔的方式点亮你心里那盏被遗忘的灯。' },
+            { id: 'hedgehog', name: '暖光刺猬',    filename: '暖光刺猬.png',    animation: 'breathe', color: '#D4894A', emoji: '🦔', personality: '柔软的心',        story: '浑身是刺的小刺猬，却有一颗最柔软的心。它教会你：可以保护自己，也可以敞开心扉——刺是铠甲，爱是本能。' },
+            { id: 'corgi',    name: '漂浮柯基',    filename: '漂浮柯基.png',    animation: 'float',  color: '#F5A623', emoji: '🐶', personality: '快乐制造机',      story: '永远飘在空中的小柯基，因为太快乐了所以脚都不需要沾地。它的使命就是让你嘴角上扬，让快乐变得简单。' },
+            { id: 'otter',    name: '水波水獭',    filename: '水波水獭.png',    animation: 'float',  color: '#5CB8D4', emoji: '🦦', personality: '情绪调色盘',      story: '来自情绪之湖的小水獭，能感知每一滴水的情绪。它不评判任何感受，只是静静陪伴你趟过焦虑、愤怒、悲伤，最后一起看见湖面的光。' },
+            { id: 'elephant', name: '水晶小象',    filename: '水晶小象.png',    animation: 'sway',   color: '#8B9EC9', emoji: '🐘', personality: '记忆收藏家',      story: '透明如水晶的小象，记忆中装满了所有被遗忘的美好瞬间。当你在黑暗中找不到自己时，它会用那些碎片帮你拼出完整的画面。' },
+            { id: 'whale',    name: '星海鲸鱼',    filename: '星海鲸鱼.png',    animation: 'float',  color: '#4A90D9', emoji: '🐋', personality: '宇宙级陪伴',      story: '在意识宇宙中遨游的蓝鲸，见过无数星系的诞生与消亡。它告诉你：在这个浩瀚宇宙中，你是独特而珍贵的存在。' },
+            { id: 'penguin',  name: '音乐企鹅',    filename: '音乐企鹅.png',    animation: 'bounce', color: '#5BC8C8', emoji: '🐧', personality: '节奏疗愈师',      story: '来自冰川深处的企鹅，会唱一种古老的心跳之歌。它知道，音乐是灵魂的语言——当言语无法抵达的地方，旋律可以。' },
+            { id: 'sheep',    name: '云朵小羊',    filename: '云朵小羊.png',    animation: 'float',  color: '#B8D4E8', emoji: '🐑', personality: '天空幻想家',      story: '在云端草地漫步的小羊，背上背着整个天空的梦。它知道，幻想不是逃避，而是灵魂在舞蹈——偶尔飞一飞，是为了更好地落地。' },
+            { id: 'panda',    name: '竹林熊猫',    filename: '竹林熊猫.png',    animation: 'breathe', color: '#7DB87D', emoji: '🐼', personality: '竹林隐士',        story: '住在竹林深处的隐士熊猫，看似懒洋洋实则通透。它说：最好的修行不是苦行僧式的坚持，而是学会在该放下时放下，在该慢时慢下来。' }
         ];
         
         let selectedCompanion = null;
@@ -343,9 +349,22 @@
             `).join('');
         }
         
-        // 获取渐变色类名
+        // 获取渐变色类名（支持新12个动物颜色）
         function getGradientColor(hex) {
             const colors = {
+                '#E879A9': 'pink-100',
+                '#E8A838': 'amber-100',
+                '#9B8EC4': 'purple-100',
+                '#4DB87A': 'green-100',
+                '#D4894A': 'orange-100',
+                '#F5A623': 'amber-100',
+                '#5CB8D4': 'cyan-100',
+                '#8B9EC9': 'indigo-100',
+                '#4A90D9': 'blue-100',
+                '#5BC8C8': 'teal-100',
+                '#B8D4E8': 'sky-100',
+                '#7DB87D': 'green-100',
+                // 旧颜色（兼容）
                 '#5DADE2': 'blue-100',
                 '#85C1E9': 'sky-100',
                 '#E67E22': 'orange-100',
@@ -357,18 +376,19 @@
         }
         function getGradientColorEnd(hex) {
             const colors = {
-                '#5DADE2': 'blue-200',
-                '#85C1E9': 'sky-200',
-                '#E67E22': 'orange-200',
-                '#82E0AA': 'green-200',
-                '#F5B7B1': 'pink-200',
-                '#D7DBDD': 'gray-200'
-            };
-            return colors[hex] || 'gray-200';
-        }
-        
-        function getGradientColorEnd(hex) {
-            const colors = {
+                '#E879A9': 'pink-200',
+                '#E8A838': 'amber-200',
+                '#9B8EC4': 'purple-200',
+                '#4DB87A': 'green-200',
+                '#D4894A': 'orange-200',
+                '#F5A623': 'amber-200',
+                '#5CB8D4': 'cyan-200',
+                '#8B9EC9': 'indigo-200',
+                '#4A90D9': 'blue-200',
+                '#5BC8C8': 'teal-200',
+                '#B8D4E8': 'sky-200',
+                '#7DB87D': 'green-200',
+                // 旧颜色（兼容）
                 '#5DADE2': 'blue-200',
                 '#85C1E9': 'sky-200',
                 '#E67E22': 'orange-200',

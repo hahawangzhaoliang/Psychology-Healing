@@ -338,6 +338,36 @@
             color: var(--color-primary-500);
             font-weight: 600;
         }
+
+        /* ---------- 桌面导航（md以上显示） ---------- */
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex;
+            }
+        }
+
+        /* ---------- 主题下拉菜单 ---------- */
+        .theme-dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 0.5rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            padding: 0.5rem;
+            min-width: 140px;
+            z-index: 9999;
+        }
+        .theme-dropdown.show {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -394,7 +424,7 @@
             </a>
 
             <!-- 桌面导航 -->
-            <div style="display:none;align-items:center;gap:2rem;" class="md:flex">
+            <div class="desktop-nav">
                 <a href="index.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">首页</a>
                 <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
                 <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
@@ -574,7 +604,7 @@
             </div>
 
             <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--theme-text-light);">
-                💡 点击右上角主题按钮，切换不同场景体验
+                💡 点击左上角的动物伙伴，与它互动并切换场景主题
             </p>
         </section>
 
@@ -721,7 +751,7 @@
             menu.classList.toggle('open');
         }
 
-        /* 点击页面其他地方关闭菜单 */
+        /* 点击页面其他地方关闭移动端菜单 */
         document.addEventListener('click', (e) => {
             const menu = document.getElementById('mobileMenu');
             const btn = e.target.closest('button');
@@ -729,6 +759,9 @@
                 menu.classList.remove('open');
             }
         });
+
+        /* ========== 主题切换（由 theme-manager.js 驱动） ========== */
+        // themeManager 挂载于 window，页面通过 themeChanged 事件感知主题变化
 
         /* ========== 导航栏滚动效果（备用，JS已处理） ========== */
         // neuroaesthetics.js 已处理，此处无需重复
