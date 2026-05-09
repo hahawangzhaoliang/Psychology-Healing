@@ -12,7 +12,6 @@ class ThemeManager {
         this.themes = {
             home: {
                 name: '家', icon: '🏠',
-                // 覆盖 neuroaesthetics.css 中的 CSS 变量
                 vars: {
                     '--color-primary-50':  '#fdf8f0',
                     '--color-primary-100': '#f8e8cc',
@@ -101,12 +100,132 @@ class ThemeManager {
             '休息一下也没关系 🌙', '保持呼吸，感受当下 🧘'
         ];
 
+        /* ===== 宠物伙伴数据 ===== */
+        this.petNames     = ['爱心兔兔', '金毛陪伴犬', '困困猫咪', '绿光灵狐', '漂浮柯基', '水波水獭'];
+        this.petEmojis    = ['🐰', '🐕', '🐱', '🦊', '🐶', '🦦'];
+        this.petMoodTexts = ['✨ 心情愉悦', '😊 很开心', '🥰 感到被爱', '😺 慵懒放松', '🌟 充满能量', '💫 平静安宁'];
+        this.petGreetings = [
+            '嗨～看到你真开心！今天过得怎么样？',
+            '好久不见！你最近在忙什么呢？',
+            '呀！是你呀，想我了没？',
+            '欢迎回来～今天感觉如何？',
+            '嘿！今天的天气真不错呢～',
+            'hi～来和我玩会儿吧！'
+        ];
+        this.petInteractions = {
+            pat: {
+                msg: ['好舒服呀～你真温柔', '被摸摸好开心！', '再摸摸嘛～'],
+                mood: '😊 心情愉悦'
+            },
+            hug: {
+                msg: ['抱抱～感觉好温暖', '被抱住好安心', '我们心连心呢'],
+                mood: '🥰 感到被爱'
+            },
+            play: {
+                msg: ['太好玩了！再来再来！', '嘻嘻，好开心呀～', '我们来玩个够！'],
+                mood: '🌟 充满能量'
+            }
+        };
+
+        /* ===== 疗愈知识库 ===== */
+        this.knowledgeLibrary = {
+            breathing: {
+                title: '🌬️ 呼吸放松法',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">4-7-8呼吸法是一个简单但强大的放松技术：</p>
+                    <div style="background:#FFF8F0;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">1</span>
+                            <span><strong>吸气</strong> 4秒 - 通过鼻子慢慢吸气</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">2</span>
+                            <span><strong>屏息</strong> 7秒 - 保持呼吸</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:12px;">
+                            <span style="background:#E8B87D;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;">3</span>
+                            <span><strong>呼气</strong> 8秒 - 通过嘴巴慢慢呼出</span>
+                        </div>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">重复3-4次，能有效激活副交感神经，帮助你从紧张状态中放松下来。</p>
+                </div>`
+            },
+            gratitude: {
+                title: '🙏 感恩练习',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">每天晚上睡前，写下三件让你感恩的事：</p>
+                    <div style="background:#E8F5E9;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <p style="margin:0 0 8px;font-style:italic;">"今天的好事..."</p>
+                        <p style="margin:0 0 8px;font-style:italic;">1. 早上喝到一杯热咖啡 ☕</p>
+                        <p style="margin:0 0 8px;font-style:italic;">2. 和朋友愉快的聊天 💬</p>
+                        <p style="margin:0;font-style:italic;">3. 完成了一件困难的任务 ✨</p>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">研究表明，坚持感恩日记能显著提升幸福感，减少抑郁情绪。</p>
+                </div>`
+            },
+            'body-scan': {
+                title: '🧘 身体扫描冥想',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">找一个舒适的姿势，从脚趾开始向上扫描：</p>
+                    <div style="background:#E3F2FD;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <p style="margin:0 0 8px;">① 关注脚趾 - 感受温度、触感</p>
+                        <p style="margin:0 0 8px;">② 慢慢上移 - 小腿、膝盖、大腿</p>
+                        <p style="margin:0 0 8px;">③ 感受躯干 - 腹部、胸部、背部</p>
+                        <p style="margin:0;">④ 放松头部 - 脸部肌肉、头皮</p>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">当注意力在某处发现紧绷时，轻声说"放松"，让该处自然松弛。</p>
+                </div>`
+            },
+            'self-compassion': {
+                title: '💕 自我慈悲',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">当遇到困难时，尝试对自己说：</p>
+                    <div style="background:#FFF0F5;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <p style="margin:0 0 10px;">"这是艰难的时刻，痛苦是人类共同经历的一部分。"</p>
+                        <p style="margin:0 0 10px;">"我可以对自己温柔一些，就像对待好朋友一样。"</p>
+                        <p style="margin:0;">"愿我有力量度过这个难关。"</p>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">自我慈悲不是自我放纵，而是承认自己的不完美，并给予理解和支持。</p>
+                </div>`
+            },
+            grounding: {
+                title: '🌱 5-4-3-2-1 接地法',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">当你感到焦虑或恐慌时，用感官重新连接当下：</p>
+                    <div style="background:#E0F7FA;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <p style="margin:0 0 8px;">👁️ <strong>5样</strong> 看到的 - 房间里的物品</p>
+                        <p style="margin:0 0 8px;">✋ <strong>4样</strong> 触摸的 - 身边的物体</p>
+                        <p style="margin:0 0 8px;">👂 <strong>3样</strong> 听到的 - 周围的声音</p>
+                        <p style="margin:0 0 8px;">👃 <strong>2样</strong> 闻到的 - 气味的来源</p>
+                        <p style="margin:0;">👅 <strong>1样</strong> 尝到的 - 嘴里的味道</p>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">这个练习能把注意力从担忧拉回现实，快速缓解焦虑感。</p>
+                </div>`
+            },
+            positive: {
+                title: '✨ 积极日记',
+                content: `<div style="text-align:left;padding:10px 0;">
+                    <p style="margin-bottom:16px;font-size:14px;color:#666;">尝试用积极的角度重新解读负面事件：</p>
+                    <div style="background:#FFF8E1;padding:16px;border-radius:12px;margin-bottom:16px;">
+                        <p style="margin:0 0 8px;"><strong>事件：</strong>今天被老板批评了</p>
+                        <p style="margin:0 0 8px;"><strong>消极思维：</strong>我真没用，什么都做不好</p>
+                        <p style="margin:0;"><strong>积极重构：</strong>这次反馈帮助我发现了改进空间，下次会做得更好</p>
+                    </div>
+                    <p style="font-size:13px;color:#8B7355;">思维模式的改变需要练习，但坚持会让你看到积极的变化。</p>
+                </div>`
+            }
+        };
+
         this.init();
     }
 
     init() {
         this.applyTheme(this.currentTheme);
-        this.createThemeSwitcher();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.createThemeSwitcher());
+        } else {
+            this.createThemeSwitcher();
+        }
     }
 
     applyTheme(themeName) {
@@ -114,19 +233,15 @@ class ThemeManager {
         if (!theme) return;
 
         const root = document.documentElement;
-
-        // 批量设置所有 CSS 变量，让整站颜色跟随主题
         Object.entries(theme.vars).forEach(([key, val]) => {
             root.style.setProperty(key, val);
         });
 
-        // 设置 body class 与 data-theme
         document.body.className = document.body.className
             .replace(/\btheme-\S+/g, '').trim();
         document.body.classList.add(`theme-${themeName}`);
         document.body.setAttribute('data-theme', themeName);
 
-        // 更新 hero 渐变（如果当前是首页）
         this._updateHeroGradient(themeName);
 
         localStorage.setItem('theme', themeName);
@@ -172,149 +287,208 @@ class ThemeManager {
                     background: radial-gradient(ellipse at 80% 20%, rgba(232,184,125,0.12) 0%, transparent 50%),
                                 radial-gradient(ellipse at 20% 80%, rgba(168,196,212,0.10) 0%, transparent 50%);
                     pointer-events: none; z-index: -1;
+                    transition: background 0.5s ease;
                 }
-                .emotion-bookshelf {
-                    position: fixed; bottom: 20px; left: 20px;
-                    pointer-events: auto; cursor: pointer;
-                    transition: transform 0.3s ease;
+                .home-toolbar {
+                    position:fixed; right:12px; top:50%;
+                    transform:translateY(-50%);
+                    display:flex; flex-direction:column; gap:8px;
+                    z-index:100;
                 }
-                .emotion-bookshelf:hover { transform: scale(1.05); }
-                .bookshelf-body {
-                    width: 120px; height: 140px;
-                    background: linear-gradient(180deg, #C4A882 0%, #A68B5B 100%);
-                    border-radius: 8px 8px 4px 4px; padding: 8px 6px;
-                    display: flex; flex-direction: column; gap: 6px;
-                    box-shadow: 0 6px 20px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.2);
-                    position: relative;
+                .tool-btn {
+                    width:52px; height:52px; border-radius:16px;
+                    background:rgba(255,255,255,0.95);
+                    border:2px solid rgba(255,255,255,0.8);
+                    cursor:pointer; position:relative;
+                    display:flex; align-items:center; justify-content:center;
+                    box-shadow:0 4px 15px rgba(0,0,0,0.12);
+                    transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+                    backdrop-filter:blur(10px);
                 }
-                .bookshelf-body::before {
-                    content:''; position:absolute; top:0; left:0; right:0;
-                    height:8px; background:#8B7355; border-radius:8px 8px 0 0;
+                .tool-btn:hover {
+                    transform:scale(1.12);
+                    box-shadow:0 8px 25px rgba(0,0,0,0.18);
                 }
-                .book-row { display:flex; gap:4px; justify-content:center; margin-top:8px; }
-                .book {
-                    width:22px; height:32px; border-radius:2px; cursor:pointer;
-                    transition:transform 0.2s ease; box-shadow:1px 1px 3px rgba(0,0,0,0.2);
+                .tool-btn:active { transform:scale(0.95); }
+                .tool-btn .icon { font-size:26px; line-height:1; }
+                .tool-btn .tooltip {
+                    position:absolute; right:62px; top:50%;
+                    transform:translateY(-50%);
+                    background:rgba(74,55,40,0.95);
+                    color:white; padding:6px 12px; border-radius:10px;
+                    font-size:12px; white-space:nowrap;
+                    opacity:0; pointer-events:none;
+                    transition:opacity 0.2s ease;
                 }
-                .book:hover { transform:translateY(-8px) rotate(-5deg); }
-                .book-happiness{background:linear-gradient(180deg,#FFE4B5,#FFD700);}
-                .book-calm    {background:linear-gradient(180deg,#87CEEB,#4169E1);}
-                .book-courage {background:linear-gradient(180deg,#FFA07A,#FF6347);}
-                .book-gratitude{background:linear-gradient(180deg,#98FB98,#32CD32);}
-                .book-anxiety {background:linear-gradient(180deg,#DDA0DD,#9370DB);}
-                .book-sadness {background:linear-gradient(180deg,#B0C4DE,#6495ED);}
-                .bookshelf-label {
-                    text-align:center; font-size:10px; color:#8B7355; margin-top:4px; font-weight:600;
-                }
-                .desk-lamp {
-                    position:fixed; bottom:20px; right:120px;
-                    pointer-events:auto; cursor:pointer; transition:transform 0.3s ease;
-                }
-                .desk-lamp:hover { transform:scale(1.08); }
-                .lamp-shade {
-                    width:60px; height:40px;
-                    background:linear-gradient(180deg,#FFF8DC,#FAEBD7);
-                    border-radius:50% 50% 0 0/100% 100% 0 0; position:relative;
-                    box-shadow:0 0 30px rgba(255,215,0,0.3); transition:all 0.3s ease;
-                }
-                .lamp-glow {
-                    position:absolute; bottom:-20px; left:50%; transform:translateX(-50%);
-                    width:80px; height:60px;
-                    background:radial-gradient(ellipse,rgba(255,215,0,0.4) 0%,transparent 70%);
-                    pointer-events:none; transition:all 0.3s ease;
-                }
-                .lamp-stand {
-                    width:8px; height:50px; background:linear-gradient(90deg,#8B7355,#A68B5B,#8B7355);
-                    margin:0 auto; border-radius:2px;
-                }
-                .lamp-base {
-                    width:40px; height:8px; background:linear-gradient(180deg,#A68B5B,#8B7355);
-                    margin:0 auto; border-radius:4px;
-                }
-                .lamp-label { text-align:center; font-size:10px; color:#8B7355; margin-top:4px; font-weight:600; }
-                .energy-indicator {
-                    position:fixed; bottom:170px; right:100px;
-                    background:rgba(255,255,255,0.95); padding:8px 16px; border-radius:20px;
-                    box-shadow:0 4px 15px rgba(0,0,0,0.1); font-size:12px; color:#8B7355;
+                .tool-btn:hover .tooltip { opacity:1; }
+                .tool-lamp { overflow:visible; }
+                .tool-lamp .lamp-glow-ring {
+                    position:absolute; inset:-8px;
+                    border-radius:20px;
+                    background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%);
+                    opacity:0; transition:all 0.4s ease;
                     pointer-events:none;
                 }
-                .energy-bars { display:flex; gap:3px; margin-top:4px; }
+                .tool-lamp.level-1 .lamp-glow-ring{opacity:0.3;}
+                .tool-lamp.level-2 .lamp-glow-ring{opacity:0.5;}
+                .tool-lamp.level-3 .lamp-glow-ring{opacity:0.7;}
+                .tool-lamp.level-4 .lamp-glow-ring{opacity:0.85;}
+                .tool-lamp.level-5 .lamp-glow-ring{opacity:1;box-shadow:0 0 20px rgba(255,215,0,0.6);}
+                .tool-tea .steam-anim {
+                    position:absolute; top:-10px; left:50%;
+                    transform:translateX(-50%); display:flex; gap:3px;
+                }
+                .tool-tea .steam-anim span {
+                    width:3px; height:8px; background:rgba(150,150,150,0.6);
+                    border-radius:3px; animation:steam-bounce 2s ease-in-out infinite;
+                }
+                .tool-tea .steam-anim span:nth-child(2){animation-delay:0.3s;height:10px;}
+                .tool-tea .steam-anim span:nth-child(3){animation-delay:0.6s;}
+                @keyframes steam-bounce {
+                    0%,100%{opacity:0.4;transform:translateY(0) scaleX(1);}
+                    50%{opacity:0.9;transform:translateY(-5px) scaleX(1.2);}
+                }
+                .energy-indicator {
+                    position:fixed; right:12px; bottom:20px;
+                    background:rgba(255,255,255,0.95); padding:10px 16px;
+                    border-radius:18px; box-shadow:0 6px 20px rgba(0,0,0,0.1);
+                    font-size:12px; color:#8B7355; z-index:100;
+                    backdrop-filter:blur(10px);
+                }
+                .energy-label { display:flex; align-items:center; gap:6px; margin-bottom:8px; font-weight:600; }
+                .energy-bars { display:flex; gap:4px; }
                 .energy-bar {
-                    width:16px; height:6px; background:#E8E8E8; border-radius:3px;
-                    transition:background 0.3s ease;
+                    width:18px; height:8px; background:#E8E8E8; border-radius:4px;
+                    transition:all 0.3s ease;
                 }
                 .energy-bar.active { background:linear-gradient(90deg,#FFD700,#FFA500); }
-                .tea-cup {
-                    position:fixed; bottom:20px; right:40px;
-                    pointer-events:auto; cursor:pointer; transition:transform 0.3s ease;
+                .energy-bar.active:nth-child(1){animation:glow-pulse 1.5s ease-in-out infinite;}
+                @keyframes glow-pulse {
+                    0%,100%{box-shadow:0 0 5px rgba(255,215,0,0.3);}
+                    50%{box-shadow:0 0 12px rgba(255,215,0,0.6);}
                 }
-                .tea-cup:hover { transform:scale(1.1) rotate(-5deg); }
-                .cup-body {
-                    width:40px; height:35px;
-                    background:linear-gradient(180deg,#FFFFFF,#F5F5F5);
-                    border-radius:0 0 50% 50%/0 0 100% 100%;
-                    position:relative; box-shadow:2px 3px 8px rgba(0,0,0,0.1);
-                }
-                .cup-body::before {
-                    content:''; position:absolute; top:5px; left:5px; right:5px; height:20px;
-                    background:linear-gradient(180deg,#8B4513,#A0522D);
-                    border-radius:0 0 50% 50%/0 0 100% 100%;
-                }
-                .cup-handle {
-                    position:absolute; right:-12px; top:8px; width:15px; height:20px;
-                    border:4px solid #F5F5F5; border-left:none; border-radius:0 10px 10px 0;
-                }
-                .cup-steam { position:absolute; top:-15px; left:50%; transform:translateX(-50%); display:flex; gap:4px; }
-                .steam-line {
-                    width:2px; height:12px; background:rgba(200,200,200,0.6); border-radius:2px;
-                    animation:steam 2s ease-in-out infinite;
-                }
-                .steam-line:nth-child(2){animation-delay:0.3s;height:15px;}
-                .steam-line:nth-child(3){animation-delay:0.6s;}
-                @keyframes steam {
-                    0%,100%{opacity:0.3;transform:translateY(0) scaleY(1);}
-                    50%{opacity:0.8;transform:translateY(-5px) scaleY(1.2);}
-                }
-                .cup-label { text-align:center; font-size:10px; color:#8B7355; margin-top:4px; font-weight:600; }
-                .emotion-card-popup {
-                    position:fixed; top:50%; left:50%;
-                    transform:translate(-50%,-50%) scale(0.8);
-                    background:white; padding:24px; border-radius:16px;
-                    box-shadow:0 20px 60px rgba(0,0,0,0.2); max-width:320px;
-                    z-index:200; opacity:0; pointer-events:none;
-                    transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-                }
-                .emotion-card-popup.show {
-                    opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto;
-                }
-                .emotion-card-popup .close-btn {
-                    position:absolute; top:12px; right:12px; width:28px; height:28px;
-                    border-radius:50%; background:#f0f0f0; border:none; cursor:pointer;
-                    display:flex; align-items:center; justify-content:center;
-                    font-size:16px; color:#666; transition:background 0.2s;
-                }
-                .emotion-card-popup .close-btn:hover{background:#e0e0e0;}
-                .emotion-card-icon{font-size:48px;text-align:center;margin-bottom:12px;}
-                .emotion-card-title{font-size:18px;font-weight:700;color:#4A4A4A;text-align:center;margin-bottom:8px;}
-                .emotion-card-quote{font-size:14px;color:#666;text-align:center;line-height:1.6;font-style:italic;}
-                .emotion-card-action{margin-top:16px;text-align:center;}
-                .emotion-card-action button{
-                    background:linear-gradient(135deg,#E8B87D,#D4956A);color:white;border:none;
-                    padding:10px 20px;border-radius:20px;cursor:pointer;font-size:14px;font-weight:600;
-                    transition:transform 0.2s,box-shadow 0.2s;
-                }
-                .emotion-card-action button:hover{transform:scale(1.05);box-shadow:0 4px 15px rgba(232,184,125,0.4);}
                 .popup-overlay {
                     position:fixed;top:0;left:0;width:100%;height:100%;
-                    background:rgba(0,0,0,0.3);z-index:199;
+                    background:rgba(0,0,0,0.4);z-index:199;
                     opacity:0;pointer-events:none;transition:opacity 0.3s ease;
                 }
                 .popup-overlay.show{opacity:1;pointer-events:auto;}
+                .popup-card {
+                    position:fixed; top:50%; left:50%;
+                    transform:translate(-50%,-50%) scale(0.85);
+                    background:white; padding:28px; border-radius:24px;
+                    box-shadow:0 25px 80px rgba(0,0,0,0.25); max-width:400px;
+                    width:92%; z-index:200; opacity:0; pointer-events:none;
+                    transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+                    max-height:85vh; overflow-y:auto;
+                }
+                .popup-card.show {
+                    opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto;
+                }
+                .popup-card .close-btn {
+                    position:absolute; top:14px; right:14px; width:32px; height:32px;
+                    border-radius:50%; background:#f0f0f0; border:none; cursor:pointer;
+                    display:flex; align-items:center; justify-content:center;
+                    font-size:18px; color:#666; transition:background 0.2s;
+                }
+                .popup-card .close-btn:hover{background:#e0e0e0;}
+                .popup-card h3 {
+                    font-size:18px; color:#4A4A4A; margin:0 0 20px;
+                    text-align:center; padding-right:40px;
+                }
+                .knowledge-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+                .knowledge-card {
+                    background:linear-gradient(135deg,#FFF8F0,#FFF0E6);
+                    border-radius:14px; padding:16px; text-align:center;
+                    cursor:pointer; transition:all 0.25s ease;
+                    border:2px solid transparent;
+                }
+                .knowledge-card:hover {
+                    transform:translateY(-5px);
+                    box-shadow:0 10px 25px rgba(0,0,0,0.12);
+                    border-color:#E8B87D;
+                }
+                .knowledge-card .emoji { font-size:36px; margin-bottom:10px; }
+                .knowledge-card .title { font-size:14px; font-weight:700; color:#4A4A4A; margin-bottom:6px; }
+                .knowledge-card .desc { font-size:11px; color:#8B7355; line-height:1.5; }
+                .knowledge-card:nth-child(1){background:linear-gradient(135deg,#FFF8E1,#FFE4B5);}
+                .knowledge-card:nth-child(2){background:linear-gradient(135deg,#E8F5E9,#C8E6C9);}
+                .knowledge-card:nth-child(3){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);}
+                .knowledge-card:nth-child(4){background:linear-gradient(135deg,#F3E5F5,#E1BEE7);}
+                .knowledge-card:nth-child(5){background:linear-gradient(135deg,#FFF0F5,#FFE4EC);}
+                .knowledge-card:nth-child(6){background:linear-gradient(135deg,#E0F7FA,#B2EBF2);}
+                .emotion-display { text-align:center; padding:10px 0; }
+                .emotion-display .icon{font-size:64px;margin-bottom:16px;}
+                .emotion-display .title{font-size:22px;font-weight:700;color:#4A4A4A;margin-bottom:12px;}
+                .emotion-display .quote{font-size:15px;color:#666;line-height:1.7;font-style:italic;margin-bottom:20px;}
+                .emotion-display button{
+                    background:linear-gradient(135deg,#E8B87D,#D4956A);color:white;border:none;
+                    padding:12px 28px;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;
+                    transition:all 0.2s ease;
+                }
+                .emotion-display button:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(232,184,125,0.4);}
+                .pet-interaction { text-align:center; }
+                .pet-avatar {
+                    width:100px; height:100px; margin:0 auto 16px;
+                    border-radius:50%; overflow:hidden;
+                    border:4px solid #E8B87D;
+                    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+                    position:relative; cursor:pointer;
+                    transition:all 0.3s ease;
+                }
+                .pet-avatar:hover { transform:scale(1.08); }
+                .pet-avatar img { width:100%; height:100%; object-fit:cover; }
+                .pet-avatar .pet-action {
+                    position:absolute; inset:0;
+                    display:flex; align-items:center; justify-content:center;
+                    background:rgba(0,0,0,0.3); opacity:0;
+                    transition:opacity 0.2s;
+                    font-size:32px;
+                }
+                .pet-avatar:hover .pet-action { opacity:1; }
+                .pet-name { font-size:18px; font-weight:700; color:#4A4A4A; margin-bottom:4px; }
+                .pet-mood { font-size:13px; color:#8B7355; margin-bottom:16px; }
+                .pet-msg {
+                    background:#FFF8F0; padding:14px 18px; border-radius:14px;
+                    font-size:14px; color:#4A4A4A; line-height:1.6;
+                    margin-bottom:16px; position:relative;
+                }
+                .pet-msg::before {
+                    content:''; position:absolute; top:-8px; left:50%;
+                    transform:translateX(-50%);
+                    border-left:8px solid transparent;
+                    border-right:8px solid transparent;
+                    border-bottom:8px solid #FFF8F0;
+                }
+                .pet-actions { display:flex; gap:10px; justify-content:center; }
+                .pet-action-btn {
+                    padding:10px 18px; border-radius:20px;
+                    background:#FFF; border:2px solid #E8D5C0;
+                    cursor:pointer; font-size:13px; font-weight:600;
+                    color:#8B7355; transition:all 0.2s ease;
+                    display:flex; align-items:center; gap:6px;
+                }
+                .pet-action-btn:hover {
+                    background:#E8B87D; border-color:#E8B87D;
+                    color:white; transform:translateY(-2px);
+                }
+                @media(max-width:640px){
+                    .home-toolbar { right:8px; gap:6px; }
+                    .tool-btn { width:48px; height:48px; border-radius:14px; }
+                    .tool-btn .icon { font-size:24px; }
+                    .tool-btn .tooltip { display:none; }
+                    .energy-indicator { right:8px; bottom:16px; padding:8px 12px; }
+                    .popup-card { padding:20px; border-radius:20px; }
+                    .knowledge-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+                    .knowledge-card { padding:12px; }
+                    .knowledge-card .emoji { font-size:28px; }
+                    .knowledge-card .title { font-size:13px; }
+                }
             </style>
-            <div class="home-bg-overlay"></div>
+            <div class="home-bg-overlay" id="homeBgOverlay"></div>
             <div class="energy-indicator">
-                <span>🌟 心理能量</span>
-                <div class="energy-bars">
+                <div class="energy-label"><span>🌟</span><span>心理能量</span></div>
+                <div class="energy-bars" id="energyBars">
                     <div class="energy-bar active"></div>
                     <div class="energy-bar active"></div>
                     <div class="energy-bar active"></div>
@@ -322,46 +496,150 @@ class ThemeManager {
                     <div class="energy-bar"></div>
                 </div>
             </div>
-            <div class="emotion-bookshelf" onclick="themeManager.openBookshelf()">
-                <div class="bookshelf-body">
-                    <div class="book-row">
-                        <div class="book book-happiness" onclick="event.stopPropagation();themeManager.openEmotionCard('happiness')"></div>
-                        <div class="book book-calm"      onclick="event.stopPropagation();themeManager.openEmotionCard('calm')"></div>
-                        <div class="book book-courage"   onclick="event.stopPropagation();themeManager.openEmotionCard('courage')"></div>
-                    </div>
-                    <div class="book-row">
-                        <div class="book book-gratitude" onclick="event.stopPropagation();themeManager.openEmotionCard('gratitude')"></div>
-                        <div class="book book-anxiety"   onclick="event.stopPropagation();themeManager.openEmotionCard('anxiety')"></div>
-                        <div class="book book-sadness"   onclick="event.stopPropagation();themeManager.openEmotionCard('sadness')"></div>
-                    </div>
+            <div class="home-toolbar">
+                <div class="tool-btn tool-knowledge" onclick="themeManager.toggleKnowledge()">
+                    <span class="icon">📖</span>
+                    <span class="tooltip">疗愈知识</span>
                 </div>
-                <div class="bookshelf-label">📚 情绪书架</div>
-            </div>
-            <div class="desk-lamp" onclick="themeManager.toggleLamp()">
-                <div class="lamp-shade" id="lampShade"><div class="lamp-glow" id="lampGlow"></div></div>
-                <div class="lamp-stand"></div>
-                <div class="lamp-base"></div>
-                <div class="lamp-label">💡 台灯</div>
-            </div>
-            <div class="tea-cup" onclick="themeManager.sipTea()">
-                <div class="cup-steam">
-                    <div class="steam-line"></div>
-                    <div class="steam-line"></div>
-                    <div class="steam-line"></div>
+                <div class="tool-btn tool-lamp" id="toolLamp" onclick="themeManager.toggleLamp()">
+                    <span class="icon">💡</span>
+                    <div class="lamp-glow-ring"></div>
+                    <span class="tooltip">台灯</span>
                 </div>
-                <div class="cup-body"><div class="cup-handle"></div></div>
-                <div class="cup-label">☕ 静心茶</div>
+                <div class="tool-btn tool-pet" onclick="themeManager.togglePet()">
+                    <span class="icon">🐰</span>
+                    <span class="tooltip">宠物伙伴</span>
+                </div>
+                <div class="tool-btn tool-tea" onclick="themeManager.sipTea()">
+                    <span class="icon">☕</span>
+                    <div class="steam-anim"><span></span><span></span><span></span></div>
+                    <span class="tooltip">静心茶</span>
+                </div>
             </div>
-            <div class="popup-overlay" onclick="themeManager.closePopup()"></div>
-            <div class="emotion-card-popup" id="emotionCardPopup">
+            <div class="popup-overlay" id="popupOverlay" onclick="themeManager.closePopup()"></div>
+            <div class="popup-card" id="knowledgePopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
-                <div class="emotion-card-icon"  id="cardIcon"></div>
-                <div class="emotion-card-title" id="cardTitle"></div>
-                <div class="emotion-card-quote" id="cardQuote"></div>
-                <div class="emotion-card-action"><button onclick="themeManager.closePopup()">我知道了</button></div>
+                <h3>📖 疗愈知识</h3>
+                <div class="knowledge-grid">
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('breathing')">
+                        <div class="emoji">🌬️</div>
+                        <div class="title">呼吸放松</div>
+                        <div class="desc">4-7-8呼吸法<br>平复焦虑</div>
+                    </div>
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('gratitude')">
+                        <div class="emoji">🙏</div>
+                        <div class="title">感恩练习</div>
+                        <div class="desc">每日三件好事<br>提升幸福感</div>
+                    </div>
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('body-scan')">
+                        <div class="emoji">🧘</div>
+                        <div class="title">身体扫描</div>
+                        <div class="desc">觉察身体感受<br>释放紧绷</div>
+                    </div>
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('self-compassion')">
+                        <div class="emoji">💕</div>
+                        <div class="title">自我慈悲</div>
+                        <div class="desc">善待自己<br>像朋友般关怀</div>
+                    </div>
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('grounding')">
+                        <div class="emoji">🌱</div>
+                        <div class="title">5-4-3-2-1</div>
+                        <div class="desc">感官接地法<br>应对恐慌</div>
+                    </div>
+                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('positive')">
+                        <div class="emoji">✨</div>
+                        <div class="title">积极日记</div>
+                        <div class="desc">记录美好瞬间<br>重塑思维</div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-card" id="knowledgeDetailPopup">
+                <button class="close-btn" onclick="themeManager.backToKnowledge()">←</button>
+                <h3 id="knowledgeTitle">🌬️ 呼吸放松</h3>
+                <div class="knowledge-content" id="knowledgeContent"></div>
+            </div>
+            <div class="popup-card" id="emotionCardPopup">
+                <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
+                <div class="emotion-display">
+                    <div class="icon" id="cardIcon">😊</div>
+                    <div class="title" id="cardTitle">幸福感</div>
+                    <div class="quote" id="cardQuote">幸福不是拥有最好的一切，而是把当下的一切都变得最好。</div>
+                    <button onclick="themeManager.closePopup()">我知道了</button>
+                </div>
+            </div>
+            <div class="popup-card" id="petPopup">
+                <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
+                <div class="pet-interaction">
+                    <div class="pet-avatar" onclick="themeManager.petInteract('pat')">
+                        <img src="images/companions/爱心兔兔.png" alt="宠物" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🐰</span>'">
+                        <div class="pet-action">🐰</div>
+                    </div>
+                    <div class="pet-name" id="petName">爱心兔兔</div>
+                    <div class="pet-mood" id="petMood">✨ 心情愉悦</div>
+                    <div class="pet-msg" id="petMsg">嗨～看到你真开心！今天过得怎么样？</div>
+                    <div class="pet-actions">
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('pat')">👋 打招呼</button>
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('hug')">🤗 抱抱</button>
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('play')">🎾 玩耍</button>
+                    </div>
+                </div>
             </div>
         `;
         document.body.appendChild(container);
+    }
+
+    /* ===== 切换知识弹窗 ===== */
+    toggleKnowledge() {
+        document.getElementById('knowledgePopup')?.classList.add('show');
+        document.getElementById('popupOverlay')?.classList.add('show');
+    }
+
+    /* ===== 显示知识详情 ===== */
+    showKnowledgeDetail(key) {
+        const data = this.knowledgeLibrary[key];
+        if (!data) return;
+        document.getElementById('knowledgeTitle').innerHTML = data.title;
+        document.getElementById('knowledgeContent').innerHTML = data.content;
+        document.getElementById('knowledgePopup')?.classList.remove('show');
+        document.getElementById('knowledgeDetailPopup')?.classList.add('show');
+    }
+
+    /* ===== 返回知识列表 ===== */
+    backToKnowledge() {
+        document.getElementById('knowledgeDetailPopup')?.classList.remove('show');
+        document.getElementById('knowledgePopup')?.classList.add('show');
+    }
+
+    /* ===== 切换宠物弹窗 ===== */
+    togglePet() {
+        const petIdx = Math.floor(Math.random() * this.petNames.length);
+        const petName = this.petNames[petIdx];
+        const petEmoji = this.petEmojis[petIdx];
+        document.getElementById('petName').textContent = petName;
+        document.getElementById('petMood').textContent = this.petMoodTexts[petIdx];
+        document.getElementById('petMsg').textContent = this.petGreetings[petIdx];
+        // 更新宠物头像
+        const petAvatar = document.querySelector('#petPopup .pet-avatar');
+        if (petAvatar) {
+            const img = petAvatar.querySelector('img');
+            const action = petAvatar.querySelector('.pet-action');
+            if (img) {
+                img.src = `images/companions/${petName}.png`;
+                img.alt = petName;
+            }
+            if (action) action.textContent = petEmoji;
+        }
+        document.getElementById('petPopup')?.classList.add('show');
+        document.getElementById('popupOverlay')?.classList.add('show');
+    }
+
+    /* ===== 宠物互动 ===== */
+    petInteract(action) {
+        const data = this.petInteractions[action];
+        if (!data) return;
+        const msg = data.msg[Math.floor(Math.random() * data.msg.length)];
+        document.getElementById('petMsg').textContent = msg;
+        document.getElementById('petMood').textContent = data.mood;
     }
 
     /* ===== 工作主题 ===== */
@@ -540,7 +818,7 @@ class ThemeManager {
         };
         animate();
         window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
+            canvas.width  = window.innerWidth;
             canvas.height = window.innerHeight;
         });
     }
@@ -548,48 +826,55 @@ class ThemeManager {
     /* ===== 台灯 ===== */
     toggleLamp() {
         this.lampLevel = (this.lampLevel % 5) + 1;
-        const shade = document.getElementById('lampShade');
-        const glow  = document.getElementById('lampGlow');
+        const toolLamp = document.getElementById('toolLamp');
         const bars  = document.querySelectorAll('.energy-bar');
-        const brightness = 0.2 + this.lampLevel * 0.15;
-        const glowSize   = 30 + this.lampLevel * 10;
+        const bgOverlay = document.getElementById('homeBgOverlay');
 
-        if (shade) shade.style.boxShadow = `0 0 ${glowSize}px rgba(255,215,0,${brightness})`;
-        if (glow)  { glow.style.opacity = brightness; glow.style.width = `${60 + this.lampLevel * 10}px`; }
+        toolLamp?.classList.remove('level-1','level-2','level-3','level-4','level-5');
+        toolLamp?.classList.add(`level-${this.lampLevel}`);
+
         bars.forEach((bar, i) => bar.classList.toggle('active', i < this.lampLevel));
+
+        if (bgOverlay) {
+            const opacities = [0, 0.15, 0.25, 0.4, 0.55, 0.7];
+            bgOverlay.style.background = `
+                radial-gradient(ellipse at 80% 20%, rgba(232,184,125,${opacities[this.lampLevel]}) 0%, transparent 50%),
+                radial-gradient(ellipse at 20% 80%, rgba(168,196,212,${opacities[this.lampLevel] * 0.7}) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(255,215,0,${opacities[this.lampLevel] * 0.3}) 0%, transparent 40%)
+            `;
+        }
 
         const msgs = { 1:'调暗一些，让自己休息...', 2:'柔和的灯光，适合放松', 3:'适中的亮度，刚刚好', 4:'明亮一些，更有能量', 5:'满满的能量，充满动力！' };
         this.showHomeToast(msgs[this.lampLevel]);
     }
 
-    /* ===== 情绪书架 ===== */
-    openBookshelf() {
-        this.showHomeToast('📚 点击任意一本书，开启一段心灵之旅');
-    }
-
+    /* ===== 情绪卡片 ===== */
     openEmotionCard(emotion) {
         const data = this.emotionData[emotion];
         if (!data) return;
         document.getElementById('cardIcon').textContent  = data.icon;
         document.getElementById('cardTitle').textContent = data.title;
         document.getElementById('cardQuote').textContent = data.quote;
-        document.querySelector('.popup-overlay').classList.add('show');
+        document.getElementById('knowledgePopup')?.classList.remove('show');
         document.getElementById('emotionCardPopup').classList.add('show');
     }
 
     closePopup() {
-        document.querySelector('.popup-overlay')?.classList.remove('show');
+        document.getElementById('popupOverlay')?.classList.remove('show');
         document.getElementById('emotionCardPopup')?.classList.remove('show');
+        document.getElementById('knowledgePopup')?.classList.remove('show');
+        document.getElementById('knowledgeDetailPopup')?.classList.remove('show');
+        document.getElementById('petPopup')?.classList.remove('show');
     }
 
     /* ===== 静心茶 ===== */
     sipTea() {
         const msg = this.teaEncouragements[Math.floor(Math.random() * this.teaEncouragements.length)];
         this.showHomeToast(msg);
-        const cup = document.querySelector('.tea-cup');
-        if (cup) {
-            cup.style.transform = 'rotate(-10deg)';
-            setTimeout(() => { cup.style.transform = ''; }, 250);
+        const btn = document.querySelector('.tool-tea');
+        if (btn) {
+            btn.style.transform = 'scale(0.9)';
+            setTimeout(() => { btn.style.transform = ''; }, 200);
         }
     }
 
@@ -621,7 +906,6 @@ class ThemeManager {
 
     /* ===== 顶部主题下拉切换 ===== */
     createThemeSwitcher() {
-        // 移除旧元素
         document.getElementById('theme-switcher')?.remove();
         document.querySelector('.theme-dropdown-wrap')?.remove();
 
@@ -717,14 +1001,12 @@ class ThemeManager {
         const btn  = document.getElementById('themeDropdownBtn');
         const menu = document.getElementById('themeDropdownMenu');
 
-        // 切换下拉
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = menu.classList.toggle('show');
             btn.classList.toggle('open', isOpen);
         });
 
-        // 点击选项
         menu.querySelectorAll('.theme-dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
                 const theme = item.dataset.theme;
@@ -734,13 +1016,11 @@ class ThemeManager {
             });
         });
 
-        // 点击外部关闭
         document.addEventListener('click', () => {
             menu.classList.remove('show');
             btn.classList.remove('open');
         });
 
-        // 同步主题变更
         window.addEventListener('themeChanged', (e) => {
             const theme = this.themes[e.detail.theme];
             if (!theme) return;

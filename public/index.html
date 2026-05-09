@@ -725,9 +725,26 @@
 
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
-    <script src="js/theme-manager.js"></script>
+    <script src="js/theme-manager.js?v=20260509"></script>
     <script src="js/companion-widget.js"></script>
     <script>
+        /* ========== 调试 themeManager 加载状态 ========== */
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const switcher = document.querySelector('.theme-dropdown-wrap');
+                if (!switcher) {
+                    console.warn('[Debug] theme-dropdown-wrap 未找到，尝试重新创建...');
+                    if (window.themeManager) {
+                        window.themeManager.createThemeSwitcher();
+                    } else {
+                        console.error('[Debug] themeManager 未定义！');
+                    }
+                } else {
+                    console.log('[Debug] 主题切换器已加载', switcher);
+                }
+            }, 500);
+        });
+
         /* ========== 免责声明 ========== */
         function closeDisclaimer() {
             const modal = document.getElementById('disclaimerModal');
