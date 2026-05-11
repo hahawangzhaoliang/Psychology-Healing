@@ -7,7 +7,7 @@ const express = require('express');
 const router  = express.Router();
 const { requireAdmin } = require('../middleware/auth');
 const {
-    insert, find, findById, update, remove,
+    insert, find, update, remove,
     paginate, count, insertMany, INDEX_NAMES
 } = require('../config/upstash');
 const { runCrawler } = require('../services/knowledgeService');
@@ -85,8 +85,11 @@ router.get('/data/:collection/:id', async (req, res) => {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
+    // Upstash Search 不支持按 ID 直接获取，改为列表查询 + 过滤
+    // 限制 200 条足够覆盖绝大多数场景
     try {
-        const record = await findById(collection, id);
+        const result = await paginate(collection, { page: 1, limit: 200 });
+        const record = result.items.find(item => item.id === id || item._id === id);
         if (!record) {
             return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
         }
@@ -119,12 +122,10 @@ router.put('/data/:collection/:id', async (req, res) => {
     }
 
     try {
-        const existing = await findById(collection, id);
-        if (!existing) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
-        }
         await update(collection, { id }, req.body);
-        const updated = await findById(collection, id);
+        // 更新后重新从列表中取出最新数据
+        const result = await paginate(collection, { page: 1, limit: 200 });
+        const updated = result.items.find(item => item.id === id || item._id === id);
         res.json({ success: true, message: '更新成功', data: updated });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message, code: 'UPDATE_ERROR' });
@@ -139,10 +140,6 @@ router.delete('/data/:collection/:id', async (req, res) => {
     }
 
     try {
-        const existing = await findById(collection, id);
-        if (!existing) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
-        }
         await remove(collection, { id });
         res.json({ success: true, message: '删除成功' });
     } catch (error) {
