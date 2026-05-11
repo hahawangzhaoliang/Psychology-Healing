@@ -12,7 +12,20 @@
  * - media/audio/*.mp3        音频文件
  */
 
-const { put, get, list, del } = require('@vercel/blob');
+// 延迟加载 @vercel/blob，避免环境变量未设置时模块加载失败
+let blobClient = null;
+function getBlobClient() {
+    if (!blobClient) {
+        try {
+            blobClient = require('@vercel/blob');
+        } catch (error) {
+            console.error('[BlobStore] ❌ 无法加载 @vercel/blob:', error.message);
+            throw new Error('Blob 存储未配置，请设置 BLOB_READ_WRITE_TOKEN 环境变量');
+        }
+    }
+    return blobClient;
+}
+
 const path = require('path');
 
 // Blob 路径前缀
@@ -26,6 +39,7 @@ const MEDIA_AUDIO_PREFIX = 'media/audio/';
  * @returns {Array|Object} 解析后的 JSON 数据
  */
 async function readJsonFromBlob(filename) {
+    const { get } = getBlobClient();
     const filepath = DATA_PREFIX + filename;
     try {
         const blob = await get(filepath);
@@ -82,6 +96,7 @@ function fallbackToLocalFile(filename) {
  * @returns {Promise<object>} Blob 上传结果
  */
 async function writeJsonToBlob(filename, data) {
+    const { put } = getBlobClient();
     const filepath = DATA_PREFIX + filename;
     const jsonString = JSON.stringify(data, null, 2);
     const buffer = Buffer.from(jsonString, 'utf-8');
@@ -132,6 +147,7 @@ async function writeCollection(collection, data) {
  * @returns {Promise<{url: string, pathname: string, size: number}>}
  */
 async function uploadImage(fileContent, filename, contentType = 'image/png') {
+    const { put } = getBlobClient();
     const filepath = MEDIA_IMAGE_PREFIX + filename;
     try {
         const result = await put(filepath, fileContent, {
@@ -155,6 +171,7 @@ async function uploadImage(fileContent, filename, contentType = 'image/png') {
  * @returns {Promise<{url: string, pathname: string, size: number}>}
  */
 async function uploadAudio(fileContent, filename, contentType = 'audio/mpeg') {
+    const { put } = getBlobClient();
     const filepath = MEDIA_AUDIO_PREFIX + filename;
     try {
         const result = await put(filepath, fileContent, {
@@ -177,6 +194,7 @@ async function uploadAudio(fileContent, filename, contentType = 'audio/mpeg') {
  * @returns {Promise<{blobs: Array, cursor: string|undefined}>}
  */
 async function listMedia(type = 'all', options = {}) {
+    const { list } = getBlobClient();
     let prefix;
     if (type === 'images') prefix = MEDIA_IMAGE_PREFIX;
     else if (type === 'audio') prefix = MEDIA_AUDIO_PREFIX;
@@ -205,6 +223,7 @@ async function listMedia(type = 'all', options = {}) {
  * @returns {Promise<void>}
  */
 async function deleteMedia(urlOrPathname) {
+    const { del } = getBlobClient();
     try {
         await del(urlOrPathname);
         console.log(`[BlobStore] 删除媒体 ${urlOrPathname} 成功`);
@@ -220,6 +239,7 @@ async function deleteMedia(urlOrPathname) {
  * @returns {Promise<{deleted: number, errors: string[]}>}
  */
 async function deleteMediaBatch(urlsOrPathnames) {
+    const { del } = getBlobClient();
     const errors = [];
     let deleted = 0;
 
@@ -255,6 +275,7 @@ function getMediaUrl(filename, type = 'images') {
  */
 async function checkBlobConnection() {
     try {
+        const { list } = getBlobClient();
         // 尝试列出文件（限制1个）来测试连接
         await list({ limit: 1 });
         return { ok: true };
@@ -264,9 +285,6 @@ async function checkBlobConnection() {
 }
 
 module.exports = {
-    // 底层 Blob API
-    get,
-
     // JSON 数据操作
     readJsonFromBlob,
     writeJsonToBlob,
