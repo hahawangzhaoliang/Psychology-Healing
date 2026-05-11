@@ -625,7 +625,7 @@ async function loadData(page) {
         } else {
             tbody.innerHTML = items.map(item => {
                 const preview = getRecordPreview(item);
-                const safeId = (item.id || '').replace(/'/g, "\\'");
+                const safeId = String(item.id || '').replace(/'/g, "\\'");
                 return `
                     <tr>
                         <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:var(--text-light);">${item.id || '-'}</td>
@@ -658,13 +658,16 @@ function refreshData() { loadData(1); }
 
 function getRecordPreview(item) {
     // 优先显示 title，其次 content/description 的前 60 字符
-    const text = item.title || item.name || item.content || item.description || JSON.stringify(item).substring(0, 60);
-    return `<span style="font-size:0.85rem;">${escapeHtml(text.substring(0, 80))}</span>`;
+    let text = item.title || item.name || item.content || item.description;
+    if (text == null) {
+        text = JSON.stringify(item).substring(0, 60);
+    }
+    return `<span style="font-size:0.85rem;">${escapeHtml(String(text).substring(0, 80))}</span>`;
 }
 
 function escapeHtml(s) {
-    if (!s) return '';
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    if (s == null) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ─── 弹窗：新增/编辑 ────────────────────────────────────────
