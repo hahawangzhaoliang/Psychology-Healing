@@ -223,11 +223,11 @@
 
         async function loadKnowledge() {
             try {
-                // 直接读取静态 JSON 文件（零 API 请求）
-                const response = await fetch('/data/knowledge.json');
+                // 从 API 读取（Vercel Blob 存储）
+                const response = await fetch('/api/knowledge/psychology?limit=100');
                 const data = await response.json();
-                if (data && data.length > 0) {
-                    allKnowledge = data;
+                if (data.knowledge && data.knowledge.length > 0) {
+                    allKnowledge = data.knowledge;
                 } else {
                     allKnowledge = getSampleArticles();
                 }

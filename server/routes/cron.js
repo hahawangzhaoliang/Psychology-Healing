@@ -1,7 +1,7 @@
 /**
  * 知识库定时任务 API
  * 供 Vercel Cron Jobs 或外部调度系统调用
- * 数据源：本地 JSON 文件
+ * 数据源：Vercel Blob
  */
 
 const express  = require('express');
@@ -27,7 +27,7 @@ async function handleCronUpdate(req, res) {
             message:    '知识库更新成功',
             duration:   `${duration}秒`,
             statistics: stats,
-            timestamp:  new Date().toISOString()
+            timestamp:  new Date().toISOString(),
         });
     } catch (error) {
         console.error('[Cron] 更新失败:', error);
@@ -37,7 +37,7 @@ async function handleCronUpdate(req, res) {
             error:     '知识库更新失败',
             code:      'UPDATE_ERROR',
             message:   error.message,
-            timestamp: new Date().toISOString()
+            timestamp:  new Date().toISOString(),
         });
     }
 }
@@ -53,22 +53,28 @@ router.get('/sources', (req, res) => {
 
 // ─── GET /api/knowledge/health ───────────────────────────────
 
-router.get('/health', (req, res) => {
+router.get('/health', async (req, res) => {
     try {
+        const [exercises, knowledge, tips] = await Promise.all([
+            jsonStore.count('exercises'),
+            jsonStore.count('knowledge'),
+            jsonStore.count('tips'),
+        ]);
+
         res.json({
             status:    'healthy',
             timestamp: new Date().toISOString(),
             counts: {
-                exercises:  jsonStore.count('exercises'),
-                knowledge:  jsonStore.count('knowledge'),
-                tips:      jsonStore.count('tips')
-            }
+                exercises: exercises,
+                knowledge: knowledge,
+                tips:      tips,
+            },
         });
     } catch (error) {
         res.status(500).json({
             status:    'unhealthy',
             error:     error.message,
-            timestamp: new Date().toISOString()
+            timestamp: new Date().toISOString(),
         });
     }
 });

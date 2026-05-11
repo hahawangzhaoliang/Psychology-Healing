@@ -2,6 +2,8 @@
  * 心晴空间 - 公益心理疗愈平台
  * 后端服务器入口文件
  * 支持 Vercel Serverless 部署
+ *
+ * 数据存储：Vercel Blob（替代 Upstash Search）
  */
 
 require('dotenv').config();
@@ -13,7 +15,6 @@ const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const path = require('path');
 
-const { initDatabase } = require('./config/upstash');
 const apiRoutes = require('./routes/api');
 
 const app = express();
@@ -22,14 +23,14 @@ const PORT = process.env.PORT || 3000;
 // 安全中间件
 app.use(helmet({
     contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false
+    crossOriginEmbedderPolicy: false,
 }));
 
 // CORS配置
 app.use(cors({
     origin: process.env.CORS_ORIGIN || '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // 压缩响应
@@ -46,10 +47,10 @@ if (process.env.VERCEL !== '1') {
         max: 100,
         message: {
             error: '请求过于频繁，请稍后再试',
-            code: 'RATE_LIMIT_EXCEEDED'
+            code: 'RATE_LIMIT_EXCEEDED',
         },
         standardHeaders: true,
-        legacyHeaders: false
+        legacyHeaders: false,
     });
     app.use('/api/', limiter);
 }
@@ -58,7 +59,7 @@ if (process.env.VERCEL !== '1') {
 if (process.env.VERCEL !== '1') {
     app.use(express.static(path.join(__dirname, '../public'), {
         maxAge: '1d',
-        etag: true
+        etag: true,
     }));
 }
 
@@ -68,17 +69,22 @@ app.use('/api', apiRoutes);
 // 健康检查
 app.get('/health', async (req, res) => {
     try {
-        await initDatabase();
+        // 检查 Blob 连接状态
+        const blobStore = require('./services/blobStore');
+        const blobStatus = await blobStore.checkBlobConnection();
+
         res.json({
             status: 'ok',
             timestamp: new Date().toISOString(),
-            version: process.env.npm_package_version || '1.0.0',
-            environment: process.env.VERCEL === '1' ? 'vercel' : 'local'
+            version: process.env.npm_package_version || '2.0.0',
+            environment: process.env.VERCEL === '1' ? 'vercel' : 'local',
+            storage: blobStatus.ok ? 'blob' : 'error',
+            storageStatus: blobStatus,
         });
     } catch (error) {
         res.status(500).json({
             status: 'error',
-            message: error.message
+            message: error.message,
         });
     }
 });
@@ -93,12 +99,12 @@ if (process.env.VERCEL !== '1') {
 // 错误处理中间件
 app.use((err, req, res, next) => {
     console.error('Error:', err);
-    
+
     res.status(err.status || 500).json({
-        error: process.env.NODE_ENV === 'production' 
-            ? '服务器内部错误' 
+        error: process.env.NODE_ENV === 'production'
+            ? '服务器内部错误'
             : err.message,
-        code: err.code || 'INTERNAL_ERROR'
+        code: err.code || 'INTERNAL_ERROR',
     });
 });
 
@@ -106,19 +112,26 @@ app.use((err, req, res, next) => {
 if (process.env.VERCEL !== '1' && require.main === module) {
     async function startServer() {
         try {
-            await initDatabase();
-            console.log('✓ 数据存储初始化完成');
-            
+            // 检查 Blob 连接
+            const blobStore = require('./services/blobStore');
+            const result = await blobStore.checkBlobConnection();
+            if (result.ok) {
+                console.log('✓ Vercel Blob 连接正常');
+            } else {
+                console.warn('⚠ Vercel Blob 连接异常:', result.error);
+            }
+
             app.listen(PORT, () => {
                 console.log(`✓ 服务器运行在 http://localhost:${PORT}`);
                 console.log(`✓ 环境: ${process.env.NODE_ENV || 'development'}`);
+                console.log(`✓ 数据存储: Vercel Blob`);
             });
         } catch (error) {
             console.error('✗ 服务器启动失败:', error);
             process.exit(1);
         }
     }
-    
+
     startServer();
 }
 

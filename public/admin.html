@@ -234,6 +234,7 @@
 
         .hidden { display: none !important; }
         .text-muted { color: var(--text-light); font-size: 0.8rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         .mt-16 { margin-top: 16px; }
         .flex-between { display: flex; align-items: center; justify-content: space-between; }
     </style>
@@ -266,10 +267,11 @@
     </div>
 
     <!-- 侧边栏 -->
-    <div class="sidebar">
+        <div class="sidebar">
         <nav>
             <a href="#" class="active" data-tab="dashboard" onclick="switchTab('dashboard',this)">📊 数据概览</a>
             <a href="#" data-tab="data" onclick="switchTab('data',this)">🗂️ 数据管理</a>
+            <a href="#" data-tab="media" onclick="switchTab('media',this)">🖼️ 媒体管理</a>
             <a href="#" data-tab="crawler" onclick="switchTab('crawler',this)">🕷️ 爬虫管理</a>
             <a href="#" data-tab="settings" onclick="switchTab('settings',this)">⚙️ 系统设置</a>
         </nav>
@@ -361,6 +363,71 @@
                     <button class="btn btn-danger btn-sm" onclick="confirmClearCollection()">清空当前集合（谨慎！）</button>
                     <span class="text-muted" style="margin-left:8px;">此操作不可恢复</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- 媒体管理 -->
+        <div id="tab-media" class="hidden">
+            <div class="card">
+                <div class="card-title">
+                    <span>🖼️ 媒体文件管理</span>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn btn-outline btn-sm" onclick="refreshMedia()">🔄 刷新</button>
+                    </div>
+                </div>
+                <p class="text-muted" style="margin-bottom:16px;">管理存储在 Vercel Blob 中的图片和音频文件。可上传新文件、预览、复制 URL 或删除。</p>
+
+                <!-- 上传区域 -->
+                <div id="media-upload-area" style="
+                    border: 2px dashed var(--border);
+                    border-radius: 12px;
+                    padding: 24px;
+                    text-align: center;
+                    margin-bottom: 20px;
+                    transition: all 0.2s;
+                    cursor: pointer;
+                " ondragover="event.preventDefault();this.style.borderColor='var(--primary)'" ondragleave="this.style.borderColor='var(--border)'" ondrop="handleMediaDrop(event)">
+                    <input type="file" id="media-file-input" accept="image/*,audio/*" multiple style="display:none" onchange="handleMediaFileSelect(this)">
+                    <div style="font-size:2rem;margin-bottom:8px;">📁</div>
+                    <div style="font-weight:600;color:var(--text);margin-bottom:4px;">点击选择或拖拽文件到此处</div>
+                    <div class="text-muted" style="font-size:0.8rem;">支持图片（JPEG/PNG/GIF/WebP）和音频（MP3/WAV/OGG），单文件最大 50MB</div>
+                </div>
+
+                <!-- 上传进度 -->
+                <div id="media-upload-progress" class="hidden" style="margin-bottom:16px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <div class="spinner" style="width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+                        <span id="media-upload-status">上传中…</span>
+                    </div>
+                </div>
+
+                <!-- 图片列表 -->
+                <div style="margin-bottom:24px;">
+                    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                        🖼️ 图片文件
+                        <span id="image-count" class="badge badge-collection">0</span>
+                    </h3>
+                    <div id="image-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;">
+                        <p class="text-muted">暂无图片，请上传</p>
+                    </div>
+                </div>
+
+                <!-- 音频列表 -->
+                <div>
+                    <h3 style="font-size:1rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                        🎵 音频文件
+                        <span id="audio-count" class="badge badge-collection">0</span>
+                    </h3>
+                    <div id="audio-list" style="display:flex;flex-direction:column;gap:8px;">
+                        <p class="text-muted">暂无音频，请上传</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blob 状态 -->
+            <div class="card">
+                <div class="card-title">📦 Blob 存储状态</div>
+                <div id="blob-status"><p class="text-muted">加载中…</p></div>
             </div>
         </div>
     </div>
@@ -477,6 +544,7 @@ function switchTab(tab, el) {
 
     if (tab === 'dashboard') loadDashboard();
     if (tab === 'data')      loadData();
+    if (tab === 'media')     loadMedia();
     if (tab === 'settings')  loadSettings();
 }
 
@@ -913,9 +981,10 @@ async function loadSettings() {
         const res = await api('/');
         infoEl.innerHTML = `
             <table class="data-table">
-                <tr><td><strong>数据源</strong></td><td>本地 JSON 文件（server/data/*.json）</td></tr>
+                <tr><td><strong>数据存储</strong></td><td>Vercel Blob</td></tr>
                 <tr><td><strong>API 版本</strong></td><td>${res.metadata?.version || '-'}</td></tr>
                 <tr><td><strong>最后更新</strong></td><td>${res.metadata?.lastUpdated || '-'}</td></tr>
+                <tr><td><strong>存储状态</strong></td><td><span id="storage-status-badge">检查中…</span></td></tr>
             </table>
             <div style="margin-top:20px;">
                 <div class="card-title" style="margin-bottom:12px;">📦 数据导入 / 导出</div>
@@ -939,7 +1008,23 @@ async function loadSettings() {
                     `).join('')}
                 </div>
             </div>
+            <div style="margin-top:20px;padding:12px;background:var(--warn-light);border-radius:8px;">
+                <div style="font-weight:600;color:#92400E;margin-bottom:4px;">💡 提示</div>
+                <p style="font-size:0.85rem;color:#92400E;margin:0;">
+                    媒体文件（图片、音频）请在「媒体管理」标签页中上传和管理。
+                </p>
+            </div>
         `;
+
+        // 检查 Blob 状态
+        const statusRes = await api('/admin/blob-status');
+        const blobOk = statusRes.data?.ok;
+        const statusBadge = document.getElementById('storage-status-badge');
+        if (statusBadge) {
+            statusBadge.innerHTML = blobOk
+                ? '<span style="color:var(--success);">✅ 连接正常</span>'
+                : `<span style="color:var(--danger);">❌ 异常（${statusRes.data?.error || '请检查 BLOB_READ_WRITE_TOKEN'}）</span>`;
+        }
     } catch (e) {
         infoEl.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
     }
@@ -1010,6 +1095,199 @@ async function confirmClearCollection() {
     } catch (e) {
         showToast('操作失败：' + e.message, 'error');
     }
+}
+
+// ─── 媒体管理 ────────────────────────────────────────────────
+let mediaData = { images: [], audio: [] };
+
+async function loadMedia() {
+    const imageGrid = document.getElementById('image-grid');
+    const audioList = document.getElementById('audio-list');
+    const imageCount = document.getElementById('image-count');
+    const audioCount = document.getElementById('audio-count');
+    const blobStatus = document.getElementById('blob-status');
+
+    try {
+        // 获取媒体列表
+        const res = await api('/admin/media/list');
+        mediaData = res.data || { images: [], audio: [] };
+
+        // 检查 Blob 状态
+        const statusRes = await api('/admin/blob-status');
+        const blobOk = statusRes.data?.ok;
+
+        blobStatus.innerHTML = `
+            <div style="display:flex;align-items:center;gap:8px;${blobOk ? 'color:var(--success);' : 'color:var(--danger);'}">
+                <span style="font-size:1.2rem;">${blobOk ? '✅' : '❌'}</span>
+                <span>Vercel Blob 连接${blobOk ? '正常' : '异常'}</span>
+                ${!blobOk ? `<span class="text-muted">(${statusRes.data?.error || '请检查 BLOB_READ_WRITE_TOKEN'})</span>` : ''}
+            </div>
+        `;
+
+        // 渲染图片列表
+        imageCount.textContent = mediaData.images.length;
+        if (mediaData.images.length === 0) {
+            imageGrid.innerHTML = '<p class="text-muted">暂无图片，请上传</p>';
+        } else {
+            imageGrid.innerHTML = mediaData.images.map(img => `
+                <div class="media-card" style="background:var(--card);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);">
+                    <div style="height:120px;overflow:hidden;background:#f0f0f0;display:flex;align-items:center;justify-content:center;">
+                        <img src="${img.url}" alt="${img.pathname}" style="max-width:100%;max-height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<span style=\\'color:var(--text-light);\\'>图片加载失败</span>'">
+                    </div>
+                    <div style="padding:8px;font-size:0.75rem;">
+                        <div style="color:var(--text-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${img.pathname}">${img.pathname.split('/').pop()}</div>
+                        <div style="color:var(--text-light);">${formatFileSize(img.size)}</div>
+                        <div style="display:flex;gap:4px;margin-top:6px;">
+                            <button class="btn btn-outline btn-sm" onclick="copyMediaUrl('${img.url}')" style="flex:1;padding:4px 6px;">📋 复制</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteMedia('${encodeURIComponent(img.pathname.split('/').pop())}', 'images')" style="padding:4px 6px;">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // 渲染音频列表
+        audioCount.textContent = mediaData.audio.length;
+        if (mediaData.audio.length === 0) {
+            audioList.innerHTML = '<p class="text-muted">暂无音频，请上传</p>';
+        } else {
+            audioList.innerHTML = mediaData.audio.map(audio => `
+                <div class="media-card" style="background:var(--card);border-radius:8px;padding:12px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;">
+                    <div style="width:40px;height:40px;background:var(--primary-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;">🎵</div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${audio.pathname}">${audio.pathname.split('/').pop()}</div>
+                        <div class="text-muted" style="font-size:0.8rem;">${formatFileSize(audio.size)}</div>
+                    </div>
+                    <div style="display:flex;gap:4px;">
+                        <button class="btn btn-outline btn-sm" onclick="playAudio('${audio.url}')">▶️ 播放</button>
+                        <button class="btn btn-outline btn-sm" onclick="copyMediaUrl('${audio.url}')">📋 复制</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteMedia('${encodeURIComponent(audio.pathname.split('/').pop())}', 'audio')">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (e) {
+        blobStatus.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+        imageGrid.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+        audioList.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+    }
+}
+
+function refreshMedia() {
+    loadMedia();
+}
+
+// 文件大小格式化
+function formatFileSize(bytes) {
+    if (!bytes) return '未知';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// 点击上传区域触发文件选择
+document.getElementById('media-upload-area').addEventListener('click', () => {
+    document.getElementById('media-file-input').click();
+});
+
+// 文件选择处理
+async function handleMediaFileSelect(input) {
+    if (!input.files || input.files.length === 0) return;
+    await uploadMediaFiles(Array.from(input.files));
+    input.value = '';
+}
+
+// 拖拽上传处理
+async function handleMediaDrop(event) {
+    event.preventDefault();
+    event.target.style.borderColor = 'var(--border)';
+
+    const files = Array.from(event.dataTransfer.files);
+    if (files.length === 0) return;
+    await uploadMediaFiles(files);
+}
+
+// 上传多个文件
+async function uploadMediaFiles(files) {
+    const progressEl = document.getElementById('media-upload-progress');
+    const statusEl = document.getElementById('media-upload-status');
+
+    progressEl.classList.remove('hidden');
+    let successCount = 0;
+    let failCount = 0;
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        statusEl.textContent = `上传中 (${i + 1}/${files.length}): ${file.name}`;
+
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const res = await fetch(`${API_BASE}/admin/media/upload`, {
+                method: 'POST',
+                headers: authHeaders(),
+                body: formData,
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                successCount++;
+            } else {
+                failCount++;
+                console.error(`上传失败: ${file.name}`, data.error);
+            }
+        } catch (e) {
+            failCount++;
+            console.error(`上传失败: ${file.name}`, e.message);
+        }
+    }
+
+    progressEl.classList.add('hidden');
+    showToast(`上传完成：成功 ${successCount} 个${failCount > 0 ? `，失败 ${failCount} 个` : ''}`, failCount > 0 ? 'error' : 'success');
+    loadMedia();
+}
+
+// 复制媒体 URL
+async function copyMediaUrl(url) {
+    try {
+        await navigator.clipboard.writeText(url);
+        showToast('URL 已复制到剪贴板', 'success');
+    } catch (e) {
+        // 降级方案
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        showToast('URL 已复制到剪贴板', 'success');
+    }
+}
+
+// 删除媒体文件
+async function deleteMedia(filename, type) {
+    if (!confirm(`确定要删除文件 "${filename}" 吗？此操作不可恢复。`)) return;
+
+    try {
+        const res = await api(`/admin/media/${type}/${filename}`, { method: 'DELETE' });
+        if (!res.success) throw new Error(res.error);
+        showToast('删除成功', 'success');
+        loadMedia();
+    } catch (e) {
+        showToast('删除失败：' + e.message, 'error');
+    }
+}
+
+// 播放音频（简单实现）
+let currentAudio = null;
+function playAudio(url) {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+    }
+    currentAudio = new Audio(url);
+    currentAudio.play().catch(e => showToast('播放失败：' + e.message, 'error'));
 }
 
 // ─── 辅助函数 ────────────────────────────────────────────────

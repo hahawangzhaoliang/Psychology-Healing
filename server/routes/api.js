@@ -20,8 +20,8 @@ const adminRoutes = require('./admin');
 router.get('/', (req, res) => {
     res.json({
         name: '心晴空间 API',
-        version: '1.0.0',
-        description: '公益心理疗愈平台API服务',
+        version: '2.0.0',
+        description: '公益心理疗愈平台API服务（Vercel Blob 存储）',
         endpoints: {
             emotion: '/api/emotion',
             assessment: '/api/assessment',
@@ -31,6 +31,7 @@ router.get('/', (req, res) => {
             practice: '/api/practice',
             role: '/api/role',
             blob: '/api/blob',
+            admin: '/api/admin',
             cron: '/api/knowledge/cron-update'
         },
         disclaimer: '本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。'

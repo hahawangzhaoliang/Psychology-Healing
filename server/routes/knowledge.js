@@ -1,7 +1,7 @@
 /**
- * 知识库 API 路由 v3.0
- * 数据源：本地 JSON 文件（server/data/*.json / public/data/*.json）
- * 移除 Upstash Search 依赖，彻底解决请求数配额问题
+ * 知识库 API 路由 v4.0
+ * 数据源：Vercel Blob（data/*.json）
+ * 移除本地文件系统依赖，适配 Serverless 环境
  */
 
 const express  = require('express');
@@ -12,16 +12,16 @@ const { updateKnowledge } = require('../services/knowledgeService');
 const { parsePagination, requireFields } = require('../middleware/validate');
 const { requireVercelCron } = require('../middleware/auth');
 
-// ─── 集合名称映射（Upstash名 → JSON文件名）───────────────────
+// ─── 集合名称映射 ───────────────────────────────────────────
 
 const COLLECTION_MAP = {
-    exercises:    'exercises',    // healingExercises
-    knowledge:    'knowledge',    // psychologyKnowledge
-    regulation:   'regulation',   // emotionRegulation
-    tips:         'tips',         // dailyTips
-    quickExercises:'exercises',   // quickExercises 复用 exercises
-    graph:        'graph',        // knowledgeGraph
-    metadata:     'metadata'      // metadata
+    exercises:       'exercises',
+    knowledge:       'knowledge',
+    regulation:      'regulation',
+    tips:            'tips',
+    quickExercises:  'exercises',
+    graph:           'graph',
+    metadata:        'metadata',
 };
 
 // ─── 公共辅助 ──────────────────────────────────────────────
@@ -45,32 +45,34 @@ function slicePage(items, pagination) {
         data:   items.slice(offset, offset + limit),
         total:  items.length,
         limit,
-        offset
+        offset,
     };
 }
 
 // ─── GET /api/knowledge ─────────────────────────────────────
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const exercises   = jsonStore.readData('exercises');
-        const knowledge   = jsonStore.readData('knowledge');
-        const regulation  = jsonStore.readData('regulation');
-        const tips        = jsonStore.readData('tips');
+        const [exercises, knowledge, regulation, tips] = await Promise.all([
+            jsonStore.readData('exercises'),
+            jsonStore.readData('knowledge'),
+            jsonStore.readData('regulation'),
+            jsonStore.readData('tips'),
+        ]);
 
         res.json({
             metadata: {
-                version:      '1.0.0',
-                lastUpdated:  new Date().toISOString().split('T')[0],
-                dataSource:   ['本地 JSON 文件']
+                version:     '2.0.0',
+                lastUpdated: new Date().toISOString().split('T')[0],
+                dataSource:  ['Vercel Blob'],
             },
             statistics: {
                 totalExercises:   exercises.length,
                 totalKnowledge:   knowledge.length,
                 totalRegulations: regulation.length,
-                totalTips:        tips.length
+                totalTips:        tips.length,
             },
-            disclaimer: '本知识库内容仅供心理健康科普参考，不构成医学诊断或治疗建议。'
+            disclaimer: '本知识库内容仅供心理健康科普参考，不构成医学诊断或治疗建议。',
         });
     } catch (error) {
         console.error('获取知识库概览失败:', error);
@@ -80,10 +82,10 @@ router.get('/', (req, res) => {
 
 // ─── GET /api/knowledge/exercises ──────────────────────────
 
-router.get('/exercises', parsePagination(), (req, res) => {
+router.get('/exercises', parsePagination(), async (req, res) => {
     try {
         const { category, difficulty, tag } = req.query;
-        let items = jsonStore.readData('exercises');
+        let items = await jsonStore.readData('exercises');
         items = applyFilters(items, { category, difficulty, tag });
         const { data, total, limit, offset } = slicePage(items, req.pagination);
         res.json({ exercises: data, total, limit, offset });
@@ -95,9 +97,9 @@ router.get('/exercises', parsePagination(), (req, res) => {
 
 // ─── GET /api/knowledge/exercises/:id ─────────────────────
 
-router.get('/exercises/:id', (req, res) => {
+router.get('/exercises/:id', async (req, res) => {
     try {
-        const exercise = jsonStore.findById('exercises', req.params.id);
+        const exercise = await jsonStore.findById('exercises', req.params.id);
         if (!exercise) {
             return res.status(404).json({ success: false, error: '练习不存在', code: 'EXERCISE_NOT_FOUND' });
         }
@@ -110,10 +112,10 @@ router.get('/exercises/:id', (req, res) => {
 
 // ─── GET /api/knowledge/psychology ─────────────────────────
 
-router.get('/psychology', parsePagination(), (req, res) => {
+router.get('/psychology', parsePagination(), async (req, res) => {
     try {
         const { category, tag } = req.query;
-        let items = jsonStore.readData('knowledge');
+        let items = await jsonStore.readData('knowledge');
         items = applyFilters(items, { category, tag });
         const { data, total, limit, offset } = slicePage(items, req.pagination);
         res.json({ knowledge: data, total, limit, offset });
@@ -125,9 +127,9 @@ router.get('/psychology', parsePagination(), (req, res) => {
 
 // ─── GET /api/knowledge/emotion-regulation ───────────────
 
-router.get('/emotion-regulation', (req, res) => {
+router.get('/emotion-regulation', async (req, res) => {
     try {
-        let regulations = jsonStore.readData('regulation');
+        let regulations = await jsonStore.readData('regulation');
         if (req.query.emotion) {
             regulations = regulations.filter(r => r.emotion === req.query.emotion);
         }
@@ -138,14 +140,14 @@ router.get('/emotion-regulation', (req, res) => {
     }
 });
 
-// ─── GET /api/knowledge/daily-tips & /tips（合并）───────────
+// ─── GET /api/knowledge/daily-tips & /tips ────────────────
 
 function buildTipsHandler() {
-    return (req, res) => {
+    return async (req, res) => {
         try {
             const { category, random, limit: rawLimit = '5' } = req.query;
             const limit = Math.min(50, Math.max(1, parseInt(rawLimit, 10) || 5));
-            let tips = jsonStore.readData('tips');
+            let tips = await jsonStore.readData('tips');
             if (category) tips = tips.filter(t => t.category === category);
             if (random === 'true') tips = tips.sort(() => Math.random() - 0.5);
             res.json({ tips: tips.slice(0, limit) });
@@ -157,15 +159,15 @@ function buildTipsHandler() {
 }
 
 router.get('/daily-tips', buildTipsHandler());
-router.get('/tips',       buildTipsHandler()); // 兼容旧客户端
+router.get('/tips',       buildTipsHandler());
 
 // ─── GET /api/knowledge/quick-exercises ────────────────────
 
-router.get('/quick-exercises', (req, res) => {
+router.get('/quick-exercises', async (req, res) => {
     try {
         const { random, limit: rawLimit = '5' } = req.query;
         const limit = Math.min(50, Math.max(1, parseInt(rawLimit, 10) || 5));
-        let exercises = jsonStore.readData('exercises');
+        let exercises = await jsonStore.readData('exercises');
         if (random === 'true') exercises = exercises.sort(() => Math.random() - 0.5);
         res.json({ exercises: exercises.slice(0, limit) });
     } catch (error) {
@@ -176,9 +178,9 @@ router.get('/quick-exercises', (req, res) => {
 
 // ─── GET /api/knowledge/graph ───────────────────────────────
 
-router.get('/graph', (req, res) => {
+router.get('/graph', async (req, res) => {
     try {
-        const graphData = jsonStore.readData('graph');
+        const graphData = await jsonStore.readData('graph');
         const graph = Array.isArray(graphData) ? graphData[0] : graphData;
         res.json({ nodes: graph?.nodes || [], edges: graph?.edges || [] });
     } catch (error) {
@@ -189,7 +191,7 @@ router.get('/graph', (req, res) => {
 
 // ─── GET /api/knowledge/search ─────────────────────────────
 
-router.get('/search', (req, res) => {
+router.get('/search', async (req, res) => {
     try {
         const { q, type, limit: rawLimit = '10' } = req.query;
 
@@ -198,13 +200,11 @@ router.get('/search', (req, res) => {
         }
 
         const limit = Math.min(50, parseInt(rawLimit, 10) || 10);
-
-        // 确定搜索哪些集合
         const targets = type ? [type] : ['exercises', 'knowledge'];
         const results = [];
 
         for (const target of targets) {
-            const items = jsonStore.search(target, q.trim(), ['title', 'description', 'content', 'content']);
+            const items = await jsonStore.search(target, q.trim(), ['title', 'description', 'content']);
             for (const item of items) {
                 results.push({ ...item, _type: target });
             }
@@ -217,11 +217,10 @@ router.get('/search', (req, res) => {
     }
 });
 
-// ─── POST /api/knowledge/update（写入 JSON 文件）───────────
+// ─── POST /api/knowledge/update（写入 Blob）─────────────────
 
 router.post('/update', requireVercelCron, async (req, res) => {
     try {
-        // 爬取数据并存入 JSON
         const stats = await updateKnowledge();
         res.json({ success: true, message: '知识库更新成功', statistics: stats });
     } catch (error) {
@@ -230,18 +229,18 @@ router.post('/update', requireVercelCron, async (req, res) => {
     }
 });
 
-// ─── POST /api/knowledge/exercises（用户贡献 → JSON）───────
+// ─── POST /api/knowledge/exercises（用户贡献）───────────────
 
-router.post('/exercises', requireFields('title', 'category'), (req, res) => {
+router.post('/exercises', requireFields('title', 'category'), async (req, res) => {
     try {
         const exercise = {
             ...req.body,
             id:         req.body.id || uuidv4(),
             source:     '用户贡献',
-            created_at: new Date().toISOString()
+            created_at: new Date().toISOString(),
         };
 
-        const inserted = jsonStore.insert('exercises', exercise);
+        const inserted = await jsonStore.insert('exercises', exercise);
         res.status(201).json({ success: true, message: '练习添加成功', exercise: inserted });
     } catch (error) {
         console.error('添加练习失败:', error);
