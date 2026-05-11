@@ -6,7 +6,14 @@
  * 数据存储：Vercel Blob（替代 Upstash Search）
  */
 
-require('dotenv').config();
+const path = require('path');
+// 加载 .env 文件（确保路径正确）
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
+
+// 调试：确认环境变量加载
+console.log('[Server] 环境变量加载检查:');
+console.log('  ADMIN_TOKEN:', process.env.ADMIN_TOKEN ? '✓ 已设置 (' + process.env.ADMIN_TOKEN.substring(0, 15) + '...)' : '✗ 未设置');
+console.log('  BLOB_READ_WRITE_TOKEN:', process.env.BLOB_READ_WRITE_TOKEN ? '✓ 已设置' : '✗ 未设置');
 
 const express = require('express');
 const cors = require('cors');

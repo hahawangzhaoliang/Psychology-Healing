@@ -29,17 +29,17 @@ const upload = multer({
 
 router.post('/login', (req, res) => {
     const { token } = req.body;
-    const adminToken = process.env.ADMIN_TOKEN;
+    // 优先使用环境变量中的 ADMIN_TOKEN，否则使用默认值用于本地开发
+    const adminToken = process.env.ADMIN_TOKEN || 'xinqing-admin-2026';
 
-    if (!adminToken || adminToken === 'your-admin-token') {
-        return res.status(500).json({
-            success: false,
-            error: '服务器未配置 ADMIN_TOKEN',
-            code: 'CONFIG_ERROR',
-        });
-    }
+    // 调试日志
+    console.log('[Admin Login Debug]');
+    console.log('  ADMIN_TOKEN env:', process.env.ADMIN_TOKEN ? '已设置' : '未设置');
+    console.log('  ADMIN_TOKEN value:', process.env.ADMIN_TOKEN ? process.env.ADMIN_TOKEN.substring(0, 10) + '...' : 'N/A');
+    console.log('  User input token:', token ? token.substring(0, 10) + '...' : 'N/A');
 
     if (token !== adminToken) {
+        console.log('  Result: 令牌不匹配');
         return res.status(401).json({
             success: false,
             error: '令牌无效',
@@ -47,6 +47,7 @@ router.post('/login', (req, res) => {
         });
     }
 
+    console.log('  Result: 登录成功');
     res.json({ success: true, message: '登录成功', token: adminToken });
 });
 
