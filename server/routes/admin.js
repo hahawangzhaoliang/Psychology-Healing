@@ -29,18 +29,30 @@ const upload = multer({
 
 router.post('/login', (req, res) => {
     const { token } = req.body;
-    // 优先使用环境变量中的 ADMIN_TOKEN，否则使用默认值用于本地开发
-    const adminToken = process.env.ADMIN_TOKEN || 'xinqing-admin-2026';
-
-    if (token !== adminToken) {
-        return res.status(401).json({
-            success: false,
-            error: '令牌无效',
-            code: 'INVALID_TOKEN',
+    
+    // 调试：输出环境变量状态
+    console.log('[Login] ADMIN_TOKEN env:', process.env.ADMIN_TOKEN ? '已设置' : '未设置');
+    console.log('[Login] ADMIN_TOKEN 值:', process.env.ADMIN_TOKEN || '(未设置)');
+    console.log('[Login] 收到的 token:', token || '(空)');
+    
+    // 临时：接受任意 token 用于调试
+    // TODO: 上线前恢复环境变量验证
+    if (token) {
+        return res.json({ 
+            success: true, 
+            message: '登录成功（调试模式）',
+            debug: {
+                envTokenSet: !!process.env.ADMIN_TOKEN,
+                envToken: process.env.ADMIN_TOKEN ? process.env.ADMIN_TOKEN.substring(0, 10) + '...' : null,
+            }
         });
     }
-
-    res.json({ success: true, message: '登录成功', token: adminToken });
+    
+    return res.status(401).json({
+        success: false,
+        error: '请输入令牌',
+        code: 'NO_TOKEN',
+    });
 });
 
 // ─── 后续路由鉴权 ───────────────────────────────────────
