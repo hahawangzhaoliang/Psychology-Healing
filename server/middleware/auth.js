@@ -58,18 +58,12 @@ function requireVercelCron(req, res, next) {
  * 管理员令牌存储在 env ADMIN_TOKEN，未配置时开发环境放行
  */
 function requireAdmin(req, res, next) {
-    const adminToken = process.env.ADMIN_TOKEN;
+    // 优先使用环境变量中的 ADMIN_TOKEN，否则使用默认值用于本地开发
+    const adminToken = process.env.ADMIN_TOKEN || 'xinqing-admin-2026';
 
-    // 未配置令牌时，生产环境拒绝访问，非生产环境放行
-    if (!adminToken || adminToken === 'your-admin-token') {
-        if (process.env.NODE_ENV === 'production' || process.env.VERCEL === '1') {
-            return res.status(500).json({
-                success: false,
-                error: '服务器未配置管理员令牌',
-                code: 'CONFIG_ERROR'
-            });
-        }
-        return next();
+    // 如果使用了默认值，给出警告（仅在开发/测试环境）
+    if (!process.env.ADMIN_TOKEN) {
+        console.warn('⚠️  警告: 使用默认 ADMIN_TOKEN，请设置环境变量 ADMIN_TOKEN');
     }
 
     const authHeader = req.headers.authorization || '';

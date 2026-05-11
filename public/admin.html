@@ -499,14 +499,17 @@ async function doLogin() {
     if (!token) { errorEl.textContent = '请输入管理员令牌'; return; }
 
     try {
-        // 先用 /collections 接口验证令牌
-        const testRes = await fetch(`${API_BASE}/admin/collections`, {
-            headers: { 'X-Admin-Token': token, 'Authorization': `Bearer ${token}` }
+        // 调用登录接口验证令牌
+        const loginRes = await fetch(`${API_BASE}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token })
         });
 
-        if (!testRes.ok) {
-            const err = await testRes.json().catch(() => ({}));
-            errorEl.textContent = err.error || '令牌无效';
+        const loginData = await loginRes.json().catch(() => ({}));
+
+        if (!loginRes.ok || !loginData.success) {
+            errorEl.textContent = loginData.error || '令牌无效';
             return;
         }
 
@@ -1353,10 +1356,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 如果已有 token，尝试直接进入
     if (ADMIN_TOKEN) {
         // 静默验证
-        fetch(`${API_BASE}/admin/collections`, {
-            headers: { 'X-Admin-Token': ADMIN_TOKEN, 'Authorization': `Bearer ${ADMIN_TOKEN}` }
-        }).then(r => {
-            if (r.ok) enterApp();
+        fetch(`${API_BASE}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: ADMIN_TOKEN })
+        }).then(r => r.json()).then(data => {
+            if (data.success) enterApp();
         }).catch(()=>{});
     }
 });
