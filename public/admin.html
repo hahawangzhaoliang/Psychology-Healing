@@ -1017,6 +1017,14 @@ async function loadSettings() {
                     媒体文件（图片、音频）请在「媒体管理」标签页中上传和管理。
                 </p>
             </div>
+            <div style="margin-top:20px;">
+                <div class="card-title" style="margin-bottom:12px;">🚀 数据初始化</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                    <button class="btn btn-primary" onclick="initDataFromLocal()">📦 从本地文件初始化数据</button>
+                    <span class="text-muted" style="font-size:0.8rem;">将 server/data/*.json 上传到 Vercel Blob（首次部署或数据丢失时使用）</span>
+                </div>
+                <div id="init-data-result" style="margin-top:12px;font-size:0.85rem;"></div>
+            </div>
         `;
 
         // 检查 Blob 状态
@@ -1083,6 +1091,33 @@ function downloadJson(data, filename) {
     const a = document.createElement('a');
     a.href = url; a.download = filename; a.click();
     URL.revokeObjectURL(url);
+}
+
+// 从本地文件初始化数据到 Blob
+async function initDataFromLocal() {
+    if (!confirm('确定要从本地文件初始化数据吗？\n这将把 server/data/*.json 上传到 Vercel Blob。')) return;
+    const resultEl = document.getElementById('init-data-result');
+    resultEl.innerHTML = '<span style="color:var(--primary);">⏳ 正在初始化...</span>';
+    try {
+        const res = await api('/admin/init-data', { method: 'POST' });
+        if (res.success) {
+            const details = res.results.map(r => {
+                const icon = r.status === 'success' ? '✅' : r.status === 'error' ? '❌' : '⏭️';
+                return `<div>${icon} ${r.file}: ${r.message}</div>`;
+            }).join('');
+            resultEl.innerHTML = `
+                <div style="color:var(--success);font-weight:600;">✅ ${res.message}</div>
+                <div style="margin-top:8px;padding:8px;background:var(--bg);border-radius:4px;">${details}</div>
+            `;
+            showToast('数据初始化成功', 'success');
+            loadDashboard();
+        } else {
+            throw new Error(res.error || '初始化失败');
+        }
+    } catch (e) {
+        resultEl.innerHTML = `<span style="color:var(--danger);">❌ 初始化失败：${e.message}</span>`;
+        showToast('初始化失败：' + e.message, 'error');
+    }
 }
 
 async function confirmClearCollection() {
