@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心晴空间 · 管理后台</title>
+    <style>
+        /* ========== CSS 变量 ========== */
+        :root {
+            --primary:    #5A9A8A;
+            --primary-light: #E8F4F0;
+            --primary-dark: #3D7A6A;
+            --danger:     #EF4444;
+            --danger-light:#FEE2E2;
+            --warn:       #F59E0B;
+            --warn-light: #FEF3C7;
+            --success:    #10B981;
+            --success-light:#D1FAE5;
+            --bg:         #F3F6F8;
+            --card:       #FFFFFF;
+            --text:       #1F2937;
+            --text-light: #6B7280;
+            --border:     #E5E7EB;
+            --radius:     8px;
+            --shadow:     0 1px 3px rgba(0,0,0,0.08);
+            --sidebar-w:  220px;
+            --header-h:   56px;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ========== 登录遮罩 ========== */
+        #login-overlay {
+            position: fixed; inset:0; z-index:9999;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: white; border-radius: 16px; padding: 40px 36px;
+            width: 360px; max-width: 90vw;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .login-box h1 { font-size: 1.5rem; color: var(--primary); margin-bottom: 4px; }
+        .login-box p  { font-size: 0.85rem; color: var(--text-light); margin-bottom: 24px; }
+        .login-box input {
+            width: 100%; padding: 10px 14px; border: 2px solid var(--border);
+            border-radius: var(--radius); font-size: 0.95rem; outline: none;
+            transition: border-color 0.2s;
+        }
+        .login-box input:focus { border-color: var(--primary); }
+        .login-box button {
+            margin-top: 16px; width: 100%; padding: 10px;
+            background: var(--primary); color: white; border: none;
+            border-radius: var(--radius); font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; transition: background 0.2s;
+        }
+        .login-box button:hover { background: var(--primary-dark); }
+        .login-error { color: var(--danger); font-size: 0.8rem; margin-top: 8px; min-height: 1.2em; }
+
+        /* ========== 布局 ========== */
+        #app { display:none; }
+        .header {
+            position: fixed; top:0; left:0; right:0; height: var(--header-h);
+            background: white; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; z-index: 100;
+        }
+        .header h2 { font-size: 1.05rem; font-weight: 700; color: var(--text); }
+        .header .env-badge {
+            font-size: 0.7rem; padding: 2px 8px; border-radius: 10px;
+            background: var(--primary-light); color: var(--primary); font-weight: 600;
+        }
+        .header button {
+            padding: 6px 14px; border-radius: var(--radius);
+            border: 1px solid var(--border); background: white;
+            color: var(--text-light); font-size: 0.85rem; cursor: pointer;
+        }
+        .header button:hover { border-color: var(--danger); color: var(--danger); }
+
+        .sidebar {
+            position: fixed; top: var(--header-h); left:0; bottom:0;
+            width: var(--sidebar-w); background: white;
+            border-right: 1px solid var(--border);
+            padding: 16px 0; overflow-y: auto; z-index: 90;
+        }
+        .sidebar nav { display: flex; flex-direction: column; gap: 2px; padding: 0 8px; }
+        .sidebar nav a {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: var(--radius);
+            color: var(--text-light); text-decoration: none; font-size: 0.9rem;
+            transition: all 0.15s;
+        }
+        .sidebar nav a:hover   { background: var(--primary-light); color: var(--primary); }
+        .sidebar nav a.active { background: var(--primary); color: white; }
+
+        .main {
+            margin-top: var(--header-h); margin-left: var(--sidebar-w);
+            padding: 24px; min-height: calc(100vh - var(--header-h));
+        }
+
+        /* ========== 通用组件 ========== */
+        .card {
+            background: var(--card); border-radius: 12px;
+            box-shadow: var(--shadow); padding: 20px; margin-bottom: 20px;
+        }
+        .card-title {
+            font-size: 1rem; font-weight: 700; margin-bottom: 16px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px; margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--card); border-radius: 12px; padding: 18px 16px;
+            box-shadow: var(--shadow); text-align: center;
+        }
+        .stat-card .num { font-size: 1.8rem; font-weight: 800; color: var(--primary); }
+        .stat-card .label { font-size: 0.8rem; color: var(--text-light); margin-top: 4px; }
+
+        table.data-table {
+            width: 100%; border-collapse: collapse; font-size: 0.85rem;
+        }
+        table.data-table th {
+            text-align: left; padding: 10px 12px; background: var(--bg);
+            color: var(--text-light); font-weight: 600; font-size: 0.75rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+        table.data-table td {
+            padding: 10px 12px; border-bottom: 1px solid var(--border);
+            vertical-align: top; max-width: 300px; overflow: hidden; text-overflow: ellipsis;
+        }
+        table.data-table tr:last-child td { border-bottom: none; }
+        table.data-table tr:hover td { background: var(--primary-light); }
+
+        .badge {
+            display: inline-block; padding: 2px 8px; border-radius: 10px;
+            font-size: 0.7rem; font-weight: 600;
+        }
+        .badge-dup   { background: var(--warn-light); color: #92400E; }
+        .badge-new   { background: var(--success-light); color: #064E3B; }
+        .badge-collection { background: var(--primary-light); color: var(--primary); }
+
+        .btn {
+            padding: 6px 14px; border-radius: var(--radius); border: none;
+            font-size: 0.85rem; font-weight: 500; cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-danger  { background: var(--danger); color: white; }
+        .btn-danger:hover  { background: #DC2626; }
+        .btn-outline {
+            background: white; border: 1px solid var(--border); color: var(--text-light);
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+        .btn-sm { padding: 4px 10px; font-size: 0.8rem; }
+
+        .actions-cell { display: flex; gap: 6px; }
+
+        /* 分页 */
+        .pagination {
+            display: flex; align-items: center; justify-content: center;
+            gap: 8px; margin-top: 16px; font-size: 0.85rem;
+        }
+        .pagination button {
+            padding: 4px 12px; border-radius: var(--radius);
+            border: 1px solid var(--border); background: white;
+            cursor: pointer; font-size: 0.85rem;
+        }
+        .pagination button:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination .page-info { color: var(--text-light); }
+
+        /* 弹窗 */
+        .modal-overlay {
+            position: fixed; inset:0; z-index: 200;
+            background: rgba(0,0,0,0.4); display: none;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: white; border-radius: 14px; padding: 24px;
+            width: 540px; max-width: 95vw; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .modal h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label {
+            display: block; font-size: 0.8rem; font-weight: 600;
+            color: var(--text-light); margin-bottom: 4px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 8px 12px; border: 1.5px solid var(--border);
+            border-radius: var(--radius); font-size: 0.9rem; outline: none;
+            font-family: inherit; transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--primary);
+        }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+
+        /* 爬虫进度 */
+        .crawl-status {
+            padding: 12px 16px; border-radius: var(--radius);
+            margin-bottom: 16px; font-size: 0.85rem;
+        }
+        .crawl-status.idle    { background: var(--bg); color: var(--text-light); }
+        .crawl-status.running { background: var(--warn-light); color: #92400E; }
+        .crawl-status.done    { background: var(--success-light); color: #064E3B; }
+        .crawl-status.error   { background: var(--danger-light); color: #991B1B; }
+
+        .crawl-results-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            :root { --sidebar-w: 0px; }
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+        }
+
+        .hidden { display: none !important; }
+        .text-muted { color: var(--text-light); font-size: 0.8rem; }
+        .mt-16 { margin-top: 16px; }
+        .flex-between { display: flex; align-items: center; justify-content: space-between; }
+    </style>
+</head>
+<body>
+
+<!-- ===== 登录遮罩 ===== -->
+<div id="login-overlay">
+    <div class="login-box">
+        <h1>🧠 心晴空间</h1>
+        <p>管理后台登录</p>
+        <input type="password" id="login-token" placeholder="请输入管理员令牌（ADMIN_TOKEN）" autofocus>
+        <button onclick="doLogin()">登 录</button>
+        <div class="login-error" id="login-error"></div>
+        <p style="margin-top:16px;font-size:0.75rem;color:#9CA3AF;">
+            令牌与服务器 env ADMIN_TOKEN 一致<br>未配置时开发环境自动放行
+        </p>
+    </div>
+</div>
+
+<!-- ===== 主应用 ===== -->
+<div id="app">
+    <!-- 顶部栏 -->
+    <div class="header">
+        <h2>心晴空间 · 管理后台</h2>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span class="env-badge" id="env-badge">-</span>
+            <button onclick="doLogout()">退出登录</button>
+        </div>
+    </div>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar">
+        <nav>
+            <a href="#" class="active" data-tab="dashboard" onclick="switchTab('dashboard',this)">📊 数据概览</a>
+            <a href="#" data-tab="data" onclick="switchTab('data',this)">🗂️ 数据管理</a>
+            <a href="#" data-tab="crawler" onclick="switchTab('crawler',this)">🕷️ 爬虫管理</a>
+            <a href="#" data-tab="settings" onclick="switchTab('settings',this)">⚙️ 系统设置</a>
+        </nav>
+    </div>
+
+    <!-- 主内容区 -->
+    <div class="main">
+        <!-- 仪表盘 -->
+        <div id="tab-dashboard">
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card"><div class="num">-</div><div class="label">加载中…</div></div>
+            </div>
+            <div class="card">
+                <div class="card-title">集合详情</div>
+                <div id="collections-list"><p class="text-muted">加载中…</p></div>
+            </div>
+        </div>
+
+        <!-- 数据管理 -->
+        <div id="tab-data" class="hidden">
+            <div class="card">
+                <div class="card-title">
+                    <span id="data-table-title">数据列表</span>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn btn-outline btn-sm" onclick="refreshData()">🔄 刷新</button>
+                        <button class="btn btn-primary btn-sm" onclick="openCreateModal()">＋ 新增</button>
+                    </div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <select id="collection-select" onchange="onCollectionChange()" style="padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);font-size:0.85rem;">
+                        <option value="healingExercises">疗愈练习</option>
+                        <option value="psychologyKnowledge">心理学知识</option>
+                        <option value="emotionRegulation">情绪调节</option>
+                        <option value="dailyTips">每日提示</option>
+                        <option value="emotionDiary">情绪日记</option>
+                        <option value="assessmentRecords">测评记录</option>
+                        <option value="feedback">用户反馈</option>
+                        <option value="quickExercises">快速练习</option>
+                        <option value="knowledgeGraph">知识图谱</option>
+                    </select>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="data-table" id="data-table">
+                        <thead><tr><th>ID</th><th>内容</th><th>操作</th></tr></thead>
+                        <tbody id="data-tbody"><tr><td colspan="3">请选择集合</td></tr></tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="data-pagination"></div>
+            </div>
+        </div>
+
+        <!-- 爬虫管理 -->
+        <div id="tab-crawler" class="hidden">
+            <div class="card">
+                <div class="card-title">爬虫控制</div>
+                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+                    <select id="crawl-source" style="padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);font-size:0.85rem;">
+                        <option value="all">全部来源</option>
+                        <option value="domestic">仅国内来源</option>
+                        <option value="international">仅国际来源</option>
+                    </select>
+                    <button class="btn btn-primary" id="btn-crawl" onclick="triggerCrawl()">🕷️ 启动爬虫</button>
+                    <span class="text-muted">爬取结果不会自动入库，请预览后手动选择导入</span>
+                </div>
+                <div class="crawl-status idle" id="crawl-status">空闲 — 点击"启动爬虫"开始</div>
+                <div id="crawl-results-container" class="hidden">
+                    <div class="crawl-results-header">
+                        <h3 style="font-size:1rem;font-weight:700;">爬取结果</h3>
+                        <div style="display:flex;gap:8px;">
+                            <button class="btn btn-outline btn-sm" onclick="selectAllCrawlResults(true)">全选</button>
+                            <button class="btn btn-outline btn-sm" onclick="selectAllCrawlResults(false)">取消</button>
+                            <button class="btn btn-primary btn-sm" onclick="importSelectedResults()">导入选中</button>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:8px;" class="text-muted">
+                        提示：已存在的数据将标记为 <span class="badge badge-dup">已存在</span>，建议仅导入新数据
+                    </div>
+                    <div id="crawl-results-tabs" style="display:flex;gap:4px;margin-bottom:12px;">
+                        <button class="btn btn-sm btn-primary" onclick="showCrawlTab('exercises')">疗愈练习 <span id="crawl-count-exercises"></span></button>
+                        <button class="btn btn-sm btn-outline" onclick="showCrawlTab('knowledge')">心理学知识 <span id="crawl-count-knowledge"></span></button>
+                        <button class="btn btn-sm btn-outline" onclick="showCrawlTab('tips')">每日提示 <span id="crawl-count-tips"></span></button>
+                    </div>
+                    <div id="crawl-results-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 系统设置 -->
+        <div id="tab-settings" class="hidden">
+            <div class="card">
+                <div class="card-title">系统信息</div>
+                <div id="system-info"><p class="text-muted">加载中…</p></div>
+                <div style="margin-top:16px;">
+                    <button class="btn btn-danger btn-sm" onclick="confirmClearCollection()">清空当前集合（谨慎！）</button>
+                    <span class="text-muted" style="margin-left:8px;">此操作不可恢复</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 新增/编辑弹窗 ===== -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+    <div class="modal">
+        <h3 id="modal-title">新增记录</h3>
+        <form id="modal-form" onsubmit="return false;">
+            <div id="modal-fields"></div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal()">取消</button>
+                <button type="button" class="btn btn-primary" id="modal-submit" onclick="submitModal()">保存</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+/* ============================================================
+   管理后台 JavaScript
+   ============================================================ */
+
+// ─── 全局状态 ────────────────────────────────────────────────
+let ADMIN_TOKEN = localStorage.getItem('admin_token') || '';
+let CURRENT_TAB = 'dashboard';
+let CURRENT_COLLECTION = 'healingExercises';
+let CURRENT_PAGE = 1;
+const PAGE_SIZE = 10;
+let crawlResults = { exercises:[], knowledge:[], tips:[] };
+let crawlTab = 'exercises';
+let editingId = null;
+
+// ─── API 基础路径 ─────────────────────────────────────────────
+const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000/api'
+    : '/api';
+
+// ─── 认证请求头 ───────────────────────────────────────────────
+function authHeaders() {
+    return ADMIN_TOKEN
+        ? { 'X-Admin-Token': ADMIN_TOKEN, 'Authorization': `Bearer ${ADMIN_TOKEN}` }
+        : {};
+}
+
+// ─── 通用 API 请求 ────────────────────────────────────────────
+async function api(path, options = {}) {
+    const res = await fetch(`${API_BASE}${path}`, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...authHeaders(),
+            ...(options.headers || {})
+        }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    return data;
+}
+
+// ─── 登录 ────────────────────────────────────────────────────
+async function doLogin() {
+    const token = document.getElementById('login-token').value.trim();
+    const errorEl = document.getElementById('login-error');
+    errorEl.textContent = '';
+
+    if (!token) { errorEl.textContent = '请输入管理员令牌'; return; }
+
+    try {
+        // 先用 /collections 接口验证令牌
+        const testRes = await fetch(`${API_BASE}/admin/collections`, {
+            headers: { 'X-Admin-Token': token, 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!testRes.ok) {
+            const err = await testRes.json().catch(() => ({}));
+            errorEl.textContent = err.error || '令牌无效';
+            return;
+        }
+
+        ADMIN_TOKEN = token;
+        localStorage.setItem('admin_token', token);
+        enterApp();
+    } catch (e) {
+        errorEl.textContent = '连接失败：' + e.message;
+    }
+}
+
+function doLogout() {
+    ADMIN_TOKEN = '';
+    localStorage.removeItem('admin_token');
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('login-token').value = '';
+}
+
+function enterApp() {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('env-badge').textContent =
+        location.hostname === 'localhost' ? '本地开发' : '生产环境';
+    loadDashboard();
+}
+
+// ─── 标签切换 ────────────────────────────────────────────────
+function switchTab(tab, el) {
+    CURRENT_TAB = tab;
+    document.querySelectorAll('.sidebar nav a').forEach(a => a.classList.remove('active'));
+    if (el) el.classList.add('active');
+    document.querySelectorAll('.main > div').forEach(d => d.classList.add('hidden'));
+    document.getElementById(`tab-${tab}`).classList.remove('hidden');
+
+    if (tab === 'dashboard') loadDashboard();
+    if (tab === 'data')      loadData();
+    if (tab === 'settings')  loadSettings();
+}
+
+// ─── 仪表盘 ──────────────────────────────────────────────────
+async function loadDashboard() {
+    const grid = document.getElementById('stats-grid');
+    const list = document.getElementById('collections-list');
+
+    try {
+        const statsRes = await api('/admin/stats');
+        const collRes = await api('/admin/collections');
+
+        if (!statsRes.success) throw new Error(statsRes.error);
+
+        const stats = statsRes.data;
+        const collections = collRes.success ? collRes.data : [];
+
+        grid.innerHTML = Object.entries(stats).map(([key, count]) => `
+            <div class="stat-card">
+                <div class="num">${count}</div>
+                <div class="label">${getCollectionDisplayName(key)}</div>
+            </div>
+        `).join('');
+
+        list.innerHTML = `
+            <table class="data-table">
+                <thead><tr><th>集合名称</th><th>索引名</th><th>记录数</th></tr></thead>
+                <tbody>
+                    ${collections.map(c => `
+                        <tr>
+                            <td><strong>${c.displayName}</strong><br><span class="text-muted">${c.key}</span></td>
+                            <td><code style="font-size:0.8rem;">${c.indexName}</code></td>
+                            <td><strong>${stats[c.key] || 0}</strong></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    } catch (e) {
+        grid.innerHTML = `<div class="stat-card"><div class="num">!</div><div class="label">加载失败：${e.message}</div></div>`;
+    }
+}
+
+// ─── 数据管理 ────────────────────────────────────────────────
+function onCollectionChange() {
+    CURRENT_COLLECTION = document.getElementById('collection-select').value;
+    CURRENT_PAGE = 1;
+    loadData();
+}
+
+async function loadData(page) {
+    if (page) CURRENT_PAGE = page;
+    const tbody = document.getElementById('data-tbody');
+    const title = document.getElementById('data-table-title');
+
+    tbody.innerHTML = '<tr><td colspan="3" class="text-muted">加载中…</td></tr>';
+
+    try {
+        const res = await api(`/admin/data/${CURRENT_COLLECTION}?page=${CURRENT_PAGE}&limit=${PAGE_SIZE}`);
+        if (!res.success) throw new Error(res.error);
+
+        const { data, pagination } = res;
+        title.textContent = `${getCollectionDisplayName(CURRENT_COLLECTION)}（${pagination.total} 条）`;
+
+        if (data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3" class="text-muted">暂无数据</td></tr>';
+        } else {
+            tbody.innerHTML = data.map(item => {
+                const preview = getRecordPreview(item);
+                return `
+                    <tr>
+                        <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:var(--text-light);">${item.id || '-'}</td>
+                        <td>${preview}</td>
+                        <td class="actions-cell">
+                            <button class="btn btn-outline btn-sm" onclick="openEditModal('${item.id}')">编辑</button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete('${item.id}')">删除</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        renderPagination(pagination);
+    } catch (e) {
+        tbody.innerHTML = `<tr><td colspan="3" style="color:var(--danger);">加载失败：${e.message}</td></tr>`;
+    }
+}
+
+function renderPagination(p) {
+    const el = document.getElementById('data-pagination');
+    el.innerHTML = `
+        <button ${p.page <= 1 ? 'disabled' : ''} onclick="loadData(${p.page - 1})">上一页</button>
+        <span class="page-info">第 ${p.page} / ${p.totalPages} 页（共 ${p.total} 条）</span>
+        <button ${p.page >= p.totalPages ? 'disabled' : ''} onclick="loadData(${p.page + 1})">下一页</button>
+    `;
+}
+
+function refreshData() { loadData(1); }
+
+function getRecordPreview(item) {
+    // 优先显示 title，其次 content/description 的前 60 字符
+    const text = item.title || item.name || item.content || item.description || JSON.stringify(item).substring(0, 60);
+    return `<span style="font-size:0.85rem;">${escapeHtml(text.substring(0, 80))}</span>`;
+}
+
+function escapeHtml(s) {
+    if (!s) return '';
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─── 弹窗：新增/编辑 ────────────────────────────────────────
+function openCreateModal() {
+    editingId = null;
+    document.getElementById('modal-title').textContent = '新增记录';
+    document.getElementById('modal-submit').textContent = '创建';
+    buildModalFields({});
+    document.getElementById('modal-overlay').classList.add('open');
+}
+
+async function openEditModal(id) {
+    try {
+        const res = await api(`/admin/data/${CURRENT_COLLECTION}/${id}`);
+        if (!res.success) throw new Error(res.error);
+
+        editingId = id;
+        document.getElementById('modal-title').textContent = '编辑记录';
+        document.getElementById('modal-submit').textContent = '更新';
+        buildModalFields(res.data);
+        document.getElementById('modal-overlay').classList.add('open');
+    } catch (e) {
+        alert('加载失败：' + e.message);
+    }
+}
+
+function buildModalFields(data) {
+    // 根据集合类型生成表单字段
+    const fields = getCollectionFields(CURRENT_COLLECTION);
+    const container = document.getElementById('modal-fields');
+
+    container.innerHTML = fields.map(f => {
+        const val = data[f.key] || '';
+        if (f.type === 'textarea') {
+            return `<div class="form-group">
+                <label>${f.label}</label>
+                <textarea name="${f.key}">${escapeHtml(val)}</textarea>
+            </div>`;
+        }
+        return `<div class="form-group">
+            <label>${f.label}</label>
+            <input type="${f.type || 'text'}" name="${f.key}" value="${escapeHtml(val)}">
+        </div>`;
+    }).join('') + `
+        <div class="form-group">
+            <label>原始 JSON（高级：覆盖以上字段）</label>
+            <textarea name="_raw" placeholder='留空则使用上方表单，填入 JSON 则直接保存 JSON' style="font-size:0.8rem;font-family:monospace;">${editingId ? escapeHtml(JSON.stringify(data, null, 2)) : ''}</textarea>
+        </div>
+    `;
+}
+
+async function submitModal() {
+    const form = document.getElementById('modal-fields');
+    const rawEl = form.querySelector('[name="_raw"]');
+    let payload;
+
+    if (rawEl && rawEl.value.trim()) {
+        try { payload = JSON.parse(rawEl.value); }
+        catch { alert('JSON 格式错误'); return; }
+    } else {
+        payload = {};
+        form.querySelectorAll('input[name],textarea[name]').forEach(el => {
+            if (el.name === '_raw') return;
+            payload[el.name] = el.value;
+        });
+    }
+
+    try {
+        if (editingId) {
+            await api(`/admin/data/${CURRENT_COLLECTION}/${editingId}`, {
+                method: 'PUT', body: JSON.stringify(payload)
+            });
+        } else {
+            await api(`/admin/data/${CURRENT_COLLECTION}`, {
+                method: 'POST', body: JSON.stringify(payload)
+            });
+        }
+        closeModal();
+        loadData(CURRENT_PAGE);
+    } catch (e) {
+        alert('保存失败：' + e.message);
+    }
+}
+
+function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    editingId = null;
+}
+
+// ─── 删除 ────────────────────────────────────────────────────
+async function confirmDelete(id) {
+    if (!confirm(`确定要删除记录 ${id} 吗？此操作不可恢复。`)) return;
+    try {
+        await api(`/admin/data/${CURRENT_COLLECTION}/${id}`, { method: 'DELETE' });
+        loadData(CURRENT_PAGE);
+    } catch (e) {
+        alert('删除失败：' + e.message);
+    }
+}
+
+// ─── 爬虫管理 ────────────────────────────────────────────────
+async function triggerCrawl() {
+    const source = document.getElementById('crawl-source').value;
+    const statusEl = document.getElementById('crawl-status');
+    const btn = document.getElementById('btn-crawl');
+
+    btn.disabled = true;
+    statusEl.className = 'crawl-status running';
+    statusEl.innerHTML = '⏳ 爬虫运行中，请稍候…<br><span class="text-muted">这可能需要 10-60 秒</span>';
+
+    try {
+        const res = await api('/admin/crawl', {
+            method: 'POST',
+            body: JSON.stringify({ source })
+        });
+
+        if (!res.success) throw new Error(res.error);
+
+        crawlResults = res.data;
+        statusEl.className = 'crawl-status done';
+        statusEl.innerHTML = `✅ 爬取完成！<br><span class="text-muted">练习 ${crawlResults.exercises.length} 条 · 知识 ${crawlResults.knowledge.length} 条 · 提示 ${crawlResults.tips.length} 条</span>`;
+
+        document.getElementById('crawl-results-container').classList.remove('hidden');
+        updateCrawlCounts();
+        showCrawlTab('exercises');
+    } catch (e) {
+        statusEl.className = 'crawl-status error';
+        statusEl.innerHTML = '❌ 爬取失败：' + e.message;
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+function updateCrawlCounts() {
+    document.getElementById('crawl-count-exercises').textContent = `(${crawlResults.exercises.length})`;
+    document.getElementById('crawl-count-knowledge').textContent = `(${crawlResults.knowledge.length})`;
+    document.getElementById('crawl-count-tips').textContent = `(${crawlResults.tips.length})`;
+}
+
+function showCrawlTab(tab) {
+    crawlTab = tab;
+    document.querySelectorAll('#crawl-results-tabs .btn').forEach(b => {
+        b.className = `btn btn-sm ${b.textContent.includes(getCrawlTabLabel(tab)) ? 'btn-primary' : 'btn-outline'}`;
+    });
+
+    const items = crawlResults[getCrawlTabKey(tab)] || [];
+    const container = document.getElementById('crawl-results-content');
+
+    if (items.length === 0) {
+        container.innerHTML = '<p class="text-muted">此类数据为空</p>';
+        return;
+    }
+
+    const key = getCrawlTabKey(tab);
+    container.innerHTML = `
+        <table class="data-table">
+            <thead><tr>
+                <th style="width:40px;"><input type="checkbox" onchange="toggleAllInTab(this,'${key}')"></th>
+                <th>状态</th><th>内容预览</th><th>建议入库集合</th>
+            </tr></thead>
+            <tbody>
+                ${items.map((item, i) => `
+                    <tr>
+                        <td><input type="checkbox" class="crawl-select" data-tab="${key}" data-index="${i}" ${item._duplicate ? '' : 'checked'}></td>
+                        <td>${item._duplicate
+                            ? `<span class="badge badge-dup" title="${item._duplicateReason || ''}">已存在</span>`
+                            : `<span class="badge badge-new">新增</span>`}
+                        </td>
+                        <td style="font-size:0.85rem;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                            ${escapeHtml((item.title || item.content || JSON.stringify(item).substring(0,60)))}
+                        </td>
+                        <td><span class="badge badge-collection">${getCollectionDisplayName(item._collection)}</span></td>
+                    </tr>
+                `).join('')}
+            </tbody>
+        </table>
+    `;
+}
+
+function getCrawlTabKey(tab) {
+    return { exercises:'exercises', knowledge:'knowledge', tips:'tips' }[tab];
+}
+function getCrawlTabLabel(tab) {
+    return { exercises:'练习', knowledge:'知识', tips:'提示' }[tab];
+}
+
+function toggleAllInTab(master, tabKey) {
+    document.querySelectorAll(`.crawl-select[data-tab="${tabKey}"]`).forEach(cb => cb.checked = master.checked);
+}
+
+function selectAllCrawlResults(checked) {
+    document.querySelectorAll('.crawl-select').forEach(cb => cb.checked = checked);
+}
+
+async function importSelectedResults() {
+    const selected = [];
+    document.querySelectorAll('.crawl-select:checked').forEach(cb => {
+        const tab = cb.dataset.tab;
+        const idx = parseInt(cb.dataset.index);
+        const item = crawlResults[tab]?.[idx];
+        if (item) selected.push({ tab, item });
+    });
+
+    if (selected.length === 0) { alert('请先选择要导入的数据'); return; }
+
+    // 按集合分组
+    const byCollection = {};
+    selected.forEach(({ tab, item }) => {
+        const coll = item._collection || getCollectionFromTab(tab);
+        if (!byCollection[coll]) byCollection[coll] = [];
+        byCollection[coll].push(item);
+    });
+
+    let totalImported = 0;
+    for (const [coll, items] of Object.entries(byCollection)) {
+        const cleanItems = items.map(({ _duplicate, _duplicateReason, _collection, ...rest }) => rest);
+        try {
+            const res = await api('/admin/crawl/import', {
+                method: 'POST',
+                body: JSON.stringify({ items: cleanItems, collection: coll })
+            });
+            if (res.success) totalImported += res.data?.length || cleanItems.length;
+        } catch (e) {
+            alert(`导入 ${getCollectionDisplayName(coll)} 失败：${e.message}`);
+        }
+    }
+
+    alert(`✅ 成功导入 ${totalImported} 条数据！`);
+    // 刷新爬虫结果（重新标记重复）
+    if (crawlResults.timestamp) triggerCrawl();
+}
+
+function getCollectionFromTab(tab) {
+    return { exercises:'healingExercises', knowledge:'psychologyKnowledge', tips:'dailyTips' }[tab] || 'healingExercises';
+}
+
+// ─── 系统设置 ────────────────────────────────────────────────
+async function loadSettings() {
+    const infoEl = document.getElementById('system-info');
+    try {
+        const res = await api('/');
+        infoEl.innerHTML = `
+            <table class="data-table">
+                <tr><td><strong>API 名称</strong></td><td>${res.name || '-'}</td></tr>
+                <tr><td><strong>版本</strong></td><td>${res.version || '-'}</td></tr>
+                <tr><td><strong>描述</strong></td><td>${res.description || '-'}</td></tr>
+            </table>
+        `;
+    } catch (e) {
+        infoEl.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+    }
+}
+
+async function confirmClearCollection() {
+    if (!confirm(`⚠️ 确定要清空集合「${getCollectionDisplayName(CURRENT_COLLECTION)}」的所有数据吗？\n此操作不可恢复！`)) return;
+    if (!confirm('再次确认：所有数据将被永久删除！')) return;
+    alert('此功能已禁用，请通过 Vercel 控制台或数据库管理工具操作。');
+}
+
+// ─── 辅助函数 ────────────────────────────────────────────────
+function getCollectionDisplayName(key) {
+    const names = {
+        healingExercises:   '疗愈练习',
+        psychologyKnowledge:'心理学知识',
+        emotionRegulation:  '情绪调节',
+        dailyTips:          '每日提示',
+        emotionDiary:       '情绪日记',
+        assessmentRecords:   '测评记录',
+        feedback:           '用户反馈',
+        visitStats:         '访问统计',
+        quickExercises:     '快速练习',
+        knowledgeGraph:      '知识图谱',
+        metadata:           '元数据'
+    };
+    return names[key] || key;
+}
+
+function getCollectionFields(collection) {
+    const map = {
+        healingExercises: [
+            { key:'title',       label:'标题',     type:'text' },
+            { key:'description', label:'描述',     type:'textarea' },
+            { key:'category',    label:'分类',     type:'text' },
+            { key:'duration',    label:'时长',     type:'text' },
+            { key:'suitableFor', label:'适用人群', type:'text' },
+        ],
+        psychologyKnowledge: [
+            { key:'title',   label:'标题',   type:'text' },
+            { key:'content', label:'内容',   type:'textarea' },
+            { key:'source',  label:'来源',   type:'text' },
+            { key:'category',label:'分类',   type:'text' },
+        ],
+        emotionRegulation: [
+            { key:'emotion',  label:'情绪',   type:'text' },
+            { key:'title',   label:'标题',   type:'text' },
+            { key:'methods', label:'方法（JSON）', type:'textarea' },
+        ],
+        dailyTips: [
+            { key:'content',  label:'内容',   type:'textarea' },
+            { key:'category', label:'分类',   type:'text' },
+            { key:'suitableTime', label:'适用时间', type:'text' },
+        ],
+    };
+    return map[collection] || [
+        { key:'title',   label:'标题', type:'text' },
+        { key:'content', label:'内容', type:'textarea' },
+    ];
+}
+
+// ─── 回车登录 ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('login-token').addEventListener('keydown', e => {
+        if (e.key === 'Enter') doLogin();
+    });
+
+    // 如果已有 token，尝试直接进入
+    if (ADMIN_TOKEN) {
+        // 静默验证
+        fetch(`${API_BASE}/admin/collections`, {
+            headers: { 'X-Admin-Token': ADMIN_TOKEN, 'Authorization': `Bearer ${ADMIN_TOKEN}` }
+        }).then(r => {
+            if (r.ok) enterApp();
+        }).catch(()=>{});
+    }
+});
+</script>
+</body>
+</html>

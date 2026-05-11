@@ -595,28 +595,28 @@ class ThemeManager {
                 .emotion-ball.angry  {background:linear-gradient(135deg,#FFA07A,#FF6347);}
                 .emotion-ball.tired  {background:linear-gradient(135deg,#DDA0DD,#9370DB);}
                 .trash-bin {
-                    position:fixed; bottom:20px; right:20px;
-                    width:80px; height:100px; z-index:10; cursor:pointer; transition:all 0.3s ease;
+                    position:fixed; bottom:16px; right:16px;
+                    width:56px; height:70px; z-index:10; cursor:pointer; transition:all 0.3s ease;
                 }
-                .trash-bin:hover{transform:scale(1.05);}
-                .trash-bin.active{transform:scale(1.15);}
+                .trash-bin:hover{transform:scale(1.08);}
+                .trash-bin.active{transform:scale(1.12);}
                 .trash-body {
-                    width:70px; height:80px;
+                    width:48px; height:55px;
                     background:linear-gradient(135deg,#C8D4E0,#A8B8C8);
-                    border-radius:5px 5px 10px 10px; margin:0 auto; position:relative;
+                    border-radius:4px 4px 8px 8px; margin:0 auto; position:relative;
                 }
                 .trash-lid {
-                    width:80px; height:15px;
+                    width:56px; height:12px;
                     background:linear-gradient(135deg,#B8C8D8,#98A8B8);
-                    border-radius:5px; margin:0 auto 5px; transition:all 0.3s ease;
+                    border-radius:4px; margin:0 auto 4px; transition:all 0.3s ease;
                 }
                 .trash-bin.active .trash-lid{transform:rotate(-30deg);transform-origin:left center;}
-                .trash-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;}
+                .trash-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;}
                 .work-tip {
-                    position:fixed; bottom:130px; left:20px;
-                    font-size:12px; color:#4a6080;
-                    background:rgba(255,255,255,0.9); padding:6px 12px;
-                    border-radius:12px; box-shadow:0 2px 8px rgba(60,100,160,0.1);
+                    position:fixed; bottom:95px; left:12px;
+                    font-size:11px; color:#4a6080;
+                    background:rgba(255,255,255,0.9); padding:5px 10px;
+                    border-radius:10px; box-shadow:0 2px 8px rgba(60,100,160,0.1);
                 }
             </style>
             <div class="emotion-balls">

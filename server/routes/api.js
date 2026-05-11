@@ -14,6 +14,7 @@ const cronRoutes = require('./cron');
 const practiceRoutes = require('./practice');
 const roleRoutes = require('./role');
 const blobRoutes = require('./blob');
+const adminRoutes = require('./admin');
 
 // API版本信息
 router.get('/', (req, res) => {
@@ -46,5 +47,6 @@ router.use('/knowledge', cronRoutes);
 router.use('/practice', practiceRoutes);
 router.use('/role', roleRoutes);
 router.use('/blob', blobRoutes);
+router.use('/admin', adminRoutes);
 
 module.exports = router;

@@ -354,6 +354,47 @@ class AIContentGenerator {
     }
 }
 
+// ─── 仅运行爬虫，返回结果（不自动入库）────────────────────
+// source: 'all' | 'domestic' | 'international'
+async function runCrawler(source = 'all') {
+    const crawler = new PsychologyCrawler();
+
+    // 根据 source 参数过滤数据源
+    if (source !== 'all') {
+        crawler.sources = DATA_SOURCES[source] || [];
+        console.log(`[Crawler] 仅爬取来源: ${source}，共 ${crawler.sources.length} 个数据源`);
+    }
+
+    const crawlData = await crawler.crawl();
+
+    // 为每条结果附加"是否已存在"标记，方便管理员判断
+    const manager = new KnowledgeManager();
+    await manager.loadKnowledgeBase();
+
+    const markDuplicates = (items, collection) => {
+        return items.map(item => {
+            const dup = manager.checkDuplicate({
+                title: item.title || '',
+                content: item.content || item.description || '',
+                sourceUrl: item.sourceUrl || item.url || ''
+            });
+            return {
+                ...item,
+                _duplicate: dup.isDuplicate,
+                _duplicateReason: dup.reason,
+                _collection: collection   // 建议入库的集合
+            };
+        });
+    };
+
+    return {
+        exercises: markDuplicates(crawlData.exercises || [], 'healingExercises'),
+        knowledge: markDuplicates(crawlData.knowledge || [], 'psychologyKnowledge'),
+        tips:      markDuplicates(crawlData.tips      || [], 'dailyTips'),
+        timestamp: new Date().toISOString()
+    };
+}
+
 // ─── 主更新函数 ───────────────────────────────────────────────
 
 async function updateKnowledge() {
@@ -457,6 +498,7 @@ module.exports = {
     KnowledgeSyncer,
     AIContentGenerator,
     updateKnowledge,
+    runCrawler,
     getDataSources,
     DATA_SOURCES,
     // 向后兼容：旧代码若引用 PREDEFINED_KNOWLEDGE 不报错

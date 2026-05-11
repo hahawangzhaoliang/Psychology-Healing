@@ -21,12 +21,6 @@
       "dest": "public/$1"
     }
   ],
-  "crons": [
-    {
-      "path": "/api/knowledge/cron-update",
-      "schedule": "0 2 * * *"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   }

@@ -49,4 +49,44 @@ function requireVercelCron(req, res, next) {
     return requireSecret(req, res, next);
 }
 
-module.exports = { requireSecret, requireVercelCron };
+/**
+ * 管理员鉴权中间件
+ * 支持三种传参方式：
+ *   - Header: Authorization: Bearer <adminToken>
+ *   - Header: X-Admin-Token: <adminToken>
+ *   - Query:  ?adminToken=<adminToken>
+ * 管理员令牌存储在 env ADMIN_TOKEN，未配置时开发环境放行
+ */
+function requireAdmin(req, res, next) {
+    const adminToken = process.env.ADMIN_TOKEN;
+
+    // 未配置令牌时，生产环境拒绝访问，非生产环境放行
+    if (!adminToken || adminToken === 'your-admin-token') {
+        if (process.env.NODE_ENV === 'production' || process.env.VERCEL === '1') {
+            return res.status(500).json({
+                success: false,
+                error: '服务器未配置管理员令牌',
+                code: 'CONFIG_ERROR'
+            });
+        }
+        return next();
+    }
+
+    const authHeader = req.headers.authorization || '';
+    const bearerToken = authHeader.replace(/^Bearer\s+/i, '');
+    const headerToken = req.headers['x-admin-token'] || '';
+    const queryToken = req.query.adminToken || '';
+    const token = bearerToken || headerToken || queryToken;
+
+    if (token !== adminToken) {
+        return res.status(401).json({
+            success: false,
+            error: '管理员身份无效，请重新登录',
+            code: 'ADMIN_UNAUTHORIZED'
+        });
+    }
+
+    next();
+}
+
+module.exports = { requireSecret, requireVercelCron, requireAdmin };

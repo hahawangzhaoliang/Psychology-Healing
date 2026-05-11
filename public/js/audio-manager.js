@@ -59,12 +59,17 @@ class AudioManager {
      */
     playBGM(trackId, volume = 0.5) {
         this._ensureContext();
+        // 等待 manifest 加载
+        if (!resourceLoader?.getManifest()) {
+            resourceLoader?.init()?.then(() => this.playBGM(trackId, volume));
+            return;
+        }
         const track = resourceLoader?.getAudioByCategory('bgm')?.find(t => t.id === trackId);
         if (!track) {
             console.warn(`[AudioManager] BGM '${trackId}' 未找到`);
             return;
         }
-        
+
         this._stopBGM();
 
         // 优先使用 Blob CDN url，fallback 本地路径
@@ -105,15 +110,20 @@ class AudioManager {
      */
     playAmbient(soundId, volume = 0.3) {
         this._ensureContext();
+        // 等待 manifest 加载
+        if (!resourceLoader?.getManifest()) {
+            resourceLoader?.init()?.then(() => this.playAmbient(soundId, volume));
+            return;
+        }
         const sound = resourceLoader?.getAudioByCategory('ambient')?.find(s => s.id === soundId);
         if (!sound) {
             console.warn(`[AudioManager] 环境音 '${soundId}' 未找到`);
             return;
         }
-        
+
         this._stopAmbient();
         this.ambientVolume = volume;
-        
+
         // 检查是音频文件还是噪音生成
         if (sound.type === 'noise' && sound.noiseType) {
             // 使用噪音生成器
@@ -132,9 +142,19 @@ class AudioManager {
             });
             this.currentAmbientType = 'file';
         }
-        
+
         this.currentAmbient = soundId;
     }
+
+    /**
+     * 停止背景音乐（对外暴露）
+     */
+    stopBGM() { this._stopBGM(); }
+
+    /**
+     * 停止环境音（对外暴露）
+     */
+    stopAmbient() { this._stopAmbient(); }
 
     /**
      * 停止环境音
