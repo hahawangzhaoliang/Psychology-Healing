@@ -25,21 +25,14 @@ const upload = multer({
     },
 });
 
-// ─── 管理员令牌校验 ─────────────────────────────────────────
+// ─── 管理员令牌校验 ───────────────────────────────────────
 
 router.post('/login', (req, res) => {
     const { token } = req.body;
     // 优先使用环境变量中的 ADMIN_TOKEN，否则使用默认值用于本地开发
     const adminToken = process.env.ADMIN_TOKEN || 'xinqing-admin-2026';
 
-    // 调试日志
-    console.log('[Admin Login Debug]');
-    console.log('  ADMIN_TOKEN env:', process.env.ADMIN_TOKEN ? '已设置' : '未设置');
-    console.log('  ADMIN_TOKEN value:', process.env.ADMIN_TOKEN ? process.env.ADMIN_TOKEN.substring(0, 10) + '...' : 'N/A');
-    console.log('  User input token:', token ? token.substring(0, 10) + '...' : 'N/A');
-
     if (token !== adminToken) {
-        console.log('  Result: 令牌不匹配');
         return res.status(401).json({
             success: false,
             error: '令牌无效',
@@ -47,354 +40,101 @@ router.post('/login', (req, res) => {
         });
     }
 
-    console.log('  Result: 登录成功');
     res.json({ success: true, message: '登录成功', token: adminToken });
 });
 
-// ─── 后续路由鉴权 ───────────────────────────────────────────
+// ─── 后续路由鉴权 ───────────────────────────────────────
 
 router.use(require('../middleware/auth').requireAdmin);
 
-// ─── 获取所有集合信息 ───────────────────────────────────────
+// ─── 获取所有集合信息 ─────────────────────────────────────
 
 router.get('/collections', async (req, res) => {
     try {
         const collections = await jsonStore.listCollections();
-        res.json({ success: true, data: collections });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'COLLECTION_ERROR' });
-    }
-});
-
-// ─── 分页查询集合数据 ───────────────────────────────────────
-
-router.get('/data/:collection', async (req, res) => {
-    const { collection } = req.params;
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
-    const page  = parseInt(req.query.page)  || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const sort  = req.query.sort  || '';
-    const order = req.query.order || 'desc';
-
-    try {
-        const result = await jsonStore.paginate(collection, { page, limit, sort, order });
-        res.json({ success: true, ...result });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'QUERY_ERROR' });
-    }
-});
-
-// ─── 获取单条记录 ───────────────────────────────────────────
-
-router.get('/data/:collection/:id', async (req, res) => {
-    const { collection, id } = req.params;
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
-    try {
-        const record = await jsonStore.findById(collection, id);
-        if (!record) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
+        const overview = {};
+        for (const [name, info] of Object.entries(collections)) {
+            overview[name] = {
+                ...info,
+                data: undefined,  // 不返回具体数据，只返回元信息
+            };
         }
-        res.json({ success: true, data: record });
+        res.json({ success: true, data: overview });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'QUERY_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'COLLECTIONS_ERROR' });
     }
 });
 
-// ─── 新增记录 ───────────────────────────────────────────────
+// ─── 获取指定集合的数据 ────────────────────────────────────
 
-router.post('/data/:collection', async (req, res) => {
-    const { collection } = req.params;
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
+router.get('/collections/:collection', async (req, res) => {
     try {
-        const record = await jsonStore.insert(collection, req.body);
-        res.json({ success: true, message: '添加成功', data: record });
+        const { collection } = req.params;
+        const data = await jsonStore.readCollection(collection);
+        res.json({ success: true, data });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'INSERT_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'COLLECTION_READ_ERROR' });
     }
 });
 
-// ─── 更新记录 ───────────────────────────────────────────────
+// ─── 更新指定集合的数据 ────────────────────────────────────
 
-router.put('/data/:collection/:id', async (req, res) => {
-    const { collection, id } = req.params;
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
+router.put('/collections/:collection', async (req, res) => {
     try {
-        const updated = await jsonStore.update(collection, id, req.body);
-        if (!updated) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
-        }
-        res.json({ success: true, message: '更新成功', data: updated });
+        const { collection } = req.params;
+        const data = req.body;
+        await jsonStore.writeCollection(collection, data);
+        res.json({ success: true, message: '保存成功' });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'UPDATE_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'COLLECTION_WRITE_ERROR' });
     }
 });
 
-// ─── 删除记录 ───────────────────────────────────────────────
+// ─── 媒体文件列表 ────────────────────────────────────────
 
-router.delete('/data/:collection/:id', async (req, res) => {
-    const { collection, id } = req.params;
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
-    try {
-        const removed = await jsonStore.remove(collection, id);
-        if (!removed) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
-        }
-        res.json({ success: true, message: '删除成功' });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'DELETE_ERROR' });
-    }
-});
-
-// ─── 批量删除 ───────────────────────────────────────────────
-
-router.post('/data/:collection/batch-delete', async (req, res) => {
-    const { collection } = req.params;
-    const { ids } = req.body;
-
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-    if (!Array.isArray(ids) || ids.length === 0) {
-        return res.status(400).json({ success: false, error: '请提供要删除的记录ID列表', code: 'INVALID_INPUT' });
-    }
-
-    try {
-        await jsonStore.removeMany(collection, ids);
-        res.json({ success: true, message: `成功删除 ${ids.length} 条记录` });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'DELETE_ERROR' });
-    }
-});
-
-// ─── 触发爬虫（结果写入 Blob）────────────────────────────────
-
-router.post('/crawl', async (req, res) => {
-    const { source = 'all' } = req.body;
-
-    try {
-        const { runCrawler } = require('../services/knowledgeService');
-        console.log(`[Admin] 手动触发爬虫，来源: ${source}`);
-
-        const results = await runCrawler(source);
-
-        // 为每条标记是否已存在
-        const markDuplicates = (items, collection) => {
-            const existing = await jsonStore.readData(collection);
-            const existingTitles = new Set(existing.map(item => item.title?.trim()));
-            const existingUrls = new Set(existing.map(item => item.sourceUrl || item.url || ''));
-
-            return items.map(item => {
-                const title = item.title?.trim() || '';
-                const url = item.sourceUrl || item.url || '';
-                const isDuplicate = existingTitles.has(title) || (url && existingUrls.has(url));
-                return {
-                    ...item,
-                    _duplicate: isDuplicate,
-                    _duplicateReason: existingTitles.has(title) ? '标题重复' : (existingUrls.has(url) ? 'URL重复' : ''),
-                    _collection: collection,
-                };
-            });
-        };
-
-        const [exercises, knowledge, tips] = await Promise.all([
-            markDuplicates(results.exercises || [], 'exercises'),
-            markDuplicates(results.knowledge || [], 'knowledge'),
-            markDuplicates(results.tips || [], 'tips'),
-        ]);
-
-        res.json({
-            success: true,
-            message: '爬取完成，请选择需要入库的数据',
-            data: { exercises, knowledge, tips },
-            timestamp: new Date().toISOString(),
-        });
-    } catch (error) {
-        console.error('[Admin] 爬虫失败:', error);
-        res.status(500).json({
-            success: false,
-            error: '爬取失败：' + error.message,
-            code: 'CRAWL_ERROR',
-        });
-    }
-});
-
-// ─── 将爬虫结果导入 Blob ────────────────────────────────────
-
-router.post('/crawl/import', async (req, res) => {
-    const { items, collection } = req.body;
-
-    if (!Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ success: false, error: '请提供要导入的数据', code: 'INVALID_INPUT' });
-    }
-    if (!jsonStore.COLLECTION_MAP[collection]) {
-        return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
-    }
-
-    try {
-        const now = new Date().toISOString();
-        const records = items.map(item => ({
-            ...item,
-            imported_at: now,
-            source: item.source || 'admin-import',
-        }));
-
-        const inserted = await jsonStore.insertMany(collection, records);
-        res.json({
-            success: true,
-            message: `成功导入 ${inserted.length} 条数据`,
-            data: inserted,
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'IMPORT_ERROR' });
-    }
-});
-
-// ─── 集合统计 ───────────────────────────────────────────────
-
-router.get('/stats', async (req, res) => {
-    try {
-        const stats = await jsonStore.getStats();
-        res.json({ success: true, data: stats });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'STATS_ERROR' });
-    }
-});
-
-// ─── 导出全部数据为 JSON ────────────────────────────────────
-
-router.get('/export', async (req, res) => {
-    try {
-        const data = await jsonStore.exportAll();
-        res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Content-Disposition', 'attachment; filename=knowledge-data.json');
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'EXPORT_ERROR' });
-    }
-});
-
-// ─── 导入 JSON（覆盖现有数据）────────────────────────────────
-
-router.post('/import', async (req, res) => {
-    const { data } = req.body;
-
-    if (!data || typeof data !== 'object') {
-        return res.status(400).json({ success: false, error: '请提供有效的 JSON 数据', code: 'INVALID_INPUT' });
-    }
-
-    try {
-        const results = [];
-        for (const [collection, items] of Object.entries(data)) {
-            if (Array.isArray(items) && jsonStore.COLLECTION_MAP[collection]) {
-                await jsonStore.writeData(collection, items);
-                results.push({ collection, count: items.length });
-            }
-        }
-        res.json({ success: true, message: '导入成功', data: results });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'IMPORT_ERROR' });
-    }
-});
-
-// ─── 媒体文件管理 API ───────────────────────────────────────
-
-/**
- * GET /api/admin/media/list
- * 列出所有媒体文件（图片/音频）
- */
 router.get('/media/list', async (req, res) => {
-    const { type = 'all' } = req.query;
-
     try {
-        const [images, audio] = await Promise.all([
-            type === 'audio' ? Promise.resolve({ blobs: [] }) : blobStore.listMedia('images'),
-            type === 'images' ? Promise.resolve({ blobs: [] }) : blobStore.listMedia('audio'),
-        ]);
-
-        res.json({
-            success: true,
-            data: {
-                images: images.blobs || [],
-                audio:  audio.blobs  || [],
-            },
-        });
+        const { images, audio } = await blobStore.listMedia();
+        res.json({ success: true, data: { images, audio } });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message, code: 'MEDIA_LIST_ERROR' });
     }
 });
 
-/**
- * POST /api/admin/media/upload
- * 上传图片或音频到 Blob
- * Body: multipart/form-data（fieldname: 'file'）
- *        + 可选 'type' = 'image' | 'audio'（自动检测 mimetype）
- */
-router.post('/media/upload', upload.single('file'), async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ success: false, error: '请选择要上传的文件', code: 'NO_FILE' });
-    }
+// ─── 媒体文件上传 ────────────────────────────────────────
 
+router.post('/media/upload', upload.single('file'), async (req, res) => {
     try {
-        const { originalname, mimetype, buffer } = req.file;
-        const fileExt = originalname.split('.').pop();
-        const timestamp = Date.now();
-        const filename = `${timestamp}_${originalname}`;
+        if (!req.file) {
+            return res.status(400).json({ success: false, error: '未选择文件', code: 'NO_FILE' });
+        }
+
+        const file = req.file;
+        const ext = file.originalname.split('.').pop().toLowerCase();
+        const isImage = /^(jpg|jpeg|png|gif|webp)$/.test(ext);
+        const isAudio = /^(mp3|wav|ogg|m4a)$/.test(ext);
 
         let result;
-        if (mimetype.startsWith('image/')) {
-            result = await blobStore.uploadImage(buffer, filename, mimetype);
-        } else if (mimetype.startsWith('audio/')) {
-            result = await blobStore.uploadAudio(buffer, filename, mimetype);
+        if (isImage) {
+            result = await blobStore.uploadImage(file.buffer, file.originalname, file.mimetype);
+        } else if (isAudio) {
+            result = await blobStore.uploadAudio(file.buffer, file.originalname, file.mimetype);
         } else {
             return res.status(400).json({ success: false, error: '不支持的文件类型', code: 'INVALID_FILE_TYPE' });
         }
 
-        res.json({
-            success: true,
-            message: '上传成功',
-            data: {
-                url:      result.url,
-                pathname: result.pathname,
-                size:     result.size,
-                filename,
-            },
-        });
+        res.json({ success: true, data: result });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'UPLOAD_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'MEDIA_UPLOAD_ERROR' });
     }
 });
 
-/**
- * DELETE /api/admin/media/:type/:filename
- * 删除媒体文件
- * type: 'images' | 'audio'
- * filename: Blob pathname 或 URL 编码的文件名
- */
+// ─── 媒体文件删除 ────────────────────────────────────────
+
 router.delete('/media/:type/:filename', async (req, res) => {
-    const { type, filename } = req.params;
-
-    if (!['images', 'audio'].includes(type)) {
-        return res.status(400).json({ success: false, error: '无效的文件类型', code: 'INVALID_TYPE' });
-    }
-
     try {
+        const { type, filename } = req.params;
         const decodedFilename = decodeURIComponent(filename);
-        // 构建 Blob pathname
         const pathname = type === 'images'
             ? `${blobStore.MEDIA_IMAGE_PREFIX}${decodedFilename}`
             : `${blobStore.MEDIA_AUDIO_PREFIX}${decodedFilename}`;
@@ -402,19 +142,15 @@ router.delete('/media/:type/:filename', async (req, res) => {
         await blobStore.deleteMedia(pathname);
         res.json({ success: true, message: '删除成功' });
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'DELETE_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'MEDIA_DELETE_ERROR' });
     }
 });
 
-/**
- * GET /api/admin/media/:type/:filename
- * 获取媒体文件的 Blob URL（用于前端显示）
- * 实际返回重定向或直接返回 URL
- */
-router.get('/media/:type/:filename', async (req, res) => {
-    const { type, filename } = req.params;
+// ─── 获取媒体文件 URL ─────────────────────────────────────
 
+router.get('/media/:type/:filename', async (req, res) => {
     try {
+        const { type, filename } = req.params;
         const decodedFilename = decodeURIComponent(filename);
         const pathname = type === 'images'
             ? `${blobStore.MEDIA_IMAGE_PREFIX}${decodedFilename}`
@@ -462,9 +198,9 @@ router.post('/init-data', async (req, res) => {
     ];
 
     const results = [];
-    const dataDir = path.join(__dirname, '../../server/data');
+    const dataDir = path.join(__dirname, '..', 'data');
 
-    for (const { local, collection } of dataFiles) {
+    for (const { local } of dataFiles) {
         const localPath = path.join(dataDir, local);
         try {
             if (!fs.existsSync(localPath)) {
@@ -478,15 +214,15 @@ router.post('/init-data', async (req, res) => {
             // 上传到 Blob
             const blobPath = `data/${local}`;
             const { put } = require('@vercel/blob');
-            const result = await put(blobPath, content, {
-                contentType: 'application/json',
+            const result = await put(blobPath, Buffer.from(content, 'utf-8'), {
+                contentType: 'application/json; charset=utf-8',
                 access: 'public',
             });
 
             results.push({
                 file: local,
                 status: 'success',
-                message: `上传成功，${data.length || 0} 条记录`,
+                message: `上传成功，${Array.isArray(data) ? data.length : 0} 条记录`,
                 url: result.url,
             });
         } catch (error) {
