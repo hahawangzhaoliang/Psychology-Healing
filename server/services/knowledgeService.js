@@ -388,103 +388,94 @@ async function runCrawler(source = 'all') {
     };
 
     return {
-        exercises: markDuplicates(crawlData.exercises || [], 'healingExercises'),
-        knowledge: markDuplicates(crawlData.knowledge || [], 'psychologyKnowledge'),
-        tips:      markDuplicates(crawlData.tips      || [], 'dailyTips'),
+        exercises: markDuplicates(crawlData.exercises || [], 'exercises'),
+        knowledge: markDuplicates(crawlData.knowledge || [], 'knowledge'),
+        tips:      markDuplicates(crawlData.tips      || [], 'tips'),
         timestamp: new Date().toISOString()
     };
 }
 
-// ─── 主更新函数 ───────────────────────────────────────────────
+// ─── 主更新函数（写入 JSON 文件）────────────────────────────
 
 async function updateKnowledge() {
     const startTime = Date.now();
 
     console.log('\n========================================');
-    console.log('📚 知识库每日增量更新');
+    console.log('📚 知识库更新（JSON 模式）');
     console.log(`⏰ 时间: ${new Date().toLocaleString('zh-CN')}`);
     console.log('========================================\n');
 
-    const manager  = new KnowledgeManager();
-    const syncer   = new KnowledgeSyncer(manager);
+    // 延迟导入避免循环依赖
+    const jsonStore = require('./jsonStore');
     const generator = new AIContentGenerator();
 
-    // 1. 加载现有知识库
-    console.log('📖 加载现有知识库...');
-    await manager.loadKnowledgeBase();
+    // 集合映射：知识库字段 → JSON store key
+    const collectionMapping = {
+        exercises:  PREDEFINED.healingExercises,
+        knowledge:  PREDEFINED.psychologyKnowledge,
+        regulation: PREDEFINED.emotionRegulation,
+        tips:       PREDEFINED.dailyTips
+    };
 
-    // 2. 同步预定义知识（增量）
-    console.log('\n📥 同步权威知识库...');
-    console.log('\n  疗愈练习:');
-    const exercisesResult  = await syncer.syncHealingExercises();
-    console.log('\n  心理知识:');
-    const knowledgeResult  = await syncer.syncPsychologyKnowledge();
-    console.log('\n  情绪调节:');
-    const regulationsResult = await syncer.syncEmotionRegulation();
-    console.log('\n  每日提示:');
-    const tipsResult       = await syncer.syncDailyTips();
+    const results = {};
 
-    // 3. 爬取外部资源
-    console.log('\n🕷️ 爬取外部资源...');
-    const crawlResult = { exercises: 0, knowledge: 0, tips: 0 };
+    // 1. 合并预定义数据 + 去重写入
+    for (const [storeKey, predefinedItems] of Object.entries(collectionMapping)) {
+        const existing = jsonStore.readData(storeKey);
+        const existingIds = new Set(existing.map(item => item.id));
+        const existingTitles = new Set(existing.map(item => item.title?.trim()).filter(Boolean));
 
-    try {
-        const crawler = new PsychologyCrawler();
-        const crawlData = await crawler.crawl();
-
-        for (const exercise of crawlData.exercises) {
-            if ((await manager.addHealingExercise(exercise)).added) {
-                crawlResult.exercises++;
-                console.log(`  + 爬取练习: ${exercise.title}`);
+        let added = 0;
+        for (const item of predefinedItems) {
+            if (!existingIds.has(item.id) && !existingTitles.has(item.title?.trim())) {
+                existing.push({
+                    ...item,
+                    source: item.source || '预定义知识库',
+                    imported_at: new Date().toISOString()
+                });
+                added++;
             }
         }
-
-        for (const knowledge of crawlData.knowledge) {
-            if ((await manager.addPsychologyKnowledge(knowledge)).added) {
-                crawlResult.knowledge++;
-                console.log(`  + 爬取知识: ${knowledge.title}`);
-            }
-        }
-
-        for (const tip of crawlData.tips) {
-            if ((await manager.addDailyTip(tip)).added) crawlResult.tips++;
-        }
-
-        console.log(`\n  爬取统计: 练习 +${crawlResult.exercises}, 知识 +${crawlResult.knowledge}, 小贴士 +${crawlResult.tips}`);
-    } catch (error) {
-        console.log(`  爬取失败: ${error.message}`);
+        jsonStore.writeData(storeKey, existing);
+        results[storeKey] = { total: existing.length, added };
+        console.log(`  ✓ ${storeKey}: 现有 ${existing.length} 条，新增 +${added}`);
     }
 
-    // 4. 生成每日新内容
-    console.log('\n🤖 生成每日新内容...');
-    const newTips = generator.generateDailyTips(3);
-    let generatedTips = 0;
+    // 2. 生成每日新提示（避免重复）
+    const existingTips = jsonStore.readData('tips');
+    const existingTipContents = new Set(existingTips.map(t => t.content?.trim()).filter(Boolean));
+    const newTips = generator.generateDailyTips(3).filter(t => !existingTipContents.has(t.content?.trim()));
+
     for (const tip of newTips) {
-        if ((await manager.addDailyTip(tip)).added) {
-            generatedTips++;
-            console.log(`  + 新提示: ${tip.content.substring(0, 30)}...`);
-        }
+        existingTips.push({
+            ...tip,
+            id: `tip_gen_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            source: 'AI 生成',
+            imported_at: new Date().toISOString()
+        });
+        console.log(`  + 新提示: ${tip.content.substring(0, 40)}...`);
     }
 
-    // 5. 输出统计
-    const stats = manager.getStatistics();
+    if (newTips.length > 0) {
+        jsonStore.writeData('tips', existingTips);
+        results.tips.added += newTips.length;
+        results.tips.total = existingTips.length;
+    }
+
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+    const total = Object.values(results).reduce((sum, r) => sum + r.total, 0);
 
     console.log('\n========================================');
     console.log('📊 更新统计:');
-    console.log(`  预定义练习: +${exercisesResult.added}/${exercisesResult.total}`);
-    console.log(`  预定义知识: +${knowledgeResult.added}/${knowledgeResult.total}`);
-    console.log(`  预定义调节: +${regulationsResult.added}/${regulationsResult.total}`);
-    console.log(`  预定义提示: +${tipsResult.added}/${tipsResult.total}`);
-    console.log(`  爬取练习:   +${crawlResult.exercises}`);
-    console.log(`  爬取知识:   +${crawlResult.knowledge}`);
-    console.log(`  爬取小贴士: +${crawlResult.tips}`);
-    console.log(`  生成小贴士: +${generatedTips}`);
-    console.log(`\n  知识库总量: ${stats.totalItems} 条`);
-    console.log(`  耗时: ${duration}秒`);
+    console.log(`  exercises:  ${results.exercises.total} 条（新增 +${results.exercises.added}）`);
+    console.log(`  knowledge:  ${results.knowledge.total} 条（新增 +${results.knowledge.added}）`);
+    console.log(`  regulation: ${results.regulation.total} 条（新增 +${results.regulation.added}）`);
+    console.log(`  tips:       ${results.tips.total} 条（新增 +${results.tips.added}）`);
+    console.log(`  总计:       ${total} 条`);
+    console.log(`  耗时:       ${duration}秒`);
     console.log('========================================\n');
 
-    return stats;
+    return results;
 }
 
 function getDataSources() {

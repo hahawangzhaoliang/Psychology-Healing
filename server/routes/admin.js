@@ -1,18 +1,15 @@
 /**
  * 后台管理 API 路由
+ * 数据源：本地 JSON 文件（server/data/*.json）
  * 所有接口均需管理员鉴权（requireAdmin）
  */
 
 const express = require('express');
 const router  = express.Router();
 const { requireAdmin } = require('../middleware/auth');
-const {
-    insert, find, update, remove,
-    paginate, count, insertMany, INDEX_NAMES
-} = require('../config/upstash');
-const { runCrawler } = require('../services/knowledgeService');
+const jsonStore = require('../services/jsonStore');
 
-// ─── 管理员令牌校验（轻量登录接口）──────────────────────
+// ─── 管理员令牌校验 ─────────────────────────────────────────
 
 router.post('/login', (req, res) => {
     const { token } = req.body;
@@ -34,30 +31,31 @@ router.post('/login', (req, res) => {
         });
     }
 
-    res.json({
-        success: true,
-        message: '登录成功',
-        token: adminToken   // 前端存储后自行在请求中携带
-    });
+    res.json({ success: true, message: '登录成功', token: adminToken });
 });
 
-// ─── 对所有后续路由应用管理员鉴权 ───────────────────────
+// ─── 后续路由鉴权 ───────────────────────────────────────────
+
 router.use(requireAdmin);
 
-// ─── 获取所有集合名称 ───────────────────────────────────
+// ─── 获取所有集合信息 ───────────────────────────────────────
+
 router.get('/collections', (req, res) => {
-    const collections = Object.entries(INDEX_NAMES).map(([key, indexName]) => ({
+    const collections = Object.entries(jsonStore.COLLECTION_MAP).map(([key, info]) => ({
         key,
-        indexName,
-        displayName: getCollectionDisplayName(key)
+        fileName: info.file,
+        upstashName: info.upstash,
+        displayName: info.display,
+        count: jsonStore.count(key)
     }));
     res.json({ success: true, data: collections });
 });
 
-// ─── 分页查询集合数据 ───────────────────────────────────
-router.get('/data/:collection', async (req, res) => {
+// ─── 分页查询集合数据 ───────────────────────────────────────
+
+router.get('/data/:collection', (req, res) => {
     const { collection } = req.params;
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
@@ -67,121 +65,133 @@ router.get('/data/:collection', async (req, res) => {
     const order = req.query.order || 'desc';
 
     try {
-        const result = await paginate(collection, {
-            page,
-            limit,
-            sort: sort ? { [sort]: order } : undefined
-        });
+        const result = jsonStore.paginate(collection, { page, limit, sort, order });
         res.json({ success: true, ...result });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message, code: 'QUERY_ERROR' });
     }
 });
 
-// ─── 获取单条记录 ───────────────────────────────────────
-router.get('/data/:collection/:id', async (req, res) => {
+// ─── 获取单条记录 ───────────────────────────────────────────
+
+router.get('/data/:collection/:id', (req, res) => {
     const { collection, id } = req.params;
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
-    // Upstash Search 不支持按 ID 直接获取，改为列表查询 + 过滤
-    // 限制 200 条足够覆盖绝大多数场景
-    try {
-        const result = await paginate(collection, { page: 1, limit: 200 });
-        const record = result.items.find(item => item.id === id || item._id === id);
-        if (!record) {
-            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
-        }
-        res.json({ success: true, data: record });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'QUERY_ERROR' });
+    const record = jsonStore.findById(collection, id);
+    if (!record) {
+        return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
     }
+    res.json({ success: true, data: record });
 });
 
-// ─── 新增记录 ───────────────────────────────────────────
-router.post('/data/:collection', async (req, res) => {
+// ─── 新增记录 ───────────────────────────────────────────────
+
+router.post('/data/:collection', (req, res) => {
     const { collection } = req.params;
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
     try {
-        const record = await insert(collection, req.body);
+        const record = jsonStore.insert(collection, req.body);
         res.json({ success: true, message: '添加成功', data: record });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message, code: 'INSERT_ERROR' });
     }
 });
 
-// ─── 更新记录 ───────────────────────────────────────────
-router.put('/data/:collection/:id', async (req, res) => {
+// ─── 更新记录 ───────────────────────────────────────────────
+
+router.put('/data/:collection/:id', (req, res) => {
     const { collection, id } = req.params;
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
     try {
-        await update(collection, { id }, req.body);
-        // 更新后重新从列表中取出最新数据
-        const result = await paginate(collection, { page: 1, limit: 200 });
-        const updated = result.items.find(item => item.id === id || item._id === id);
+        const updated = jsonStore.update(collection, id, req.body);
+        if (!updated) {
+            return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
+        }
         res.json({ success: true, message: '更新成功', data: updated });
     } catch (error) {
         res.status(500).json({ success: false, error: error.message, code: 'UPDATE_ERROR' });
     }
 });
 
-// ─── 删除记录 ───────────────────────────────────────────
-router.delete('/data/:collection/:id', async (req, res) => {
+// ─── 删除记录 ───────────────────────────────────────────────
+
+router.delete('/data/:collection/:id', (req, res) => {
     const { collection, id } = req.params;
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
-    try {
-        await remove(collection, { id });
-        res.json({ success: true, message: '删除成功' });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'DELETE_ERROR' });
+    const removed = jsonStore.remove(collection, id);
+    if (!removed) {
+        return res.status(404).json({ success: false, error: '记录不存在', code: 'NOT_FOUND' });
     }
+    res.json({ success: true, message: '删除成功' });
 });
 
-// ─── 批量删除 ───────────────────────────────────────────
-router.post('/data/:collection/batch-delete', async (req, res) => {
+// ─── 批量删除 ───────────────────────────────────────────────
+
+router.post('/data/:collection/batch-delete', (req, res) => {
     const { collection } = req.params;
     const { ids } = req.body;
 
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
     if (!Array.isArray(ids) || ids.length === 0) {
         return res.status(400).json({ success: false, error: '请提供要删除的记录ID列表', code: 'INVALID_INPUT' });
     }
 
-    try {
-        let deleted = 0;
-        for (const id of ids) {
-            await remove(collection, { id });
-            deleted++;
-        }
-        res.json({ success: true, message: `成功删除 ${deleted} 条记录` });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'BATCH_DELETE_ERROR' });
-    }
+    jsonStore.removeMany(collection, ids);
+    res.json({ success: true, message: `成功删除 ${ids.length} 条记录` });
 });
 
-// ─── 触发爬虫（返回结果，不自动入库）────────────────────
+// ─── 触发爬虫（结果写入 JSON）────────────────────────────────
+
 router.post('/crawl', async (req, res) => {
     const { source = 'all' } = req.body;
 
     try {
+        const { runCrawler } = require('../services/knowledgeService');
         console.log(`[Admin] 手动触发爬虫，来源: ${source}`);
+
         const results = await runCrawler(source);
+
+        // 为每条标记是否已存在（与现有 JSON 数据比对）
+        const markDuplicates = (items, collection) => {
+            const existing = jsonStore.readData(collection);
+            const existingTitles = new Set(existing.map(item => item.title?.trim()));
+            const existingUrls = new Set(existing.map(item => item.sourceUrl || item.url || ''));
+
+            return items.map(item => {
+                const title = item.title?.trim() || '';
+                const url = item.sourceUrl || item.url || '';
+                const isDuplicate = existingTitles.has(title) || (url && existingUrls.has(url));
+                return {
+                    ...item,
+                    _duplicate: isDuplicate,
+                    _duplicateReason: existingTitles.has(title) ? '标题重复' : (existingUrls.has(url) ? 'URL重复' : ''),
+                    _collection: collection
+                };
+            });
+        };
+
         res.json({
             success: true,
             message: '爬取完成，请选择需要入库的数据',
-            data: results,
+            data: {
+                exercises: markDuplicates(results.exercises || [], 'exercises'),
+                knowledge: markDuplicates(results.knowledge || [], 'knowledge'),
+                tips:      markDuplicates(results.tips || [], 'tips')
+            },
             timestamp: new Date().toISOString()
         });
     } catch (error) {
@@ -194,29 +204,27 @@ router.post('/crawl', async (req, res) => {
     }
 });
 
-// ─── 将爬虫结果导入数据库 ──────────────────────────────
-router.post('/crawl/import', async (req, res) => {
+// ─── 将爬虫结果导入 JSON ────────────────────────────────────
+
+router.post('/crawl/import', (req, res) => {
     const { items, collection } = req.body;
 
     if (!Array.isArray(items) || items.length === 0) {
         return res.status(400).json({ success: false, error: '请提供要导入的数据', code: 'INVALID_INPUT' });
     }
-    if (!INDEX_NAMES[collection]) {
+    if (!jsonStore.COLLECTION_MAP[collection]) {
         return res.status(400).json({ success: false, error: '未知集合', code: 'UNKNOWN_COLLECTION' });
     }
 
     try {
-        const records = items.map(item => {
-            // 确保每条记录有合理的字段
-            const now = new Date().toISOString();
-            return {
-                ...item,
-                imported_at: now,
-                source: item.source || 'admin-import'
-            };
-        });
+        const now = new Date().toISOString();
+        const records = items.map(item => ({
+            ...item,
+            imported_at: now,
+            source: item.source || 'admin-import'
+        }));
 
-        const inserted = await insertMany(collection, records);
+        const inserted = jsonStore.insertMany(collection, records);
         res.json({
             success: true,
             message: `成功导入 ${inserted.length} 条数据`,
@@ -227,36 +235,50 @@ router.post('/crawl/import', async (req, res) => {
     }
 });
 
-// ─── 集合统计信息 ───────────────────────────────────────
-router.get('/stats', async (req, res) => {
+// ─── 集合统计 ───────────────────────────────────────────────
+
+router.get('/stats', (req, res) => {
+    const stats = {};
+    for (const key of Object.keys(jsonStore.COLLECTION_MAP)) {
+        stats[key] = jsonStore.count(key);
+    }
+    res.json({ success: true, data: stats });
+});
+
+// ─── 导出全部数据为 JSON ────────────────────────────────────
+
+router.get('/export', (req, res) => {
     try {
-        const stats = {};
-        for (const key of Object.keys(INDEX_NAMES)) {
-            stats[key] = await count(key);
-        }
-        res.json({ success: true, data: stats });
+        const data = jsonStore.exportAll();
+        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Disposition', 'attachment; filename=knowledge-data.json');
+        res.json(data);
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message, code: 'STATS_ERROR' });
+        res.status(500).json({ success: false, error: error.message, code: 'EXPORT_ERROR' });
     }
 });
 
-// ─── 辅助函数 ───────────────────────────────────────────
+// ─── 导入 JSON（覆盖现有数据）────────────────────────────────
 
-function getCollectionDisplayName(key) {
-    const names = {
-        emotionDiary:       '情绪日记',
-        assessmentRecords:   '测评记录',
-        feedback:           '用户反馈',
-        visitStats:         '访问统计',
-        healingExercises:   '疗愈练习',
-        psychologyKnowledge:'心理学知识',
-        emotionRegulation:  '情绪调节',
-        dailyTips:          '每日提示',
-        quickExercises:     '快速练习',
-        knowledgeGraph:     '知识图谱',
-        metadata:           '元数据'
-    };
-    return names[key] || key;
-}
+router.post('/import', (req, res) => {
+    const { data } = req.body;
+
+    if (!data || typeof data !== 'object') {
+        return res.status(400).json({ success: false, error: '请提供有效的 JSON 数据', code: 'INVALID_INPUT' });
+    }
+
+    try {
+        const results = [];
+        for (const [collection, items] of Object.entries(data)) {
+            if (Array.isArray(items) && jsonStore.COLLECTION_MAP[collection]) {
+                jsonStore.writeData(collection, items);
+                results.push({ collection, count: items.length });
+            }
+        }
+        res.json({ success: true, message: '导入成功', data: results });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message, code: 'IMPORT_ERROR' });
+    }
+});
 
 module.exports = router;

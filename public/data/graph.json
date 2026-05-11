@@ -1,0 +1,165 @@
+[
+  {
+    "id": "psychology-graph",
+    "nodes": [
+      {
+        "id": "exercise_mindfulness_001",
+        "label": "正念呼吸冥想",
+        "type": "exercise",
+        "category": "正念冥想"
+      },
+      {
+        "id": "exercise_breathing_001",
+        "label": "4-7-8呼吸放松法",
+        "type": "exercise",
+        "category": "呼吸练习"
+      },
+      {
+        "id": "exercise_pmrt_001",
+        "label": "渐进式肌肉放松训练",
+        "type": "exercise",
+        "category": "身体放松"
+      },
+      {
+        "id": "exercise_grounding_001",
+        "label": "5-4-3-2-1接地技术",
+        "type": "exercise",
+        "category": "情绪调节"
+      },
+      {
+        "id": "exercise_journal_001",
+        "label": "情绪日记书写",
+        "type": "exercise",
+        "category": "表达性写作"
+      },
+      {
+        "id": "exercise_cbt_001",
+        "label": "认知重构练习",
+        "type": "exercise",
+        "category": "认知行为"
+      },
+      {
+        "id": "exercise_gratitude_001",
+        "label": "感恩日记练习",
+        "type": "exercise",
+        "category": "积极心理学"
+      },
+      {
+        "id": "exercise_bodyscan_001",
+        "label": "身体扫描冥想",
+        "type": "exercise",
+        "category": "正念冥想"
+      },
+      {
+        "id": "knowledge_anxiety_001",
+        "label": "焦虑的神经科学机制",
+        "type": "knowledge",
+        "category": "神经科学"
+      },
+      {
+        "id": "knowledge_depression_001",
+        "label": "抑郁症的综合理解",
+        "type": "knowledge",
+        "category": "临床心理"
+      },
+      {
+        "id": "knowledge_mindfulness_001",
+        "label": "正念冥想的科学证据",
+        "type": "knowledge",
+        "category": "心理科学"
+      },
+      {
+        "id": "knowledge_sleep_001",
+        "label": "睡眠与心理健康的关系",
+        "type": "knowledge",
+        "category": "睡眠心理"
+      },
+      {
+        "id": "knowledge_stress_001",
+        "label": "压力的身心影响与应对",
+        "type": "knowledge",
+        "category": "压力管理"
+      },
+      {
+        "id": "knowledge_resilience_001",
+        "label": "心理韧性的培养",
+        "type": "knowledge",
+        "category": "积极心理"
+      }
+    ],
+    "edges": [
+      {
+        "source": "exercise_mindfulness_001",
+        "target": "knowledge_anxiety_001",
+        "type": "related",
+        "label": "焦虑"
+      },
+      {
+        "source": "exercise_mindfulness_001",
+        "target": "knowledge_mindfulness_001",
+        "type": "related",
+        "label": "正念"
+      },
+      {
+        "source": "exercise_mindfulness_001",
+        "target": "knowledge_stress_001",
+        "type": "related",
+        "label": "压力"
+      },
+      {
+        "source": "exercise_breathing_001",
+        "target": "knowledge_anxiety_001",
+        "type": "related",
+        "label": "焦虑"
+      },
+      {
+        "source": "exercise_breathing_001",
+        "target": "knowledge_sleep_001",
+        "type": "related",
+        "label": "睡眠"
+      },
+      {
+        "source": "exercise_pmrt_001",
+        "target": "knowledge_anxiety_001",
+        "type": "related",
+        "label": "焦虑"
+      },
+      {
+        "source": "exercise_pmrt_001",
+        "target": "knowledge_sleep_001",
+        "type": "related",
+        "label": "睡眠"
+      },
+      {
+        "source": "exercise_grounding_001",
+        "target": "knowledge_anxiety_001",
+        "type": "related",
+        "label": "焦虑"
+      },
+      {
+        "source": "exercise_cbt_001",
+        "target": "knowledge_anxiety_001",
+        "type": "related",
+        "label": "CBT"
+      },
+      {
+        "source": "exercise_cbt_001",
+        "target": "knowledge_depression_001",
+        "type": "related",
+        "label": "抑郁"
+      },
+      {
+        "source": "exercise_bodyscan_001",
+        "target": "knowledge_mindfulness_001",
+        "type": "related",
+        "label": "正念"
+      },
+      {
+        "source": "exercise_bodyscan_001",
+        "target": "knowledge_sleep_001",
+        "type": "related",
+        "label": "睡眠"
+      }
+    ]
+  }
+]

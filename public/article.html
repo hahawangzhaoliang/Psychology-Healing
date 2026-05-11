@@ -223,10 +223,11 @@
 
         async function loadKnowledge() {
             try {
-                const response = await fetch('/api/knowledge/psychology?limit=50');
+                // 直接读取静态 JSON 文件（零 API 请求）
+                const response = await fetch('/data/knowledge.json');
                 const data = await response.json();
-                if (data.knowledge && data.knowledge.length > 0) {
-                    allKnowledge = data.knowledge;
+                if (data && data.length > 0) {
+                    allKnowledge = data;
                 } else {
                     allKnowledge = getSampleArticles();
                 }

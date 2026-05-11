@@ -1,13 +1,14 @@
 /**
  * 知识库定时任务 API
  * 供 Vercel Cron Jobs 或外部调度系统调用
+ * 数据源：本地 JSON 文件
  */
 
 const express  = require('express');
 const router   = express.Router();
 const { updateKnowledge, getDataSources } = require('../services/knowledgeService');
 const { requireVercelCron } = require('../middleware/auth');
-const { find } = require('../config/upstash');
+const jsonStore = require('../services/jsonStore');
 
 // ─── POST /api/knowledge/cron-update ─────────────────────────
 // Vercel Cron 默认发 GET，但也支持 POST 手动触发
@@ -52,21 +53,15 @@ router.get('/sources', (req, res) => {
 
 // ─── GET /api/knowledge/health ───────────────────────────────
 
-router.get('/health', async (req, res) => {
+router.get('/health', (req, res) => {
     try {
-        const [exercises, knowledge, tips] = await Promise.all([
-            find('healingExercises'),
-            find('psychologyKnowledge'),
-            find('dailyTips')
-        ]);
-
         res.json({
             status:    'healthy',
             timestamp: new Date().toISOString(),
             counts: {
-                exercises: exercises.length,
-                knowledge: knowledge.length,
-                tips:      tips.length
+                exercises:  jsonStore.count('exercises'),
+                knowledge:  jsonStore.count('knowledge'),
+                tips:      jsonStore.count('tips')
             }
         });
     } catch (error) {

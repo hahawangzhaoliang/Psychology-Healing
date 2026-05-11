@@ -966,7 +966,8 @@
         /* ========== 更多练习加载 ========== */
         async function loadExercises() {
             try {
-                const response = await fetch('/api/knowledge/exercises');
+                // 直接读取静态 JSON 文件（零 API 请求）
+                const response = await fetch('/data/exercises.json');
                 const data = await response.json();
 
                 const loading = document.getElementById('exercisesLoading');

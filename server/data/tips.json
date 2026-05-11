@@ -1,0 +1,74 @@
+[
+  {
+    "id": "tip_mindful_001",
+    "content": "每天花5分钟专注于呼吸，让大脑获得一次简单的\"重启\"",
+    "category": "正念",
+    "suitableTime": "早晨或睡前"
+  },
+  {
+    "id": "tip_cognitive_001",
+    "content": "当负面想法出现时，尝试用\"观察者视角\"分析，避免全盘否定自己",
+    "category": "认知调节",
+    "suitableTime": "情绪波动时"
+  },
+  {
+    "id": "tip_motivation_001",
+    "content": "我无法选择起点，但能决定奔跑的方向",
+    "category": "自我激励",
+    "suitableTime": "遇到挫折时"
+  },
+  {
+    "id": "tip_quote_001",
+    "content": "重要的不是过去发生了什么，而是你赋予它什么意义——阿德勒",
+    "category": "心理学名言",
+    "suitableTime": "反思时"
+  },
+  {
+    "id": "tip_selfcare_001",
+    "content": "照顾好自己不是自私，而是更好地照顾他人的前提",
+    "category": "自我关怀",
+    "suitableTime": "感到疲惫时"
+  },
+  {
+    "id": "tip_anxiety_001",
+    "content": "焦虑是对未来的担忧，把注意力带回当下，一次只处理一件事",
+    "category": "焦虑管理",
+    "suitableTime": "焦虑时"
+  },
+  {
+    "id": "tip_sleep_001",
+    "content": "睡前一小时放下手机，给大脑一个\"关机\"的信号",
+    "category": "睡眠健康",
+    "suitableTime": "睡前"
+  },
+  {
+    "id": "tip_gratitude_001",
+    "content": "每晚写下三件感恩的事，培养积极关注",
+    "category": "感恩练习",
+    "suitableTime": "睡前"
+  },
+  {
+    "id": "tip_boundary_001",
+    "content": "学会说\"不\"是保护自己边界的重要能力",
+    "category": "边界设定",
+    "suitableTime": "面对请求时"
+  },
+  {
+    "id": "tip_emotion_001",
+    "content": "所有情绪都是合理的，允许自己感受，但不被情绪控制",
+    "category": "情绪接纳",
+    "suitableTime": "情绪强烈时"
+  },
+  {
+    "id": "tip_social_001",
+    "content": "真诚的连接比数量更重要，质量胜于数量的社交更有益心理健康",
+    "category": "人际关系",
+    "suitableTime": "社交时"
+  },
+  {
+    "id": "tip_growth_001",
+    "content": "失败不是终点，而是学习和成长的机会",
+    "category": "成长心态",
+    "suitableTime": "面对失败时"
+  }
+]

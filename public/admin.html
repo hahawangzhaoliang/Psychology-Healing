@@ -300,15 +300,10 @@
                 </div>
                 <div style="margin-bottom:12px;">
                     <select id="collection-select" onchange="onCollectionChange()" style="padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);font-size:0.85rem;">
-                        <option value="healingExercises">疗愈练习</option>
-                        <option value="psychologyKnowledge">心理学知识</option>
-                        <option value="emotionRegulation">情绪调节</option>
-                        <option value="dailyTips">每日提示</option>
-                        <option value="emotionDiary">情绪日记</option>
-                        <option value="assessmentRecords">测评记录</option>
-                        <option value="feedback">用户反馈</option>
-                        <option value="quickExercises">快速练习</option>
-                        <option value="knowledgeGraph">知识图谱</option>
+                        <option value="exercises">疗愈练习</option>
+                        <option value="knowledge">心理学知识</option>
+                        <option value="regulation">情绪调节</option>
+                        <option value="tips">每日提示</option>
                     </select>
                 </div>
                 <div style="overflow-x:auto;">
@@ -393,12 +388,13 @@
 // ─── 全局状态 ────────────────────────────────────────────────
 let ADMIN_TOKEN = localStorage.getItem('admin_token') || '';
 let CURRENT_TAB = 'dashboard';
-let CURRENT_COLLECTION = 'healingExercises';
+let CURRENT_COLLECTION = 'exercises';
 let CURRENT_PAGE = 1;
 const PAGE_SIZE = 10;
 let crawlResults = { exercises:[], knowledge:[], tips:[] };
 let crawlTab = 'exercises';
 let editingId = null;
+let editingRecord = null; // 当前编辑的完整记录（用于JSON编辑器）
 
 // ─── API 基础路径 ─────────────────────────────────────────────
 const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
@@ -507,13 +503,16 @@ async function loadDashboard() {
 
         list.innerHTML = `
             <table class="data-table">
-                <thead><tr><th>集合名称</th><th>索引名</th><th>记录数</th></tr></thead>
+                <thead><tr><th>集合名称</th><th>文件名</th><th>记录数</th><th>操作</th></tr></thead>
                 <tbody>
                     ${collections.map(c => `
                         <tr>
                             <td><strong>${c.displayName}</strong><br><span class="text-muted">${c.key}</span></td>
-                            <td><code style="font-size:0.8rem;">${c.indexName}</code></td>
+                            <td><code style="font-size:0.8rem;">${c.fileName}.json</code></td>
                             <td><strong>${stats[c.key] || 0}</strong></td>
+                            <td>
+                                <button class="btn btn-outline btn-sm" onclick="switchToDataTab('${c.key}')">管理</button>
+                            </td>
                         </tr>
                     `).join('')}
                 </tbody>
@@ -542,21 +541,27 @@ async function loadData(page) {
         const res = await api(`/admin/data/${CURRENT_COLLECTION}?page=${CURRENT_PAGE}&limit=${PAGE_SIZE}`);
         if (!res.success) throw new Error(res.error);
 
-        const { data, pagination } = res;
-        title.textContent = `${getCollectionDisplayName(CURRENT_COLLECTION)}（${pagination.total} 条）`;
+        // JSON store 返回结构: { items, total, page, limit, totalPages }
+        const items = res.items || res.data || [];
+        const totalPages = res.totalPages || 1;
+        const total = res.total || items.length;
+        const pagination = { page: res.page || CURRENT_PAGE, total, totalPages, limit: PAGE_SIZE };
 
-        if (data.length === 0) {
+        title.textContent = `${getCollectionDisplayName(CURRENT_COLLECTION)}（${total} 条）`;
+
+        if (items.length === 0) {
             tbody.innerHTML = '<tr><td colspan="3" class="text-muted">暂无数据</td></tr>';
         } else {
-            tbody.innerHTML = data.map(item => {
+            tbody.innerHTML = items.map(item => {
                 const preview = getRecordPreview(item);
+                const safeId = (item.id || '').replace(/'/g, "\\'");
                 return `
                     <tr>
                         <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem;color:var(--text-light);">${item.id || '-'}</td>
                         <td>${preview}</td>
                         <td class="actions-cell">
-                            <button class="btn btn-outline btn-sm" onclick="openEditModal('${item.id}')">编辑</button>
-                            <button class="btn btn-danger btn-sm" onclick="confirmDelete('${item.id}')">删除</button>
+                            <button class="btn btn-outline btn-sm" onclick="openJsonEditor('${safeId}')">📝 编辑</button>
+                            <button class="btn btn-danger btn-sm" onclick="confirmDelete('${safeId}')">🗑️</button>
                         </td>
                     </tr>
                 `;
@@ -594,82 +599,158 @@ function escapeHtml(s) {
 // ─── 弹窗：新增/编辑 ────────────────────────────────────────
 function openCreateModal() {
     editingId = null;
+    editingRecord = null;
     document.getElementById('modal-title').textContent = '新增记录';
     document.getElementById('modal-submit').textContent = '创建';
     buildModalFields({});
+}
+
+// ─── JSON 编辑器 ────────────────────────────────────────────
+// 适合复杂记录（多字段、数组、嵌套对象）的可视化编辑器
+
+function openJsonEditor(id) {
+    editingId = id;
+    document.getElementById('modal-title').textContent = id ? '编辑记录' : '新增记录';
+    document.getElementById('modal-submit').textContent = id ? '保存修改' : '创建';
+
+    if (id) {
+        // 加载完整记录
+        api(`/admin/data/${CURRENT_COLLECTION}/${id}`)
+            .then(res => {
+                if (res.success) {
+                    editingRecord = res.data;
+                    buildModalFields(res.data);
+                } else {
+                    showToast('加载记录失败: ' + res.error, 'error');
+                }
+            })
+            .catch(e => showToast('加载失败: ' + e.message, 'error'));
+    } else {
+        editingRecord = null;
+        buildModalFields({});
+    }
+
     document.getElementById('modal-overlay').classList.add('open');
 }
 
-async function openEditModal(id) {
-    try {
-        const res = await api(`/admin/data/${CURRENT_COLLECTION}/${id}`);
-        if (!res.success) throw new Error(res.error);
+// 切换到数据管理标签
+function switchToDataTab(collection) {
+    document.getElementById('collection-select').value = collection;
+    CURRENT_COLLECTION = collection;
+    CURRENT_PAGE = 1;
+    switchTab('data');
+    document.querySelector('[data-tab="data"]').classList.add('active');
+}
 
-        editingId = id;
-        document.getElementById('modal-title').textContent = '编辑记录';
-        document.getElementById('modal-submit').textContent = '更新';
-        buildModalFields(res.data);
-        document.getElementById('modal-overlay').classList.add('open');
-    } catch (e) {
-        alert('加载失败：' + e.message);
-    }
+// 轻量提示
+function showToast(msg, type = 'info') {
+    const el = document.createElement('div');
+    el.style.cssText = `
+        position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 18px;
+        border-radius:8px;font-size:0.85rem;font-weight:500;max-width:300px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.15);
+        background:${type==='error'?'#EF4444':type==='success'?'#10B981':'#5A9A8A'};
+        color:white;
+    `;
+    el.textContent = msg;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3000);
+}
+
+// 模态框标签切换（表单模式 / JSON模式）
+let modalMode = 'form'; // 'form' | 'json'
+
+function setModalMode(mode) {
+    modalMode = mode;
+    document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.modal-tab-btn[data-mode="${mode}"]`).classList.add('active');
+    document.getElementById('form-fields-container').style.display = mode === 'form' ? '' : 'none';
+    document.getElementById('json-editor-container').style.display = mode === 'json' ? '' : 'none';
 }
 
 function buildModalFields(data) {
-    // 根据集合类型生成表单字段
-    const fields = getCollectionFields(CURRENT_COLLECTION);
     const container = document.getElementById('modal-fields');
+    const fields = getCollectionFields(CURRENT_COLLECTION);
 
-    container.innerHTML = fields.map(f => {
-        const val = data[f.key] || '';
-        if (f.type === 'textarea') {
-            return `<div class="form-group">
-                <label>${f.label}</label>
-                <textarea name="${f.key}">${escapeHtml(val)}</textarea>
-            </div>`;
-        }
-        return `<div class="form-group">
-            <label>${f.label}</label>
-            <input type="${f.type || 'text'}" name="${f.key}" value="${escapeHtml(val)}">
-        </div>`;
-    }).join('') + `
-        <div class="form-group">
-            <label>原始 JSON（高级：覆盖以上字段）</label>
-            <textarea name="_raw" placeholder='留空则使用上方表单，填入 JSON 则直接保存 JSON' style="font-size:0.8rem;font-family:monospace;">${editingId ? escapeHtml(JSON.stringify(data, null, 2)) : ''}</textarea>
+    // 生成原始数据 JSON（去掉自动字段）
+    const rawData = { ...data };
+    ['id','created_at','updated_at','imported_at','_duplicate','_duplicateReason','_collection'].forEach(k => delete rawData[k]);
+
+    container.innerHTML = `
+        <!-- 标签切换 -->
+        <div style="display:flex;gap:4px;margin-bottom:16px;">
+            <button class="btn btn-sm modal-tab-btn active" data-mode="form" onclick="setModalMode('form')">📋 表单编辑</button>
+            <button class="btn btn-sm btn-outline modal-tab-btn" data-mode="json" onclick="setModalMode('json')">{ } JSON编辑</button>
+        </div>
+
+        <!-- 表单模式 -->
+        <div id="form-fields-container">
+            ${fields.map(f => {
+                const val = data[f.key] ?? '';
+                if (f.type === 'textarea') {
+                    return `<div class="form-group">
+                        <label>${f.label}</label>
+                        <textarea name="${f.key}" placeholder="${f.placeholder || ''}">${escapeHtml(val)}</textarea>
+                    </div>`;
+                }
+                return `<div class="form-group">
+                    <label>${f.label}</label>
+                    <input type="${f.type || 'text'}" name="${f.key}" value="${escapeHtml(val)}" placeholder="${f.placeholder || ''}">
+                </div>`;
+            }).join('')}
+        </div>
+
+        <!-- JSON模式 -->
+        <div id="json-editor-container" style="display:none;">
+            <div style="margin-bottom:6px;font-size:0.75rem;color:var(--text-light);">直接编辑 JSON，保存时验证格式</div>
+            <textarea id="json-editor" style="
+                width:100%;min-height:300px;font-family:monospace;font-size:0.8rem;
+                padding:10px;border:1.5px solid var(--border);border-radius:var(--radius);
+                resize:vertical;background:#f8fafc;line-height:1.5;
+            ">${escapeHtml(JSON.stringify(rawData, null, 2))}</textarea>
+            <div id="json-error" style="color:var(--danger);font-size:0.8rem;margin-top:4px;min-height:1.2em;"></div>
         </div>
     `;
 }
 
 async function submitModal() {
-    const form = document.getElementById('modal-fields');
-    const rawEl = form.querySelector('[name="_raw"]');
     let payload;
 
-    if (rawEl && rawEl.value.trim()) {
-        try { payload = JSON.parse(rawEl.value); }
-        catch { alert('JSON 格式错误'); return; }
+    if (modalMode === 'json') {
+        const jsonEl = document.getElementById('json-editor');
+        const errEl = document.getElementById('json-error');
+        errEl.textContent = '';
+        try {
+            payload = JSON.parse(jsonEl.value);
+        } catch(e) {
+            errEl.textContent = 'JSON 格式错误：' + e.message;
+            return;
+        }
     } else {
         payload = {};
-        form.querySelectorAll('input[name],textarea[name]').forEach(el => {
-            if (el.name === '_raw') return;
+        document.querySelectorAll('#form-fields-container input[name],#form-fields-container textarea[name]').forEach(el => {
             payload[el.name] = el.value;
         });
     }
 
     try {
         if (editingId) {
-            await api(`/admin/data/${CURRENT_COLLECTION}/${editingId}`, {
+            const res = await api(`/admin/data/${CURRENT_COLLECTION}/${editingId}`, {
                 method: 'PUT', body: JSON.stringify(payload)
             });
+            if (!res.success) throw new Error(res.error);
+            showToast('更新成功', 'success');
         } else {
-            await api(`/admin/data/${CURRENT_COLLECTION}`, {
+            const res = await api(`/admin/data/${CURRENT_COLLECTION}`, {
                 method: 'POST', body: JSON.stringify(payload)
             });
+            if (!res.success) throw new Error(res.error);
+            showToast('创建成功', 'success');
         }
         closeModal();
         loadData(CURRENT_PAGE);
     } catch (e) {
-        alert('保存失败：' + e.message);
+        showToast('保存失败：' + e.message, 'error');
     }
 }
 
@@ -822,7 +903,7 @@ async function importSelectedResults() {
 }
 
 function getCollectionFromTab(tab) {
-    return { exercises:'healingExercises', knowledge:'psychologyKnowledge', tips:'dailyTips' }[tab] || 'healingExercises';
+    return { exercises:'exercises', knowledge:'knowledge', tips:'tips' }[tab] || 'exercises';
 }
 
 // ─── 系统设置 ────────────────────────────────────────────────
@@ -832,64 +913,151 @@ async function loadSettings() {
         const res = await api('/');
         infoEl.innerHTML = `
             <table class="data-table">
-                <tr><td><strong>API 名称</strong></td><td>${res.name || '-'}</td></tr>
-                <tr><td><strong>版本</strong></td><td>${res.version || '-'}</td></tr>
-                <tr><td><strong>描述</strong></td><td>${res.description || '-'}</td></tr>
+                <tr><td><strong>数据源</strong></td><td>本地 JSON 文件（server/data/*.json）</td></tr>
+                <tr><td><strong>API 版本</strong></td><td>${res.metadata?.version || '-'}</td></tr>
+                <tr><td><strong>最后更新</strong></td><td>${res.metadata?.lastUpdated || '-'}</td></tr>
             </table>
+            <div style="margin-top:20px;">
+                <div class="card-title" style="margin-bottom:12px;">📦 数据导入 / 导出</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button class="btn btn-primary" onclick="exportAllData()">📥 导出全部数据</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('import-file').click()">📤 导入 JSON 文件</button>
+                    <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJsonFile(this)">
+                </div>
+                <p class="text-muted" style="margin-top:8px;font-size:0.8rem;">
+                    导出：将所有数据合并为一个 JSON 文件下载<br>
+                    导入：上传本地修改后的 JSON 文件覆盖现有数据（完全替换）
+                </p>
+            </div>
+            <div style="margin-top:20px;">
+                <div class="card-title" style="margin-bottom:12px;">🗄️ 逐集合导出</div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    ${['exercises','knowledge','regulation','tips'].map(c => `
+                        <button class="btn btn-outline btn-sm" onclick="exportCollection('${c}')">
+                            ${getCollectionDisplayName(c)}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
         `;
     } catch (e) {
         infoEl.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
     }
 }
 
+// 导出全部数据
+async function exportAllData() {
+    try {
+        const res = await api('/admin/export');
+        downloadJson(res, 'knowledge-all-data.json');
+        showToast('导出成功', 'success');
+    } catch (e) {
+        showToast('导出失败：' + e.message, 'error');
+    }
+}
+
+// 导出单个集合
+async function exportCollection(collection) {
+    try {
+        const res = await api(`/admin/data/${collection}?page=1&limit=10000`);
+        const items = res.items || res.data || [];
+        downloadJson(items, `${collection}.json`);
+        showToast(`导出 ${getCollectionDisplayName(collection)} 成功（共 ${items.length} 条）`, 'success');
+    } catch (e) {
+        showToast('导出失败：' + e.message, 'error');
+    }
+}
+
+// 导入 JSON 文件（完全覆盖）
+async function importJsonFile(input) {
+    const file = input.files[0];
+    if (!file) return;
+    try {
+        const text = await file.text();
+        const data = JSON.parse(text);
+        const res = await api('/admin/import', {
+            method: 'POST',
+            body: JSON.stringify({ data })
+        });
+        if (!res.success) throw new Error(res.error);
+        showToast(`导入成功！更新了 ${res.data?.length || 0} 个集合`, 'success');
+        loadSettings();
+        loadDashboard();
+    } catch (e) {
+        showToast('导入失败：' + e.message, 'error');
+    }
+    input.value = '';
+}
+
+function downloadJson(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+}
+
 async function confirmClearCollection() {
     if (!confirm(`⚠️ 确定要清空集合「${getCollectionDisplayName(CURRENT_COLLECTION)}」的所有数据吗？\n此操作不可恢复！`)) return;
     if (!confirm('再次确认：所有数据将被永久删除！')) return;
-    alert('此功能已禁用，请通过 Vercel 控制台或数据库管理工具操作。');
+    try {
+        await api(`/admin/data/${CURRENT_COLLECTION}/batch-delete`, {
+            method: 'POST',
+            body: JSON.stringify({ ids: ['__clear_all__'] })
+        });
+        showToast('已清空集合', 'success');
+        loadData(1);
+    } catch (e) {
+        showToast('操作失败：' + e.message, 'error');
+    }
 }
 
 // ─── 辅助函数 ────────────────────────────────────────────────
 function getCollectionDisplayName(key) {
     const names = {
-        healingExercises:   '疗愈练习',
-        psychologyKnowledge:'心理学知识',
-        emotionRegulation:  '情绪调节',
-        dailyTips:          '每日提示',
-        emotionDiary:       '情绪日记',
-        assessmentRecords:   '测评记录',
-        feedback:           '用户反馈',
-        visitStats:         '访问统计',
-        quickExercises:     '快速练习',
-        knowledgeGraph:      '知识图谱',
-        metadata:           '元数据'
+        exercises:    '疗愈练习',
+        knowledge:   '心理学知识',
+        regulation:  '情绪调节',
+        tips:        '每日提示',
+        emotionDiary:  '情绪日记',
+        assessment:    '测评记录',
+        feedback:    '用户反馈',
+        visitStats:  '访问统计',
+        graph:       '知识图谱',
+        metadata:    '元数据'
     };
     return names[key] || key;
 }
 
 function getCollectionFields(collection) {
     const map = {
-        healingExercises: [
-            { key:'title',       label:'标题',     type:'text' },
-            { key:'description', label:'描述',     type:'textarea' },
-            { key:'category',    label:'分类',     type:'text' },
-            { key:'duration',    label:'时长',     type:'text' },
-            { key:'suitableFor', label:'适用人群', type:'text' },
+        exercises: [
+            { key:'title',       label:'标题',       type:'text', placeholder:'练习名称' },
+            { key:'category',    label:'分类',       type:'text', placeholder:'如：正念冥想' },
+            { key:'duration',    label:'时长',       type:'text', placeholder:'如：10-15分钟' },
+            { key:'difficulty',  label:'难度',       type:'text', placeholder:'入门/中级/高级' },
+            { key:'description', label:'描述',       type:'textarea', placeholder:'简短描述' },
+            { key:'steps',       label:'步骤（JSON数组）', type:'textarea', placeholder:'["步骤1","步骤2",...]' },
+            { key:'benefits',    label:'益处',       type:'textarea', placeholder:'["益处1","益处2",...]' },
+            { key:'tags',        label:'标签',       type:'text', placeholder:'正念,呼吸,焦虑' },
         ],
-        psychologyKnowledge: [
-            { key:'title',   label:'标题',   type:'text' },
-            { key:'content', label:'内容',   type:'textarea' },
-            { key:'source',  label:'来源',   type:'text' },
-            { key:'category',label:'分类',   type:'text' },
+        knowledge: [
+            { key:'title',    label:'标题',   type:'text', placeholder:'知识标题' },
+            { key:'content',  label:'正文内容', type:'textarea', placeholder:'详细内容' },
+            { key:'source',   label:'来源',   type:'text', placeholder:'如：哈佛医学院' },
+            { key:'category', label:'分类',   type:'text', placeholder:'如：神经科学' },
+            { key:'tags',     label:'标签',   type:'text', placeholder:'焦虑,神经科学' },
         ],
-        emotionRegulation: [
-            { key:'emotion',  label:'情绪',   type:'text' },
-            { key:'title',   label:'标题',   type:'text' },
-            { key:'methods', label:'方法（JSON）', type:'textarea' },
+        regulation: [
+            { key:'emotion',  label:'情绪类型', type:'text', placeholder:'如：焦虑' },
+            { key:'methods',  label:'调节方法', type:'textarea', placeholder:'JSON数组格式' },
+            { key:'lifestyle',label:'生活方式建议', type:'textarea', placeholder:'JSON数组格式' },
+            { key:'whenToSeekHelp', label:'何时求助', type:'textarea', placeholder:'专业帮助提示' },
         ],
-        dailyTips: [
-            { key:'content',  label:'内容',   type:'textarea' },
-            { key:'category', label:'分类',   type:'text' },
-            { key:'suitableTime', label:'适用时间', type:'text' },
+        tips: [
+            { key:'content',      label:'提示内容', type:'textarea', placeholder:'提示文字' },
+            { key:'category',     label:'分类',     type:'text', placeholder:'如：正念' },
+            { key:'suitableTime', label:'适用时间', type:'text', placeholder:'如：睡前' },
         ],
     };
     return map[collection] || [
