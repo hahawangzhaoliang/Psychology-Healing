@@ -326,16 +326,6 @@ router.post('/init-data', async (req, res) => {
     });
 });
 
-// ─── 爬虫接口（占位，防止 404）────────────────────────────
-
-router.post('/crawl', async (req, res) => {
-    res.json({ success: true, message: '爬虫功能暂未实现', data: [] });
-});
-
-router.post('/crawl/import', async (req, res) => {
-    res.json({ success: true, message: '导入功能暂未实现', imported: 0 });
-});
-
 // ─── 数据导出 ────────────────────────────────────────────
 
 router.get('/export', async (req, res) => {

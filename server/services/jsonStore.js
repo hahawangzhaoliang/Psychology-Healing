@@ -53,9 +53,35 @@ async function writeData(collection, data) {
     try {
         await blobStore.writeJsonToBlob(filename, data);
     } catch (error) {
-        console.error(`[JSONStore] 写入 ${collection} 失败:`, error.message);
-        throw error;
+        console.error(`[JSONStore] Blob 写入 ${collection} 失败:`, error.message);
+        // 降级到本地文件
+        try {
+            await fallbackWriteLocal(filename, data);
+            console.log(`[JSONStore] ✅ 已降级写入本地文件: ${filename}`);
+        } catch (localError) {
+            console.error(`[JSONStore] 本地写入也失败:`, localError.message);
+            throw localError;
+        }
     }
+}
+
+async function fallbackWriteLocal(filename, data) {
+    const fs = require('fs').promises;
+    const pathLib = require('path');
+    const possiblePaths = [
+        pathLib.join(process.cwd(), 'server', 'data', filename),
+        pathLib.join(__dirname, '..', 'data', filename),
+    ];
+    for (const filePath of possiblePaths) {
+        try {
+            await fs.mkdir(pathLib.dirname(filePath), { recursive: true });
+            await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+            return;
+        } catch (e) {
+            // 尝试下一个路径
+        }
+    }
+    throw new Error('无法写入本地文件');
 }
 
 /**

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "builtin_cbt_guide",
+    "name": "CBT 认知行为疗法指南",
+    "url": "https://www.apa.org/ptsd-guideline/treatments/cognitive-behavioral-therapy",
+    "type": "text",
+    "category": "knowledge",
+    "status": "active",
+    "selector": {
+      "title": "h1, .page-title",
+      "content": "article, .content, main",
+      "date": ".date, time"
+    },
+    "filters": {
+      "minContentLength": 200,
+      "keywords": [
+        "CBT",
+        "cognitive",
+        "behavioral",
+        "therapy"
+      ]
+    },
+    "lastCrawlAt": null,
+    "totalCrawled": 0,
+    "createdAt": "2026-05-11T09:17:17.352Z"
+  },
+  {
+    "id": "builtin_pp_center",
+    "name": "宾夕法尼亚大学积极心理学中心",
+    "url": "https://ppc.sas.upenn.edu/",
+    "type": "text",
+    "category": "knowledge",
+    "status": "active",
+    "selector": {
+      "title": "h1, h2",
+      "content": ".content, article, .entry-content",
+      "date": ".date, time"
+    },
+    "filters": {
+      "minContentLength": 200,
+      "keywords": [
+        "positive psychology",
+        "well-being",
+        "flourishing"
+      ]
+    },
+    "lastCrawlAt": null,
+    "totalCrawled": 0,
+    "createdAt": "2026-05-11T09:17:17.353Z"
+  },
+  {
+    "id": "builtin_arxiv_psychology",
+    "name": "arXiv 心理学论文",
+    "url": "https://arxiv.org/search/?query=psychology+mental+health&searchtype=all",
+    "type": "paper",
+    "category": "knowledge",
+    "status": "active",
+    "paperConfig": {
+      "sourceType": "arxiv",
+      "searchQuery": "psychology OR cognitive OR \"mental health\"",
+      "maxResults": 50
+    },
+    "selector": {
+      "title": ".title",
+      "authors": ".authors a",
+      "abstract": ".abstract",
+      "publishedDate": ".dateline",
+      "pdfUrl": ".download-pdf a"
+    },
+    "filters": {
+      "dateRange": {
+        "from": "2024-01-01",
+        "to": "2026-12-31"
+      }
+    },
+    "lastCrawlAt": null,
+    "totalCrawled": 0,
+    "createdAt": "2026-05-11T09:17:17.353Z"
+  }
+]

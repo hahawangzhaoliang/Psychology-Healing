@@ -320,36 +320,165 @@
 
         <!-- 爬虫管理 -->
         <div id="tab-crawler" class="hidden">
-            <div class="card">
-                <div class="card-title">爬虫控制</div>
-                <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
-                    <select id="crawl-source" style="padding:6px 12px;border-radius:var(--radius);border:1px solid var(--border);font-size:0.85rem;">
-                        <option value="all">全部来源</option>
-                        <option value="domestic">仅国内来源</option>
-                        <option value="international">仅国际来源</option>
-                    </select>
-                    <button class="btn btn-primary" id="btn-crawl" onclick="triggerCrawl()">🕷️ 启动爬虫</button>
-                    <span class="text-muted">爬取结果不会自动入库，请预览后手动选择导入</span>
+            <!-- 子标签导航 -->
+            <div style="display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:8px;">
+                <button class="btn btn-sm btn-primary" id="crawler-subtab-sources" onclick="switchCrawlerTab('sources')">📡 数据源</button>
+                <button class="btn btn-sm btn-outline" id="crawler-subtab-tasks" onclick="switchCrawlerTab('tasks')">📋 任务</button>
+                <button class="btn btn-sm btn-outline" id="crawler-subtab-results" onclick="switchCrawlerTab('results')">📊 结果</button>
+            </div>
+
+            <!-- 数据源配置 -->
+            <div id="crawler-panel-sources">
+                <div class="card">
+                    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>数据源配置</span>
+                        <button class="btn btn-primary btn-sm" onclick="openSourceModal()">➕ 添加数据源</button>
+                    </div>
+                    <div id="crawler-sources-list">
+                        <p class="text-muted">加载中…</p>
+                    </div>
                 </div>
-                <div class="crawl-status idle" id="crawl-status">空闲 — 点击"启动爬虫"开始</div>
-                <div id="crawl-results-container" class="hidden">
-                    <div class="crawl-results-header">
-                        <h3 style="font-size:1rem;font-weight:700;">爬取结果</h3>
+            </div>
+
+            <!-- 任务列表 -->
+            <div id="crawler-panel-tasks" class="hidden">
+                <div class="card">
+                    <div class="card-title">爬取任务</div>
+                    <div id="crawler-jobs-list">
+                        <p class="text-muted">加载中…</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 爬取结果 -->
+            <div id="crawler-panel-results" class="hidden">
+                <div class="card">
+                    <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>爬取结果</span>
                         <div style="display:flex;gap:8px;">
-                            <button class="btn btn-outline btn-sm" onclick="selectAllCrawlResults(true)">全选</button>
-                            <button class="btn btn-outline btn-sm" onclick="selectAllCrawlResults(false)">取消</button>
-                            <button class="btn btn-primary btn-sm" onclick="importSelectedResults()">导入选中</button>
+                            <button class="btn btn-outline btn-sm" onclick="refreshCrawlResults()">🔄 刷新</button>
                         </div>
                     </div>
-                    <div style="margin-bottom:8px;" class="text-muted">
-                        提示：已存在的数据将标记为 <span class="badge badge-dup">已存在</span>，建议仅导入新数据
+                    <!-- 分类筛选 -->
+                    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+                        <button class="btn btn-sm btn-primary" onclick="filterCrawlResults('all')">全部</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterCrawlResults('text')">📝 文本</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterCrawlResults('image')">🖼️ 图片</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterCrawlResults('audio')">🔊 音频</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterCrawlResults('paper')">📄 论文</button>
+                        <button class="btn btn-sm btn-outline" onclick="filterCrawlResults('book')">📚 书籍</button>
                     </div>
-                    <div id="crawl-results-tabs" style="display:flex;gap:4px;margin-bottom:12px;">
-                        <button class="btn btn-sm btn-primary" onclick="showCrawlTab('exercises')">疗愈练习 <span id="crawl-count-exercises"></span></button>
-                        <button class="btn btn-sm btn-outline" onclick="showCrawlTab('knowledge')">心理学知识 <span id="crawl-count-knowledge"></span></button>
-                        <button class="btn btn-sm btn-outline" onclick="showCrawlTab('tips')">每日提示 <span id="crawl-count-tips"></span></button>
+                    <div id="crawler-results-content">
+                        <p class="text-muted">暂无爬取结果</p>
                     </div>
-                    <div id="crawl-results-content"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据源添加/编辑弹窗 -->
+        <div id="source-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
+            <div style="background:white;border-radius:12px;padding:24px;width:600px;max-width:90vw;max-height:80vh;overflow-y:auto;">
+                <h3 style="margin-bottom:16px;" id="source-modal-title">添加数据源</h3>
+                <div id="source-modal-form">
+                    <!-- 基础信息 -->
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">名称</label>
+                        <input type="text" id="source-name" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="如：中国心理卫生协会">
+                    </div>
+                    <div style="margin-bottom:16px;">
+                        <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">URL</label>
+                        <input type="url" id="source-url" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="https://example.com/articles">
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                        <div>
+                            <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">内容类型</label>
+                            <select id="source-type" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" onchange="onSourceTypeChange()">
+                                <option value="text">📝 文本</option>
+                                <option value="image">🖼️ 图片</option>
+                                <option value="audio">🔊 音频</option>
+                                <option value="paper">📄 论文</option>
+                                <option value="book">📚 书籍</option>
+                                <option value="mixed">🔄 混合</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">目标集合</label>
+                            <select id="source-category" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);">
+                                <option value="knowledge">心理学知识</option>
+                                <option value="exercises">疗愈练习</option>
+                                <option value="tips">每日提示</option>
+                                <option value="regulation">情绪调节</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- CSS 选择器 -->
+                    <div style="margin-bottom:16px;">
+                        <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">CSS 选择器配置</div>
+                        <div id="source-selectors-text">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题选择器</label>
+                                    <input type="text" id="sel-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="h1, .title">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">正文选择器</label>
+                                    <input type="text" id="sel-content" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="article, .content">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">日期选择器</label>
+                                    <input type="text" id="sel-date" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".date, time">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="source-selectors-paper" class="hidden">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题</label>
+                                    <input type="text" id="sel-paper-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".title">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">作者</label>
+                                    <input type="text" id="sel-paper-authors" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".authors a">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">摘要</label>
+                                    <input type="text" id="sel-paper-abstract" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".abstract">
+                                </div>
+                                <div>
+                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">PDF链接</label>
+                                    <input type="text" id="sel-paper-pdf" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".download-pdf a">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 过滤条件 -->
+                    <div style="margin-bottom:16px;">
+                        <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">过滤条件</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                            <div>
+                                <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">开始日期</label>
+                                <input type="date" id="filter-date-from" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
+                            </div>
+                            <div>
+                                <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">结束日期</label>
+                                <input type="date" id="filter-date-to" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
+                            </div>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">关键词（逗号分隔）</label>
+                            <input type="text" id="filter-keywords" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="心理, 认知, 情绪">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">最小内容长度（字符）</label>
+                            <input type="number" id="filter-min-length" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" value="200" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" onclick="closeSourceModal()">取消</button>
+                    <button class="btn btn-primary" onclick="saveSource()">保存</button>
                 </div>
             </div>
         </div>
@@ -845,139 +974,414 @@ async function confirmDelete(id) {
 }
 
 // ─── 爬虫管理 ────────────────────────────────────────────────
-async function triggerCrawl() {
-    const source = document.getElementById('crawl-source').value;
-    const statusEl = document.getElementById('crawl-status');
-    const btn = document.getElementById('btn-crawl');
 
-    btn.disabled = true;
-    statusEl.className = 'crawl-status running';
-    statusEl.innerHTML = '⏳ 爬虫运行中，请稍候…<br><span class="text-muted">这可能需要 10-60 秒</span>';
+let currentCrawlerTab = 'sources';
+let editingSourceId = null;
+let currentCrawlResults = null;
+let currentResultFilter = 'all';
 
+function switchCrawlerTab(tab) {
+    currentCrawlerTab = tab;
+    ['sources', 'tasks', 'results'].forEach(t => {
+        document.getElementById(`crawler-panel-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`crawler-subtab-${t}`);
+        btn.className = `btn btn-sm ${t === tab ? 'btn-primary' : 'btn-outline'}`;
+    });
+
+    if (tab === 'sources') loadCrawlerSources();
+    if (tab === 'tasks') loadCrawlerJobs();
+    if (tab === 'results') loadCrawlResults();
+}
+
+// ─── 数据源管理 ─────────────────────────────────────────────
+
+async function loadCrawlerSources() {
+    const container = document.getElementById('crawler-sources-list');
     try {
-        const res = await api('/admin/crawl', {
-            method: 'POST',
-            body: JSON.stringify({ source })
-        });
+        const res = await api('/crawler/sources');
+        const sources = res.data || [];
 
-        if (!res.success) throw new Error(res.error);
+        if (sources.length === 0) {
+            container.innerHTML = '<p class="text-muted">暂无数据源，点击右上角添加</p>';
+            return;
+        }
 
-        crawlResults = res.data;
-        statusEl.className = 'crawl-status done';
-        statusEl.innerHTML = `✅ 爬取完成！<br><span class="text-muted">练习 ${crawlResults.exercises.length} 条 · 知识 ${crawlResults.knowledge.length} 条 · 提示 ${crawlResults.tips.length} 条</span>`;
+        const typeLabels = { text: '📝 文本', image: '🖼️ 图片', audio: '🔊 音频', paper: '📄 论文', book: '📚 书籍', mixed: '🔄 混合' };
+        const statusLabels = { active: '✅ 启用', paused: '⏸️ 暂停', error: '❌ 错误' };
 
-        document.getElementById('crawl-results-container').classList.remove('hidden');
-        updateCrawlCounts();
-        showCrawlTab('exercises');
+        container.innerHTML = `
+            <table class="data-table">
+                <thead><tr><th>名称</th><th>URL</th><th>类型</th><th>状态</th><th>最后爬取</th><th>累计爬取</th><th>操作</th></tr></thead>
+                <tbody>
+                    ${sources.map(s => `
+                        <tr>
+                            <td style="font-weight:600;">${escapeHtml(s.name)}</td>
+                            <td style="font-size:0.8rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                <a href="${s.url}" target="_blank" style="color:var(--primary);">${escapeHtml(s.url)}</a>
+                            </td>
+                            <td>${typeLabels[s.type] || s.type}</td>
+                            <td>${statusLabels[s.status] || s.status}</td>
+                            <td style="font-size:0.8rem;">${s.lastCrawlAt ? new Date(s.lastCrawlAt).toLocaleString('zh-CN') : '从未'}</td>
+                            <td>${s.totalCrawled || 0}</td>
+                            <td class="actions-cell">
+                                <button class="btn btn-primary btn-sm" onclick="startCrawl('${s.id}')">🕷️ 爬取</button>
+                                <button class="btn btn-outline btn-sm" onclick="editSource('${s.id}')">编辑</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteSource('${s.id}')">删除</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
     } catch (e) {
-        statusEl.className = 'crawl-status error';
-        statusEl.innerHTML = '❌ 爬取失败：' + e.message;
-    } finally {
-        btn.disabled = false;
+        container.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
     }
 }
 
-function updateCrawlCounts() {
-    document.getElementById('crawl-count-exercises').textContent = `(${crawlResults.exercises.length})`;
-    document.getElementById('crawl-count-knowledge').textContent = `(${crawlResults.knowledge.length})`;
-    document.getElementById('crawl-count-tips').textContent = `(${crawlResults.tips.length})`;
+function openSourceModal() {
+    editingSourceId = null;
+    document.getElementById('source-modal-title').textContent = '添加数据源';
+    document.getElementById('source-name').value = '';
+    document.getElementById('source-url').value = '';
+    document.getElementById('source-type').value = 'text';
+    document.getElementById('source-category').value = 'knowledge';
+    document.getElementById('sel-title').value = '';
+    document.getElementById('sel-content').value = '';
+    document.getElementById('sel-date').value = '';
+    document.getElementById('filter-date-from').value = '';
+    document.getElementById('filter-date-to').value = '';
+    document.getElementById('filter-keywords').value = '';
+    document.getElementById('filter-min-length').value = '200';
+    onSourceTypeChange();
+    document.getElementById('source-modal-overlay').style.display = 'flex';
 }
 
-function showCrawlTab(tab) {
-    crawlTab = tab;
-    document.querySelectorAll('#crawl-results-tabs .btn').forEach(b => {
-        b.className = `btn btn-sm ${b.textContent.includes(getCrawlTabLabel(tab)) ? 'btn-primary' : 'btn-outline'}`;
-    });
+function closeSourceModal() {
+    document.getElementById('source-modal-overlay').style.display = 'none';
+}
 
-    const items = crawlResults[getCrawlTabKey(tab)] || [];
-    const container = document.getElementById('crawl-results-content');
+function onSourceTypeChange() {
+    const type = document.getElementById('source-type').value;
+    document.getElementById('source-selectors-text').classList.toggle('hidden', type === 'paper');
+    document.getElementById('source-selectors-paper').classList.toggle('hidden', type !== 'paper');
+}
 
-    if (items.length === 0) {
-        container.innerHTML = '<p class="text-muted">此类数据为空</p>';
+async function saveSource() {
+    const type = document.getElementById('source-type').value;
+    const selector = type === 'paper' ? {
+        title: document.getElementById('sel-paper-title').value,
+        authors: document.getElementById('sel-paper-authors').value,
+        abstract: document.getElementById('sel-paper-abstract').value,
+        pdfUrl: document.getElementById('sel-paper-pdf').value,
+    } : {
+        title: document.getElementById('sel-title').value,
+        content: document.getElementById('sel-content').value,
+        date: document.getElementById('sel-date').value,
+    };
+
+    const data = {
+        name: document.getElementById('source-name').value.trim(),
+        url: document.getElementById('source-url').value.trim(),
+        type,
+        category: document.getElementById('source-category').value,
+        selector,
+        filters: {
+            dateRange: {
+                from: document.getElementById('filter-date-from').value || null,
+                to: document.getElementById('filter-date-to').value || null,
+            },
+            keywords: document.getElementById('filter-keywords').value.split(',').map(k => k.trim()).filter(Boolean),
+            minContentLength: parseInt(document.getElementById('filter-min-length').value) || 0,
+        },
+    };
+
+    if (!data.name || !data.url) {
+        alert('请填写名称和 URL');
         return;
     }
 
-    const key = getCrawlTabKey(tab);
+    try {
+        if (editingSourceId) {
+            await api(`/crawler/sources/${editingSourceId}`, { method: 'PUT', body: JSON.stringify(data) });
+            showToast('数据源已更新', 'success');
+        } else {
+            await api('/crawler/sources', { method: 'POST', body: JSON.stringify(data) });
+            showToast('数据源已添加', 'success');
+        }
+        closeSourceModal();
+        loadCrawlerSources();
+    } catch (e) {
+        alert('保存失败：' + e.message);
+    }
+}
+
+async function editSource(id) {
+    try {
+        const res = await api(`/crawler/sources/${id}`);
+        const s = res.data;
+        editingSourceId = id;
+        document.getElementById('source-modal-title').textContent = '编辑数据源';
+        document.getElementById('source-name').value = s.name;
+        document.getElementById('source-url').value = s.url;
+        document.getElementById('source-type').value = s.type;
+        document.getElementById('source-category').value = s.category;
+        onSourceTypeChange();
+
+        if (s.type === 'paper') {
+            document.getElementById('sel-paper-title').value = s.selector?.title || '';
+            document.getElementById('sel-paper-authors').value = s.selector?.authors || '';
+            document.getElementById('sel-paper-abstract').value = s.selector?.abstract || '';
+            document.getElementById('sel-paper-pdf').value = s.selector?.pdfUrl || '';
+        } else {
+            document.getElementById('sel-title').value = s.selector?.title || '';
+            document.getElementById('sel-content').value = s.selector?.content || '';
+            document.getElementById('sel-date').value = s.selector?.date || '';
+        }
+
+        if (s.filters) {
+            document.getElementById('filter-date-from').value = s.filters.dateRange?.from || '';
+            document.getElementById('filter-date-to').value = s.filters.dateRange?.to || '';
+            document.getElementById('filter-keywords').value = (s.filters.keywords || []).join(', ');
+            document.getElementById('filter-min-length').value = s.filters.minContentLength || 200;
+        }
+
+        document.getElementById('source-modal-overlay').style.display = 'flex';
+    } catch (e) {
+        alert('加载失败：' + e.message);
+    }
+}
+
+async function deleteSource(id) {
+    if (!confirm('确定删除此数据源吗？')) return;
+    try {
+        await api(`/crawler/sources/${id}`, { method: 'DELETE' });
+        showToast('已删除', 'success');
+        loadCrawlerSources();
+    } catch (e) {
+        alert('删除失败：' + e.message);
+    }
+}
+
+// ─── 爬取任务 ───────────────────────────────────────────────
+
+async function startCrawl(sourceId) {
+    if (!confirm('确定开始爬取吗？')) return;
+    try {
+        const res = await api(`/crawler/crawl/${sourceId}`, { method: 'POST' });
+        showToast(res.message, 'success');
+        switchCrawlerTab('tasks');
+    } catch (e) {
+        alert('启动失败：' + e.message);
+    }
+}
+
+async function loadCrawlerJobs() {
+    const container = document.getElementById('crawler-jobs-list');
+    try {
+        const res = await api('/crawler/jobs');
+        const jobs = (res.data || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        if (jobs.length === 0) {
+            container.innerHTML = '<p class="text-muted">暂无任务</p>';
+            return;
+        }
+
+        const statusLabels = {
+            pending: '⏳ 等待中',
+            running: '🔄 运行中',
+            completed: '✅ 完成',
+            failed: '❌ 失败',
+        };
+
+        container.innerHTML = `
+            <table class="data-table">
+                <thead><tr><th>任务ID</th><th>数据源</th><th>类型</th><th>状态</th><th>开始时间</th><th>结果</th><th>日志</th></tr></thead>
+                <tbody>
+                    ${jobs.map(j => `
+                        <tr>
+                            <td style="font-size:0.8rem;font-family:monospace;">${j.id}</td>
+                            <td>${escapeHtml(j.sourceId)}</td>
+                            <td>${j.type}</td>
+                            <td>${statusLabels[j.status] || j.status}</td>
+                            <td style="font-size:0.8rem;">${j.startedAt ? new Date(j.startedAt).toLocaleString('zh-CN') : '-'}</td>
+                            <td style="font-size:0.8rem;">
+                                ${j.results ? `共${j.results.total}·新${j.results.new}·重复${j.results.duplicate}` : '-'}
+                            </td>
+                            <td style="font-size:0.8rem;max-width:200px;">
+                                ${j.logs?.slice(-2).map(l => l.message).join('<br>') || '-'}
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+    } catch (e) {
+        container.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+    }
+}
+
+// ─── 爬取结果 ───────────────────────────────────────────────
+
+async function loadCrawlResults() {
+    const container = document.getElementById('crawler-results-content');
+    try {
+        const res = await api('/crawler/results');
+        currentCrawlResults = res.data;
+
+        if (!currentCrawlResults) {
+            container.innerHTML = '<p class="text-muted">暂无爬取结果，请先执行爬取任务</p>';
+            return;
+        }
+
+        renderCrawlResults();
+    } catch (e) {
+        container.innerHTML = `<p style="color:var(--danger);">加载失败：${e.message}</p>`;
+    }
+}
+
+function filterCrawlResults(filter) {
+    currentResultFilter = filter;
+    renderCrawlResults();
+}
+
+function renderCrawlResults() {
+    const container = document.getElementById('crawler-results-content');
+    if (!currentCrawlResults) return;
+
+    const { knowledge, images, audio } = currentCrawlResults;
+    let items = [];
+
+    if (currentResultFilter === 'all' || currentResultFilter === 'text') {
+        items.push(...(knowledge || []).filter(i => !i._nodeType).map(i => ({ ...i, _resultType: 'text' })));
+    }
+    if (currentResultFilter === 'all' || currentResultFilter === 'image') {
+        items.push(...(images || []).map(i => ({ ...i, _resultType: 'image' })));
+    }
+    if (currentResultFilter === 'all' || currentResultFilter === 'audio') {
+        items.push(...(audio || []).map(i => ({ ...i, _resultType: 'audio' })));
+    }
+    if (currentResultFilter === 'paper') {
+        items.push(...(knowledge || []).filter(i => i._nodeType === 'paper').map(i => ({ ...i, _resultType: 'paper' })));
+    }
+    if (currentResultFilter === 'book') {
+        items.push(...(knowledge || []).filter(i => i._nodeType === 'book').map(i => ({ ...i, _resultType: 'book' })));
+    }
+
+    if (items.length === 0) {
+        container.innerHTML = '<p class="text-muted">该分类下暂无结果</p>';
+        return;
+    }
+
     container.innerHTML = `
-        <table class="data-table">
-            <thead><tr>
-                <th style="width:40px;"><input type="checkbox" onchange="toggleAllInTab(this,'${key}')"></th>
-                <th>状态</th><th>内容预览</th><th>建议入库集合</th>
-            </tr></thead>
-            <tbody>
-                ${items.map((item, i) => `
-                    <tr>
-                        <td><input type="checkbox" class="crawl-select" data-tab="${key}" data-index="${i}" ${item._duplicate ? '' : 'checked'}></td>
-                        <td>${item._duplicate
-                            ? `<span class="badge badge-dup" title="${item._duplicateReason || ''}">已存在</span>`
-                            : `<span class="badge badge-new">新增</span>`}
-                        </td>
-                        <td style="font-size:0.85rem;max-width:400px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
-                            ${escapeHtml((item.title || item.content || JSON.stringify(item).substring(0,60)))}
-                        </td>
-                        <td><span class="badge badge-collection">${getCollectionDisplayName(item._collection)}</span></td>
-                    </tr>
-                `).join('')}
-            </tbody>
-        </table>
+        <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center;">
+            <button class="btn btn-outline btn-sm" onclick="selectAllResults(true)">全选</button>
+            <button class="btn btn-outline btn-sm" onclick="selectAllResults(false)">取消</button>
+            <button class="btn btn-primary btn-sm" onclick="importSelectedCrawlResults()">导入选中</button>
+            <span class="text-muted" style="font-size:0.8rem;">共 ${items.length} 条</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+            ${items.map((item, i) => renderResultItem(item, i)).join('')}
+        </div>
     `;
 }
 
-function getCrawlTabKey(tab) {
-    return { exercises:'exercises', knowledge:'knowledge', tips:'tips' }[tab];
-}
-function getCrawlTabLabel(tab) {
-    return { exercises:'练习', knowledge:'知识', tips:'提示' }[tab];
-}
+function renderResultItem(item, index) {
+    const typeIcons = { text: '📝', image: '🖼️', audio: '🔊', paper: '📄', book: '📚' };
+    const icon = typeIcons[item._resultType] || '📄';
 
-function toggleAllInTab(master, tabKey) {
-    document.querySelectorAll(`.crawl-select[data-tab="${tabKey}"]`).forEach(cb => cb.checked = master.checked);
-}
-
-function selectAllCrawlResults(checked) {
-    document.querySelectorAll('.crawl-select').forEach(cb => cb.checked = checked);
-}
-
-async function importSelectedResults() {
-    const selected = [];
-    document.querySelectorAll('.crawl-select:checked').forEach(cb => {
-        const tab = cb.dataset.tab;
-        const idx = parseInt(cb.dataset.index);
-        const item = crawlResults[tab]?.[idx];
-        if (item) selected.push({ tab, item });
-    });
-
-    if (selected.length === 0) { alert('请先选择要导入的数据'); return; }
-
-    // 按集合分组
-    const byCollection = {};
-    selected.forEach(({ tab, item }) => {
-        const coll = item._collection || getCollectionFromTab(tab);
-        if (!byCollection[coll]) byCollection[coll] = [];
-        byCollection[coll].push(item);
-    });
-
-    let totalImported = 0;
-    for (const [coll, items] of Object.entries(byCollection)) {
-        const cleanItems = items.map(({ _duplicate, _duplicateReason, _collection, ...rest }) => rest);
-        try {
-            const res = await api('/admin/crawl/import', {
-                method: 'POST',
-                body: JSON.stringify({ items: cleanItems, collection: coll })
-            });
-            if (res.success) totalImported += res.data?.length || cleanItems.length;
-        } catch (e) {
-            alert(`导入 ${getCollectionDisplayName(coll)} 失败：${e.message}`);
-        }
+    if (item._resultType === 'image') {
+        return `
+            <div style="display:flex;gap:12px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);align-items:center;">
+                <input type="checkbox" class="result-select" data-index="${index}" data-type="${item._resultType}">
+                <img src="${item.url}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;" onerror="this.style.display='none'">
+                <div style="flex:1;min-width:0;">
+                    <div style="font-weight:600;font-size:0.9rem;">${icon} ${escapeHtml(item.title)}</div>
+                    <div style="font-size:0.8rem;color:var(--text-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escapeHtml(item.url)}</div>
+                </div>
+            </div>
+        `;
     }
 
-    alert(`✅ 成功导入 ${totalImported} 条数据！`);
-    // 刷新爬虫结果（重新标记重复）
-    if (crawlResults.timestamp) triggerCrawl();
+    if (item._resultType === 'audio') {
+        return `
+            <div style="display:flex;gap:12px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);align-items:center;">
+                <input type="checkbox" class="result-select" data-index="${index}" data-type="${item._resultType}">
+                <div style="flex:1;min-width:0;">
+                    <div style="font-weight:600;font-size:0.9rem;">${icon} ${escapeHtml(item.title)}</div>
+                    <audio controls style="width:100%;height:32px;margin-top:4px;">
+                        <source src="${item.url}">
+                    </audio>
+                </div>
+            </div>
+        `;
+    }
+
+    const dupBadge = item._duplicate
+        ? '<span class="badge badge-dup">已存在</span>'
+        : '<span class="badge badge-new">新增</span>';
+
+    return `
+        <div style="display:flex;gap:12px;padding:12px;border:1px solid var(--border);border-radius:var(--radius);">
+            <input type="checkbox" class="result-select" data-index="${index}" data-type="${item._resultType}" ${item._duplicate ? '' : 'checked'}>
+            <div style="flex:1;min-width:0;">
+                <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
+                    <span style="font-weight:600;font-size:0.9rem;">${icon} ${escapeHtml(item.title)}</span>
+                    ${dupBadge}
+                </div>
+                <div style="font-size:0.8rem;color:var(--text-light);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                    ${escapeHtml((item.content || item.abstract || '').substring(0, 120))}...
+                </div>
+                ${item.authors ? `<div style="font-size:0.8rem;color:var(--text-light);margin-top:2px;">作者: ${escapeHtml(item.authors)}</div>` : ''}
+                ${item.sourceUrl ? `<div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;">来源: <a href="${item.sourceUrl}" target="_blank" style="color:var(--primary);">${escapeHtml(item.sourceUrl)}</a></div>` : ''}
+            </div>
+        </div>
+    `;
 }
 
-function getCollectionFromTab(tab) {
-    return { exercises:'exercises', knowledge:'knowledge', tips:'tips' }[tab] || 'exercises';
+function selectAllResults(checked) {
+    document.querySelectorAll('.result-select').forEach(cb => cb.checked = checked);
+}
+
+async function importSelectedCrawlResults() {
+    const selected = [];
+    document.querySelectorAll('.result-select:checked').forEach(cb => {
+        const idx = parseInt(cb.dataset.index);
+        const type = cb.dataset.type;
+        let item = null;
+        if (type === 'image') item = currentCrawlResults.images?.[idx];
+        else if (type === 'audio') item = currentCrawlResults.audio?.[idx];
+        else item = currentCrawlResults.knowledge?.[idx];
+        if (item) selected.push({ ...item, _importType: type });
+    });
+
+    if (selected.length === 0) {
+        alert('请选择要导入的数据');
+        return;
+    }
+
+    const textItems = selected.filter(s => ['text', 'paper', 'book'].includes(s._importType));
+    let imported = 0;
+
+    try {
+        if (textItems.length > 0) {
+            const cleanItems = textItems.map(({ _resultType, _importType, _duplicate, _duplicateReason, _collection, ...rest }) => rest);
+            await api('/crawler/import', {
+                method: 'POST',
+                body: JSON.stringify({ items: cleanItems, collection: 'knowledge' }),
+            });
+            imported += textItems.length;
+        }
+
+        showToast(`成功导入 ${imported} 条数据`, 'success');
+        loadCrawlResults();
+        loadDashboard();
+    } catch (e) {
+        alert('导入失败：' + e.message);
+    }
+}
+
+function refreshCrawlResults() {
+    loadCrawlResults();
 }
 
 // ─── 系统设置 ────────────────────────────────────────────────
