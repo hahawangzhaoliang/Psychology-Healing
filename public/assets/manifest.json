@@ -1,21 +1,153 @@
 {
   "version": "2.0.0",
-  "updated": "2026-05-09",
+  "updated": "2026-05-11",
   "license": "CC BY 3.0 (Kevin MacLeod)",
   "images": {
     "companions": [
-      { "id": "bunny", "name": "爱心兔兔", "emoji": "🐰", "file": "爱心兔兔.png", "tags": ["温柔", "治愈", "新手推荐"], "description": "温柔的兔兔伙伴，擅长倾听和陪伴" },
-      { "id": "dog", "name": "金毛陪伴犬", "emoji": "🐕", "file": "金毛陪伴犬.png", "tags": ["忠诚", "温暖", "鼓励"], "description": "热情的金毛，擅长给用户打气" },
-      { "id": "cat", "name": "困困猫咪", "emoji": "🐱", "file": "困困猫咪.png", "tags": ["慵懒", "放松", "治愈"], "description": "慵懒的猫咪，教你学会放松" },
-      { "id": "fox", "name": "绿光灵狐", "emoji": "🦊", "file": "绿光灵狐.png", "tags": ["神秘", "智慧", "引导"], "description": "神秘的狐狸，擅长引导冥想" },
-      { "id": "corgi", "name": "漂浮柯基", "emoji": "🐶", "file": "漂浮柯基.png", "tags": ["活泼", "快乐", "阳光"], "description": "快乐的柯基，总是带来好心情" },
-      { "id": "otter", "name": "水波水獭", "emoji": "🦦", "file": "水波水獭.png", "tags": ["平静", "水流", "冥想"], "description": "水獭伙伴，带你感受水的宁静" },
-      { "id": "sheep", "name": "云朵小羊", "emoji": "🐑", "file": "云朵小羊.png", "tags": ["柔软", "安慰", "温柔"], "description": "云朵般的小羊，给你最温柔的安慰" },
-      { "id": "whale", "name": "星海鲸鱼", "emoji": "🐋", "file": "星海鲸鱼.png", "tags": ["深邃", "广阔", "包容"], "description": "星海中的鲸鱼，承载深邃的智慧" },
-      { "id": "hedgehog", "name": "暖光刺猬", "emoji": "🦔", "file": "暖光刺猬.png", "tags": ["保护", "温暖", "安心"], "description": "温暖的刺猬，帮你建立安全感" },
-      { "id": "elephant", "name": "水晶小象", "emoji": "🐘", "file": "水晶小象.png", "tags": ["记忆", "力量", "稳定"], "description": "水晶般透明的小象，带来稳定的力量" },
-      { "id": "panda", "name": "竹林熊猫", "emoji": "🐼", "file": "竹林熊猫.png", "tags": ["平衡", "自然", "和谐"], "description": "竹林中的熊猫，教你找到内心平衡" },
-      { "id": "penguin", "name": "音乐企鹅", "emoji": "🐧", "file": "音乐企鹅.png", "tags": ["音乐", "节奏", "愉悦"], "description": "热爱音乐的企鹅，用旋律疗愈心灵" }
+      {
+        "id": "bunny",
+        "name": "爱心兔兔",
+        "emoji": "🐰",
+        "file": "爱心兔兔.png",
+        "tags": [
+          "温柔",
+          "治愈",
+          "新手推荐"
+        ],
+        "description": "温柔的兔兔伙伴，擅长倾听和陪伴"
+      },
+      {
+        "id": "dog",
+        "name": "金毛陪伴犬",
+        "emoji": "🐕",
+        "file": "金毛陪伴犬.png",
+        "tags": [
+          "忠诚",
+          "温暖",
+          "鼓励"
+        ],
+        "description": "热情的金毛，擅长给用户打气"
+      },
+      {
+        "id": "cat",
+        "name": "困困猫咪",
+        "emoji": "🐱",
+        "file": "困困猫咪.png",
+        "tags": [
+          "慵懒",
+          "放松",
+          "治愈"
+        ],
+        "description": "慵懒的猫咪，教你学会放松"
+      },
+      {
+        "id": "fox",
+        "name": "绿光灵狐",
+        "emoji": "🦊",
+        "file": "绿光灵狐.png",
+        "tags": [
+          "神秘",
+          "智慧",
+          "引导"
+        ],
+        "description": "神秘的狐狸，擅长引导冥想"
+      },
+      {
+        "id": "corgi",
+        "name": "漂浮柯基",
+        "emoji": "🐶",
+        "file": "漂浮柯基.png",
+        "tags": [
+          "活泼",
+          "快乐",
+          "阳光"
+        ],
+        "description": "快乐的柯基，总是带来好心情"
+      },
+      {
+        "id": "otter",
+        "name": "水波水獭",
+        "emoji": "🦦",
+        "file": "水波水獭.png",
+        "tags": [
+          "平静",
+          "水流",
+          "冥想"
+        ],
+        "description": "水獭伙伴，带你感受水的宁静"
+      },
+      {
+        "id": "sheep",
+        "name": "云朵小羊",
+        "emoji": "🐑",
+        "file": "云朵小羊.png",
+        "tags": [
+          "柔软",
+          "安慰",
+          "温柔"
+        ],
+        "description": "云朵般的小羊，给你最温柔的安慰"
+      },
+      {
+        "id": "whale",
+        "name": "星海鲸鱼",
+        "emoji": "🐋",
+        "file": "星海鲸鱼.png",
+        "tags": [
+          "深邃",
+          "广阔",
+          "包容"
+        ],
+        "description": "星海中的鲸鱼，承载深邃的智慧"
+      },
+      {
+        "id": "hedgehog",
+        "name": "暖光刺猬",
+        "emoji": "🦔",
+        "file": "暖光刺猬.png",
+        "tags": [
+          "保护",
+          "温暖",
+          "安心"
+        ],
+        "description": "温暖的刺猬，帮你建立安全感"
+      },
+      {
+        "id": "elephant",
+        "name": "水晶小象",
+        "emoji": "🐘",
+        "file": "水晶小象.png",
+        "tags": [
+          "记忆",
+          "力量",
+          "稳定"
+        ],
+        "description": "水晶般透明的小象，带来稳定的力量"
+      },
+      {
+        "id": "panda",
+        "name": "竹林熊猫",
+        "emoji": "🐼",
+        "file": "竹林熊猫.png",
+        "tags": [
+          "平衡",
+          "自然",
+          "和谐"
+        ],
+        "description": "竹林中的熊猫，教你找到内心平衡"
+      },
+      {
+        "id": "penguin",
+        "name": "音乐企鹅",
+        "emoji": "🐧",
+        "file": "音乐企鹅.png",
+        "tags": [
+          "音乐",
+          "节奏",
+          "愉悦"
+        ],
+        "description": "热爱音乐的企鹅，用旋律疗愈心灵"
+      }
     ],
     "scenes": [],
     "icons": [],
@@ -23,24 +155,142 @@
   },
   "audio": {
     "bgm": [
-      { "id": "healing", "name": "疗愈", "artist": "Kevin MacLeod", "file": "healing-meditation.mp3", "duration": 203, "license": "CC BY 3.0" },
-      { "id": "dreams", "name": "梦幻", "artist": "Kevin MacLeod", "file": "dreams-ambient.mp3", "duration": 62, "license": "CC BY 3.0" },
-      { "id": "spirit", "name": "灵性之旅", "artist": "Kevin MacLeod", "file": "spirit-journey.mp3", "duration": 62, "license": "CC BY 3.0" },
-      { "id": "meditating", "name": "冥想节奏", "artist": "Kevin MacLeod", "file": "meditating-beat.mp3", "duration": 266, "license": "CC BY 3.0" },
-      { "id": "quiet", "name": "宁静时刻", "artist": "Kevin MacLeod", "file": "quiet-moment.mp3", "duration": 214, "license": "CC BY 3.0" },
-      { "id": "healing2", "name": "疗愈流动", "artist": "Kevin MacLeod", "file": "healing-flow.mp3", "duration": 165, "license": "CC BY 3.0" },
-      { "id": "classical", "name": "古典宁静", "artist": "Kevin MacLeod", "file": "classical-calm.mp3", "duration": 361, "license": "CC BY 3.0" },
-      { "id": "ambient-piano", "name": "氛围钢琴", "artist": "Kevin MacLeod", "file": "ambient-piano.mp3", "duration": 255, "license": "CC BY 3.0" },
-      { "id": "peaceful", "name": "平静心灵", "artist": "Kevin MacLeod", "file": "peaceful-mind.mp3", "duration": 419, "license": "CC BY 3.0" },
-      { "id": "relax", "name": "放松时光", "artist": "Kevin MacLeod", "file": "relaxation-time.mp3", "duration": 168, "license": "CC BY 3.0" },
-      { "id": "morning", "name": "清晨宁静", "artist": "Kevin MacLeod", "file": "morning-peace.mp3", "duration": 190, "license": "CC BY 3.0" }
+      {
+        "id": "healing",
+        "name": "疗愈",
+        "artist": "Kevin MacLeod",
+        "file": "healing-meditation.mp3",
+        "duration": 203,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/healing-meditation-Hf6aXKxtHCB88WeIrCCpYwO651QIKx.mp3"
+      },
+      {
+        "id": "dreams",
+        "name": "梦幻",
+        "artist": "Kevin MacLeod",
+        "file": "dreams-ambient.mp3",
+        "duration": 62,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/dreams-ambient-uTZYWqCUDLL7IQWTuCwFZl1DcK4yPj.mp3"
+      },
+      {
+        "id": "spirit",
+        "name": "灵性之旅",
+        "artist": "Kevin MacLeod",
+        "file": "spirit-journey.mp3",
+        "duration": 62,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/spirit-journey-NA5jABToL1wtzJmmO69lkD0wgXZ8qf.mp3"
+      },
+      {
+        "id": "meditating",
+        "name": "冥想节奏",
+        "artist": "Kevin MacLeod",
+        "file": "meditating-beat.mp3",
+        "duration": 266,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/meditating-beat-8qBJzB4sih14EKRiDN9ANOlyh57XaR.mp3"
+      },
+      {
+        "id": "quiet",
+        "name": "宁静时刻",
+        "artist": "Kevin MacLeod",
+        "file": "quiet-moment.mp3",
+        "duration": 214,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/quiet-moment-HqvJZwSIWJ0NpoeZfF2crvkt0Lp53A.mp3"
+      },
+      {
+        "id": "healing2",
+        "name": "疗愈流动",
+        "artist": "Kevin MacLeod",
+        "file": "healing-flow.mp3",
+        "duration": 165,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/healing-flow-XN777Zbqys5hDVMxtvt8gSssAe6Xd1.mp3"
+      },
+      {
+        "id": "classical",
+        "name": "古典宁静",
+        "artist": "Kevin MacLeod",
+        "file": "classical-calm.mp3",
+        "duration": 361,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/classical-calm-uE4AI0XB6wAykiXpvrJbZFRZxo2Okx.mp3"
+      },
+      {
+        "id": "ambient-piano",
+        "name": "氛围钢琴",
+        "artist": "Kevin MacLeod",
+        "file": "ambient-piano.mp3",
+        "duration": 255,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/ambient-piano-P02jz1tr22wp9bVL1vXiKwwXKH1ewu.mp3"
+      },
+      {
+        "id": "peaceful",
+        "name": "平静心灵",
+        "artist": "Kevin MacLeod",
+        "file": "peaceful-mind.mp3",
+        "duration": 419,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/peaceful-mind-rf2EEKMcQ8nSF9Z8XlUukA4LgEUZp0.mp3"
+      },
+      {
+        "id": "relax",
+        "name": "放松时光",
+        "artist": "Kevin MacLeod",
+        "file": "relaxation-time.mp3",
+        "duration": 168,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/relaxation-time-vbtKWdQ5io9YUArAnNln9EjcjLkPwJ.mp3"
+      },
+      {
+        "id": "morning",
+        "name": "清晨宁静",
+        "artist": "Kevin MacLeod",
+        "file": "morning-peace.mp3",
+        "duration": 190,
+        "license": "CC BY 3.0",
+        "url": "https://3tcifijjhfcgmliz.public.blob.vercel-storage.com/audio/bgm/morning-peace-GjZpixIeTrkqUxKOuLbjNMUdIFcq7U.mp3"
+      }
     ],
     "ambient": [
-      { "id": "rain", "name": "细雨声", "type": "noise", "noiseType": "pink", "description": "柔和的雨声，帮助入睡和放松" },
-      { "id": "ocean", "name": "海浪声", "type": "noise", "noiseType": "brown", "description": "低沉的海浪声，如同海边漫步" },
-      { "id": "forest", "name": "森林鸟鸣", "type": "noise", "noiseType": "pink", "description": "森林中的宁静背景音" },
-      { "id": "wind", "name": "轻柔风声", "type": "noise", "noiseType": "white", "description": "轻柔的风声，吹散思绪" },
-      { "id": "fireplace", "name": "壁炉火焰", "type": "noise", "noiseType": "brown", "description": "温暖的壁炉声，营造温馨氛围" }
+      {
+        "id": "rain",
+        "name": "细雨声",
+        "type": "noise",
+        "noiseType": "pink",
+        "description": "柔和的雨声，帮助入睡和放松"
+      },
+      {
+        "id": "ocean",
+        "name": "海浪声",
+        "type": "noise",
+        "noiseType": "brown",
+        "description": "低沉的海浪声，如同海边漫步"
+      },
+      {
+        "id": "forest",
+        "name": "森林鸟鸣",
+        "type": "noise",
+        "noiseType": "pink",
+        "description": "森林中的宁静背景音"
+      },
+      {
+        "id": "wind",
+        "name": "轻柔风声",
+        "type": "noise",
+        "noiseType": "white",
+        "description": "轻柔的风声，吹散思绪"
+      },
+      {
+        "id": "fireplace",
+        "name": "壁炉火焰",
+        "type": "noise",
+        "noiseType": "brown",
+        "description": "温暖的壁炉声，营造温馨氛围"
+      }
     ],
     "meditation": [],
     "effects": []

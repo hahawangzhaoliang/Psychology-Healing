@@ -13,6 +13,7 @@ const knowledgeRoutes = require('./knowledge');
 const cronRoutes = require('./cron');
 const practiceRoutes = require('./practice');
 const roleRoutes = require('./role');
+const blobRoutes = require('./blob');
 
 // API版本信息
 router.get('/', (req, res) => {
@@ -28,6 +29,7 @@ router.get('/', (req, res) => {
             knowledge: '/api/knowledge',
             practice: '/api/practice',
             role: '/api/role',
+            blob: '/api/blob',
             cron: '/api/knowledge/cron-update'
         },
         disclaimer: '本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。'
@@ -43,5 +45,6 @@ router.use('/knowledge', knowledgeRoutes);
 router.use('/knowledge', cronRoutes);
 router.use('/practice', practiceRoutes);
 router.use('/role', roleRoutes);
+router.use('/blob', blobRoutes);
 
 module.exports = router;

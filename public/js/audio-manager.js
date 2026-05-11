@@ -66,11 +66,23 @@ class AudioManager {
         }
         
         this._stopBGM();
-        this.bgmElement.src = `assets/audio/bgm/${track.file}`;
+
+        // 优先使用 Blob CDN url，fallback 本地路径
+        const src = track.url || `assets/audio/bgm/${track.file}`;
+        this.bgmElement.src = src;
         this.bgmVolume = volume;
         this.bgmElement.volume = volume * this.masterVolume * (this.isMuted ? 0 : 1);
         this.bgmElement.play().catch(e => {
-            console.warn('[AudioManager] BGM 播放失败:', e.message);
+            // CDN 失败时尝试本地 fallback
+            if (track.url && track.file) {
+                console.warn(`[AudioManager] CDN 播放失败，尝试本地: ${e.message}`);
+                this.bgmElement.src = `assets/audio/bgm/${track.file}`;
+                this.bgmElement.play().catch(e2 => {
+                    console.warn('[AudioManager] BGM 本地播放也失败:', e2.message);
+                });
+            } else {
+                console.warn('[AudioManager] BGM 播放失败:', e.message);
+            }
         });
         this.currentBGM = trackId;
     }

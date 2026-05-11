@@ -51,3 +51,10 @@ internal-docs/
 .dumate/
 .workbuddy/
 
+# 音频资源（大文件不使用 Git 管理）
+public/assets/audio/
+*.mp3
+*.wav
+*.ogg
+*.m4a
+
