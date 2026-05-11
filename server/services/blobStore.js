@@ -21,7 +21,7 @@ const MEDIA_IMAGE_PREFIX = 'media/images/';
 const MEDIA_AUDIO_PREFIX = 'media/audio/';
 
 /**
- * 读取 JSON 数据文件（从 Blob）
+ * 读取 JSON 数据文件（从 Blob，降级到本地文件）
  * @param {string} filename - 文件名（如 'exercises.json'）
  * @returns {Array|Object} 解析后的 JSON 数据
  */
@@ -33,14 +33,46 @@ async function readJsonFromBlob(filename) {
         const text = await blob.text();
         return JSON.parse(text);
     } catch (error) {
-        // 文件不存在时返回默认值
+        // 文件不存在时，尝试读取本地文件作为降级方案
         if (error.message?.includes('not found') || error.message?.includes('404')) {
-            console.log(`[BlobStore] 文件 ${filepath} 不存在，返回空数据`);
-            return [];
+            console.log(`[BlobStore] Blob 中 ${filepath} 不存在，尝试本地降级...`);
+            return fallbackToLocalFile(filename);
         }
         console.error(`[BlobStore] 读取 ${filepath} 失败:`, error.message);
-        return [];
+        // 其他错误也尝试降级
+        return fallbackToLocalFile(filename);
     }
+}
+
+/**
+ * 本地文件降级读取
+ * @param {string} filename - 文件名
+ * @returns {Array|Object} 本地文件内容或默认值
+ */
+function fallbackToLocalFile(filename) {
+    const fs = require('fs');
+    const path = require('path');
+
+    // 优先从 server/data 读取（Vercel 环境）
+    let localPath = path.join(__dirname, '../../server/data', filename);
+    if (!fs.existsSync(localPath)) {
+        // 降级到 public/data（本地开发）
+        localPath = path.join(__dirname, '../../public/data', filename);
+    }
+
+    if (fs.existsSync(localPath)) {
+        try {
+            const content = fs.readFileSync(localPath, 'utf-8');
+            const data = JSON.parse(content);
+            console.log(`[BlobStore] ✅ 从本地文件恢复: ${filename} (${data.length || 0} 条)`);
+            return data;
+        } catch (e) {
+            console.error(`[BlobStore] ❌ 本地文件读取失败: ${localPath}`, e.message);
+        }
+    }
+
+    console.log(`[BlobStore] ⚠️  本地文件也不存在: ${filename}，返回空数据`);
+    return [];
 }
 
 /**

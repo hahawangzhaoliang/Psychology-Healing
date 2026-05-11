@@ -965,49 +965,78 @@
 
         /* ========== 更多练习加载 ========== */
         async function loadExercises() {
+            const loading = document.getElementById('exercisesLoading');
+            const list = document.getElementById('exercisesList');
+
             try {
-                // 从 API 读取（Vercel Blob 存储）
+                // 优先从 API 读取（Vercel Blob 存储）
                 const response = await fetch('/api/knowledge/exercises?limit=100');
-                const data = await response.json();
 
-                const loading = document.getElementById('exercisesLoading');
-                const list = document.getElementById('exercisesList');
-
-                if (data.exercises && data.exercises.length > 0) {
-                    loading.classList.add('hidden');
-                    list.classList.remove('hidden');
-                    list.style.display = 'grid';
-
-                    const categoryColors = {
-                        '正念冥想': { bg: 'var(--color-calm-100)', color: '#1E40AF' },
-                        '呼吸练习': { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
-                        '身体放松': { bg: 'var(--color-warm-100)', color: '#92400E' },
-                        '情绪调节': { bg: '#FCE7F3', color: '#9D174D' },
-                    };
-
-                    list.innerHTML = data.exercises.map(ex => {
-                        const c = categoryColors[ex.category] || { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' };
-                        return `
-                            <div class="practice-card" onclick='showExerciseDetail(${JSON.stringify(ex).replace(/'/g, "\\'")})'>
-                                <div class="practice-icon" style="background:${c.bg};">
-                                    <svg style="width:24px;height:24px;color:${c.color};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                                    </svg>
-                                </div>
-                                <div style="flex:1;min-width:0;">
-                                    <h3 style="font-size:0.95rem;font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">${ex.title}</h3>
-                                    <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.5rem;">${(ex.description || '').substring(0, 50)}...</p>
-                                    <span style="font-size:0.75rem;color:var(--theme-text-light);">${ex.duration || '5-10分钟'} · ${ex.difficulty || '入门'}</span>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                } else {
-                    loading.innerHTML = '<p style="color:var(--theme-text-light);">暂无更多练习</p>';
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
+
+                const data = await response.json();
+                renderExercises(data.exercises || [], loading, list);
             } catch (error) {
-                console.error('加载练习失败:', error);
-                document.getElementById('exercisesLoading').innerHTML = '<p style="color:var(--theme-text-light);">加载失败，请稍后重试</p>';
+                console.warn('API 加载失败，尝试本地降级:', error.message);
+
+                // API 失败时降级到本地 JSON
+                try {
+                    const localRes = await fetch('/data/exercises.json');
+                    if (localRes.ok) {
+                        const localData = await localRes.json();
+                        console.log('✅ 从本地 JSON 加载成功');
+                        renderExercises(localData, loading, list);
+                        return;
+                    }
+                } catch (localError) {
+                    console.error('本地 JSON 也加载失败:', localError);
+                }
+
+                // 显示重试按钮
+                loading.innerHTML = `
+                    <div style="text-align:center;padding:1rem;">
+                        <p style="color:var(--theme-text-light);margin-bottom:0.5rem;">加载失败，请稍后重试</p>
+                        <button class="btn btn-outline btn-sm" onclick="loadExercises()">🔄 重试</button>
+                    </div>
+                `;
+            }
+        }
+
+        function renderExercises(exercises, loading, list) {
+            if (exercises && exercises.length > 0) {
+                loading.classList.add('hidden');
+                list.classList.remove('hidden');
+                list.style.display = 'grid';
+
+                const categoryColors = {
+                    '正念冥想': { bg: 'var(--color-calm-100)', color: '#1E40AF' },
+                    '呼吸练习': { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
+                    '身体放松': { bg: 'var(--color-warm-100)', color: '#92400E' },
+                    '情绪调节': { bg: '#FCE7F3', color: '#9D174D' },
+                };
+
+                list.innerHTML = exercises.map(ex => {
+                    const c = categoryColors[ex.category] || { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' };
+                    return `
+                        <div class="practice-card" onclick='showExerciseDetail(${JSON.stringify(ex).replace(/'/g, "\\'")})'>
+                            <div class="practice-icon" style="background:${c.bg};">
+                                <svg style="width:24px;height:24px;color:${c.color};" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <div style="flex:1;min-width:0;">
+                                <h3 style="font-size:0.95rem;font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">${ex.title}</h3>
+                                <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.5rem;">${(ex.description || '').substring(0, 50)}...</p>
+                                <span style="font-size:0.75rem;color:var(--theme-text-light);">${ex.duration || '5-10分钟'} · ${ex.difficulty || '入门'}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                loading.innerHTML = '<p style="color:var(--theme-text-light);">暂无更多练习内容</p>';
+                list.classList.add('hidden');
             }
         }
 

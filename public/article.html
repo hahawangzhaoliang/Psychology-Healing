@@ -223,17 +223,40 @@
 
         async function loadKnowledge() {
             try {
-                // 从 API 读取（Vercel Blob 存储）
+                // 优先从 API 读取（Vercel Blob 存储）
                 const response = await fetch('/api/knowledge/psychology?limit=100');
-                const data = await response.json();
-                if (data.knowledge && data.knowledge.length > 0) {
-                    allKnowledge = data.knowledge;
-                } else {
-                    allKnowledge = getSampleArticles();
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.knowledge && data.knowledge.length > 0) {
+                        allKnowledge = data.knowledge;
+                        renderArticles(allKnowledge);
+                        return;
+                    }
                 }
-            } catch {
-                allKnowledge = getSampleArticles();
+            } catch (error) {
+                console.warn('API 加载失败，尝试本地降级:', error.message);
             }
+
+            // API 失败时尝试本地 JSON
+            try {
+                const localRes = await fetch('/data/knowledge.json');
+                if (localRes.ok) {
+                    const localData = await localRes.json();
+                    if (localData && localData.length > 0) {
+                        console.log('✅ 从本地 JSON 加载知识库');
+                        allKnowledge = localData;
+                        renderArticles(allKnowledge);
+                        return;
+                    }
+                }
+            } catch (localError) {
+                console.warn('本地 JSON 也加载失败:', localError);
+            }
+
+            // 最终降级到内置示例
+            console.log('📝 使用内置示例内容');
+            allKnowledge = getSampleArticles();
             renderArticles(allKnowledge);
         }
 

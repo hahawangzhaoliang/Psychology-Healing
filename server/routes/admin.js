@@ -445,4 +445,60 @@ router.get('/blob-status', async (req, res) => {
     }
 });
 
+// ─── 数据初始化 ─────────────────────────────────────────────
+// 从 server/data/*.json 上传到 Blob（仅内容数据，不含用户数据）
+
+router.post('/init-data', async (req, res) => {
+    const fs = require('fs');
+    const path = require('path');
+
+    // 只初始化内容数据文件（不含用户生成的隐私数据）
+    const dataFiles = [
+        { local: 'exercises.json', collection: 'exercises' },
+        { local: 'knowledge.json', collection: 'knowledge' },
+        { local: 'regulation.json', collection: 'regulation' },
+        { local: 'tips.json', collection: 'tips' },
+    ];
+
+    const results = [];
+    const dataDir = path.join(__dirname, '../../server/data');
+
+    for (const { local, collection } of dataFiles) {
+        const localPath = path.join(dataDir, local);
+        try {
+            if (!fs.existsSync(localPath)) {
+                results.push({ file: local, status: 'skipped', message: '本地文件不存在' });
+                continue;
+            }
+
+            const content = fs.readFileSync(localPath, 'utf-8');
+            const data = JSON.parse(content);
+
+            // 上传到 Blob
+            const blobPath = `data/${local}`;
+            const { put } = require('@vercel/blob');
+            const result = await put(blobPath, content, {
+                contentType: 'application/json',
+                access: 'public',
+            });
+
+            results.push({
+                file: local,
+                status: 'success',
+                message: `上传成功，${data.length || 0} 条记录`,
+                url: result.url,
+            });
+        } catch (error) {
+            results.push({ file: local, status: 'error', message: error.message });
+        }
+    }
+
+    const successCount = results.filter(r => r.status === 'success').length;
+    res.json({
+        success: true,
+        message: `初始化完成：${successCount}/${dataFiles.length} 个文件成功`,
+        results,
+    });
+});
+
 module.exports = router;
