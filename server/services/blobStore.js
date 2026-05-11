@@ -39,20 +39,29 @@ async function readJsonFromBlob(filename) {
     const blob = getBlobClient();
     const filepath = DATA_PREFIX + filename;
     
+    console.log(`[BlobStore] 尝试从 Blob 读取: ${filepath}`);
+
     try {
         // v0.27 API: 使用 head 获取文件信息，然后用 downloadUrl 下载
         const result = await blob.head(filepath);
+        console.log(`[BlobStore] Blob head 成功: ${JSON.stringify({ pathname: result.pathname, size: result.size })}`);
+
         if (result.downloadUrl) {
+            console.log(`[BlobStore] 正在下载: ${result.downloadUrl.substring(0, 80)}...`);
             const response = await fetch(result.downloadUrl);
             if (response.ok) {
                 const text = await response.text();
-                return JSON.parse(text);
+                const data = JSON.parse(text);
+                console.log(`[BlobStore] ✅ Blob 读取成功: ${filename} (${Array.isArray(data) ? data.length : 0} 条)`);
+                return data;
+            } else {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
         }
-        throw new Error('无法获取文件内容');
+        throw new Error('downloadUrl 不存在');
     } catch (error) {
-        // 文件不存在或读取失败，降级到本地文件
-        console.log(`[BlobStore] Blob 读取失败: ${error.message}，尝试本地降级...`);
+        console.log(`[BlobStore] ❌ Blob 读取失败: ${error.message}`);
+        console.log(`[BlobStore] 降级到本地文件...`);
         return fallbackToLocalFile(filename);
     }
 }
@@ -64,28 +73,36 @@ function fallbackToLocalFile(filename) {
     const fs = require('fs');
     const pathLib = require('path');
 
+    // 调试信息
+    console.log(`[BlobStore] 降级到本地文件: ${filename}`);
+    console.log(`[BlobStore] __dirname: ${__dirname}`);
+    console.log(`[BlobStore] process.cwd(): ${process.cwd()}`);
+
     // 尝试多种路径计算方式
-    const possibleRoots = [
-        pathLib.join(__dirname, '..', '..'),
-        pathLib.join(__dirname, '..'),
-        process.cwd(),
+    const possiblePaths = [
+        // Vercel Serverless 标准路径
+        pathLib.join(__dirname, '..', '..', 'server', 'data', filename),
+        pathLib.join(__dirname, '..', '..', 'public', 'data', filename),
+        // 本地开发路径
+        pathLib.join(process.cwd(), 'server', 'data', filename),
+        pathLib.join(process.cwd(), 'public', 'data', filename),
+        // 相对路径（相对于项目根目录）
+        pathLib.join(process.cwd(), '..', 'server', 'data', filename),
+        // 直接路径
+        pathLib.join(__dirname, '..', 'data', filename),
     ];
-    
-    for (const root of possibleRoots) {
-        const serverPath = pathLib.join(root, 'server', 'data', filename);
-        if (fs.existsSync(serverPath)) {
-            const content = fs.readFileSync(serverPath, 'utf-8');
-            const data = JSON.parse(content);
-            console.log(`[BlobStore] ✅ 从 server/data 加载: ${filename} (${data.length || 0} 条)`);
-            return data;
-        }
-        
-        const publicPath = pathLib.join(root, 'public', 'data', filename);
-        if (fs.existsSync(publicPath)) {
-            const content = fs.readFileSync(publicPath, 'utf-8');
-            const data = JSON.parse(content);
-            console.log(`[BlobStore] ✅ 从 public/data 加载: ${filename} (${data.length || 0} 条)`);
-            return data;
+
+    for (const filePath of possiblePaths) {
+        console.log(`[BlobStore] 尝试路径: ${filePath}`);
+        if (fs.existsSync(filePath)) {
+            try {
+                const content = fs.readFileSync(filePath, 'utf-8');
+                const data = JSON.parse(content);
+                console.log(`[BlobStore] ✅ 加载成功: ${filePath} (${Array.isArray(data) ? data.length : 0} 条)`);
+                return data;
+            } catch (parseError) {
+                console.error(`[BlobStore] JSON 解析失败: ${filePath}`, parseError.message);
+            }
         }
     }
 
