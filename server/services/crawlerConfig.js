@@ -81,12 +81,20 @@ const DEFAULT_SOURCES = [
 // ─── 数据源 CRUD ──────────────────────────────────────────
 
 async function getAllSources() {
-    const sources = await jsonStore.readData(SOURCES_COLLECTION);
-    if (!sources || sources.length === 0) {
-        await jsonStore.writeData(SOURCES_COLLECTION, DEFAULT_SOURCES);
+    try {
+        const sources = await jsonStore.readData(SOURCES_COLLECTION);
+        if (!sources || sources.length === 0) {
+            // 异步写入，不阻塞返回（写入失败不影响读取）
+            jsonStore.writeData(SOURCES_COLLECTION, DEFAULT_SOURCES).catch(e =>
+                console.warn('[CrawlerConfig] 写入默认数据源失败（将使用内置数据）:', e.message)
+            );
+            return DEFAULT_SOURCES;
+        }
+        return sources;
+    } catch (e) {
+        console.warn('[CrawlerConfig] 读取数据源失败，返回内置默认值:', e.message);
         return DEFAULT_SOURCES;
     }
-    return sources;
 }
 
 async function getSourceById(id) {

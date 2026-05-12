@@ -375,114 +375,6 @@
             </div>
         </div>
 
-        <!-- 数据源添加/编辑弹窗 -->
-        <div id="source-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;align-items:center;justify-content:center;">
-            <div style="background:white;border-radius:12px;padding:24px;width:600px;max-width:90vw;max-height:80vh;overflow-y:auto;">
-                <h3 style="margin-bottom:16px;" id="source-modal-title">添加数据源</h3>
-                <div id="source-modal-form">
-                    <!-- 基础信息 -->
-                    <div style="margin-bottom:16px;">
-                        <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">名称</label>
-                        <input type="text" id="source-name" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="如：中国心理卫生协会">
-                    </div>
-                    <div style="margin-bottom:16px;">
-                        <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">URL</label>
-                        <input type="url" id="source-url" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="https://example.com/articles">
-                    </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-                        <div>
-                            <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">内容类型</label>
-                            <select id="source-type" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" onchange="onSourceTypeChange()">
-                                <option value="text">📝 文本</option>
-                                <option value="image">🖼️ 图片</option>
-                                <option value="audio">🔊 音频</option>
-                                <option value="paper">📄 论文</option>
-                                <option value="book">📚 书籍</option>
-                                <option value="mixed">🔄 混合</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">目标集合</label>
-                            <select id="source-category" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);">
-                                <option value="knowledge">心理学知识</option>
-                                <option value="exercises">疗愈练习</option>
-                                <option value="tips">每日提示</option>
-                                <option value="regulation">情绪调节</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- CSS 选择器 -->
-                    <div style="margin-bottom:16px;">
-                        <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">CSS 选择器配置</div>
-                        <div id="source-selectors-text">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题选择器</label>
-                                    <input type="text" id="sel-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="h1, .title">
-                                </div>
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">正文选择器</label>
-                                    <input type="text" id="sel-content" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="article, .content">
-                                </div>
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">日期选择器</label>
-                                    <input type="text" id="sel-date" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".date, time">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="source-selectors-paper" class="hidden">
-                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题</label>
-                                    <input type="text" id="sel-paper-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".title">
-                                </div>
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">作者</label>
-                                    <input type="text" id="sel-paper-authors" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".authors a">
-                                </div>
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">摘要</label>
-                                    <input type="text" id="sel-paper-abstract" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".abstract">
-                                </div>
-                                <div>
-                                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">PDF链接</label>
-                                    <input type="text" id="sel-paper-pdf" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".download-pdf a">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 过滤条件 -->
-                    <div style="margin-bottom:16px;">
-                        <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">过滤条件</div>
-                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-                            <div>
-                                <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">开始日期</label>
-                                <input type="date" id="filter-date-from" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
-                            </div>
-                            <div>
-                                <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">结束日期</label>
-                                <input type="date" id="filter-date-to" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
-                            </div>
-                        </div>
-                        <div style="margin-bottom:12px;">
-                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">关键词（逗号分隔）</label>
-                            <input type="text" id="filter-keywords" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="心理, 认知, 情绪">
-                        </div>
-                        <div>
-                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">最小内容长度（字符）</label>
-                            <input type="number" id="filter-min-length" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" value="200" min="0">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button class="btn btn-outline" onclick="closeSourceModal()">取消</button>
-                    <button class="btn btn-primary" onclick="saveSource()">保存</button>
-                </div>
-            </div>
-        </div>
-
         <!-- 系统设置 -->
         <div id="tab-settings" class="hidden">
             <div class="card">
@@ -573,6 +465,114 @@
                 <button type="button" class="btn btn-primary" id="modal-submit" onclick="submitModal()">保存</button>
             </div>
         </form>
+    </div>
+</div>
+
+<!-- ===== 数据源添加/编辑弹窗（必须在顶层，不可嵌套在 hidden div 内）===== -->
+<div id="source-modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:300;align-items:center;justify-content:center;" onclick="if(event.target===this)closeSourceModal()">
+    <div style="background:white;border-radius:12px;padding:24px;width:600px;max-width:90vw;max-height:80vh;overflow-y:auto;">
+        <h3 style="margin-bottom:16px;" id="source-modal-title">添加数据源</h3>
+        <div id="source-modal-form">
+            <!-- 基础信息 -->
+            <div style="margin-bottom:16px;">
+                <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">名称</label>
+                <input type="text" id="source-name" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="如：中国心理卫生协会">
+            </div>
+            <div style="margin-bottom:16px;">
+                <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">URL</label>
+                <input type="url" id="source-url" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" placeholder="https://example.com/articles">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+                <div>
+                    <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">内容类型</label>
+                    <select id="source-type" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);" onchange="onSourceTypeChange()">
+                        <option value="text">📝 文本</option>
+                        <option value="image">🖼️ 图片</option>
+                        <option value="audio">🔊 音频</option>
+                        <option value="paper">📄 论文</option>
+                        <option value="book">📚 书籍</option>
+                        <option value="mixed">🔄 混合</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="display:block;font-size:0.85rem;color:var(--text-light);margin-bottom:4px;">目标集合</label>
+                    <select id="source-category" style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);">
+                        <option value="knowledge">心理学知识</option>
+                        <option value="exercises">疗愈练习</option>
+                        <option value="tips">每日提示</option>
+                        <option value="regulation">情绪调节</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- CSS 选择器 -->
+            <div style="margin-bottom:16px;">
+                <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">CSS 选择器配置</div>
+                <div id="source-selectors-text">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题选择器</label>
+                            <input type="text" id="sel-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="h1, .title">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">正文选择器</label>
+                            <input type="text" id="sel-content" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="article, .content">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">日期选择器</label>
+                            <input type="text" id="sel-date" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".date, time">
+                        </div>
+                    </div>
+                </div>
+                <div id="source-selectors-paper" class="hidden">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">标题</label>
+                            <input type="text" id="sel-paper-title" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".title">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">作者</label>
+                            <input type="text" id="sel-paper-authors" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".authors a">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">摘要</label>
+                            <input type="text" id="sel-paper-abstract" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".abstract">
+                        </div>
+                        <div>
+                            <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">PDF链接</label>
+                            <input type="text" id="sel-paper-pdf" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder=".download-pdf a">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 过滤条件 -->
+            <div style="margin-bottom:16px;">
+                <div style="font-weight:600;margin-bottom:8px;font-size:0.9rem;">过滤条件</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+                    <div>
+                        <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">开始日期</label>
+                        <input type="date" id="filter-date-from" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
+                    </div>
+                    <div>
+                        <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">结束日期</label>
+                        <input type="date" id="filter-date-to" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;">
+                    </div>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">关键词（逗号分隔）</label>
+                    <input type="text" id="filter-keywords" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" placeholder="心理, 认知, 情绪">
+                </div>
+                <div>
+                    <label style="display:block;font-size:0.8rem;color:var(--text-light);margin-bottom:4px;">最小内容长度（字符）</label>
+                    <input type="number" id="filter-min-length" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:0.85rem;" value="200" min="0">
+                </div>
+            </div>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-outline" onclick="closeSourceModal()">取消</button>
+            <button class="btn btn-primary" onclick="saveSource()">保存</button>
+        </div>
     </div>
 </div>
 
@@ -678,6 +678,7 @@ function switchTab(tab, el) {
     if (tab === 'data')      loadData();
     if (tab === 'media')     loadMedia();
     if (tab === 'settings')  loadSettings();
+    if (tab === 'crawler')   switchCrawlerTab(currentCrawlerTab);
 }
 
 // ─── 仪表盘 ──────────────────────────────────────────────────
