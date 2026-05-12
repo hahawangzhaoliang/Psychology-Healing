@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>喵趣消消乐</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="assets/images/cats/橘猫.png" type="image/png">
+</head>
+<body>
+    <!-- 游戏容器 -->
+    <div id="game-container">
+        <!-- 顶部信息栏 -->
+        <div id="header">
+            <div class="score-panel">
+                <div class="score-item">
+                    <span class="label">分数</span>
+                    <span id="score" class="value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">🍪 饼干</span>
+                    <span id="cookies" class="value cookie-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="label">关卡</span>
+                    <span id="level" class="value">1</span>
+                </div>
+                <!-- 音效/震动控制按钮 -->
+                <div class="settings-btns">
+                    <button id="btn-home" class="setting-btn" title="猫咪家园">🏠</button>
+                    <button id="btn-affinity" class="setting-btn" title="猫咪亲密度">💖</button>
+                    <button id="btn-mute" class="setting-btn" title="静音/开启音乐">🔊</button>
+                    <button id="btn-vibrate" class="setting-btn" title="开启/关闭震动">📳</button>
+                </div>
+            </div>
+            <!-- 猫咪小请求面板 -->
+            <div class="request-panel" id="request-panel">
+                <div class="request-header">
+                    <span class="request-label">🐱 猫咪的小请求</span>
+                    <span class="request-status" id="request-status"></span>
+                </div>
+                <div class="request-content">
+                    <div class="request-cat-icon">
+                        <span class="target-cat"></span>
+                    </div>
+                    <div class="request-info">
+                        <div class="request-desc" id="request-desc">加载中...</div>
+                        <div class="request-progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="request-count" id="target-text">
+                            <span id="request-current">0</span> / <span id="target-count">10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 向后兼容：旧目标面板（隐藏） -->
+            <div class="target-panel" style="display: none;">
+                <span class="target-label">目标:</span>
+                <span id="target-text-old">收集 <span class="target-cat"></span> x <span id="target-count-old">10</span></span>
+            </div>
+            <!-- Buff 状态显示 -->
+            <div id="buff-container"></div>
+            <!-- 模式切换按钮 -->
+            <button id="btn-relax-mode" title="切换到猫咪庭院">🌸 庭院</button>
+        </div>
+
+        <!-- 游戏棋盘 -->
+        <div id="board-container">
+            <div id="game-board"></div>
+            <!-- 消除特效层 -->
+            <div id="effects-layer"></div>
+        </div>
+
+        <!-- 道具栏 -->
+        <div id="items-bar">
+            <div class="item" data-item="bomb" title="小鱼干炸弹">
+                <div class="item-icon">🐟</div>
+                <div class="item-count" id="bomb-count">3</div>
+            </div>
+            <div class="item" data-item="shuffle" title="逗猫棒">
+                <div class="item-icon">🎣</div>
+                <div class="item-count" id="shuffle-count">2</div>
+            </div>
+            <div class="item" data-item="refresh" title="猫爪刷新">
+                <div class="item-icon">🐾</div>
+                <div class="item-count" id="refresh-count">2</div>
+            </div>
+            <div class="item" data-item="hint" title="提示">
+                <div class="item-icon">💡</div>
+                <div class="item-count" id="hint-count">5</div>
+            </div>
+        </div>
+
+        <!-- 底部按钮 -->
+        <div id="footer">
+            <button id="btn-pause" class="btn">暂停</button>
+            <button id="btn-restart" class="btn">重新开始</button>
+        </div>
+    </div>
+
+    <!-- 暂停弹窗 -->
+    <div id="pause-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>游戏暂停</h2>
+            <div class="modal-buttons">
+                <button id="btn-resume" class="btn btn-primary">继续游戏</button>
+                <button id="btn-restart-modal" class="btn">重新开始</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 过关弹窗 -->
+    <div id="win-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>🎉 恭喜过关！</h2>
+            <div class="star-rating">
+                <span class="star" data-star="1">⭐</span>
+                <span class="star" data-star="2">⭐</span>
+                <span class="star" data-star="3">⭐</span>
+            </div>
+            <p>得分: <span id="final-score">0</span></p>
+            <div class="modal-buttons">
+                <button id="btn-next-level" class="btn btn-primary">下一关</button>
+                <button id="btn-replay" class="btn">再玩一次</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 连击提示 -->
+    <div id="combo-display" class="hidden">
+        <span id="combo-text"></span>
+    </div>
+
+    <!-- 请求完成提示 -->
+    <div id="request-complete-hint" class="hidden">
+        <span>🎉 请求完成！猫咪很开心！</span>
+    </div>
+
+    <script src="js/game.js"></script>
+</body>
+</html>
