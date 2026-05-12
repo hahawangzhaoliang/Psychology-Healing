@@ -652,7 +652,7 @@ class ThemeManager {
                 .game-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(46,190,154,0.45);}
             </style>
             <div class="game-entrance">
-                <button class="game-btn" onclick="window.location.href='games.html'">🎮 放松游戏</button>
+                <button class="game-btn" onclick="window.location.href='cat-game.html'">🎮 放松游戏</button>
             </div>
         `;
         document.body.appendChild(container);

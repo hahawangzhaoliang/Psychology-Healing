@@ -6,10 +6,35 @@
     <title>喵趣消消乐</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="icon" href="assets/images/cats/橘猫.png" type="image/png">
+    <style>
+        .back-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            padding: 8px 18px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover {
+            background: #fff;
+            border-color: #5cb8a8;
+            color: #5cb8a8;
+            transform: translateX(-3px);
+        }
+    </style>
 </head>
 <body>
     <!-- 游戏容器 -->
     <div id="game-container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="location.href='index.html'" title="返回主页">← 返回</button>
         <!-- 顶部信息栏 -->
         <div id="header">
             <div class="score-panel">
