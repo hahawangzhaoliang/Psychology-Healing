@@ -1315,12 +1315,18 @@ async function loadCrawlerJobs() {
 
 // ─── 爬取结果 ───────────────────────────────────────────────
 
-async function loadCrawlResults() {
+async function loadCrawlResults(retry = 0) {
     const container = document.getElementById('crawler-results-content');
     container.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
     try {
         const res = await api('/crawler/results');
         currentCrawlResults = res.data;
+
+        // Blob 最终一致性：写入后可能短暂读不到，重试 3 次
+        if (!currentCrawlResults && retry < 3) {
+            setTimeout(() => loadCrawlResults(retry + 1), 1500);
+            return;
+        }
 
         if (!currentCrawlResults) {
             container.innerHTML = '<p class="text-muted">暂无爬取结果，请先执行爬取任务</p>';
@@ -1335,6 +1341,15 @@ async function loadCrawlResults() {
 
 function filterCrawlResults(filter) {
     currentResultFilter = filter;
+    
+    // 更新 tab 按钮状态
+    ['all', 'text', 'image', 'audio', 'paper', 'book'].forEach(f => {
+        const btn = document.getElementById(`result-filter-${f}`);
+        if (btn) {
+            btn.className = `btn btn-sm ${f === filter ? 'btn-primary' : 'btn-outline'}`;
+        }
+    });
+    
     renderCrawlResults();
 }
 

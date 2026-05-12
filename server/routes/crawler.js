@@ -177,10 +177,19 @@ router.get('/jobs/:id', async (req, res) => {
 
 router.get('/results', async (req, res) => {
     try {
-        const results = await jsonStore.readData('crawl-results');
-        if (!results) return res.json({ success: true, data: null });
+        // 直接读取 crawl-results.json（存储的是对象，不是数组）
+        const blobStore = require('../services/blobStore');
+        const results = await blobStore.readJsonFromBlob('crawl-results.json');
+        
+        if (!results || (Array.isArray(results) && results.length === 0)) {
+            return res.json({ success: true, data: null });
+        }
         res.json({ success: true, data: results });
     } catch (error) {
+        // 文件不存在时返回 null
+        if (error.message && error.message.includes('does not exist')) {
+            return res.json({ success: true, data: null });
+        }
         res.status(500).json({ success: false, error: error.message });
     }
 });
