@@ -1191,15 +1191,80 @@ async function deleteSource(id) {
 
 // ─── 爬取任务 ───────────────────────────────────────────────
 
+let crawlPollingInterval = null;
+
 async function startCrawl(sourceId) {
     if (!confirm('确定开始爬取吗？')) return;
     try {
         const res = await api(`/crawler/crawl/${sourceId}`, { method: 'POST' });
-        showToast(res.message, 'success');
+        showToast(res.message + '（轮询状态中...）', 'success');
+        
+        // 切换到任务标签页
         switchCrawlerTab('tasks');
+        
+        // 开始轮询任务状态
+        const jobId = res.data?.jobId;
+        if (jobId) {
+            pollJobStatus(jobId);
+        }
     } catch (e) {
         alert('启动失败：' + e.message);
     }
+}
+
+async function pollJobStatus(jobId) {
+    // 清除之前的轮询
+    if (crawlPollingInterval) {
+        clearInterval(crawlPollingInterval);
+    }
+    
+    let pollCount = 0;
+    const maxPolls = 30; // 最多轮询 30 次（60 秒）
+    
+    crawlPollingInterval = setInterval(async () => {
+        pollCount++;
+        
+        try {
+            const res = await api(`/crawler/jobs/${jobId}`);
+            const job = res.data;
+            
+            if (!job) {
+                clearInterval(crawlPollingInterval);
+                return;
+            }
+            
+            // 任务完成或失败，停止轮询并刷新列表
+            if (job.status === 'completed' || job.status === 'failed') {
+                clearInterval(crawlPollingInterval);
+                crawlPollingInterval = null;
+                
+                // 刷新任务列表和结果
+                await loadCrawlerJobs();
+                if (job.status === 'completed') {
+                    showToast('爬取完成！', 'success');
+                    // 自动切换到结果标签页
+                    switchCrawlerTab('results');
+                } else {
+                    showToast('爬取失败：' + (job.logs?.slice(-1)[0]?.message || '未知错误'), 'error');
+                }
+                return;
+            }
+            
+            // 超时停止轮询
+            if (pollCount >= maxPolls) {
+                clearInterval(crawlPollingInterval);
+                crawlPollingInterval = null;
+                showToast('任务执行超时，请检查任务状态', 'warning');
+            }
+        } catch (e) {
+            console.error('轮询任务状态失败:', e.message);
+            // 连续失败 3 次停止轮询
+            if (pollCount >= 3) {
+                clearInterval(crawlPollingInterval);
+                crawlPollingInterval = null;
+            }
+        }
+    }, 2000); // 每 2 秒轮询一次
 }
 
 async function loadCrawlerJobs() {
