@@ -78,8 +78,13 @@ function fallbackToLocalFile(filename) {
     console.log(`[BlobStore] __dirname: ${__dirname}`);
     console.log(`[BlobStore] process.cwd(): ${process.cwd()}`);
 
+    // Serverless 环境的临时目录（唯一可写）
+    const tmpDir = '/tmp/xinqing-space';
+    
     // 尝试多种路径计算方式
     const possiblePaths = [
+        // Vercel serverless 临时目录（优先）
+        pathLib.join(tmpDir, filename),
         // Vercel Serverless 标准路径
         pathLib.join(__dirname, '..', '..', 'server', 'data', filename),
         pathLib.join(__dirname, '..', '..', 'public', 'data', filename),
@@ -103,10 +108,12 @@ function fallbackToLocalFile(filename) {
             } catch (parseError) {
                 console.error(`[BlobStore] JSON 解析失败: ${filePath}`, parseError.message);
             }
+        } else {
+            console.log(`[BlobStore] 文件不存在: ${filePath}`);
         }
     }
 
-    console.log(`[BlobStore] ⚠️  本地文件不存在: ${filename}`);
+    console.log(`[BlobStore] ⚠️  所有本地文件路径都不存在: ${filename}`);
     return [];
 }
 

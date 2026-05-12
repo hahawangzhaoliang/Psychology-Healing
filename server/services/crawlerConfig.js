@@ -137,7 +137,9 @@ async function deleteSource(id) {
 // ─── 任务管理 ─────────────────────────────────────────────
 
 async function getAllJobs() {
+    console.log(`[CrawlerConfig] getAllJobs() 开始读取`);
     const jobs = await jsonStore.readData(JOBS_COLLECTION);
+    console.log(`[CrawlerConfig] getAllJobs() 读取完成，返回 ${Array.isArray(jobs) ? jobs.length : 0} 个任务`);
     return jobs || [];
 }
 
@@ -155,7 +157,14 @@ async function createJob(sourceId, type) {
         createdAt: new Date().toISOString(),
     };
     jobs.push(job);
+    console.log(`[CrawlerConfig] 创建任务 ${job.id}，当前任务数: ${jobs.length}`);
     await jsonStore.writeData(JOBS_COLLECTION, jobs);
+    console.log(`[CrawlerConfig] 任务 ${job.id} 已写入存储`);
+    
+    // 验证写入：立即读取确认
+    const verify = await jsonStore.readData(JOBS_COLLECTION);
+    console.log(`[CrawlerConfig] 验证读取，任务数: ${verify.length}`);
+    
     return job;
 }
 

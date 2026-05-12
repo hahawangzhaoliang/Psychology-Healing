@@ -62,78 +62,96 @@ router.delete('/sources/:id', async (req, res) => {
 // ─── 爬取任务 ─────────────────────────────────────────────
 
 router.post('/crawl/:sourceId', async (req, res) => {
+    let job = null;
+    
     try {
+        console.log(`[Crawler] 收到爬取请求: ${req.params.sourceId}`);
+        
         const source = await crawlerConfig.getSourceById(req.params.sourceId);
         if (!source) return res.status(404).json({ success: false, error: '数据源不存在' });
+        
+        console.log(`[Crawler] 找到数据源: ${source.name}`);
 
-        const job = await crawlerConfig.createJob(source.id, source.type);
+        // 创建任务（包含写入验证）
+        job = await crawlerConfig.createJob(source.id, source.type);
+        console.log(`[Crawler] 任务创建成功: ${job.id}`);
+        
+        // 再次验证任务存在
+        const verifyJobs = await crawlerConfig.getAllJobs();
+        const jobExists = verifyJobs.some(j => j.id === job.id);
+        console.log(`[Crawler] 任务验证: ${jobExists ? '存在' : '不存在'} (共 ${verifyJobs.length} 个任务)`);
+        
+        if (!jobExists) {
+            return res.status(500).json({ success: false, error: '任务创建失败，无法持久化' });
+        }
 
-        // 立即返回，但确保异步任务开始执行
+        // 发送成功响应
         res.json({ success: true, message: '爬取任务已启动', data: { jobId: job.id } });
 
-        // 使用 setImmediate 确保任务在响应发送前开始执行
-        setImmediate(async () => {
-            try {
-                console.log(`[Crawler] 任务 ${job.id} 开始执行，爬取 ${source.name}`);
-                
-                await crawlerConfig.updateJob(job.id, { status: 'running', startedAt: new Date().toISOString() });
-                await crawlerConfig.appendJobLog(job.id, `开始爬取: ${source.name}`);
-
-                const engine = new CrawlerEngine();
-                console.log(`[Crawler] 任务 ${job.id} 调用爬虫引擎...`);
-                
-                const results = await engine.crawlSource(source);
-                console.log(`[Crawler] 任务 ${job.id} 爬取完成，结果:`, JSON.stringify({
-                    knowledge: results.knowledge.length,
-                    images: results.images.length,
-                    audio: results.audio.length
-                }));
-
-                const total = results.knowledge.length + results.images.length + results.audio.length;
-                const newItems = results.knowledge.filter(i => !i._duplicate).length;
-
-                await crawlerConfig.updateJob(job.id, {
-                    status: 'completed',
-                    completedAt: new Date().toISOString(),
-                    results: {
-                        total,
-                        new: newItems,
-                        duplicate: total - newItems,
-                        failed: 0,
-                    },
-                });
-                await crawlerConfig.appendJobLog(job.id, `爬取完成: ${total} 条, 新数据 ${newItems} 条`);
-
-                await crawlerConfig.updateSource(source.id, {
-                    lastCrawlAt: new Date().toISOString(),
-                    totalCrawled: (source.totalCrawled || 0) + newItems,
-                });
-
-                await jsonStore.writeData('crawl-results', {
-                    jobId: job.id,
-                    sourceId: source.id,
-                    timestamp: new Date().toISOString(),
-                    ...results,
-                });
-                
-                console.log(`[Crawler] 任务 ${job.id} 全部完成`);
-            } catch (error) {
-                console.error(`[Crawler] 任务 ${job.id} 执行失败:`, error.message);
-                try {
-                    await crawlerConfig.updateJob(job.id, {
-                        status: 'failed',
-                        completedAt: new Date().toISOString(),
-                    });
-                    await crawlerConfig.appendJobLog(job.id, `爬取失败: ${error.message}`);
-                } catch (e) {
-                    console.error(`[Crawler] 更新失败状态出错:`, e.message);
-                }
-            }
+        // 异步执行爬取（不影响响应）
+        processCrawlJob(job.id, source).catch(err => {
+            console.error(`[Crawler] 后台爬取出错: ${err.message}`);
         });
+        
     } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
+        console.error(`[Crawler] 任务创建失败: ${error.message}`);
+        res.status(500).json({ success: false, error: '任务创建失败: ' + error.message });
     }
 });
+
+// 独立的异步爬取函数
+async function processCrawlJob(jobId, source) {
+    try {
+        console.log(`[Crawler] 后台任务 ${jobId} 开始执行`);
+        
+        await crawlerConfig.updateJob(jobId, { status: 'running', startedAt: new Date().toISOString() });
+        await crawlerConfig.appendJobLog(jobId, `开始爬取: ${source.name}`);
+
+        const engine = new CrawlerEngine();
+        console.log(`[Crawler] 任务 ${jobId} 调用爬虫引擎...`);
+        
+        const results = await engine.crawlSource(source);
+        console.log(`[Crawler] 任务 ${jobId} 爬取完成，结果:`, {
+            knowledge: results.knowledge.length,
+            images: results.images.length,
+            audio: results.audio.length
+        });
+
+        const total = results.knowledge.length + results.images.length + results.audio.length;
+        const newItems = results.knowledge.filter(i => !i._duplicate).length;
+
+        await crawlerConfig.updateJob(jobId, {
+            status: 'completed',
+            completedAt: new Date().toISOString(),
+            results: { total, new: newItems, duplicate: total - newItems, failed: 0 },
+        });
+        await crawlerConfig.appendJobLog(jobId, `爬取完成: ${total} 条, 新数据 ${newItems} 条`);
+
+        await crawlerConfig.updateSource(source.id, {
+            lastCrawlAt: new Date().toISOString(),
+            totalCrawled: (source.totalCrawled || 0) + newItems,
+        });
+
+        await jsonStore.writeData('crawl-results', {
+            jobId, sourceId: source.id,
+            timestamp: new Date().toISOString(),
+            ...results,
+        });
+        
+        console.log(`[Crawler] 任务 ${jobId} 全部完成`);
+    } catch (error) {
+        console.error(`[Crawler] 任务 ${jobId} 执行失败:`, error.message);
+        try {
+            await crawlerConfig.updateJob(jobId, {
+                status: 'failed',
+                completedAt: new Date().toISOString(),
+            });
+            await crawlerConfig.appendJobLog(jobId, `爬取失败: ${error.message}`);
+        } catch (e) {
+            console.error(`[Crawler] 更新失败状态出错:`, e.message);
+        }
+    }
+}
 
 router.get('/jobs', async (req, res) => {
     try {
