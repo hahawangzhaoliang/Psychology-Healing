@@ -604,19 +604,29 @@ function authHeaders() {
         : {};
 }
 
-// ─── 通用 API 请求 ────────────────────────────────────────────
+// ─── 通用 API 请求（带超时保护）───────────────────────────────
 async function api(path, options = {}) {
-    const res = await fetch(`${API_BASE}${path}`, {
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...authHeaders(),
-            ...(options.headers || {})
-        }
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
-    return data;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s 超时
+    try {
+        const res = await fetch(`${API_BASE}${path}`, {
+            ...options,
+            signal: controller.signal,
+            headers: {
+                'Content-Type': 'application/json',
+                ...authHeaders(),
+                ...(options.headers || {})
+            }
+        });
+        clearTimeout(timeoutId);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+        return data;
+    } catch (e) {
+        clearTimeout(timeoutId);
+        if (e.name === 'AbortError') throw new Error('请求超时（15秒），请检查网络或 Blob 存储状态');
+        throw e;
+    }
 }
 
 // ─── 登录 ────────────────────────────────────────────────────
@@ -674,11 +684,12 @@ function switchTab(tab, el) {
     document.querySelectorAll('.main > div').forEach(d => d.classList.add('hidden'));
     document.getElementById(`tab-${tab}`).classList.remove('hidden');
 
+    // ✅ 必须用 else if，只加载当前标签
     if (tab === 'dashboard') loadDashboard();
-    if (tab === 'data')      loadData();
-    if (tab === 'media')     loadMedia();
-    if (tab === 'settings')  loadSettings();
-    if (tab === 'crawler')   switchCrawlerTab(currentCrawlerTab);
+    else if (tab === 'data')  loadData();
+    else if (tab === 'media') loadMedia();
+    else if (tab === 'settings') loadSettings();
+    else if (tab === 'crawler') switchCrawlerTab(currentCrawlerTab);
 }
 
 // ─── 仪表盘 ──────────────────────────────────────────────────
@@ -686,9 +697,20 @@ async function loadDashboard() {
     const grid = document.getElementById('stats-grid');
     const list = document.getElementById('collections-list');
 
+    // 先显示骨架屏，避免"卡死"感
+    grid.innerHTML = `
+        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
+        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
+        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
+    `;
+    list.innerHTML = '<p class="text-muted">加载中…</p>';
+
     try {
-        const statsRes = await api('/admin/stats');
-        const collRes = await api('/admin/collections');
+        // ✅ 并行请求，两个 API 同时拉取
+        const [statsRes, collRes] = await Promise.all([
+            api('/admin/stats').catch(e => ({ success: false, error: e.message })),
+            api('/admin/collections').catch(e => ({ success: false, error: e.message })),
+        ]);
 
         if (!statsRes.success) throw new Error(statsRes.error);
 
@@ -706,7 +728,9 @@ async function loadDashboard() {
             <table class="data-table">
                 <thead><tr><th>集合名称</th><th>文件名</th><th>记录数</th><th>操作</th></tr></thead>
                 <tbody>
-                    ${collections.map(c => `
+                    ${collections.length === 0
+                        ? `<tr><td colspan="4" class="text-muted">无法加载集合（${statsRes.error || 'Blob 连接异常'}）</td></tr>`
+                        : collections.map(c => `
                         <tr>
                             <td><strong>${c.displayName}</strong><br><span class="text-muted">${c.key}</span></td>
                             <td><code style="font-size:0.8rem;">${c.fileName}.json</code></td>
@@ -721,6 +745,7 @@ async function loadDashboard() {
         `;
     } catch (e) {
         grid.innerHTML = `<div class="stat-card"><div class="num">!</div><div class="label">加载失败：${e.message}</div></div>`;
+        list.innerHTML = `<p class="text-muted" style="color:var(--danger);">加载失败：${e.message}</p>`;
     }
 }
 
@@ -736,7 +761,8 @@ async function loadData(page) {
     const tbody = document.getElementById('data-tbody');
     const title = document.getElementById('data-table-title');
 
-    tbody.innerHTML = '<tr><td colspan="3" class="text-muted">加载中…</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3"><span style="color:var(--text-light);">⏳ 加载中…</span></td></tr>';
+    document.getElementById('data-pagination').innerHTML = '';
 
     try {
         const res = await api(`/admin/data/${CURRENT_COLLECTION}?page=${CURRENT_PAGE}&limit=${PAGE_SIZE}`);
@@ -837,13 +863,12 @@ function openJsonEditor(id) {
     document.getElementById('modal-overlay').classList.add('open');
 }
 
-// 切换到数据管理标签
+// 切换到数据管理标签（不传 el，避免 switchTab 重复操作 active 类）
 function switchToDataTab(collection) {
     document.getElementById('collection-select').value = collection;
     CURRENT_COLLECTION = collection;
     CURRENT_PAGE = 1;
-    switchTab('data');
-    document.querySelector('[data-tab="data"]').classList.add('active');
+    switchTab('data'); // switchTab 会移除所有 active，再由侧边栏点击自动加回来
 }
 
 // 轻量提示
@@ -998,6 +1023,7 @@ function switchCrawlerTab(tab) {
 
 async function loadCrawlerSources() {
     const container = document.getElementById('crawler-sources-list');
+    container.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
     try {
         const res = await api('/crawler/sources');
         const sources = res.data || [];
@@ -1178,6 +1204,7 @@ async function startCrawl(sourceId) {
 
 async function loadCrawlerJobs() {
     const container = document.getElementById('crawler-jobs-list');
+    container.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
     try {
         const res = await api('/crawler/jobs');
         const jobs = (res.data || []).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -1225,6 +1252,7 @@ async function loadCrawlerJobs() {
 
 async function loadCrawlResults() {
     const container = document.getElementById('crawler-results-content');
+    container.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
     try {
         const res = await api('/crawler/results');
         currentCrawlResults = res.data;
@@ -1388,8 +1416,16 @@ function refreshCrawlResults() {
 // ─── 系统设置 ────────────────────────────────────────────────
 async function loadSettings() {
     const infoEl = document.getElementById('system-info');
+    infoEl.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
     try {
-        const res = await api('/');
+        // ✅ 并行请求 metadata + blob status
+        const [rootRes, statusRes] = await Promise.all([
+            api('/').catch(e => ({ metadata: {} })),
+            api('/admin/blob-status').catch(e => ({ data: { ok: false, error: e.message } })),
+        ]);
+
+        const res = rootRes;
+        const blobOk = statusRes.data?.ok;
         infoEl.innerHTML = `
             <table class="data-table">
                 <tr><td><strong>数据存储</strong></td><td>Vercel Blob</td></tr>
@@ -1435,9 +1471,7 @@ async function loadSettings() {
             </div>
         `;
 
-        // 检查 Blob 状态
-        const statusRes = await api('/admin/blob-status');
-        const blobOk = statusRes.data?.ok;
+        // Blob 状态（已在并行请求中获取）
         const statusBadge = document.getElementById('storage-status-badge');
         if (statusBadge) {
             statusBadge.innerHTML = blobOk
@@ -1553,13 +1587,21 @@ async function loadMedia() {
     const audioCount = document.getElementById('audio-count');
     const blobStatus = document.getElementById('blob-status');
 
-    try {
-        // 获取媒体列表
-        const res = await api('/admin/media/list');
-        mediaData = res.data || { images: [], audio: [] };
+    // 先显示骨架屏
+    blobStatus.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
+    imageGrid.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
+    audioList.innerHTML = '<p class="text-muted">⏳ 加载中…</p>';
+    imageCount.textContent = '-';
+    audioCount.textContent = '-';
 
-        // 检查 Blob 状态
-        const statusRes = await api('/admin/blob-status');
+    try {
+        // ✅ 并行请求媒体列表 + Blob 状态
+        const [mediaRes, statusRes] = await Promise.all([
+            api('/admin/media/list').catch(e => ({ data: { images: [], audio: [] }, error: e.message })),
+            api('/admin/blob-status').catch(e => ({ data: { ok: false, error: e.message } })),
+        ]);
+
+        mediaData = mediaRes.data || { images: [], audio: [] };
         const blobOk = statusRes.data?.ok;
 
         blobStatus.innerHTML = `
