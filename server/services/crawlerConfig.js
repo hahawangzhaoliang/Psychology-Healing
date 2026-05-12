@@ -161,9 +161,23 @@ async function createJob(sourceId, type) {
     await jsonStore.writeData(JOBS_COLLECTION, jobs);
     console.log(`[CrawlerConfig] 任务 ${job.id} 已写入存储`);
     
-    // 验证写入：立即读取确认
-    const verify = await jsonStore.readData(JOBS_COLLECTION);
-    console.log(`[CrawlerConfig] 验证读取，任务数: ${verify.length}`);
+    // Blob 有最终一致性，添加短暂延迟后再验证
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    // 验证写入：带重试
+    let verify = null;
+    for (let i = 0; i < 3; i++) {
+        verify = await jsonStore.readData(JOBS_COLLECTION);
+        console.log(`[CrawlerConfig] 验证尝试 ${i + 1}: ${verify.length} 个任务`);
+        if (verify.some(j => j.id === job.id)) {
+            console.log(`[CrawlerConfig] ✅ 任务验证成功`);
+            break;
+        }
+        if (i < 2) {
+            console.log(`[CrawlerConfig] 任务未找到，等待 1 秒后重试...`);
+            await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    }
     
     return job;
 }

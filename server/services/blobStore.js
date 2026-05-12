@@ -41,29 +41,40 @@ async function readJsonFromBlob(filename) {
     
     console.log(`[BlobStore] 尝试从 Blob 读取: ${filepath}`);
 
-    try {
-        // v0.27 API: 使用 head 获取文件信息，然后用 downloadUrl 下载
-        const result = await blob.head(filepath);
-        console.log(`[BlobStore] Blob head 成功: ${JSON.stringify({ pathname: result.pathname, size: result.size })}`);
+    // 尝试从 Blob 读取（带重试）
+    for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+            console.log(`[BlobStore] Blob 读取尝试 ${attempt + 1}/3`);
+            
+            // v0.27 API: 使用 head 获取文件信息，然后用 downloadUrl 下载
+            const result = await blob.head(filepath);
+            console.log(`[BlobStore] Blob head 成功: ${JSON.stringify({ pathname: result.pathname, size: result.size })}`);
 
-        if (result.downloadUrl) {
-            console.log(`[BlobStore] 正在下载: ${result.downloadUrl.substring(0, 80)}...`);
-            const response = await fetch(result.downloadUrl);
-            if (response.ok) {
-                const text = await response.text();
-                const data = JSON.parse(text);
-                console.log(`[BlobStore] ✅ Blob 读取成功: ${filename} (${Array.isArray(data) ? data.length : 0} 条)`);
-                return data;
-            } else {
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            if (result.downloadUrl) {
+                console.log(`[BlobStore] 正在下载: ${result.downloadUrl.substring(0, 80)}...`);
+                const response = await fetch(result.downloadUrl);
+                if (response.ok) {
+                    const text = await response.text();
+                    const data = JSON.parse(text);
+                    console.log(`[BlobStore] ✅ Blob 读取成功: ${filename} (${Array.isArray(data) ? data.length : 0} 条)`);
+                    return data;
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            }
+            throw new Error('downloadUrl 不存在');
+        } catch (error) {
+            console.log(`[BlobStore] Blob 读取尝试 ${attempt + 1} 失败: ${error.message}`);
+            if (attempt < 2) {
+                console.log(`[BlobStore] 等待 1 秒后重试...`);
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         }
-        throw new Error('downloadUrl 不存在');
-    } catch (error) {
-        console.log(`[BlobStore] ❌ Blob 读取失败: ${error.message}`);
-        console.log(`[BlobStore] 降级到本地文件...`);
-        return fallbackToLocalFile(filename);
     }
+    
+    // 所有重试都失败，降级到本地文件
+    console.log(`[BlobStore] ❌ Blob 读取全部失败（3 次重试），降级到本地文件`);
+    return fallbackToLocalFile(filename);
 }
 
 /**
@@ -129,8 +140,12 @@ async function writeJsonToBlob(filename, data) {
         const result = await put(filepath, jsonString, {
             access: 'public',
             contentType: 'application/json; charset=utf-8',
+            addRandomSuffix: false,  // 禁用随机后缀，确保文件路径稳定
         });
-        console.log(`[BlobStore] 写入 ${filepath} 成功`);
+        console.log(`[BlobStore] ✅ 写入 ${filepath} 成功`);
+        console.log(`[BlobStore] 返回 URL: ${result.url}`);
+        
+        // 返回结果包含 url，可以直接使用
         return result;
     } catch (error) {
         console.error(`[BlobStore] 写入失败:`, error.message);
