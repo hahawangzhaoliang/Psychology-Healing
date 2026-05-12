@@ -154,6 +154,15 @@ class ContentParser {
             .slice(0, maxKeywords)
             .map(([word]) => word);
     }
+
+    static extractKeyPoints(content, maxPoints = 3) {
+        if (!content) return [];
+        return content
+            .split(/[。！？\n]+/)
+            .map(s => s.trim())
+            .filter(s => s.length > 10)
+            .slice(0, maxPoints);
+    }
 }
 
 // ─── 指纹生成器（保留）────────────────────────────────────
@@ -257,9 +266,11 @@ class GenericWebCrawler {
             content: content.substring(0, 5000),
             sourceUrl: this.source.url,
             sourceName: this.source.name,
+            source: this.source.name || this.source.url || '',
             publishedDate: date || new Date().toISOString(),
             category: this.source.category || 'knowledge',
             tags: ContentParser.extractKeywords(content, 5),
+            keyPoints: ContentParser.extractKeyPoints(content, 3),
             crawledAt: new Date().toISOString(),
             _collection: this.source.category || 'knowledge',
         };
@@ -320,10 +331,12 @@ class GenericWebCrawler {
             abstract: abstract ? abstract.substring(0, 2000) : '',
             sourceUrl: this.source.url,
             sourceName: this.source.name,
+            source: this.source.name || '',
             publishedDate: date || new Date().toISOString(),
             pdfUrl: pdfUrl || '',
             category: '学术论文',
             tags: ContentParser.extractKeywords(abstract || title, 8),
+            keyPoints: ContentParser.extractKeyPoints(abstract || title, 3),
             crawledAt: new Date().toISOString(),
             _collection: 'knowledge',
             _nodeType: 'paper',
@@ -352,9 +365,11 @@ class GenericWebCrawler {
             summary: summary ? summary.substring(0, 3000) : '',
             sourceUrl: this.source.url,
             sourceName: this.source.name,
+            source: this.source.name || '',
             rating: rating || '',
             category: '心理学书籍',
             tags: ContentParser.extractKeywords(summary || title, 5),
+            keyPoints: ContentParser.extractKeyPoints(summary || title, 3),
             crawledAt: new Date().toISOString(),
             _collection: 'knowledge',
             _nodeType: 'book',
