@@ -45,7 +45,7 @@ coverage/
 .vercel
 
 # 内部文档（不发布到GitHub）
-internal-docs/
+docs/
 
 # 工具文件夹
 .dumate/

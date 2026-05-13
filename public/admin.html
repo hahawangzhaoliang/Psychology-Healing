@@ -697,44 +697,50 @@ async function loadDashboard() {
     const grid = document.getElementById('stats-grid');
     const list = document.getElementById('collections-list');
 
-    // 先显示骨架屏，避免"卡死"感
-    grid.innerHTML = `
-        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
-        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
-        <div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>
-    `;
+    // 骨架屏
+    const skeletonCard = `<div class="stat-card"><div class="num" style="opacity:0.3;">-</div><div class="label">加载中…</div></div>`;
+    grid.innerHTML = skeletonCard + skeletonCard + skeletonCard + skeletonCard + skeletonCard;
     list.innerHTML = '<p class="text-muted">加载中…</p>';
 
-    try {
-        // ✅ 并行请求，两个 API 同时拉取
-        const [statsRes, collRes] = await Promise.all([
-            api('/admin/stats').catch(e => ({ success: false, error: e.message })),
-            api('/admin/collections').catch(e => ({ success: false, error: e.message })),
-        ]);
+    // 独立并行请求，互不影响，各自降级
+    const statsPromise = api('/admin/stats')
+        .then(r => r.success ? r.data : null)
+        .catch(e => { console.warn('[Dashboard] stats 失败:', e.message); return null; });
 
-        if (!statsRes.success) throw new Error(statsRes.error);
+    const collPromise = api('/admin/collections')
+        .then(r => r.success ? r.data : null)
+        .catch(e => { console.warn('[Dashboard] collections 失败:', e.message); return null; });
 
-        const stats = statsRes.data;
-        const collections = collRes.success ? collRes.data : [];
+    const [stats, collections] = await Promise.all([statsPromise, collPromise]);
 
+    // 渲染统计卡片（有数据就显示，无数据显示占位）
+    if (stats && Object.keys(stats).length > 0) {
         grid.innerHTML = Object.entries(stats).map(([key, count]) => `
             <div class="stat-card">
                 <div class="num">${count}</div>
                 <div class="label">${getCollectionDisplayName(key)}</div>
             </div>
         `).join('');
+    } else {
+        grid.innerHTML = `
+            <div class="stat-card" style="grid-column:1/-1;">
+                <div class="num" style="font-size:1.2rem;color:var(--warn);">⚠️</div>
+                <div class="label">统计数据加载失败<br><span style="font-size:0.75rem;color:var(--text-light);">Blob 连接超时，请稍后刷新</span></div>
+            </div>
+        `;
+    }
 
+    // 渲染集合列表
+    if (collections && collections.length > 0) {
         list.innerHTML = `
             <table class="data-table">
                 <thead><tr><th>集合名称</th><th>文件名</th><th>记录数</th><th>操作</th></tr></thead>
                 <tbody>
-                    ${collections.length === 0
-                        ? `<tr><td colspan="4" class="text-muted">无法加载集合（${statsRes.error || 'Blob 连接异常'}）</td></tr>`
-                        : collections.map(c => `
+                    ${collections.map(c => `
                         <tr>
                             <td><strong>${c.displayName}</strong><br><span class="text-muted">${c.key}</span></td>
                             <td><code style="font-size:0.8rem;">${c.fileName}.json</code></td>
-                            <td><strong>${stats[c.key] || 0}</strong></td>
+                            <td><strong>${(stats && stats[c.key]) || c.count || 0}</strong></td>
                             <td>
                                 <button class="btn btn-outline btn-sm" onclick="switchToDataTab('${c.key}')">管理</button>
                             </td>
@@ -743,9 +749,24 @@ async function loadDashboard() {
                 </tbody>
             </table>
         `;
-    } catch (e) {
-        grid.innerHTML = `<div class="stat-card"><div class="num">!</div><div class="label">加载失败：${e.message}</div></div>`;
-        list.innerHTML = `<p class="text-muted" style="color:var(--danger);">加载失败：${e.message}</p>`;
+    } else if (stats) {
+        // stats 成功但 collections 失败，用 stats 兜底渲染
+        list.innerHTML = `
+            <table class="data-table">
+                <thead><tr><th>集合名称</th><th>记录数</th></tr></thead>
+                <tbody>
+                    ${Object.entries(stats).map(([key, count]) => `
+                        <tr>
+                            <td><strong>${getCollectionDisplayName(key)}</strong><br><span class="text-muted">${key}</span></td>
+                            <td><strong>${count}</strong></td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            <p class="text-muted" style="margin-top:8px;font-size:0.8rem;">⚠️ 集合详情加载失败，仅显示基础统计</p>
+        `;
+    } else {
+        list.innerHTML = `<p class="text-muted" style="color:var(--danger);">加载失败：无法连接到数据存储，请检查 Blob 配置或稍后刷新</p>`;
     }
 }
 

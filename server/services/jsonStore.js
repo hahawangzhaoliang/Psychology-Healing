@@ -249,16 +249,18 @@ async function exportAll() {
  */
 async function getStats() {
     const collections = ['exercises', 'knowledge', 'regulation', 'tips', 'graph'];
-    const stats = {};
-    for (const col of collections) {
-        try {
-            const data = await readData(col);
-            stats[col] = Array.isArray(data) ? data.length : 0;
-        } catch {
-            stats[col] = 0;
-        }
-    }
-    return stats;
+    // 并行读取所有集合，避免串行超时
+    const results = await Promise.all(
+        collections.map(async (col) => {
+            try {
+                const data = await readData(col);
+                return [col, Array.isArray(data) ? data.length : 0];
+            } catch {
+                return [col, 0];
+            }
+        })
+    );
+    return Object.fromEntries(results);
 }
 
 /**
@@ -277,31 +279,31 @@ const COLLECTION_MAP = {
  */
 async function listCollections() {
     const collections = ['exercises', 'knowledge', 'regulation', 'tips'];
-    const result = [];
-
-    for (const key of collections) {
-        const col = COLLECTION_MAP[key];
-        try {
-            const dataCount = await count(key);
-            result.push({
-                key,
-                displayName: col.display,
-                fileName: COLLECTION_FILE_MAP[key],
-                blobPath: col.blobPath,
-                count: dataCount,
-            });
-        } catch {
-            result.push({
-                key,
-                displayName: col.display,
-                fileName: COLLECTION_FILE_MAP[key],
-                blobPath: col.blobPath,
-                count: 0,
-            });
-        }
-    }
-
-    return result;
+    // 并行读取所有集合计数
+    const results = await Promise.all(
+        collections.map(async (key) => {
+            const col = COLLECTION_MAP[key];
+            try {
+                const dataCount = await count(key);
+                return {
+                    key,
+                    displayName: col.display,
+                    fileName: COLLECTION_FILE_MAP[key],
+                    blobPath: col.blobPath,
+                    count: dataCount,
+                };
+            } catch {
+                return {
+                    key,
+                    displayName: col.display,
+                    fileName: COLLECTION_FILE_MAP[key],
+                    blobPath: col.blobPath,
+                    count: 0,
+                };
+            }
+        })
+    );
+    return results;
 }
 
 module.exports = {

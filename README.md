@@ -48,7 +48,7 @@
 - Node.js >= 16.0.0
 - npm >= 8.0.0
 - Python >= 3.7（可选，用于音频下载）
-- Upstash Search 账号（免费）
+- Vercel Blob 存储（免费）
 
 ### 安装运行
 
@@ -62,7 +62,7 @@ npm install
 
 # 配置环境变量
 cp .env.example .env
-# 编辑 .env 文件，填入 Upstash Search 凭据
+# 编辑 .env 文件，填入 Vercel Blob Token
 
 # 下载疗愈音频（可选）
 pip install requests
@@ -99,7 +99,7 @@ xinqing-space/
 ├── server/              # Node.js后端
 │   ├── index.js         # 服务入口
 │   ├── config/          # 配置文件
-│   │   └── upstash.js   # Upstash Search配置
+│   │   └── blob.js      # Vercel Blob 配置
 │   ├── routes/          # API路由
 │   │   ├── api.js       # 路由入口
 │   │   ├── emotion.js   # 情绪日记API
@@ -115,11 +115,13 @@ xinqing-space/
 ├── scripts/             # 脚本文件
 │   ├── download_audio.py # 音频下载工具
 │   └── update-knowledge.js   # 知识更新
-├── docs/                # 文档目录
-│   ├── PRODUCT_STRATEGY.md # 产品战略规划
-│   ├── MVP_IMPLEMENTATION_PLAN.md # MVP实施计划
-│   ├── FREE_AUDIO_RESOURCES.md # 免费音频资源指南
-│   └── CODE_OPTIMIZATION_SUMMARY.md # 代码优化总结
+├── docs/                # 文档目录（按主题分类）
+│   ├── README.md                 # 文档索引
+│   ├── 01-product/              # 产品文档
+│   ├── 02-engineering/         # 工程文档
+│   ├── 03-deployment/          # 部署文档
+│   ├── 04-content/             # 内容文档
+│   └── 05-process/             # 流程文档
 ├── logs/                # 日志目录
 ├── package.json
 ├── vercel.json          # Vercel配置
@@ -224,8 +226,8 @@ npm run update-knowledge
 1. Fork 本仓库
 2. 在 Vercel 导入项目
 3. 配置环境变量：
-   - `UPSTASH_SEARCH_REST_URL`
-   - `UPSTASH_SEARCH_REST_TOKEN`
+   - `BLOB_READ_WRITE_TOKEN`
+   - `ADMIN_TOKEN`
    - `KNOWLEDGE_UPDATE_SECRET`
 4. 部署完成
 
@@ -241,8 +243,8 @@ npm start
 ```bash
 docker build -t xinqing-space .
 docker run -d -p 3000:3000 \
-  -e UPSTASH_SEARCH_REST_URL=xxx \
-  -e UPSTASH_SEARCH_REST_TOKEN=xxx \
+  -e BLOB_READ_WRITE_TOKEN=xxx \
+  -e ADMIN_TOKEN=xxx \
   xinqing-space
 ```
 
@@ -250,8 +252,8 @@ docker run -d -p 3000:3000 \
 
 | 变量名 | 说明 | 必填 |
 |--------|------|------|
-| `UPSTASH_SEARCH_REST_URL` | Upstash Search URL | ✅ |
-| `UPSTASH_SEARCH_REST_TOKEN` | Upstash Search Token | ✅ |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob 读写 Token | ✅ |
+| `ADMIN_TOKEN` | 管理后台登录 Token | ✅ |
 | `KNOWLEDGE_UPDATE_SECRET` | 定时更新密钥 | ✅ |
 | `PORT` | 服务端口 | ❌ (默认3000) |
 | `CORS_ORIGIN` | CORS配置 | ❌ (默认*) |
@@ -277,6 +279,20 @@ docker run -d -p 3000:3000 \
 
 **全国心理援助热线：400-161-9995（24小时免费服务）**
 
+## 📚 文档
+
+详细文档请查看 [`docs/README.md`](./docs/README.md)，按主题分类存放：
+
+| 目录 | 内容 |
+|--------|------|
+| `docs/01-product/` | 产品策略、MVP 计划、功能总结 |
+| `docs/02-engineering/` | 系统架构、代码优化 |
+| `docs/03-deployment/` | 部署指南、存储配置 |
+| `docs/04-content/` | 内容脚本、音频资源 |
+| `docs/05-process/` | 测试清单、发布流程 |
+
+---
+
 ## 🛠️ 技术栈
 
 ### 前端
@@ -288,7 +304,7 @@ docker run -d -p 3000:3000 \
 ### 后端
 - Node.js
 - Express.js
-- Upstash Search（云数据库）
+- Vercel Blob（云存储）
 
 ### 部署
 - Vercel（Serverless + Cron）
