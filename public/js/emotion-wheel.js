@@ -25,14 +25,14 @@ class EmotionWheel {
 
         // 情绪组合映射
         this.combinations = {
-            'joy+trust':             { name: '爱',     emoji: '❤️' },
-            'trust+fear':            { name: '屈服', emoji: '🙇' },
-            'fear+surprise':        { name: '敬畏', emoji: '🙏' },
-            'surprise+sadness':    { name: '不赞同', emoji: '😒' },
-            'sadness+disgust':    { name: '悔恨', emoji: '😔' },
-            'disgust+anger':       { name: '蔑视', emoji: '😤' },
-            'anger+anticipation':  { name: '攻击性', emoji: '👊' },
-            'anticipation+joy':    { name: '乐观', emoji: '😄' },
+            'joy+trust':             { name: '爱',     emoji: '❤️', color: '#E91E63' },
+            'trust+fear':            { name: '屈服', emoji: '🙇', color: '#9E9E9E' },
+            'fear+surprise':        { name: '敬畏', emoji: '🙏', color: '#9C27B0' },
+            'surprise+sadness':    { name: '不赞同', emoji: '😒', color: '#FF9800' },
+            'sadness+disgust':    { name: '悔恨', emoji: '😔', color: '#795548' },
+            'disgust+anger':       { name: '蔑视', emoji: '😤', color: '#D32F2F' },
+            'anger+anticipation':  { name: '攻击性', emoji: '👊', color: '#F44336' },
+            'anticipation+joy':    { name: '乐观', emoji: '😄', color: '#4CAF50' },
         };
 
         this.order = ['joy','trust','fear','surprise','sadness','disgust','anger','anticipation'];
@@ -304,16 +304,15 @@ class EmotionWheel {
                 ctx.fillStyle = '#555';
             }
             ctx.fillText(em.name, lx, ly);
-
-            // 强度小标签（外层温和 / 内层强烈）
-            const labelR2 = maxR + 22;
-            const smallA = labelA;
-            const sx = cx + (labelR2 + 14) * Math.cos(smallA);
-            const sy = cy + (labelR2 + 14) * Math.sin(smallA);
-            ctx.font = '10px "PingFang SC","Microsoft YaHei",sans-serif';
-            ctx.fillStyle = '#aaa';
-            ctx.fillText('温和→强烈', sx, sy);
         });
+
+        // 强度图例（只绘制一次）
+        const legendY = cy + maxR + 40;
+        ctx.font = '11px "PingFang SC","Microsoft YaHei",sans-serif';
+        ctx.fillStyle = '#888';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('外圈=温和 · 内圈=强烈', cx, legendY);
 
         // ===== 中心圆 =====
         const cR = minR - 4;
