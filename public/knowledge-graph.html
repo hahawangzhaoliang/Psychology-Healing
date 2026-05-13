@@ -2,13 +2,14 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>心理知识图谱 — 心晴空间</title>
-    <meta name="description" content="基于认知行为疗法和积极心理学的可视化知识图谱">
+    <meta name="description" content="探索积极心理学与认知心理学，可视化知识关联与个性化学习路径">
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ---------- 页面级覆盖 ---------- */
@@ -16,179 +17,10 @@
             font-family: var(--font-sans);
             background: var(--theme-bg);
             color: var(--theme-text);
-            overflow: hidden;
+            overflow-x: hidden;
         }
 
-        /* ---------- 全屏布局 ---------- */
-        .graph-layout {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            padding-top: 64px;
-        }
-
-        /* ---------- 图形容器 ---------- */
-        .graph-container {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            min-height: 0; /* 修复 flex 子元素高度问题 */
-            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-warm-50) 100%);
-        }
-        .graph-canvas {
-            width: 100%;
-            height: 100%;
-        }
-
-        /* ---------- 图例面板 ---------- */
-        .legend-panel {
-            position: absolute;
-            top: 1.25rem;
-            left: 1.25rem;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: var(--radius-lg);
-            padding: 1rem 1.25rem;
-            box-shadow: var(--shadow-md);
-            z-index: 10;
-            min-width: 160px;
-        }
-        .legend-panel h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--theme-text);
-            margin-bottom: 0.75rem;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.8rem;
-            color: var(--theme-text-light);
-        }
-        .legend-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-        .legend-hint {
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid var(--theme-border);
-            font-size: 0.75rem;
-            color: var(--theme-text-light);
-            line-height: 1.6;
-        }
-
-        /* ---------- 详情面板 ---------- */
-        .detail-panel {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 100%;
-            max-width: 400px;
-            height: 100vh;
-            background: var(--theme-card);
-            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
-            transform: translateX(100%);
-            transition: transform var(--duration-normal) var(--ease-spring);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .detail-panel.open {
-            transform: translateX(0);
-        }
-
-        .detail-header {
-            padding: 1.25rem 1.5rem;
-            border-bottom: 1px solid var(--theme-border);
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1rem;
-            flex-shrink: 0;
-        }
-        .detail-category-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.375rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-top: 0.5rem;
-        }
-        .detail-close {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--color-primary-50);
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--color-primary-500);
-            flex-shrink: 0;
-            transition: all var(--duration-fast) var(--ease-spring);
-        }
-        .detail-close:hover {
-            background: var(--color-primary-100);
-            transform: scale(1.08);
-        }
-
-        .detail-body {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-        }
-
-        .detail-section {
-            margin-bottom: 1.5rem;
-        }
-        .detail-section h3 {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--theme-text-light);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.75rem;
-        }
-        .detail-section p {
-            font-size: 0.95rem;
-            color: var(--theme-text);
-            line-height: 1.8;
-        }
-        .detail-reference {
-            font-size: 0.8rem;
-            color: var(--theme-text-light);
-            font-style: italic;
-            line-height: 1.6;
-        }
-
-        /* ---------- 遮罩（侧边栏打开时） ---------- */
-        .detail-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.25);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 199;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--duration-normal) var(--ease-standard);
-        }
-        .detail-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* ---------- 导航栏覆盖 ---------- */
+        /* ---------- 导航栏（与 index.html 一致） ---------- */
         .navbar {
             position: fixed;
             top: 0;
@@ -201,50 +33,679 @@
             border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
         .navbar-inner {
-            max-width: 100%;
+            max-width: 72rem;
+            margin: 0 auto;
             padding: 0 1.5rem;
             height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-
-        /* ---------- D3 节点样式（通过 CSS 覆盖） ---------- */
-        .node circle {
-            stroke-width: 3px;
-            stroke: white;
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .desktop-nav { display: flex; }
+        }
+        .mobile-menu-btn {
+            display: flex;
+            padding: 0.5rem;
+            color: var(--theme-text-light);
+            background: none;
+            border: none;
             cursor: pointer;
-            transition: filter 0.2s ease;
         }
-        .node circle:hover {
-            filter: brightness(1.1);
+        @media (min-width: 768px) {
+            .mobile-menu-btn { display: none; }
         }
-        .node.selected circle {
-            stroke: var(--color-primary-400) !important;
-            stroke-width: 4px !important;
+        .mobile-menu {
+            display: none;
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
         }
-        .node text {
-            font-family: var(--font-sans);
-            font-size: 11px;
+        .mobile-menu.open { display: block; }
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--theme-text-light);
+            text-decoration: none;
+            transition: background var(--duration-fast) var(--ease-standard),
+                        color var(--duration-fast) var(--ease-standard);
+        }
+        .mobile-menu a:hover,
+        .mobile-menu a.active {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+        }
+
+        /* ---------- Hero 区域 ---------- */
+        .page-hero {
+            position: relative;
+            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 40%, var(--color-primary-100) 100%);
+            padding: 7rem 1.5rem 3rem;
+            text-align: center;
+        }
+        .page-hero h1 {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            font-weight: 800;
+            color: var(--theme-text);
+            margin-bottom: 0.75rem;
+        }
+        .page-hero h1 .highlight {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .page-hero p {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+            max-width: 36rem;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ---------- 工具栏 ---------- */
+        .toolbar {
+            background: var(--theme-card);
+            padding: 0.75rem 1rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid var(--theme-border);
+            position: sticky;
+            top: 64px;
+            z-index: 99;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+        .toolbar::-webkit-scrollbar { display: none; }
+        .view-tabs {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--theme-bg);
+            padding: 0.25rem;
+            border-radius: var(--radius-lg);
+            flex-shrink: 0;
+        }
+        .view-tab {
+            padding: 0.4rem 0.75rem;
+            border: none;
+            background: transparent;
+            color: var(--theme-text-light);
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+        .view-tab.active {
+            background: white;
+            color: var(--color-primary-500);
+            box-shadow: var(--shadow-xs);
+        }
+        .filter-group {
+            display: flex;
+            gap: 0.35rem;
+            margin-left: auto;
+            flex-shrink: 0;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+            mask-image: linear-gradient(to right, black 85%, transparent 100%);
+        }
+        .filter-group::-webkit-scrollbar { display: none; }
+        .filter-chip {
+            padding: 0.3rem 0.65rem;
+            border: 1px solid var(--theme-border);
+            background: white;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--duration-fast) var(--ease-standard);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            flex-shrink: 0;
+        }
+        .filter-chip.active {
+            border-color: var(--color-primary-400);
+            background: var(--color-primary-50);
+            color: var(--color-primary-600);
+        }
+        .filter-chip .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        /* 移动端：工具栏垂直堆叠，避免横向挤压 */
+        @media (max-width: 640px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                padding: 0.6rem 0.75rem;
+            }
+            .filter-group {
+                margin-left: 0;
+                width: 100%;
+                -webkit-mask-image: none;
+                mask-image: none;
+            }
+            .view-tabs {
+                align-self: flex-start;
+            }
+        }
+
+        /* ---------- 主内容区 ---------- */
+        .main-content {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 1.5rem;
+            min-height: calc(100vh - 300px);
+        }
+
+        /* ---------- 图谱视图 ---------- */
+        .graph-view {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        /* ---------- 图谱视图 ---------- */
+        .graph-view {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
+        .graph-container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            height: calc(100vh - 260px);
+            min-height: 360px;
+            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-warm-50) 100%);
+        }
+        .graph-svg-wrapper {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            min-height: 0;
+        }
+        .graph-svg-wrapper svg {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .graph-overlay-bar {
+            position: relative;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            background: transparent;
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+        .graph-overlay-bar > * {
+            pointer-events: auto;
+        }
+        .graph-controls {
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+        .graph-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: var(--theme-text);
+            transition: transform var(--duration-fast) var(--ease-spring);
+        }
+        .graph-btn:hover { transform: scale(1.08); }
+        .graph-btn:active { transform: scale(0.95); }
+        .graph-legend {
+            background: rgba(255,255,255,0.95);
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            font-size: 0.75rem;
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            max-width: 150px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-bottom: 0.25rem;
+        }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        /* 小屏幕下图例折叠为横向图标 */
+        @media (max-width: 480px) {
+            .graph-legend {
+                display: flex;
+                gap: 0.5rem;
+                padding: 0.35rem 0.5rem;
+                max-width: none;
+            }
+            .graph-legend .legend-item {
+                margin-bottom: 0;
+            }
+            .graph-legend .legend-item span {
+                display: none;
+            }
+            .graph-container { height: calc(100vh - 240px); }
+        }
+
+        /* ---------- 卡片视图 ---------- */
+        .cards-view { display: none; }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+        @media(min-width:640px){ .cards-grid{ grid-template-columns: repeat(2,1fr); } }
+        @media(min-width:1024px){ .cards-grid{ grid-template-columns: repeat(3,1fr); } }
+        .knowledge-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            border: 2px solid transparent;
+        }
+        .knowledge-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .card-header {
+            padding: 1.25rem;
+            position: relative;
+            color: white;
+        }
+        .card-category-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.25);
+            backdrop-filter: blur(4px);
+        }
+        .card-difficulty {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .card-author {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+        .card-body {
+            padding: 1.25rem;
+        }
+        .card-summary {
+            font-size: 0.9rem;
+            color: var(--theme-text-light);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .card-tag {
+            padding: 0.25rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            background: var(--color-primary-50);
+            color: var(--color-primary-600);
+        }
+
+        /* ---------- 路径视图 ---------- */
+        .path-view { display: none; }
+        .path-intro {
+            background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-xl);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .path-intro h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        .path-intro p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            max-width: 32rem;
+            margin: 0 auto;
+        }
+        .path-stage { margin-bottom: 2rem; }
+        .path-stage-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding: 0 0.5rem;
+        }
+        .path-stage-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            background: white;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+        .path-stage-title { font-size: 1.1rem; font-weight: 700; }
+        .path-stage-desc { font-size: 0.85rem; color: var(--theme-text-light); }
+        .path-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            padding-left: 22px;
+            border-left: 3px dashed var(--theme-border);
+            margin-left: 22px;
+        }
+        .path-card {
+            background: var(--theme-card);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            box-shadow: var(--shadow-xs);
+            cursor: pointer;
+            transition: transform var(--duration-fast) var(--ease-spring);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            position: relative;
+        }
+        .path-card::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--theme-border);
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px var(--theme-border);
+        }
+        .path-card:hover { transform: translateX(4px); }
+        .path-card-index {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+        .path-card-content { flex: 1; }
+        .path-card-title { font-weight: 600; margin-bottom: 0.25rem; }
+        .path-card-desc { font-size: 0.85rem; color: var(--theme-text-light); line-height: 1.5; }
+
+        /* ---------- 详情面板 ---------- */
+        .detail-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(4px);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-normal) var(--ease-standard);
+        }
+        .detail-overlay.active { opacity: 1; visibility: visible; }
+        .detail-sheet {
+            position: fixed;
+            background: var(--theme-card);
+            z-index: 201;
+            transition: transform var(--duration-normal) var(--ease-spring);
+            overflow-y: auto;
+            box-shadow: -8px 0 32px rgba(0,0,0,0.1);
+        }
+        @media(max-width:767px){
+            .detail-sheet { left: 0; right: 0; bottom: 0; top: auto; height: 85vh; border-radius: 24px 24px 0 0; transform: translateY(100%); }
+            .detail-sheet.active { transform: translateY(0); }
+            .detail-sheet-handle { width: 40px; height: 4px; background: var(--theme-border); border-radius: 2px; margin: 12px auto; }
+        }
+        @media(min-width:768px){
+            .detail-sheet { right: 0; top: 0; bottom: 0; width: 520px; max-width: 90vw; transform: translateX(100%); }
+            .detail-sheet.active { transform: translateX(0); }
+            .detail-sheet-handle { display: none; }
+        }
+        .detail-header {
+            padding: 1.25rem 1.5rem;
+            color: white;
+            position: relative;
+        }
+        .detail-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--duration-fast);
+        }
+        .detail-close:hover { background: rgba(255,255,255,0.35); }
+        .detail-category {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.25);
+            margin-bottom: 0.5rem;
+        }
+        .detail-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .detail-meta { font-size: 0.85rem; opacity: 0.9; }
+        .detail-body { padding: 1.5rem; }
+        .detail-section { margin-bottom: 1.5rem; }
+        .detail-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .detail-section p {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--theme-text-light);
+        }
+        .detail-section ul {
+            margin-left: 0;
+            list-style: none;
+        }
+        .detail-section li {
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: var(--theme-text-light);
+            padding-left: 1.25rem;
+            position: relative;
+            margin-bottom: 0.4rem;
+        }
+        .detail-section li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--color-primary-300);
+        }
+        .detail-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .detail-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: var(--color-primary-50);
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            color: var(--theme-text);
+            font-size: 0.9rem;
+            transition: background var(--duration-fast);
+        }
+        .detail-link:hover { background: var(--color-primary-100); }
+        .detail-link-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+        .detail-link-info { flex: 1; min-width: 0; }
+        .detail-link-name { font-weight: 600; font-size: 0.9rem; }
+        .detail-link-url { font-size: 0.75rem; color: var(--theme-text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .detail-link-arrow { color: var(--theme-text-light); font-size: 1rem; }
+
+        /* ---------- Tooltip ---------- */
+        .tooltip {
+            position: fixed;
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 0.6rem 0.875rem;
+            border-radius: var(--radius-lg);
+            font-size: 0.85rem;
+            pointer-events: none;
+            z-index: 150;
+            max-width: 260px;
+            display: none;
+            backdrop-filter: blur(4px);
+            line-height: 1.5;
+        }
+        .tooltip strong { display: block; margin-bottom: 0.25rem; font-size: 0.95rem; }
+
+        /* ---------- D3 节点样式 ---------- */
+        .node-label {
+            font-size: 12px;
             font-weight: 600;
             fill: var(--theme-text);
-            pointer-events: none;
             text-anchor: middle;
-            dominant-baseline: middle;
+            pointer-events: none;
         }
-        .link {
-            stroke: var(--color-primary-200);
-            stroke-width: 1.5px;
-            fill: none;
-            opacity: 0.6;
+        .link-label {
+            font-size: 10px;
+            fill: var(--theme-text-light);
+            text-anchor: middle;
         }
+        @media(max-width:480px){
+            .node-label { font-size: 10px; }
+            .link-label { font-size: 8px; }
+            .graph-legend { display: none; }
+        }
+
+        /* ---------- 加载状态 ---------- */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: var(--theme-text-light);
+        }
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--color-primary-100);
+            border-top-color: var(--color-primary-400);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ---------- 错误/空状态 ---------- */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1.5rem;
+            color: var(--theme-text-light);
+        }
+        .empty-state h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--theme-text); }
+        .empty-state p { font-size: 0.9rem; line-height: 1.6; }
     </style>
 </head>
 <body>
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（与 index.html 一致） ===== -->
     <nav class="navbar" id="navbar">
         <div class="navbar-inner">
-            <a href="index.html" style="display:flex;align-items:center;gap:0.5rem;text-decoration:none;">
+            <a href="index.html" class="flex items-center gap-2" style="text-decoration:none;">
                 <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
                     <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
@@ -253,167 +714,529 @@
                 <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
             </a>
 
-            <div style="display:flex;align-items:center;gap:1.5rem;">
-                <span style="color:var(--theme-text);font-weight:500;font-size:0.95rem;">心理知识图谱</span>
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.9rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">返回首页</a>
-                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;font-size:0.9rem;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
+            <!-- 桌面导航 -->
+            <div class="desktop-nav">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
+            </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="打开菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 移动端菜单 -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
+                <a href="index.html">首页</a>
+                <a href="relax.html">疗愈练习</a>
+                <a href="emotion.html">情绪觉察</a>
+                <a href="knowledge-graph.html" class="active">知识图谱</a>
+                <a href="about.html">关于我们</a>
+                <a href="companion.html">我的伙伴</a>
             </div>
         </div>
     </nav>
 
-    <!-- ===== 主布局 ===== -->
-    <div class="graph-layout">
-        <!-- 图形区域 -->
-        <div class="graph-container">
-            <!-- 图例 -->
-            <div class="legend-panel fade-in-down" style="animation-delay:0.2s;">
-                <h3>图例</h3>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#5A9A8A;"></div>
-                    <span>治疗方法</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#6B9BD1;"></div>
-                    <span>核心概念</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#7DD3C0;"></div>
-                    <span>实践技术</span>
-                </div>
-                <div class="legend-item">
-                    <div class="legend-dot" style="background:#E8B87D;"></div>
-                    <span>评估工具</span>
-                </div>
-                <div class="legend-hint">
-                    · 点击节点查看详情<br>
-                    · 拖拽节点调整位置<br>
-                    · 滚轮缩放图形
-                </div>
-            </div>
+    <!-- ===== Hero 区域 ===== -->
+    <section class="page-hero">
+        <h1>🧠 心理<span class="highlight">知识图谱</span></h1>
+        <p>探索积极心理学与认知心理学，从入门到深入。可视化知识关联，找到属于你的学习路径。</p>
+    </section>
 
-            <!-- SVG 图形 -->
-            <svg id="graph-svg" class="graph-canvas"></svg>
+    <!-- ===== 工具栏 ===== -->
+    <div class="toolbar">
+        <div class="view-tabs">
+            <button class="view-tab active" data-view="graph">🕸️ 知识图谱</button>
+            <button class="view-tab" data-view="cards">🃏 卡片浏览</button>
+            <button class="view-tab" data-view="path">🛤️ 学习路径</button>
+        </div>
+        <div class="filter-group">
+            <button class="filter-chip active" data-filter="all"><span class="dot" style="background:var(--color-primary-400);"></span>全部</button>
+            <button class="filter-chip" data-filter="positive"><span class="dot" style="background:#E07A5F;"></span>积极心理学</button>
+            <button class="filter-chip" data-filter="cognitive"><span class="dot" style="background:#3D8B8B;"></span>认知心理学</button>
+            <button class="filter-chip" data-filter="clinical"><span class="dot" style="background:#5B8DB8;"></span>临床治疗</button>
+            <button class="filter-chip" data-filter="motivation"><span class="dot" style="background:#D4A373;"></span>动机与改变</button>
         </div>
     </div>
 
-    <!-- 遮罩 -->
-    <div class="detail-overlay" id="detailOverlay" onclick="closeDetailPanel()"></div>
+    <!-- ===== 主内容 ===== -->
+    <div class="main-content">
+        <!-- 加载状态 -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>正在加载知识图谱数据...</p>
+        </div>
 
-    <!-- 详情面板 -->
-    <aside class="detail-panel" id="detailPanel">
-        <div class="detail-header">
-            <div>
-                <h2 id="detail-title" style="font-size:1.15rem;font-weight:700;color:var(--theme-text);"></h2>
-                <div id="detail-category"></div>
-            </div>
-            <button class="detail-close" onclick="closeDetailPanel()" aria-label="关闭">
-                <svg style="width:18px;height:18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
+        <!-- 错误状态 -->
+        <div id="errorState" class="empty-state" style="display:none;">
+            <h3>数据加载失败</h3>
+            <p>无法从服务器获取知识图谱数据。<br>请检查网络连接后刷新页面重试。</p>
         </div>
-        <div class="detail-body">
-            <div class="detail-section" id="detail-overview">
-                <h3>概述</h3>
-                <p id="detail-description"></p>
-            </div>
-            <div class="detail-section" id="detail-reference-section">
-                <h3>科学依据</h3>
-                <p id="detail-reference" class="detail-reference"></p>
-            </div>
-            <div class="detail-section" id="detail-evidence-section">
-                <h3>研究证据</h3>
-                <p id="detail-evidence"></p>
-            </div>
-            <div class="detail-section" id="detail-practices-section">
-                <h3>实践方法</h3>
-                <div id="detail-practices"></div>
+
+        <!-- 图谱视图 -->
+        <div class="graph-view" id="graphView" style="display:none;">
+            <div class="graph-container">
+                <div class="graph-svg-wrapper">
+                    <svg id="graphSvg"></svg>
+                </div>
+                <div class="graph-overlay-bar">
+                    <div class="graph-legend">
+                        <div class="legend-item"><div class="legend-color" style="background:#E07A5F;"></div><span>积极心理学</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background:#3D8B8B;"></div><span>认知心理学</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background:#5B8DB8;"></div><span>临床治疗</span></div>
+                        <div class="legend-item"><div class="legend-color" style="background:#D4A373;"></div><span>动机与改变</span></div>
+                    </div>
+                    <div class="graph-controls">
+                        <button class="graph-btn" onclick="zoomIn()" title="放大">+</button>
+                        <button class="graph-btn" onclick="zoomOut()" title="缩小">−</button>
+                        <button class="graph-btn" onclick="resetZoom()" title="重置">⟲</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </aside>
+
+        <!-- 卡片视图 -->
+        <div class="cards-view" id="cardsView" style="display:none;">
+            <div class="cards-grid" id="cardsGrid"></div>
+        </div>
+
+        <!-- 路径视图 -->
+        <div class="path-view" id="pathView" style="display:none;">
+            <div class="path-intro">
+                <h2>🎯 循序渐进学习心理学</h2>
+                <p>从基础概念入手，逐步深入核心理论，最后掌握实践方法。建议按阶段顺序学习，每个阶段掌握后再进入下一阶段。</p>
+            </div>
+            <div id="pathStages"></div>
+        </div>
+    </div>
+
+    <!-- ===== 详情面板 ===== -->
+    <div class="detail-overlay" id="detailOverlay" onclick="closeDetail()"></div>
+    <div class="detail-sheet" id="detailSheet">
+        <div class="detail-sheet-handle"></div>
+        <div class="detail-header" id="detailHeader">
+            <button class="detail-close" onclick="closeDetail()">×</button>
+            <div class="detail-category" id="detailCategory"></div>
+            <div class="detail-title" id="detailTitle"></div>
+            <div class="detail-meta" id="detailMeta"></div>
+        </div>
+        <div class="detail-body" id="detailBody"></div>
+    </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip" id="tooltip"></div>
 
     <!-- D3.js -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <!-- 知识图谱逻辑 -->
-    <script src="js/knowledge-graph.js"></script>
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
     <script src="js/theme-manager.js"></script>
-    <!-- 虚拟动物陪伴组件 -->
-    <script src="js/companion-widget.js"></script>
+
     <script>
-        /* ========== 详情面板控制 ========== */
-        function openDetailPanel(data) {
-            const panel = document.getElementById('detailPanel');
-            const overlay = document.getElementById('detailOverlay');
+    // ========== 全局状态 ==========
+    let theories = [];
+    let relationships = [];
+    let currentFilter = 'all';
+    let currentView = 'graph';
+    let svg, g, zoomTransform = { k: 1, x: 0, y: 0 };
 
-            document.getElementById('detail-title').textContent = data.title || '';
+    // ========== 颜色映射（适配心晴空间色系） ==========
+    const colorMap = {
+        positive:   '#E07A5F',
+        cognitive:  '#3D8B8B',
+        clinical:   '#5B8DB8',
+        motivation: '#D4A373'
+    };
+    const categoryNames = {
+        positive:   '积极心理学',
+        cognitive:  '认知心理学',
+        clinical:   '临床治疗',
+        motivation: '动机与改变'
+    };
+    const diffNames = {
+        beginner:     '入门',
+        intermediate: '进阶',
+        advanced:     '深入'
+    };
+    const diffColors = {
+        beginner:     '#10B981',
+        intermediate: '#F59E0B',
+        advanced:     '#8B5CF6'
+    };
 
-            const categoryColors = {
-                '治疗方法': { bg: 'rgba(90,154,138,0.15)', color: '#5A9A8A' },
-                '核心概念': { bg: 'rgba(107,155,209,0.15)', color: '#6B9BD1' },
-                '实践技术': { bg: 'rgba(125,211,192,0.15)', color: '#7DD3C0' },
-                '评估工具': { bg: 'rgba(232,184,125,0.15)', color: '#E8B87D' },
-            };
-            const c = categoryColors[data.category] || { bg: 'rgba(90,154,138,0.15)', color: '#5A9A8A' };
-            document.getElementById('detail-category').innerHTML = `
-                <span class="detail-category-badge" style="background:${c.bg};color:${c.color};">
-                    <span style="width:8px;height:8px;border-radius:50%;background:${c.color};"></span>
-                    ${data.category || ''}
-                </span>
-            `;
+    // ========== 数据加载 ==========
+    async function loadData() {
+        const loadingEl = document.getElementById('loadingState');
+        const errorEl = document.getElementById('errorState');
 
-            document.getElementById('detail-description').textContent = data.description || '';
-
-            /* 科学依据 */
-            const refSection = document.getElementById('detail-reference-section');
-            if (data.reference) {
-                refSection.style.display = 'block';
-                document.getElementById('detail-reference').textContent = data.reference;
-            } else {
-                refSection.style.display = 'none';
+        try {
+            // 优先从 API 加载（Blob 存储）
+            let data = null;
+            try {
+                const res = await fetch('/api/knowledge/graph');
+                if (res.ok) {
+                    const json = await res.json();
+                    data = { nodes: json.nodes || [], edges: json.edges || [] };
+                }
+            } catch (apiErr) {
+                console.log('API 加载失败，尝试本地降级', apiErr);
             }
 
-            /* 研究证据 */
-            const evSection = document.getElementById('detail-evidence-section');
-            if (data.evidence) {
-                evSection.style.display = 'block';
-                document.getElementById('detail-evidence').textContent = data.evidence;
-            } else {
-                evSection.style.display = 'none';
+            // API 失败则降级到本地 JSON
+            if (!data || !data.nodes.length) {
+                const res = await fetch('/data/graph.json');
+                if (res.ok) {
+                    data = await res.json();
+                }
             }
 
-            /* 实践方法 */
-            const prSection = document.getElementById('detail-practices-section');
-            if (data.practices && data.practices.length > 0) {
-                prSection.style.display = 'block';
-                document.getElementById('detail-practices').innerHTML = data.practices.map(p =>
-                    `<div style="padding:0.75rem;background:var(--color-primary-50);border-radius:var(--radius-md);margin-bottom:0.5rem;">
-                        <p style="font-size:0.9rem;color:var(--theme-text);">${p}</p>
-                    </div>`
-                ).join('');
-            } else {
-                prSection.style.display = 'none';
+            if (!data || !data.nodes.length) {
+                throw new Error('无可用数据');
             }
 
-            panel.classList.add('open');
-            overlay.classList.add('open');
-            document.body.style.overflow = 'hidden';
+            theories = data.nodes;
+            relationships = data.edges;
+
+            loadingEl.style.display = 'none';
+            document.getElementById('graphView').style.display = 'block';
+
+            // 初始化视图
+            initGraph();
+            renderCards();
+            renderPath();
+        } catch (err) {
+            console.error('数据加载失败:', err);
+            loadingEl.style.display = 'none';
+            errorEl.style.display = 'block';
         }
+    }
 
-        function closeDetailPanel() {
-            document.getElementById('detailPanel').classList.remove('open');
-            document.getElementById('detailOverlay').classList.remove('open');
-            document.body.style.overflow = '';
+    // ========== D3 图谱 ==========
+    function initGraph() {
+        const wrapper = document.querySelector('.graph-svg-wrapper');
+        const w = wrapper.clientWidth;
+        const h = wrapper.clientHeight;
 
-            /* 取消节点选中状态 */
-            d3.selectAll('.node').classed('selected', false);
-        }
+        svg = d3.select('#graphSvg').attr('width', w).attr('height', h);
 
-        /* ESC 关闭 */
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeDetailPanel();
+        const zoom = d3.zoom()
+            .scaleExtent([0.3, 3])
+            .on('zoom', e => {
+                g.attr('transform', e.transform);
+                zoomTransform = e.transform;
+            });
+        svg.call(zoom);
+
+        g = svg.append('g');
+
+        const sim = d3.forceSimulation(theories)
+            .force('link', d3.forceLink(relationships).id(d => d.id).distance(120))
+            .force('charge', d3.forceManyBody().strength(-400))
+            .force('center', d3.forceCenter(w / 2, h / 2))
+            .force('collide', d3.forceCollide().radius(55));
+
+        const link = g.append('g')
+            .selectAll('line')
+            .data(relationships)
+            .join('line')
+            .attr('stroke', '#bbb')
+            .attr('stroke-opacity', 0.5)
+            .attr('stroke-width', 1.5);
+
+        const linkLabel = g.append('g')
+            .selectAll('text')
+            .data(relationships)
+            .join('text')
+            .attr('class', 'link-label')
+            .text(d => d.type)
+            .attr('dy', -4);
+
+        const node = g.append('g')
+            .selectAll('g')
+            .data(theories)
+            .join('g')
+            .call(d3.drag()
+                .on('start', (e, d) => {
+                    if (!e.active) sim.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on('drag', (e, d) => {
+                    d.fx = e.x;
+                    d.fy = e.y;
+                })
+                .on('end', (e, d) => {
+                    if (!e.active) sim.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                }));
+
+        node.append('circle')
+            .attr('r', d => d.difficulty === 'beginner' ? 26 : d.difficulty === 'intermediate' ? 24 : 22)
+            .attr('fill', d => colorMap[d.category])
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 3)
+            .attr('cursor', 'pointer')
+            .on('mouseover', showTooltip)
+            .on('mouseout', hideTooltip)
+            .on('click', (e, d) => { e.stopPropagation(); openDetail(d); });
+
+        node.append('text')
+            .attr('class', 'node-label')
+            .attr('dy', 4)
+            .text(d => d.label);
+
+        node.append('text')
+            .attr('class', 'node-label')
+            .attr('dy', 16)
+            .attr('font-size', '9px')
+            .attr('fill', '#666')
+            .text(d => d.author);
+
+        sim.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+            linkLabel
+                .attr('x', d => (d.source.x + d.target.x) / 2)
+                .attr('y', d => (d.source.y + d.target.y) / 2);
+            node.attr('transform', d => `translate(${d.x},${d.y})`);
         });
+
+        window.addEventListener('resize', () => {
+            const wrapper = document.querySelector('.graph-svg-wrapper');
+            const nw = wrapper.clientWidth;
+            const nh = wrapper.clientHeight;
+            svg.attr('width', nw).attr('height', nh);
+            sim.force('center', d3.forceCenter(nw / 2, nh / 2));
+            sim.alpha(0.3).restart();
+        });
+    }
+
+    // ========== 缩放控制 ==========
+    function zoomIn() {
+        const wrapper = document.querySelector('.graph-svg-wrapper');
+        const w = wrapper.clientWidth, h = wrapper.clientHeight;
+        const t = d3.zoomIdentity.translate(w/2, h/2).scale(zoomTransform.k * 1.3).translate(-w/2, -h/2);
+        d3.select('#graphSvg').transition().duration(300).call(d3.zoom().transform, t);
+    }
+    function zoomOut() {
+        const wrapper = document.querySelector('.graph-svg-wrapper');
+        const w = wrapper.clientWidth, h = wrapper.clientHeight;
+        const t = d3.zoomIdentity.translate(w/2, h/2).scale(zoomTransform.k / 1.3).translate(-w/2, -h/2);
+        d3.select('#graphSvg').transition().duration(300).call(d3.zoom().transform, t);
+    }
+    function resetZoom() {
+        d3.select('#graphSvg').transition().duration(300).call(d3.zoom().transform, d3.zoomIdentity);
+    }
+
+    // ========== Tooltip ==========
+    function showTooltip(e, d) {
+        const t = document.getElementById('tooltip');
+        t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.8">${categoryNames[d.category] || d.category} · ${diffNames[d.difficulty] || d.difficulty}</span><br/><span style="font-size:.8rem;opacity:.7">${d.author} (${d.year})</span>`;
+        t.style.display = 'block';
+        t.style.left = (e.clientX + 12) + 'px';
+        t.style.top = (e.clientY - 12) + 'px';
+    }
+    function hideTooltip() {
+        document.getElementById('tooltip').style.display = 'none';
+    }
+
+    // ========== 详情面板 ==========
+    function openDetail(d) {
+        const overlay = document.getElementById('detailOverlay');
+        const sheet = document.getElementById('detailSheet');
+        const header = document.getElementById('detailHeader');
+
+        document.getElementById('detailCategory').textContent = (categoryNames[d.category] || d.category) + ' · ' + (diffNames[d.difficulty] || d.difficulty);
+        document.getElementById('detailTitle').textContent = d.label;
+        document.getElementById('detailMeta').textContent = d.author + ' (' + d.year + ')';
+        header.style.background = 'linear-gradient(135deg,' + (colorMap[d.category] || '#5A9A8A') + ' 0%,' + adjustColor(colorMap[d.category] || '#5A9A8A', -30) + ')';
+
+        let html = '';
+        html += `<div class="detail-section"><div class="detail-section-title">💡 核心内容</div><p>${d.desc || ''}</p></div>`;
+        if (d.examples && d.examples.length) {
+            html += `<div class="detail-section"><div class="detail-section-title">💬 生活例子</div><ul>${d.examples.map(ex => `<li>${ex}</li>`).join('')}</ul></div>`;
+        }
+        if (d.selfTest) {
+            html += `<div class="detail-section"><div class="detail-section-title">📋 自我评估</div><p>${d.selfTest}</p></div>`;
+        }
+        if (d.practice) {
+            html += `<div class="detail-section"><div class="detail-section-title">🎯 实践练习</div><p>${d.practice}</p></div>`;
+        }
+
+        const rels = relationships.filter(r => {
+            const s = r.source.id || r.source;
+            const t = r.target.id || r.target;
+            return s === d.id || t === d.id;
+        });
+        if (rels.length) {
+            html += `<div class="detail-section"><div class="detail-section-title">🔗 相关理论</div><ul>${rels.map(r => {
+                const otherId = (r.source.id || r.source) === d.id ? (r.target.id || r.target) : (r.source.id || r.source);
+                const otherNode = theories.find(t => t.id === otherId);
+                return otherNode ? `<li><strong>${r.type} ${otherNode.label}</strong>：${r.desc || ''}</li>` : '';
+            }).join('')}</ul></div>`;
+        }
+
+        if (d.links && d.links.length) {
+            html += `<div class="detail-section"><div class="detail-section-title">🌐 权威资源</div><div class="detail-links">${d.links.map(l => `<a class="detail-link" href="${l.url}" target="_blank" rel="noopener"><div class="detail-link-icon">🔗</div><div class="detail-link-info"><div class="detail-link-name">${l.name}</div><div class="detail-link-url">${l.url}</div></div><div class="detail-link-arrow">›</div></a>`).join('')}</div></div>`;
+        }
+
+        document.getElementById('detailBody').innerHTML = html;
+        overlay.classList.add('active');
+        sheet.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeDetail() {
+        document.getElementById('detailOverlay').classList.remove('active');
+        document.getElementById('detailSheet').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function adjustColor(hex, amt) {
+        let r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+        r = Math.max(0, Math.min(255, r + amt));
+        g = Math.max(0, Math.min(255, g + amt));
+        b = Math.max(0, Math.min(255, b + amt));
+        return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    // ========== 卡片渲染 ==========
+    function renderCards() {
+        const grid = document.getElementById('cardsGrid');
+        grid.innerHTML = '';
+        theories.forEach(t => {
+            if (currentFilter !== 'all' && t.category !== currentFilter) return;
+            const card = document.createElement('div');
+            card.className = 'knowledge-card';
+            card.style.borderColor = (colorMap[t.category] || '#5A9A8A') + '30';
+            card.innerHTML = `
+                <div class="card-header" style="background:linear-gradient(135deg,${colorMap[t.category] || '#5A9A8A'} 0%,${adjustColor(colorMap[t.category] || '#5A9A8A', -30)});">
+                    <div class="card-category-badge">${categoryNames[t.category] || t.category}</div>
+                    <div class="card-difficulty"><span style="width:8px;height:8px;border-radius:50%;background:${diffColors[t.difficulty] || '#ccc'};display:inline-block;"></span> ${diffNames[t.difficulty] || t.difficulty}</div>
+                    <div class="card-title">${t.label}</div>
+                    <div class="card-author">${t.author} (${t.year})</div>
+                </div>
+                <div class="card-body">
+                    <div class="card-summary">${t.summary || ''}</div>
+                    <div class="card-tags">
+                        <span class="card-tag">📋 自测</span>
+                        <span class="card-tag">🎯 练习</span>
+                        <span class="card-tag">${t.links ? t.links.length : 0} 个资源</span>
+                    </div>
+                </div>`;
+            card.onclick = () => openDetail(t);
+            grid.appendChild(card);
+        });
+    }
+
+    // ========== 路径渲染 ==========
+    function renderPath() {
+        const container = document.getElementById('pathStages');
+        container.innerHTML = '';
+        const stages = [
+            { key: 'beginner', icon: '🌱', title: '第一阶段：入门基础', desc: '建立核心概念，理解心理学基础框架' },
+            { key: 'intermediate', icon: '🌿', title: '第二阶段：进阶理解', desc: '深入核心理论，开始觉察自身模式' },
+            { key: 'advanced', icon: '🌳', title: '第三阶段：深入实践', desc: '掌握复杂理论，整合应用于生活' }
+        ];
+        stages.forEach(stage => {
+            const items = theories.filter(t => t.difficulty === stage.key).sort((a, b) => (a.order || 0) - (b.order || 0));
+            if (currentFilter !== 'all') {
+                const fitems = items.filter(t => t.category === currentFilter);
+                if (!fitems.length) return;
+            }
+            const stageEl = document.createElement('div');
+            stageEl.className = 'path-stage';
+            let cardsHtml = '';
+            items.forEach(t => {
+                if (currentFilter !== 'all' && t.category !== currentFilter) return;
+                cardsHtml += `<div class="path-card" onclick="openDetailById('${t.id}')"><div class="path-card-index" style="background:${colorMap[t.category] || '#5A9A8A'};">${t.order || ''}</div><div class="path-card-content"><div class="path-card-title">${t.label}</div><div class="path-card-desc">${t.summary || ''}</div></div></div>`;
+            });
+            stageEl.innerHTML = `<div class="path-stage-header"><div class="path-stage-icon">${stage.icon}</div><div><div class="path-stage-title">${stage.title}</div><div class="path-stage-desc">${stage.desc}</div></div></div><div class="path-cards">${cardsHtml}</div>`;
+            container.appendChild(stageEl);
+        });
+    }
+
+    function openDetailById(id) {
+        const node = theories.find(t => t.id === id);
+        if (node) openDetail(node);
+    }
+
+    // ========== 视图切换 ==========
+    function switchView(view) {
+        currentView = view;
+        document.querySelectorAll('.view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+        document.getElementById('graphView').style.display = view === 'graph' ? 'block' : 'none';
+        document.getElementById('cardsView').style.display = view === 'cards' ? 'block' : 'none';
+        document.getElementById('pathView').style.display = view === 'path' ? 'block' : 'none';
+        if (view === 'cards') renderCards();
+        if (view === 'path') renderPath();
+    }
+
+    document.querySelectorAll('.view-tab').forEach(btn => {
+        btn.addEventListener('click', () => switchView(btn.dataset.view));
+    });
+
+    // ========== 筛选 ==========
+    document.querySelectorAll('.filter-chip').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            if (currentView === 'cards') renderCards();
+            if (currentView === 'path') renderPath();
+            if (currentView === 'graph' && g) {
+                const nodes = g.selectAll('g');
+                const links = g.selectAll('line');
+                const labels = g.selectAll('.link-label');
+                if (currentFilter === 'all') {
+                    nodes.style('opacity', 1);
+                    links.style('opacity', 0.5);
+                    labels.style('opacity', 1);
+                } else {
+                    nodes.style('opacity', d => d.category === currentFilter ? 1 : 0.15);
+                    links.style('opacity', d => {
+                        const sc = d.source.category || (d.source.id && theories.find(t => t.id === d.source.id)?.category);
+                        const tc = d.target.category || (d.target.id && theories.find(t => t.id === d.target.id)?.category);
+                        return sc === currentFilter || tc === currentFilter ? 0.5 : 0.1;
+                    });
+                    labels.style('opacity', d => {
+                        const sc = d.source.category || (d.source.id && theories.find(t => t.id === d.source.id)?.category);
+                        const tc = d.target.category || (d.target.id && theories.find(t => t.id === d.target.id)?.category);
+                        return sc === currentFilter || tc === currentFilter ? 1 : 0.1;
+                    });
+                }
+            }
+        });
+    });
+
+    // ========== 移动端菜单 ==========
+    function toggleMobileMenu() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('open');
+    }
+
+    // ========== ESC 关闭详情 ==========
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeDetail();
+    });
+
+    // ========== 初始化 ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        loadData();
+        document.getElementById('detailSheet').addEventListener('click', e => e.stopPropagation());
+    });
     </script>
 </body>
 </html>

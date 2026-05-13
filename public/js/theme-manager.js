@@ -8,6 +8,7 @@ class ThemeManager {
     constructor() {
         this.currentTheme = localStorage.getItem('theme') || 'home';
         this.lampLevel = 3;
+        this._themeListenerBound = false;
 
         this.themes = {
             home: {
@@ -907,8 +908,8 @@ class ThemeManager {
                 }
             </style>
             <div class="theme-dropdown-btn" id="themeDropdownBtn">
-                <span class="icon">🏠</span>
-                <span class="label">家</span>
+                <span class="icon">${this.themes[this.currentTheme]?.icon || '🏠'}</span>
+                <span class="label">${this.themes[this.currentTheme]?.name || '家'}</span>
                 <span class="arrow">▾</span>
             </div>
             <div class="theme-dropdown-menu" id="themeDropdownMenu">
@@ -951,15 +952,24 @@ class ThemeManager {
             btn.classList.remove('open');
         });
 
-        window.addEventListener('themeChanged', (e) => {
-            const theme = this.themes[e.detail.theme];
-            if (!theme) return;
-            btn.querySelector('.icon').textContent  = theme.icon;
-            btn.querySelector('.label').textContent = theme.name;
-            menu.querySelectorAll('.theme-dropdown-item').forEach(i => {
-                i.classList.toggle('active', i.dataset.theme === e.detail.theme);
+        if (!this._themeListenerBound) {
+            this._themeListenerBound = true;
+            window.addEventListener('themeChanged', (e) => {
+                const theme = this.themes[e.detail.theme];
+                if (!theme) return;
+                const btnEl = document.getElementById('themeDropdownBtn');
+                const menuEl = document.getElementById('themeDropdownMenu');
+                if (btnEl) {
+                    btnEl.querySelector('.icon').textContent  = theme.icon;
+                    btnEl.querySelector('.label').textContent = theme.name;
+                }
+                if (menuEl) {
+                    menuEl.querySelectorAll('.theme-dropdown-item').forEach(i => {
+                        i.classList.toggle('active', i.dataset.theme === e.detail.theme);
+                    });
+                }
             });
-        });
+        }
     }
 }
 

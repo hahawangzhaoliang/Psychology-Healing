@@ -1,165 +1,48 @@
-[
-  {
-    "id": "psychology-graph",
-    "nodes": [
-      {
-        "id": "exercise_mindfulness_001",
-        "label": "正念呼吸冥想",
-        "type": "exercise",
-        "category": "正念冥想"
-      },
-      {
-        "id": "exercise_breathing_001",
-        "label": "4-7-8呼吸放松法",
-        "type": "exercise",
-        "category": "呼吸练习"
-      },
-      {
-        "id": "exercise_pmrt_001",
-        "label": "渐进式肌肉放松训练",
-        "type": "exercise",
-        "category": "身体放松"
-      },
-      {
-        "id": "exercise_grounding_001",
-        "label": "5-4-3-2-1接地技术",
-        "type": "exercise",
-        "category": "情绪调节"
-      },
-      {
-        "id": "exercise_journal_001",
-        "label": "情绪日记书写",
-        "type": "exercise",
-        "category": "表达性写作"
-      },
-      {
-        "id": "exercise_cbt_001",
-        "label": "认知重构练习",
-        "type": "exercise",
-        "category": "认知行为"
-      },
-      {
-        "id": "exercise_gratitude_001",
-        "label": "感恩日记练习",
-        "type": "exercise",
-        "category": "积极心理学"
-      },
-      {
-        "id": "exercise_bodyscan_001",
-        "label": "身体扫描冥想",
-        "type": "exercise",
-        "category": "正念冥想"
-      },
-      {
-        "id": "knowledge_anxiety_001",
-        "label": "焦虑的神经科学机制",
-        "type": "knowledge",
-        "category": "神经科学"
-      },
-      {
-        "id": "knowledge_depression_001",
-        "label": "抑郁症的综合理解",
-        "type": "knowledge",
-        "category": "临床心理"
-      },
-      {
-        "id": "knowledge_mindfulness_001",
-        "label": "正念冥想的科学证据",
-        "type": "knowledge",
-        "category": "心理科学"
-      },
-      {
-        "id": "knowledge_sleep_001",
-        "label": "睡眠与心理健康的关系",
-        "type": "knowledge",
-        "category": "睡眠心理"
-      },
-      {
-        "id": "knowledge_stress_001",
-        "label": "压力的身心影响与应对",
-        "type": "knowledge",
-        "category": "压力管理"
-      },
-      {
-        "id": "knowledge_resilience_001",
-        "label": "心理韧性的培养",
-        "type": "knowledge",
-        "category": "积极心理"
-      }
-    ],
-    "edges": [
-      {
-        "source": "exercise_mindfulness_001",
-        "target": "knowledge_anxiety_001",
-        "type": "related",
-        "label": "焦虑"
-      },
-      {
-        "source": "exercise_mindfulness_001",
-        "target": "knowledge_mindfulness_001",
-        "type": "related",
-        "label": "正念"
-      },
-      {
-        "source": "exercise_mindfulness_001",
-        "target": "knowledge_stress_001",
-        "type": "related",
-        "label": "压力"
-      },
-      {
-        "source": "exercise_breathing_001",
-        "target": "knowledge_anxiety_001",
-        "type": "related",
-        "label": "焦虑"
-      },
-      {
-        "source": "exercise_breathing_001",
-        "target": "knowledge_sleep_001",
-        "type": "related",
-        "label": "睡眠"
-      },
-      {
-        "source": "exercise_pmrt_001",
-        "target": "knowledge_anxiety_001",
-        "type": "related",
-        "label": "焦虑"
-      },
-      {
-        "source": "exercise_pmrt_001",
-        "target": "knowledge_sleep_001",
-        "type": "related",
-        "label": "睡眠"
-      },
-      {
-        "source": "exercise_grounding_001",
-        "target": "knowledge_anxiety_001",
-        "type": "related",
-        "label": "焦虑"
-      },
-      {
-        "source": "exercise_cbt_001",
-        "target": "knowledge_anxiety_001",
-        "type": "related",
-        "label": "CBT"
-      },
-      {
-        "source": "exercise_cbt_001",
-        "target": "knowledge_depression_001",
-        "type": "related",
-        "label": "抑郁"
-      },
-      {
-        "source": "exercise_bodyscan_001",
-        "target": "knowledge_mindfulness_001",
-        "type": "related",
-        "label": "正念"
-      },
-      {
-        "source": "exercise_bodyscan_001",
-        "target": "knowledge_sleep_001",
-        "type": "related",
-        "label": "睡眠"
-      }
-    ]
-  }
-]
+{
+  "nodes": [
+    {"id":"PERMA","label":"PERMA幸福模型","category":"positive","year":2011,"author":"Seligman","difficulty":"beginner","order":1,"summary":"幸福不只是快乐，而是五个维度的平衡：积极情绪、投入、关系、意义、成就。","desc":"PERMA模型是积极心理学的核心理论框架，将幸福感划分为五个核心要素。P(积极情绪)体验愉悦和快乐；E(投入)全神贯注的心流状态；R(人际关系)积极的社会连接；M(意义)归属于更宏大的目标；A(成就)追求目标获得胜任感。","examples":["小明每天笑嘻嘻但总觉得空虚——只有积极情绪，缺少意义和成就","工作投入、有好友、觉得有意义、完成后有成就感——PERMA平衡"],"selfTest":"给每个维度打分(1-10分)：积极情绪/投入/关系/意义/成就。总分>40表示幸福感较平衡，某个维度<5是提升方向。","practice":"P低：每天写3件感恩的事；E低：每天用1次签名优势；R低：每周约1个朋友深度聊天；M低：做志愿者；A低：设定1个SMART目标。","links":[{"name":"Positive Psychology - PERMA","url":"https://positivepsychology.com/perma-model/"},{"name":"Penn Arts & Sciences - PERMA","url":"https://ppc.sas.upenn.edu/"},{"name":"VIA Character","url":"https://www.viacharacter.org/"}]},
+    {"id":"BroadenBuild","label":"拓展-建构理论","category":"positive","year":2001,"author":"Fredrickson","difficulty":"beginner","order":2,"summary":"好心情不只是感觉好，还能'拓展'思维，帮你'建构'长期资源。","desc":"积极情绪能够拓展个体的思维-行动范畴，并建构持久的个人资源（身体、智力、社会、心理资源）。与消极情绪让思维变窄不同，积极情绪让思维变宽：喜悦让你想探索，感恩让你想回报。","examples":["小丽收到生日礼物感到感恩→主动帮朋友（拓展亲社会行为）→关系更紧密（建构社会资源）","恐惧让思维变窄只想逃跑，喜悦让思维变宽想探索创造"],"selfTest":"回顾今天：体验了哪种积极情绪？是什么触发的？它让你想做什么？坚持30天积极情绪日记。","practice":"每天写积极情绪日记：记录情绪类型、触发因素、它让你想做什么。刻意创造更多积极时刻。","links":[{"name":"Positive Psychology - Broaden-and-Build","url":"https://positivepsychology.com/broaden-build-theory/"},{"name":"Berkeley Greater Good","url":"https://greatergood.berkeley.edu/"}]},
+    {"id":"VIA","label":"VIA性格优势","category":"positive","year":2004,"author":"Peterson & Seligman","difficulty":"beginner","order":3,"summary":"每个人都有24种性格优势，找到你的'签名优势'并善用它。","desc":"6大美德和24项性格优势的分类体系，帮助个体识别和发展自己的签名优势。六大美德包括：智慧与知识、勇气、人道、正义、节制、超越。用优势工作让你更有能量。","examples":["小张的签名优势是创造力→主动承担创新项目，充满热情","小王的签名优势是善良→主动帮助同事，成为团队粘合剂"],"selfTest":"访问viacharacter.org完成免费15分钟评估，获取前5项签名优势。或自问：什么时候你觉得'这就是真正的我'？","practice":"每周选择1个优势刻意使用。例：创造力优势→每天用新方法做一件日常事；善良优势→每天做1件善意之举。","links":[{"name":"VIA Character Institute","url":"https://www.viacharacter.org/"},{"name":"Positive Psychology - VIA","url":"https://positivepsychology.com/via-character-strengths/"},{"name":"VIA Classification","url":"https://www.viacharacter.org/research/via-classification"}]},
+    {"id":"Mindset","label":"成长型思维","category":"positive","year":2006,"author":"Dweck","difficulty":"beginner","order":4,"summary":"你的能力不是固定的，可以通过努力提升。这个信念会改变你面对挑战的方式。","desc":"能力可以通过努力发展的信念vs能力是固定不变的信念。成长型思维者拥抱挑战、在挫折中坚持、从他人成功中学习、视努力为掌握所必需。固定型思维者避免挑战、遇到障碍容易放弃。","examples":["数学考砸了→成长型：'需要换学习方法'；固定型：'我太笨了'","看到别人成功→成长型：向他请教；固定型：感到受威胁"],"selfTest":"对固定型陈述(能力无法改变/犯错说明不聪明)和成长型陈述(努力可提升智力/失败是学习机会)分别打分。","practice":"1.觉察固定型思维触发点；2.重构内心对话：'我还没掌握这个'；3.使用'尚未'语言；4.夸奖努力而非能力。","links":[{"name":"Mindset Works","url":"https://www.mindsetworks.com/"},{"name":"Positive Psychology - Growth Mindset","url":"https://positivepsychology.com/growth-mindset/"},{"name":"Carol Dweck TED Talk","url":"https://www.ted.com/talks/carol_dweck_the_power_of_believing_that_you_can_improve"}]},
+    {"id":"SelfEfficacy","label":"自我效能理论","category":"cognitive","year":1977,"author":"Bandura","difficulty":"beginner","order":5,"summary":"相信自己能做成某事，这个信念本身就能帮助你做成这件事。","desc":"个体对自己在特定领域能够成功完成任务的信念。受四个因素影响：掌握经验（过去成功）、替代经验（观察榜样）、社会说服（他人鼓励）、生理情绪状态（将紧张解读为准备就绪）。","examples":["英语水平相同的两人做英文演讲→自我效能高者表现更好","小张：'我肯定不行'→表现差；小王：'我准备充分'→表现好"],"selfTest":"列出3个生活领域（工作/学习/人际/健康），分别评估：完成困难任务/应对挫折/学习新技能的信心(1-10分)。","practice":"1.创造掌握经验：把大任务分解为小步骤；2.找相似榜样；3.改变自我对话；4.将紧张重新解读为'我准备好了'。","links":[{"name":"Positive Psychology - Self-Efficacy","url":"https://positivepsychology.com/self-efficacy/"},{"name":"Simply Psychology - Self-Efficacy","url":"https://www.simplypsychology.org/self-efficacy.html"},{"name":"Verywell Mind","url":"https://www.verywellmind.com/what-is-self-efficacy-2795954"}]},
+    {"id":"CBT","label":"认知行为疗法","category":"cognitive","year":1979,"author":"Beck","difficulty":"intermediate","order":6,"summary":"思维、感受、行为相互影响。改变扭曲的思维，就能改善情绪和行为。","desc":"认知行为疗法认为心理问题源于错误认知（认知缺陷和认知扭曲）。核心工具是认知三角：思维、感受、行为三者相互影响。常见认知扭曲包括全或无思维、灾难化、读心术、情绪推理等11种。","examples":["朋友没回微信→灾难化：'他不在乎我了'→伤心焦虑→理性思考：'他可能在忙'→平静"],"selfTest":"当下次有负面情绪时，使用思维记录表：记录情境/自动思维/情绪强度/认知扭曲/更理性的思维/新情绪。坚持2周。","practice":"使用思维记录表挑战认知扭曲。核心问题：'我的想法有证据支持吗？''有没有更理性的方式看待这件事？'","links":[{"name":"Beck Institute","url":"https://www.beckinstitute.org/"},{"name":"APA - CBT","url":"https://www.apa.org/ptsd-guideline/patients-and-families/cognitive-behavioral"},{"name":"Verywell Mind - CBT","url":"https://www.verywellmind.com/cognitive-behavioral-therapy-1067402"}]},
+    {"id":"Flow","label":"心流理论","category":"positive","year":1990,"author":"Csikszentmihalyi","difficulty":"intermediate","order":7,"summary":"当你完全投入某事时，会体验到'忘我'的最佳状态，时间过得飞快。","desc":"心流是个体完全投入活动中的最优体验状态，包含8个核心成分：完全专注、清晰目标、失去自我意识、时间扭曲、内在奖励、挑战与技能平衡、控制感、行动-意识融合。心流≠放松，是有挑战的专注。","examples":["玩游戏/画画/写代码时忘了吃饭、忘了时间、不觉得累、不担心别人怎么看——这就是心流"],"selfTest":"回想过去3个月：做什么事情时忘记时间？什么事情让你觉得'挑战刚好，不太难也不太简单'？","practice":"1.找到心流活动；2.创造最佳环境：固定时间、关掉手机、清晰目标、即时反馈；3.调整挑战水平；4.每天安排30-60分钟心流时间。","links":[{"name":"Flow Research Collective","url":"https://www.flowresearchcollective.com/"},{"name":"Positive Psychology - Flow","url":"https://positivepsychology.com/flow-state/"},{"name":"Greater Good - Flow","url":"https://greatergood.berkeley.edu/article/item/what_is_flow"}]},
+    {"id":"DualProcess","label":"快速慢速思维","category":"cognitive","year":2011,"author":"Kahneman","difficulty":"intermediate","order":8,"summary":"大脑有两个系统：快速直觉的系统1，和慢速理性的系统2。好决策需要两个系统合作。","desc":"系统1（快速、自动、直觉）负责模式识别和启发式；系统2（慢速、分析、深思熟虑）负责逻辑推理和计算。系统1常常偷懒导致偏见，如锚定效应、可用性启发式、代表性启发式、损失厌恶等。","examples":["2+2=4→系统1立即反应；17×24=？→系统2需要计算","看到红灯立即踩刹车→系统1；决定买哪台电脑→系统2"],"selfTest":"回顾最近的重要决定：是否凭直觉做出？是否被第一印象锚定？是否只看了支持自己观点的信息？","practice":"1.识别系统1时刻；2.重要决定前使用决策清单；3.寻找反证据：主动问'它可能失败的原因是什么？'","links":[{"name":"Positive Psychology - Thinking Fast and Slow","url":"https://positivepsychology.com/thinking-fast-and-slow/"},{"name":"Simply Psychology - Dual Process","url":"https://www.simplypsychology.org/dual-process-theory.html"},{"name":"Behavioral Economics Guide","url":"https://www.behavioraleconomics.com/resources/mini-encyclopedia-of-be/"}]},
+    {"id":"Grit","label":"Grit毅力与激情","category":"positive","year":2007,"author":"Duckworth","difficulty":"intermediate","order":9,"summary":"对长期目标的持续激情和坚持，比天赋更能预测长期成功。","desc":"Grit包含两个核心成分：激情（对长期目标的持续热爱和方向一致性）和毅力（即使困难枯燥也继续努力）。研究发现Grit能预测学业成绩、毕业率、西点军校表现等，比天赋更能预测长期成就。","examples":["天赋高但三天打鱼两天晒网→难成功；天赋一般但每天坚持→5年后开独奏会"],"selfTest":"对8个陈述打分(1-5分)：有明确长期目标/对目标充满热情多年/即使枯燥也坚持/遇到挫折不放弃等。","practice":"1.找到'顶层目标'；2.将大目标分解为小目标；3.建立'不放弃'仪式：固定练习时间、5分钟规则；4.建立支持系统。","links":[{"name":"Positive Psychology - Grit","url":"https://positivepsychology.com/grit/"},{"name":"Angela Duckworth - Grit","url":"https://angeladuckworth.com/grit-scale/"},{"name":"Character Lab","url":"https://characterlab.org/"}]},
+    {"id":"SDT","label":"自我决定理论","category":"motivation","year":2000,"author":"Ryan & Deci","difficulty":"intermediate","order":10,"summary":"真正的动力来自内心而非外部奖励。满足自主、能力、关系三个需求，你会有持续动力。","desc":"人类动机从受控动机到自主动机的连续体。满足三项基本心理需求促进内在动机：自主（行为是自己的选择）、能力（有能力应对挑战）、关系（和他人有连接）。外部奖励只能提供短期动力。","examples":["老婆逼戒烟→外部压力→易复吸；自己想健康陪孩子→内心驱动→更可能坚持"],"selfTest":"评估你做某事的动机类型：外部调节(为钱/避免惩罚)/内摄调节(不做有罪恶感)/认同调节(符合价值观)/内在动机(本身有趣)。","practice":"1.识别受控动机；2.将外部动机内化：'我选择做，因为我想健康'；3.满足三个需求：自主(给选择权)、能力(跳一跳够得着的目标)、关系(和朋友一起做)。","links":[{"name":"Self-Determination Theory","url":"https://selfdeterminationtheory.org/"},{"name":"Positive Psychology - SDT","url":"https://positivepsychology.com/self-determination-theory/"},{"name":"SDT - Basic Needs","url":"https://selfdeterminationtheory.org/theory/"}]},
+    {"id":"PTG","label":"创伤后成长","category":"positive","year":2004,"author":"Tedeschi & Calhoun","difficulty":"advanced","order":11,"summary":"经历困难和创伤后，你可能在5个领域获得成长，变得比从前更强大。","desc":"创伤事件挑战个体的世界观，通过反复反刍和应对过程，个体可能在个人力量、新可能性、关系更深、生命珍惜、精神发展5个领域获得成长。注意：创伤后成长不是'感恩创伤'，而是'在创伤后找到成长'。","examples":["失业后的成长：发现比自己想象的坚强/发现创业机会/更珍惜家人/更享受小确幸"],"selfTest":"回想一次困难经历，在5个领域评估积极改变(1-5分)：个人力量/新可能性/关系更深/生命珍惜/精神发展。","practice":"1.表达性写作：连续4天每天写15-20分钟；2.重构叙事：从受害者到幸存者；3.寻找意义：'这段经历如何让我成为更好的人？'","links":[{"name":"Positive Psychology - Post-Traumatic Growth","url":"https://positivepsychology.com/post-traumatic-growth/"},{"name":"PTGI - Tedeschi","url":"https://www.ptsdi.org/ptgi/"},{"name":"Verywell Mind - PTG","url":"https://www.verywellmind.com/what-is-post-traumatic-growth-2795217"}]},
+    {"id":"Prospect","label":"前景理论","category":"cognitive","year":1979,"author":"Kahneman & Tversky","difficulty":"advanced","order":12,"summary":"我们做决定时不是'理性计算'，而是受'损失厌恶'等心理偏差影响。","desc":"人们在风险和不确定性下的决策遵循参考点依赖、损失厌恶、概率加权等原则。损失100元的痛苦>得到100元的快乐。框架效应：同一件事用不同表述，决定会不同。","examples":["确定得1000元 vs 50%概率得2000元→大多数人选确定收益","存活率90% vs 死亡率10%→同一件事，不同决定"],"selfTest":"回顾最近的重要决定：是否因害怕损失而做出保守选择？是否被信息的呈现方式框架影响？","practice":"1.识别框架：换种方式表述选择；2.用外部视角：'如果朋友面临这个选择，我给什么建议？'；3.考虑机会成本。","links":[{"name":"Simply Psychology - Prospect Theory","url":"https://www.simplypsychology.org/prospect-theory.html"},{"name":"Behavioral Economics","url":"https://www.behavioraleconomics.com/resources/mini-encyclopedia-of-be/prospect-theory/"},{"name":"Nobel Prize - Kahneman","url":"https://www.nobelprize.org/prizes/economic-sciences/2002/summary/"}]},
+    {"id":"MBCT","label":"正念认知疗法","category":"clinical","year":2002,"author":"Segal et al.","difficulty":"intermediate","order":13,"summary":"整合正念训练和认知行为框架，预防抑郁复发，培养当下觉察和接纳。","desc":"MBCT包含8周课程：身体扫描、正念瑜伽、呼吸觉察、正念行走、扩展觉察、思维解离、自我关怀。核心在于觉察反刍思维而不被卷入，将正念融入日常活动。对3次以上抑郁复发患者尤其有效。","examples":["当负面想法出现时，不与之对抗，只是观察它如云朵飘过——这就是思维解离"],"selfTest":"你每天有多少时间活在'自动导航'模式？吃饭时在想工作，走路时在想过去？尝试正念觉察当下。","practice":"1.每日身体扫描或呼吸觉察；2.将正念融入日常：正念进食、正念行走；3.识别抑郁复发的早期预警信号。","links":[{"name":"MBCT Official","url":"https://www.mbct.com/"},{"name":"Oxford Mindfulness Centre","url":"https://www.oxfordmindfulness.org/"},{"name":"Mindful.org","url":"https://www.mindful.org/"}]},
+    {"id":"REBT","label":"理性情绪行为疗法","category":"clinical","year":1957,"author":"Ellis","difficulty":"intermediate","order":14,"summary":"不是事件本身让你难过，而是你对事件的想法让你难过。ABC模型帮你改变信念。","desc":"ABC模型：A(激活事件)→B(信念)→C(后果)。Ellis提出11种非理性信念，如'我必须在所有领域表现出色''别人应该永远公平对待我'。通过D(辩论)形成E(新效果)，用理性信念替代非理性信念。","examples":["朋友没回微信→非理性：'她不在乎我了'→伤心焦虑→理性：'她可能在忙'→平静"],"selfTest":"当下次情绪低落时，写下A(发生了什么)/B(你对自己说了什么)/C(情绪和行为)。识别其中是否有非理性信念。","practice":"使用ABCDE模型：识别ABC→D(辩论：有证据支持吗？有更理性的方式吗？)→E(新效果：形成新的理性信念)。","links":[{"name":"REBT Network","url":"https://www.rebt.org/"},{"name":"Albert Ellis Institute","url":"https://albertellis.org/"},{"name":"Positive Psychology - REBT","url":"https://positivepsychology.com/rebt/"}]},
+    {"id":"StressCoping","label":"压力与应对理论","category":"clinical","year":1984,"author":"Lazarus & Folkman","difficulty":"intermediate","order":15,"summary":"压力不是'坏事'，而是你评估为'威胁'的事件。改变评估，就能改变压力反应。","desc":"认知评价决定压力感知：初级评价（这是威胁还是挑战？）和次级评价（我能应对吗？）。应对方式分为问题聚焦应对（改变情境）和情绪聚焦应对（调节情绪）。聪明人根据情境选择两种方式。","examples":["公开演讲→评估为威胁：高度焦虑失眠；评估为挑战：适度紧张兴奋"],"selfTest":"下次感到压力时问自己：我把这评估为威胁还是挑战？我相信自己能应对吗？我通常用什么方式应对？","practice":"1.重构初级评估：'这是挑战，我能成长'；2.问题聚焦：列出可控制部分，制定行动计划；3.情绪聚焦：正念、社会支持、运动。","links":[{"name":"Positive Psychology - Stress Coping","url":"https://positivepsychology.com/stress-appraisal-coping/"},{"name":"Verywell Mind - Stress","url":"https://www.verywellmind.com/stress-and-coping-theory-3144954"},{"name":"APA - Stress","url":"https://www.apa.org/topics/stress"}]},
+    {"id":"SIT","label":"压力接种训练","category":"clinical","year":1977,"author":"Meichenbaum","difficulty":"advanced","order":16,"summary":"像打疫苗一样，提前'接种'压力，让你在真正压力来临时更能应对。","desc":"三阶段训练：概念化阶段（了解压力反应模式）、技能获得与复述阶段（学习放松、认知重构、问题解决）、应用与维持阶段（模拟练习、逐步暴露、自我监控）。让你在真正面试/演讲时不至于大脑空白。","examples":["面试前：1.了解面试压力模式；2.学习深呼吸和积极自我对话；3.模拟面试练习→真正面试时从容应对"],"selfTest":"选一个即将面临的压力情境。记录：想象这个情境时，身体反应是什么？思维是什么？","practice":"1.概念化(1周)：记录压力触发点和反应；2.技能获得(2-3周)：练习放松、积极自我对话、可视化成功；3.应用(1-2周)：模拟练习、逐步暴露。","links":[{"name":"Positive Psychology - SIT","url":"https://positivepsychology.com/stress-inoculation-training/"},{"name":"APA - SIT","url":"https://www.apa.org/pi/aids/resources/education/stress-inoculation"},{"name":"Verywell Mind - SIT","url":"https://www.verywellmind.com/stress-inoculation-training-3145174"}]},
+    {"id":"TTM","label":"跨理论模型","category":"motivation","year":1992,"author":"Prochaska & DiClemente","difficulty":"intermediate","order":17,"summary":"行为改变不是一蹴而就的，它有6个阶段。在不同阶段，你需要不同的策略。","desc":"行为改变六阶段：前意向（没想过改变）、意向（考虑但没准备好）、准备（打算近期改变）、行动（已开始改变）、维持（保持改变）、终止（不再想 relapse）。不要在'前意向'阶段强迫行动。","examples":["戒烟：前意向'没想过'→意向'在考虑'→准备'下个月戒'→行动'已戒3周'→维持'已戒6个月'→终止'不想抽了'"],"selfTest":"选一个你想改变的行为。问自己：我有想过改变吗？我在考虑但不确定？我已开始改变了？确定你所在的阶段。","practice":"前意向：了解好处风险；意向：做决策平衡表；准备：设定具体日期；行动：使用具体技巧；维持：识别高风险情境。","links":[{"name":"Simply Psychology - TTM","url":"https://www.simplypsychology.org/transtheoretical-model.html"},{"name":"Pro-Change","url":"https://www.prochange.com/"},{"name":"Verywell Mind - Stages of Change","url":"https://www.verywellmind.com/the-stages-of-change-2794868"}]},
+    {"id":"SelfExpansion","label":"自我扩展模型","category":"motivation","year":1996,"author":"Aron & Aron","difficulty":"advanced","order":18,"summary":"当你爱上一个人，你的自我概念会'扩展'，包含对方的资源、视角和身份。","desc":"亲密关系中的自我扩展：通过与他人建立亲密关系，个体的自我概念得到扩展，获得新观点、身份和资源。好的关系让你'变大'，不好的关系让你'变小'。开始用'我们'而非'我'思考问题。","examples":["恋爱后：原来不喜欢爬山但伴侣喜欢→你也爱上；伴侣是建筑师→你开始关注建筑；用'我们'思考未来"],"selfTest":"评估重要关系(1-5分)：让我尝试新活动/让我有新视角/获得新资源/自我感觉变大/成为更好的自己。平均≥3.5是健康关系。","practice":"1.一起尝试新事物；2.分享彼此的激情；3.建立'我们'叙事：支持对方成为更好的自己。","links":[{"name":"Positive Psychology - Self-Expansion","url":"https://positivepsychology.com/self-expansion-model/"},{"name":"Stony Brook - Close Relationships Lab","url":"https://www.stonybrook.edu/commcms/closerelationships/"},{"name":"Verywell Mind - Self-Expansion","url":"https://www.verywellmind.com/self-expansion-theory-4777806"}]}
+  ],
+  "edges": [
+    {"source":"PERMA","target":"BroadenBuild","type":"基于","desc":"PERMA中的积极情绪维度基于拓展-建构理论"},
+    {"source":"PERMA","target":"VIA","type":"整合","desc":"PERMA与VIA优势结合使用，优势促进PERMA各维度"},
+    {"source":"Mindset","target":"Grit","type":"促进","desc":"成长型思维促进Grit的发展，减少失败后放弃"},
+    {"source":"BroadenBuild","target":"Flow","type":"相关","desc":"积极情绪促进心流体验，拓展理论解释心流前因"},
+    {"source":"PTG","target":"BroadenBuild","type":"补充","desc":"创伤后成长拓展积极心理学应用范围"},
+    {"source":"CBT","target":"REBT","type":"同源","desc":"都属于认知行为治疗谱系，REBT是CBT前身之一"},
+    {"source":"Prospect","target":"DualProcess","type":"基础","desc":"前景理论为双系统理论提供实证基础"},
+    {"source":"SelfEfficacy","target":"CBT","type":"整合","desc":"自我效能理论融入CBT治疗框架"},
+    {"source":"MBCT","target":"CBT","type":"整合","desc":"MBCT整合了CBT和正念冥想传统"},
+    {"source":"REBT","target":"CBT","type":"前身","desc":"REBT是CBT的重要前身之一"},
+    {"source":"SIT","target":"CBT","type":"发展","desc":"压力接种训练是CBT的发展应用"},
+    {"source":"StressCoping","target":"CBT","type":"应用","desc":"压力应对理论应用于CBT框架"},
+    {"source":"SDT","target":"SelfEfficacy","type":"互补","desc":"自主需求与自我效能共同影响动机"},
+    {"source":"TTM","target":"SelfEfficacy","type":"依赖","desc":"行为改变阶段受自我效能影响"},
+    {"source":"SelfExpansion","target":"PERMA","type":"补充","desc":"自我扩展增强PERMA中的关系维度"},
+    {"source":"Mindset","target":"SelfEfficacy","type":"影响","desc":"成长型思维提升自我效能信念"},
+    {"source":"Grit","target":"SelfEfficacy","type":"增强","desc":"自我效能增强Grit的坚持性"},
+    {"source":"Flow","target":"SDT","type":"满足","desc":"心流体验满足自主、能力、关系需求"},
+    {"source":"PTG","target":"StressCoping","type":"应用","desc":"创伤后成长运用应对理论实现转变"},
+    {"source":"MBCT","target":"StressCoping","type":"整合","desc":"正念培养情绪聚焦应对能力"},
+    {"source":"SDT","target":"Mindset","type":"关联","desc":"自主动机与成长型思维相互促进"},
+    {"source":"TTM","target":"SDT","type":"结合","desc":"改变阶段与动机类型结合使用更有效"},
+    {"source":"SIT","target":"StressCoping","type":"应用","desc":"压力接种训练基于应对理论"},
+    {"source":"Flow","target":"SelfExpansion","type":"相关","desc":"心流和自我扩展都涉及自我意识消融"}
+  ]
+}
