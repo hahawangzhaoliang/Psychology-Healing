@@ -45,25 +45,37 @@
     </nav>
 
     <!-- 主要内容 -->
-    <main class="max-w-4xl mx-auto px-4 py-10">
+    <main class="max-w-4xl mx-auto px-4 pt-24 pb-10">
         <!-- 进度指示器 -->
-        <div class="step-progress stagger-child" style="--stagger-index: 0">
-            <div class="step-track">
-                <div class="step-dot active" id="step-1" data-step="1">
-                    <span class="step-number">1</span>
-                    <span class="step-label">选择角色</span>
-                </div>
-                <div class="step-line"></div>
-                <div class="step-dot" id="step-2" data-step="2">
-                    <span class="step-number">2</span>
-                    <span class="step-label">冲突分析</span>
-                </div>
-                <div class="step-line"></div>
-                <div class="step-dot" id="step-3" data-step="3">
-                    <span class="step-number">3</span>
-                    <span class="step-label">平衡建议</span>
+        <div class="step-progress-wrapper stagger-child" style="--stagger-index: 0">
+            <div class="step-progress">
+                <div class="step-track">
+                    <div class="step-dot active" id="step-1" data-step="1">
+                        <div class="step-ring">
+                            <span class="step-number">1</span>
+                            <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <span class="step-label">认识角色</span>
+                    </div>
+                    <div class="step-line" id="line-1-2"></div>
+                    <div class="step-dot" id="step-2" data-step="2">
+                        <div class="step-ring">
+                            <span class="step-number">2</span>
+                            <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <span class="step-label">探索冲突</span>
+                    </div>
+                    <div class="step-line" id="line-2-3"></div>
+                    <div class="step-dot" id="step-3" data-step="3">
+                        <div class="step-ring">
+                            <span class="step-number">3</span>
+                            <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        </div>
+                        <span class="step-label">找到平衡</span>
+                    </div>
                 </div>
             </div>
+            <p class="step-hint">✨ 这里没有对错，只是帮助你更了解自己</p>
         </div>
 
         <!-- 步骤1：角色识别 -->
@@ -74,8 +86,8 @@
                         <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">你在生活中扮演哪些角色？</h2>
-                        <p class="step-subtitle">选择你目前扮演的角色，帮助我们更好地理解你</p>
+                        <h2 class="step-title">你在这个世界上，扮演着许多美好的角色</h2>
+                        <p class="step-subtitle">每一种身份都是你被需要、被爱的证明。轻轻点击那些属于你的角色吧 💚</p>
                     </div>
                 </div>
                 
@@ -244,8 +256,8 @@
                         <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">角色冲突分析</h2>
-                        <p class="step-subtitle">看看你的角色之间是否存在冲突</p>
+                        <h2 class="step-title">有时候，角色之间会有些小摩擦</h2>
+                        <p class="step-subtitle">别担心，这不是你的问题。现代生活本就充满多重身份的挑战 🌱</p>
                     </div>
                 </div>
                 
@@ -272,8 +284,8 @@
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">角色平衡建议</h2>
-                        <p class="step-subtitle">帮助你更好地平衡不同角色</p>
+                        <h2 class="step-title">你已经很棒了，这里有一些温柔的建议</h2>
+                        <p class="step-subtitle">平衡不是完美，而是让每个角色都有被照顾到的时刻 🕊️</p>
                     </div>
                 </div>
                 
@@ -317,13 +329,52 @@
         };
 
         const conflicts = {
-            'employee-learner': { roles: ['职场人', '学习者'], description: '工作与学习的平衡', suggestion: '设定固定学习时间，利用碎片化时间学习' },
-            'employee-creator': { roles: ['职场人', '创造者'], description: '工作与兴趣爱好的冲突', suggestion: '下班后留出1小时做自己喜欢的事，周末安排创作时间' },
-            'employee-explorer': { roles: ['职场人', '探索者'], description: '工作与自我探索的矛盾', suggestion: '定期反思，设定个人成长目标' },
-            'student-employee': { roles: ['学生', '职场人'], description: '学业与工作的双重压力', suggestion: '合理规划时间，优先处理重要任务' },
-            'parent-employee': { roles: ['父母', '职场人'], description: '育儿与工作的平衡', suggestion: '设定工作边界，保证家庭时间' },
-            'partner-employee': { roles: ['伴侣', '职场人'], description: '亲密关系与工作的冲突', suggestion: '每天留出专属时间给伴侣，周末约会' },
-            'child-employee': { roles: ['子女', '职场人'], description: '家庭责任与工作的矛盾', suggestion: '定期与父母沟通，平衡家庭和工作需求' }
+            // ===== 家庭内部 =====
+            'parent-partner': { roles: ['父母', '伴侣'], description: '育儿责任常常悄悄占据了你们之间的话题空间，这是很多家庭的常态', suggestion: '孩子需要看到你们彼此相爱。每周留出"只有你们俩"的时间，哪怕只是一起散步20分钟。' },
+            'parent-child': { roles: ['父母', '子女'], description: '育儿和照顾父母同时发生，这是一种"三明治一代"的典型压力', suggestion: '你不需要做到完美。和兄弟姐妹分担责任，也允许自己有时候力不从心。寻求外部支持不是失败，而是智慧。' },
+            'partner-child': { roles: ['伴侣', '子女'], description: '伴侣关系和赡养父母之间，有时需要微妙的平衡', suggestion: '让伴侣参与到你的家庭关系中来。一起看望父母，能让关系更自然。' },
+            'sibling-parent': { roles: ['兄弟姐妹', '父母'], description: '关于育儿观念，兄弟姐妹之间可能有不同的看法', suggestion: '求同存异，在核心问题上保持一致，细节上允许不同。' },
+
+            // ===== 家庭 + 社会 =====
+            'employee-parent': { roles: ['职场人', '父母'], description: '工作和育儿都在争夺你的注意力和精力——这是现代父母最普遍的体验', suggestion: '质量胜过数量。每天15分钟的全神贯注陪伴，比一整天的"边看手机边陪孩子"更有意义。' },
+            'employee-partner': { roles: ['职场人', '伴侣'], description: '工作的疲惫常常让你在下班后没有精力经营亲密关系', suggestion: '把"约会之夜"写进日历。每天睡前放下手机，聊10分钟。' },
+            'employee-child': { roles: ['职场人', '子女'], description: '工作忙碌时，很难抽出时间陪伴和照顾父母', suggestion: '质量比频率更重要。定期视频通话，节假日提前规划回家时间。帮父母找到社区支持网络。' },
+            'employee-sibling': { roles: ['职场人', '兄弟姐妹'], description: '各自忙碌于工作，手足之间的连接感可能逐渐变弱', suggestion: '不需要频繁联系，但可以在彼此重要时刻出现。偶尔分享生活中的小瞬间，让彼此知道"我在这里"。' },
+            'freelancer-parent': { roles: ['自由职业者', '父母'], description: '在家工作让你既能陪伴孩子，又容易让工作与家庭界限模糊', suggestion: '和孩子建立"工作时间"的仪式感。也要教会孩子：自由职业也是真正的工作。' },
+            'entrepreneur-parent': { roles: ['创业者', '父母'], description: '创业的不确定性和高强度投入，可能影响你作为父母的稳定感', suggestion: '让孩子了解你的工作，但不把创业的压力传递给他们。设定"无工作"的家庭时间。' },
+            'student-parent': { roles: ['学生', '父母'], description: '学业和育儿双重身份，让你时间特别紧张', suggestion: '你正在给孩子展示"终身学习"最好的榜样。寻求学校或社区的育儿支持。' },
+            'student-employee': { roles: ['学生', '职场人'], description: '半工半读的生活，让你很难有喘息的时间', suggestion: '你的努力终会开花结果。合理规划时间，也给自己留出休息的时刻。' },
+
+            // ===== 家庭 + 自我 =====
+            'parent-learner': { roles: ['父母', '学习者'], description: '育儿占用了大量时间，自我提升的计划常常被搁置', suggestion: '让孩子看到爸爸妈妈也在学习。利用碎片时间学习，不需要大块时间也能进步。' },
+            'parent-creator': { roles: ['父母', '创造者'], description: '创作需要专注和时间，育儿却需要随时待命', suggestion: '把创作时间安排在孩子的稳定活动时段。也可以让孩子参与到你的创作中。' },
+            'parent-volunteer': { roles: ['父母', '志愿者'], description: '想要帮助他人，但首先要照顾好自己和家人', suggestion: '带孩子一起参与志愿服务，既能帮助他人，也能培养孩子的同理心。' },
+            'parent-explorer': { roles: ['父母', '探索者'], description: '有了孩子之后，探索世界的方式发生了变化', suggestion: '带着孩子一起探索——去新的公园、尝试新的食物。孩子是最好的探索伙伴。' },
+            'partner-learner': { roles: ['伴侣', '学习者'], description: '自我成长的过程中，有时会让伴侣感到被落下', suggestion: '和伴侣分享你学到的东西。也可以邀请伴侣一起学习某个话题。' },
+            'partner-creator': { roles: ['伴侣', '创造者'], description: '创作需要独处时间，可能让伴侣感到被忽略', suggestion: '和伴侣分享你的创作。让TA成为你创作的第一读者。' },
+            'child-learner': { roles: ['子女', '学习者'], description: '照顾父母和学习成长都需要投入，时间和精力需要精心分配', suggestion: '提升自己也是为了更好地照顾父母。让父母看到你的进步，他们会为你骄傲。' },
+            'child-creator': { roles: ['子女', '创造者'], description: '创作需要时间，照顾父母也需要时间', suggestion: '把创作和照顾父母结合起来——给父母画一幅画、写一首诗。他们会珍藏的。' },
+            'sibling-learner': { roles: ['兄弟姐妹', '学习者'], description: '各自走在不同的成长路径上', suggestion: '偶尔和兄弟姐妹分享你学到的东西。血缘+共同成长，是最深的连接。' },
+
+            // ===== 社会内部 =====
+            'employee-learner': { roles: ['职场人', '学习者'], description: '工作已经很累了，还要抽出精力学习，需要很强的内驱力', suggestion: '把学习内容和工作中结合。每天睡前或早起后的30分钟，是最容易坚持的学习时段。' },
+            'employee-creator': { roles: ['职场人', '创造者'], description: '工作占用了大部分创造力，下班后很难再开始创作', suggestion: '创作不必是"大项目"，每天15分钟的随手记录，都能保持创造力不枯竭。' },
+            'employee-explorer': { roles: ['职场人', '探索者'], description: '工作的确定性常常让人忘记探索自己的更多可能性', suggestion: '探索不必是"辞职去看世界"，可以是每周尝试一家新餐厅、读一本不同领域的书。' },
+            'employee-volunteer': { roles: ['职场人', '志愿者'], description: '工作已经很忙碌了，志愿服务可能让你感到时间更加紧张', suggestion: '帮助他人不需要大段的时间。在日常生活中多一份善意和耐心，都是在"志愿"。' },
+            'freelancer-creator': { roles: ['自由职业者', '创造者'], description: '自由职业和创作可能需要争夺你的时间和精力', suggestion: '如果可能，让创作成为你自由职业的一部分。为"纯粹的创作"留出神圣不可侵犯的时间。' },
+            'entrepreneur-learner': { roles: ['创业者', '学习者'], description: '创业需要快速学习，但系统性的学习常常被紧急事务挤占', suggestion: '把学习嵌入到创业过程中。每次遇到的问题，都把它当成一个学习课题。' },
+            'entrepreneur-creator': { roles: ['创业者', '创造者'], description: '创业需要理性和逻辑，创作需要感性和灵感——两者需要平衡', suggestion: '创业是另一种创作。把你的创业项目，当成你最大的创作来对待。' },
+            'entrepreneur-explorer': { roles: ['创业者', '探索者'], description: '创业需要专注和坚持，探索却需要开放和尝试', suggestion: '创业本身就是一种探索。把探索精神融入创业过程——尝试新的商业模式。' },
+            'student-creator': { roles: ['学生', '创造者'], description: '学业压力可能限制了你投入创作的时间和精力', suggestion: '学生时代是最适合创作的时期。哪怕每天只创作15分钟，也是在滋养你的创造力。' },
+            'student-explorer': { roles: ['学生', '探索者'], description: '学生时代是最适合探索的时期，但学业压力可能限制你的探索', suggestion: '把探索融入学习——选一门你完全不了解的课，认识一个不同背景的同学。' },
+            'student-volunteer': { roles: ['学生', '志愿者'], description: '学业和志愿服务都在占用你的时间', suggestion: '志愿服务是你最好的"课外教育"。它教给你的，可能比课本还多。' },
+
+            // ===== 自我内部 =====
+            'learner-volunteer': { roles: ['学习者', '志愿者'], description: '学习和志愿服务都在占用你的业余时间，需要找到平衡', suggestion: '志愿服务本身也是一种学习。把志愿服务的经历记录下来，它会成为你人生很宝贵的财富。' },
+            'learner-explorer': { roles: ['学习者', '探索者'], description: '学习和探索是很自然的组合，它们相互激发', suggestion: '保持这份好奇心和学习的欲望。学和探索不必有"目的"，有时候最美好的发现就在不经意间。' },
+            'creator-volunteer': { roles: ['创造者', '志愿者'], description: '创作需要专注独处，志愿服务需要向外连接，能量分配需要智慧', suggestion: '你的创造力可以用来服务他人。教别人你擅长的创作技能，这是一种很有意义的志愿服务。' },
+            'creator-explorer': { roles: ['创造者', '探索者'], description: '探索给你灵感，创作帮你表达——这是一对很棒的搭档', suggestion: '让探索成为你创作的源泉。去新的地方、认识不同背景的人，它们都会成为创作的养分。' },
+            'explorer-volunteer': { roles: ['探索者', '志愿者'], description: '探索世界和服务他人，都是向外打开自己的方式', suggestion: '志愿服务可以是一种探索——去不同的地方、认识不同背景的人。让两者相互滋养。' }
         };
 
         function showToast(message, type = 'info') {
@@ -350,6 +401,9 @@
             } else {
                 selectedRoles.push(role);
                 card.classList.add('selected');
+                // 微妙的选中确认动画
+                card.style.transform = 'scale(0.97)';
+                setTimeout(() => { card.style.transform = ''; }, 120);
             }
         }
 
@@ -366,6 +420,11 @@
                     dot.classList.remove('active', 'completed');
                 }
             }
+            // 更新连接线状态
+            const line12 = document.getElementById('line-1-2');
+            const line23 = document.getElementById('line-2-3');
+            if (line12) line12.classList.toggle('completed', step >= 2);
+            if (line23) line23.classList.toggle('completed', step >= 3);
         }
 
         function nextStep(step) {
@@ -397,40 +456,95 @@
         function generateConflictAnalysis() {
             const container = document.getElementById('conflict-analysis');
             let html = '';
-            const foundConflicts = [];
+            const items = [];
+
             selectedRoles.forEach((role1, i) => {
                 selectedRoles.slice(i + 1).forEach(role2 => {
                     const key1 = `${role1}-${role2}`;
                     const key2 = `${role2}-${role1}`;
-                    if (conflicts[key1]) foundConflicts.push({ key: key1, ...conflicts[key1] });
-                    else if (conflicts[key2]) foundConflicts.push({ key: key2, ...conflicts[key2] });
+                    const conflict = conflicts[key1] || conflicts[key2];
+                    if (conflict) {
+                        items.push({
+                            type: 'conflict',
+                            roles: conflict.roles,
+                            description: conflict.description,
+                            suggestion: conflict.suggestion
+                        });
+                    } else {
+                        items.push({
+                            type: 'harmony',
+                            roles: [roleInfo[role1].name, roleInfo[role2].name],
+                            emoji1: roleInfo[role1].emoji,
+                            emoji2: roleInfo[role2].emoji,
+                            text: generateHarmonyText(role1, role2)
+                        });
+                    }
                 });
             });
-            if (foundConflicts.length === 0) {
+
+            if (items.length === 0) {
                 html = `<div class="conflict-empty">
                     <div class="conflict-empty-icon">✨</div>
-                    <h3 class="conflict-empty-title">太棒了！</h3>
-                    <p class="conflict-empty-text">你的角色之间没有明显的冲突</p>
+                    <h3 class="conflict-empty-title">你选择了 ${selectedRoles.length} 个角色</h3>
+                    <p class="conflict-empty-text">每一个角色都是你的一部分，它们共同构成了完整的你</p>
                 </div>`;
             } else {
-                foundConflicts.forEach((c, i) => {
-                    html += `<div class="conflict-item" style="animation-delay:${i * 0.1}s">
-                        <div class="conflict-badge">${c.roles[0]} vs ${c.roles[1]}</div>
-                        <p class="conflict-desc">${c.description}</p>
-                        <p class="conflict-suggestion">💡 ${c.suggestion}</p>
-                    </div>`;
+                items.forEach((item, i) => {
+                    if (item.type === 'conflict') {
+                        html += `<div class="conflict-item" style="animation-delay:${i * 0.1}s">
+                            <div class="conflict-badge">${item.roles[0]} × ${item.roles[1]}</div>
+                            <p class="conflict-desc">${item.description}</p>
+                            <p class="conflict-suggestion">💡 ${item.suggestion}</p>
+                        </div>`;
+                    } else {
+                        html += `<div class="harmony-item" style="animation-delay:${i * 0.1}s">
+                            <div class="harmony-emojis">${item.emoji1} ${item.emoji2}</div>
+                            <p class="harmony-text">${item.text}</p>
+                        </div>`;
+                    }
                 });
             }
+
             html += `<div class="role-map">
                 <h3 class="role-map-title">你的角色地图</h3>
                 <div class="role-map-tags">${selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${roleInfo[r].name}</span>`).join('')}</div>
             </div>`;
+
             container.innerHTML = html;
             requestAnimationFrame(() => {
-                container.querySelectorAll('.conflict-item').forEach((item, i) => {
+                container.querySelectorAll('.conflict-item, .harmony-item').forEach((item, i) => {
                     setTimeout(() => item.classList.add('visible'), i * 100);
                 });
             });
+        }
+
+        function generateHarmonyText(role1, role2) {
+            const cat1 = roleInfo[role1].category;
+            const cat2 = roleInfo[role2].category;
+            const name1 = roleInfo[role1].name;
+            const name2 = roleInfo[role2].name;
+            const emoji1 = roleInfo[role1].emoji;
+            const emoji2 = roleInfo[role2].emoji;
+
+            if (cat1 === cat2) {
+                const msgs = {
+                    '家庭': [
+                        `${emoji1} ${name1}和${emoji2} ${name2}——你在家庭中扮演着多重重要角色，这需要很多爱，也收获很多爱`,
+                        `家庭中的多个角色虽然忙碌，但也让你被更多的人需要和珍视`
+                    ],
+                    '社会': [
+                        `${emoji1} ${name1}和${emoji2} ${name2}——你在社会中承担着多重责任，这不容易，但你做到了`,
+                        `这两个社会角色让你拥有更丰富的经验和更广阔的视野`
+                    ],
+                    '自我': [
+                        `${emoji1} ${name1}和${emoji2} ${name2}都是你为自己选择的身份，这份自我驱动力很美丽`,
+                        `在自我成长的道路上同时走多条路径，保持这份好奇就好`
+                    ]
+                };
+                const pool = msgs[cat1] || [`${name1}和${name2}，都是你的一部分`];
+                return pool[0];
+            }
+            return `${emoji1} ${name1}（来自${cat1}）和${emoji2} ${name2}（来自${cat2}）共同构成了你丰富的生活——能同时扮演好它们，你真的很了不起`;
         }
 
         function generateBalanceSuggestions() {
@@ -464,11 +578,18 @@
         .neuro-aesthetic-body { animation: fadeIn 0.5s var(--ease-out); }
 
         /* 步骤进度 */
+        .step-progress-wrapper {
+            margin-bottom: 2.5rem;
+            text-align: center;
+        }
         .step-progress {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 2rem;
-            padding: 1rem 0;
+            display: inline-flex;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(8px);
+            border-radius: var(--radius-xl);
+            padding: 1.25rem 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.03);
         }
         .step-track {
             display: flex;
@@ -480,10 +601,11 @@
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
+            cursor: default;
         }
-        .step-dot .step-number {
-            width: 40px;
-            height: 40px;
+        .step-ring {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             background: var(--color-gray-200);
             color: var(--color-gray-500);
@@ -491,35 +613,86 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1rem;
-            transition: all 0.3s var(--ease-spring);
+            font-size: 0.9375rem;
+            transition: all 0.4s var(--ease-spring);
+            position: relative;
+        }
+        .step-dot .step-number { transition: all 0.3s; }
+        .step-dot .step-check {
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.35s var(--ease-spring);
+            color: white;
         }
         .step-dot .step-label {
-            font-size: 0.75rem;
+            font-size: 0.8125rem;
             color: var(--color-gray-500);
             transition: all 0.3s;
+            white-space: nowrap;
         }
-        .step-dot.active .step-number {
+        /* 当前步骤 */
+        .step-dot.active .step-ring {
             background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(90, 154, 138, 0.4);
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+            animation: stepPulse 2.5s ease-in-out infinite;
         }
         .step-dot.active .step-label { color: var(--color-primary-500); font-weight: 600; }
-        .step-dot.completed .step-number {
-            background: var(--color-primary-400);
+        /* 已完成步骤 */
+        .step-dot.completed .step-ring {
+            background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-500) 100%);
             color: white;
+            box-shadow: 0 2px 10px rgba(90, 154, 138, 0.25);
         }
+        .step-dot.completed .step-number { opacity: 0; transform: scale(0.5); }
+        .step-dot.completed .step-check { opacity: 1; transform: scale(1); }
+        .step-dot.completed .step-label { color: var(--color-primary-500); font-weight: 600; }
+        /* 连接线 */
         .step-line {
-            width: 60px;
-            height: 2px;
+            width: 70px;
+            height: 3px;
             background: var(--color-gray-200);
-            margin: 0 0.5rem;
+            margin: 0 0.75rem;
             margin-bottom: 1.5rem;
-            transition: background 0.3s;
+            border-radius: 2px;
+            transition: all 0.5s var(--ease-spring);
+            position: relative;
+            overflow: hidden;
+        }
+        .step-line.completed {
+            background: linear-gradient(90deg, var(--color-primary-400) 0%, var(--color-primary-300) 100%);
+            box-shadow: 0 0 8px rgba(90, 154, 138, 0.2);
+        }
+        .step-line::after {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--color-primary-400) 0%, var(--color-primary-300) 100%);
+            border-radius: 2px;
+            transition: width 0.6s var(--ease-spring);
+        }
+        .step-line.completed::after { width: 100%; }
+        /* 温暖提示语 */
+        .step-hint {
+            font-size: 0.8125rem;
+            color: var(--color-gray-400);
+            margin-top: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+        @keyframes stepPulse {
+            0%, 100% { box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35); }
+            50% { box-shadow: 0 4px 24px rgba(90, 154, 138, 0.55), 0 0 0 6px rgba(90, 154, 138, 0.08); }
         }
         @media (max-width: 480px) {
-            .step-label { display: none; }
-            .step-line { width: 40px; margin-bottom: 0; }
+            .step-progress { padding: 1rem 1.25rem; }
+            .step-label { font-size: 0.75rem; }
+            .step-line { width: 36px; margin: 0 0.375rem; margin-bottom: 1.25rem; }
+            .step-ring { width: 38px; height: 38px; font-size: 0.875rem; }
         }
 
         /* 步骤卡片 - 页面加载时立即可见，避免被动画引擎隐藏 */
@@ -640,6 +813,29 @@
         }
         .conflict-desc { font-weight: 500; color: var(--color-gray-700); margin-bottom: 0.25rem; }
         .conflict-suggestion { font-size: 0.875rem; color: var(--color-gray-600); }
+        /* 和谐观察卡片 */
+        .harmony-item {
+            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-calm-50) 100%);
+            padding: 1.25rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-xs);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.4s var(--ease-spring);
+            border: 1px solid rgba(90, 154, 138, 0.08);
+        }
+        .harmony-item.visible { opacity: 1; transform: translateY(0); }
+        .harmony-emojis {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.25rem;
+        }
+        .harmony-text {
+            font-size: 0.9375rem;
+            color: var(--color-gray-700);
+            line-height: 1.6;
+        }
         .role-map {
             background: var(--color-primary-50);
             padding: 1.25rem;
