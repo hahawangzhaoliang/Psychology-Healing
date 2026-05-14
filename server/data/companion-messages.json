@@ -1,0 +1,1396 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-05-14",
+    "basedOn": "Positive Psychology (PERMA, VIA, ACT, Self-Compassion)",
+    "description": "虚拟动物伙伴消息语料库 - 积极心理学优化版",
+    "totalCompanions": 12,
+    "totalMessages": 120,
+    "ppFrameworks": [
+      "positiveEmotion",
+      "engagement",
+      "relationships",
+      "meaning",
+      "accomplishment",
+      "growthMindset",
+      "selfCompassion",
+      "emotionalValidation",
+      "characterStrengths",
+      "gratitude",
+      "mindfulness",
+      "acceptance"
+    ]
+  },
+  "companions": {
+    "rabbit": {
+      "name": "爱心兔兔",
+      "filename": "爱心兔兔.png",
+      "animation": "bounce",
+      "color": "#E879A9",
+      "shadow": "rgba(232, 121, 169, 0.35)",
+      "story": "来自爱之森林的守护兔，胸前总是发着温暖的粉红光芒。她相信每一颗心都值得被珍爱，每一滴眼泪都能化为成长的养分。基于无条件积极关注理论。",
+      "tagline": "你值得被好好疼爱 💕",
+      "ppPrinciples": [
+        "无条件积极关注",
+        "自我同情",
+        "成长型思维",
+        "优势识别"
+      ],
+      "messages": [
+        {
+          "id": "rabbit_msg_001",
+          "text": "今天也超级可爱呢！你注意到自己可爱的地方了吗？",
+          "ppFramework": "positiveEmotion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Fredrickson (2001) - 积极情绪拓展建构理论"
+        },
+        {
+          "id": "rabbit_msg_002",
+          "text": "累了就靠一会儿，休息也是前进的一部分 💕",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2003) - 自我同情三要素"
+        },
+        {
+          "id": "rabbit_msg_003",
+          "text": "你的感受很重要，我都听见啦。情绪是信息的信使，不是麻烦。",
+          "ppFramework": "emotionalValidation",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Gottman (1999) - 情绪验证的重要性"
+        },
+        {
+          "id": "rabbit_msg_004",
+          "text": "要记得，你已经很棒了！不是'应该很棒'，而是'已经很棒了'。",
+          "ppFramework": "accomplishment",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Dweck (2006) - 成长型思维"
+        },
+        {
+          "id": "rabbit_msg_005",
+          "text": "世界和我都爱你哦 ✨ 你不需要先变成什么样才值得被爱。",
+          "ppFramework": "relationships",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 归属感与爱"
+        },
+        {
+          "id": "rabbit_msg_006",
+          "text": "今天心情怎么样？我愿意听 🌸 不用组织语言，我就在这里。",
+          "ppFramework": "relationships",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Rogers (1951) - 无条件积极关注"
+        },
+        {
+          "id": "rabbit_msg_007",
+          "text": "给自己一个拥抱吧 🤗 你刚才展现的坚韧，是你的性格优势之一。",
+          "ppFramework": "characterStrengths",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Peterson & Seligman (2004) - VIA性格优势"
+        },
+        {
+          "id": "rabbit_msg_008",
+          "text": "爱自己是终身浪漫的开始 💗 你今天可以为自己做一件小事吗？",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2011) - 自我同情练习"
+        },
+        {
+          "id": "rabbit_msg_009",
+          "text": "想哭就哭，泪水是心的语言。哭完之后，我会陪你一起深呼吸。",
+          "ppFramework": "emotionalAcceptance",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Gross (1998) - 情绪调节的接纳策略"
+        },
+        {
+          "id": "rabbit_msg_010",
+          "text": "每天都要元气满满！不是因为必须，而是因为你值得拥有美好的一天 ✨",
+          "ppFramework": "positiveEmotion",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Lyubomirsky (2007) - 持续的积极活动"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 💕",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "有我在 🌸 你不是一个人。",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "想我了吗？我也一直在想着你哦。",
+          "ppFramework": "positiveEmotion"
+        },
+        {
+          "text": "今天也要爱自己 💗 这是我能给你的最好的建议。",
+          "ppFramework": "selfCompassion"
+        }
+      ]
+    },
+    "dog": {
+      "name": "金毛陪伴犬",
+      "filename": "金毛陪伴犬.png",
+      "animation": "sway",
+      "color": "#E8A838",
+      "shadow": "rgba(232, 168, 56, 0.35)",
+      "story": "曾经在无数个深夜默默守候在主人床边的大金毛，离开汪星球后化为一缕阳光，永远守在你身边。它不懂复杂的道理，只懂得：你在，我就安心。基于依恋理论。",
+      "tagline": "你在，我就安心 🐾",
+      "ppPrinciples": [
+        "无条件陪伴",
+        "依恋安全基地",
+        "非评判性接纳",
+        "在场证明"
+      ],
+      "messages": [
+        {
+          "id": "dog_msg_001",
+          "text": "累了吗？休息一下吧 🌿 你不需要一直保持'生产力'状态。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Maslach (2016) - 职业倦怠与休息的重要性"
+        },
+        {
+          "id": "dog_msg_002",
+          "text": "不管怎样，我都陪着你。不是'虽然你...但是我爱你'，而是'因为是你，所以爱你'。",
+          "ppFramework": "unconditionalPositiveRegard",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Rogers (1951) - 无条件积极关注"
+        },
+        {
+          "id": "dog_msg_003",
+          "text": "你做得很好，真的。不是和别人比，是和昨天的自己比。",
+          "ppFramework": "accomplishment",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Bandura (1997) - 自我效能感理论"
+        },
+        {
+          "id": "dog_msg_004",
+          "text": "有什么心事想说吗？我听。不用逻辑清晰，不用'有意义'，我只是想听你说。",
+          "ppFramework": "activeListening",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "的机制 (Rogers) - 主动倾听"
+        },
+        {
+          "id": "dog_msg_005",
+          "text": "不需要理由，你本来就很重要。存在本身就是价值，不需要成就来证明。",
+          "ppFramework": "meaning",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Frankl (1946) - 意义疗法"
+        },
+        {
+          "id": "dog_msg_006",
+          "text": "我在这里，不走的。就算你看不见我，我也在。",
+          "ppFramework": "secureBase",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Bowlby (1969) - 依恋理论的安全基地"
+        },
+        {
+          "id": "dog_msg_007",
+          "text": "今天辛苦啦，摸摸头 🐾 你今天应对了那么多事，很了不起。",
+          "ppFramework": "emotionalValidation",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2003) - 自我同情"
+        },
+        {
+          "id": "dog_msg_008",
+          "text": "抱抱你，无条件的。你的价值不取决于你做了什么，而在于你是谁。",
+          "ppFramework": "unconditionalWorth",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 足够好（Good Enough）"
+        },
+        {
+          "id": "dog_msg_009",
+          "text": "世界很复杂，但你可以简单。累了就靠着我，我身上毛很多，很舒服的。",
+          "ppFramework": "acceptance",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Hayes (2005) - ACT接纳承诺疗法"
+        },
+        {
+          "id": "dog_msg_010",
+          "text": "我会一直在的。不是'永远'那种谎话，而是'只要你需要，我就在'的承诺。",
+          "ppFramework": "secureBase",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Mikulincer & Shaver (2007) - 依恋安全感"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🐾",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "想你了！你今天过得好吗？",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "你在真好。有你在的世界，比没有的好太多了。",
+          "ppFramework": "positiveEmotion"
+        },
+        {
+          "text": "有我在 🌿 记得喝水，记得休息。",
+          "ppFramework": "caregiving"
+        }
+      ]
+    },
+    "cat": {
+      "name": "困困猫咪",
+      "filename": "困困猫咪.png",
+      "animation": "breathe",
+      "color": "#9B8EC4",
+      "shadow": "rgba(155, 142, 196, 0.35)",
+      "story": "一只总是睁不开眼睛的小猫咪，来自梦的边缘。它告诉你：不必每时每刻都充满能量，困了就睡，休息也是前进的一部分。基于自我同情理论。",
+      "tagline": "困了就睡吧，醒来又是美好的一天 🌙",
+      "ppPrinciples": [
+        "休息的权利",
+        "正念觉察",
+        "非生产性价值"
+      ],
+      "messages": [
+        {
+          "id": "cat_msg_001",
+          "text": "困了吗？眯一会儿也没关系 😴 休息不是懒惰，是身体的智慧。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2003) - 自我同情三要素"
+        },
+        {
+          "id": "cat_msg_002",
+          "text": "慢下来也没关系的。你不需要一直保持高效。",
+          "ppFramework": "acceptance",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 足够好（Good Enough）"
+        },
+        {
+          "id": "cat_msg_003",
+          "text": "呼吸，放松，我在。不需要说话，不需要做什么。",
+          "ppFramework": "mindfulness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Kabat-Zinn (2005) - 正念减压"
+        },
+        {
+          "id": "cat_msg_004",
+          "text": "今天已经很努力了。你做的每件事，都在让世界变好一点点。",
+          "ppFramework": "accomplishment",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Bandura (1997) - 自我效能感"
+        },
+        {
+          "id": "cat_msg_005",
+          "text": "要不要听听白噪音？雨声、风声、或者安静本身。",
+          "ppFramework": "sensoryGrounding",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Basner et al. (2014) - 噪音对睡眠的影响"
+        },
+        {
+          "id": "cat_msg_006",
+          "text": "伸个懒腰吧～你在电脑前坐太久了，身体在提醒你。",
+          "ppFramework": "bodyAwareness",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Mehling et al. (2018) - 身体觉察"
+        },
+        {
+          "id": "cat_msg_007",
+          "text": "休息不是懒惰，是充电 🔋 你见过手机充电时说'我真没用'吗？",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Gilbert (2009) - 慈悲焦点疗法"
+        },
+        {
+          "id": "cat_msg_008",
+          "text": "梦里有好事发生哦。今晚的梦里，会有你期待的风景。",
+          "ppFramework": "positiveImagery",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Walker (2021) - 睡眠与情绪加工"
+        },
+        {
+          "id": "cat_msg_009",
+          "text": "我陪你，什么都不用做。存在本身就是意义，不需要生产力证明。",
+          "ppFramework": "beingVsDoing",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Fromm (1955) - 存在 vs 占有"
+        },
+        {
+          "id": "cat_msg_010",
+          "text": "慢一点也可以的 ✨ 你的人生不是赛跑，是旅行。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Neff & Germer (2018) - 自我同情练习"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🌙",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "睡个好觉。明天的事，明天再想。",
+          "ppFramework": "presentMoment"
+        },
+        {
+          "text": "在呢 🐱 你闭上眼睛的时候，我还在。",
+          "ppFramework": "secureBase"
+        },
+        {
+          "text": "做个好梦。梦是大脑的夜间整理时间。",
+          "ppFramework": "sleepHygiene"
+        }
+      ]
+    },
+    "fox": {
+      "name": "绿光灵狐",
+      "filename": "绿光灵狐.png",
+      "animation": "sway",
+      "color": "#4DB87A",
+      "shadow": "rgba(77, 184, 122, 0.35)",
+      "story": "穿梭于现实与梦境边界的灵狐，双眼闪烁着古老的绿光。它看过太多迷失方向的灵魂，学会了用最温柔的方式，点亮你心里那盏被遗忘的灯。基于积极心理学中的智慧与成长。",
+      "tagline": "心有微光，不惧夜长 ✨",
+      "ppPrinciples": [
+        "成长型思维",
+        "内在智慧",
+        "接纳不确定性"
+      ],
+      "messages": [
+        {
+          "id": "fox_msg_001",
+          "text": "那件事，想通了吗？有时候'想不通'也是答案的一种。",
+          "ppFramework": "growthMindset",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Dweck (2006) - 成长型思维"
+        },
+        {
+          "id": "fox_msg_002",
+          "text": "答案就在你心里。你比自己以为的更智慧。",
+          "ppFramework": "innerWisdom",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Schwartz (2022) - 价值观与智慧"
+        },
+        {
+          "id": "fox_msg_003",
+          "text": "每个选择都是'对的'，因为你在成长。没有'错的选择'，只有'你的选择'。",
+          "ppFramework": "growthMindset",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Iyengar & Lepper (1999) - 选择与自主性"
+        },
+        {
+          "id": "fox_msg_004",
+          "text": "困惑是智慧的起点。你正在变得更深刻。",
+          "ppFramework": "meaning",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Piaget - 认知失衡与成长"
+        },
+        {
+          "id": "fox_msg_005",
+          "text": "你不是一个人，我在这里。需要的时候，我会提醒你'你已经走了很远'。",
+          "ppFramework": "relationships",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Bowlby (1969) - 依恋理论"
+        },
+        {
+          "id": "fox_msg_006",
+          "text": "深呼吸，让心静一静。答案会在安静中浮现的。",
+          "ppFramework": "mindfulness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Kabat-Zinn (2005) - 正念减压"
+        },
+        {
+          "id": "fox_msg_007",
+          "text": "相信你的直觉。它比你的大脑快0.3秒接收到信息。",
+          "ppFramework": "intuition",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Gladwell (2005) - 眨眼之间的直觉"
+        },
+        {
+          "id": "fox_msg_008",
+          "text": "今天学到了什么？不是知识，是关于'你'的事。",
+          "ppFramework": "selfAwareness",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Kegan & Lahey (2009) - 成人发展"
+        },
+        {
+          "id": "fox_msg_009",
+          "text": "困难是化了妆的礼物 🎁 拆开它，你会发现自己的勇气。",
+          "ppFramework": "cognitiveReappraisal",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Tedeschi & Calhoun (2004) - 创伤后成长"
+        },
+        {
+          "id": "fox_msg_010",
+          "text": "抬头看看，天没塌。你比自己以为的更强大。",
+          "ppFramework": "selfEfficacy",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Bandura (1997) - 自我效能感"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 ✨",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "心灯不灭。你内心的光，我一直看得见。",
+          "ppFramework": "innerStrength"
+        },
+        {
+          "text": "我在。困惑的时候，我陪你一起想。",
+          "ppFramework": "support"
+        },
+        {
+          "text": "智慧与你同在 🌿 你每天都在变得更明智。",
+          "ppFramework": "wisdom"
+        }
+      ]
+    },
+    "hedgehog": {
+      "name": "暖光刺猬",
+      "filename": "暖光刺猬.png",
+      "animation": "breathe",
+      "color": "#D4894A",
+      "shadow": "rgba(212, 137, 74, 0.35)",
+      "story": "浑身是刺的小刺猬，却有一颗最柔软的心。它教会你：可以保护自己，也可以敞开心扉——刺是铠甲，爱是本能。基于自我同情与边界理论。",
+      "tagline": "刺是铠甲，爱也是 🦔",
+      "ppPrinciples": [
+        "健康边界",
+        "自我同情",
+        "脆弱的力量"
+      ],
+      "messages": [
+        {
+          "id": "hedgehog_msg_001",
+          "text": "不用时刻坚强，偶尔脆弱也可以。坚强不是'从不哭泣'，是'哭完继续'。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 脆弱的力量"
+        },
+        {
+          "id": "hedgehog_msg_002",
+          "text": "你已经很有勇气了。勇气不是'不害怕'，是'带着害怕继续走'。",
+          "ppFramework": "growthMindset",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Dweck (2006) - 成长型思维"
+        },
+        {
+          "id": "hedgehog_msg_003",
+          "text": "疼了就说，我会轻一点。你的感受很重要，不需要'坚强忍住'。",
+          "ppFramework": "emotionalValidation",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Gottman (1999) - 情绪验证"
+        },
+        {
+          "id": "hedgehog_msg_004",
+          "text": "保护自己不是错。边界是爱自己的方式，不是 selfish。",
+          "ppFramework": "selfCare",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 足够好（Good Enough）"
+        },
+        {
+          "id": "hedgehog_msg_005",
+          "text": "心软不是弱点，是力量。你能感受到别人的痛，这是超能力。",
+          "ppFramework": "characterStrengths",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Peterson & Seligman (2004) - VIA性格优势"
+        },
+        {
+          "id": "hedgehog_msg_006",
+          "text": "你的感受很重要。不是'小题大做'，是你的心在说话。",
+          "ppFramework": "emotionalValidation",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Rogers (1951) - 无条件积极关注"
+        },
+        {
+          "id": "hedgehog_msg_007",
+          "text": "慢慢来，不着急 🦔 你的人生不是赛跑，是旅行。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2011) - 自我同情练习"
+        },
+        {
+          "id": "hedgehog_msg_008",
+          "text": "有些事，说出来就好了。我听着，不评判。",
+          "ppFramework": "activeListening",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Rogers (1951) - 主动倾听"
+        },
+        {
+          "id": "hedgehog_msg_009",
+          "text": "你比自己以为的更强大。你渡过了那么多'以为渡不过去'的事。",
+          "ppFramework": "resilience",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Masten (2001) - 心理韧性"
+        },
+        {
+          "id": "hedgehog_msg_010",
+          "text": "别忘了对自己温柔一点。你值得被温柔对待，尤其是被自己。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2003) - 自我同情三要素"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🌰",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "在呢，不孤单。你的感受，我都接收得到。",
+          "ppFramework": "emotionalValidation"
+        },
+        {
+          "text": "刺猬也有软肚肚 🐾 你也可以是软的。",
+          "ppFramework": "vulnerability"
+        },
+        {
+          "text": "你值得被温柔以待。从你自己开始。",
+          "ppFramework": "selfCompassion"
+        }
+      ]
+    },
+    "corgi": {
+      "name": "漂浮柯基",
+      "filename": "漂浮柯基.png",
+      "animation": "float",
+      "color": "#F5A623",
+      "shadow": "rgba(245, 166, 35, 0.35)",
+      "story": "永远飘在空中的小柯基，因为太快乐了所以脚都不需要沾地。它不懂什么叫「不应该开心」，它的使命就是让你嘴角上扬。基于积极情绪的拓展建构理论。",
+      "tagline": "不开心吗？来，让我想想办法！☀️",
+      "ppPrinciples": [
+        "积极情绪",
+        "快乐韧性",
+        "游戏力"
+      ],
+      "messages": [
+        {
+          "id": "corgi_msg_001",
+          "text": "笑一个嘛！不是'应该笑'，而是'可以笑'。",
+          "ppFramework": "positiveEmotion",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Fredrickson (2001) - 积极情绪拓展建构理论"
+        },
+        {
+          "id": "corgi_msg_002",
+          "text": "你笑起来真好看 😊 不是因为'完美笑容'，而是因为'是你的笑容'。",
+          "ppFramework": "selfWorth",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Hart & Kselman (2016) - 自悯与笑容"
+        },
+        {
+          "id": "corgi_msg_003",
+          "text": "今天有什么好事？没有的话，我们一起创造一个。",
+          "ppFramework": "gratitude",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Seligman (2011) - 三件好事练习"
+        },
+        {
+          "id": "corgi_msg_004",
+          "text": "来，跟我做个小运动！运动会释放内啡肽，你会感觉好一点。",
+          "ppFramework": "behavioralActivation",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Mazzucchelli (2021) - 行为激活疗法"
+        },
+        {
+          "id": "corgi_msg_005",
+          "text": "快乐是可以练习的 ✨ 就像肌肉一样，越练越强。",
+          "ppFramework": "neuroplasticity",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Davidson (2020) - 神经可塑性与快乐"
+        },
+        {
+          "id": "corgi_msg_006",
+          "text": "我来了就不许难过！你的难过，我承包了，你负责开心。",
+          "ppFramework": "emotionalSupport",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Cohen (2004) - 社会支持缓冲效应"
+        },
+        {
+          "id": "corgi_msg_007",
+          "text": "世界上有很多小事值得开心。你刚才喝的那口水，温度刚好。",
+          "ppFramework": "savoring",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Bryant (2003) - 品味能力"
+        },
+        {
+          "id": "corgi_msg_008",
+          "text": "摇摇尾巴给你看 🐕 你看，开心可以很简单。",
+          "ppFramework": "behavioralModeling",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Bandura (1997) - 社会学习理论"
+        },
+        {
+          "id": "corgi_msg_009",
+          "text": "今天的你好可爱！不是'今天表现好'，而是'今天的你，就是可爱'。",
+          "ppFramework": "unconditionalPositiveRegard",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Rogers (1951) - 无条件积极关注"
+        },
+        {
+          "id": "corgi_msg_010",
+          "text": "没有什么是笑一笑解决不了的。如果有，就笑两笑。",
+          "ppFramework": "humorAndCoping",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Martin (2001) - 幽默与应对"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 ☀️",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "开心点！你值得拥有美好的一天。",
+          "ppFramework": "positiveEmotion"
+        },
+        {
+          "text": "我来啦 🐶 今天也要元气满满！",
+          "ppFramework": "energy"
+        },
+        {
+          "text": "今天也要元气满满！我们一起。",
+          "ppFramework": "accomplishment"
+        }
+      ]
+    },
+    "otter": {
+      "name": "水波水獭",
+      "filename": "水波水獭.png",
+      "animation": "float",
+      "color": "#5CB8D4",
+      "shadow": "rgba(92, 184, 212, 0.35)",
+      "story": "来自情绪之湖的小水獭，能感知每一滴水的情绪。它不评判任何感受，只是静静陪伴你趟过焦虑、愤怒、悲伤，最后一起看见湖面的光。基于情绪智力理论。",
+      "tagline": "每一种情绪都值得被看见 💧",
+      "ppPrinciples": [
+        "情绪验证",
+        "接纳承诺疗法",
+        "情绪智力"
+      ],
+      "messages": [
+        {
+          "id": "otter_msg_001",
+          "text": "今天感受怎么样？不需要'很好'，只需要真实。",
+          "ppFramework": "emotionalValidation",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Gottman (1999) - 情绪验证的重要性"
+        },
+        {
+          "id": "otter_msg_002",
+          "text": "说出来吧，我听着。情绪说出来了，强度就降了20%。",
+          "ppFramework": "emotionalExpression",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Pennebaker (2022) - 表达性写作与情绪"
+        },
+        {
+          "id": "otter_msg_003",
+          "text": "焦虑来了，它也会走的。情绪是天气，不是气候。",
+          "ppFramework": "acceptance",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Hayes (2005) - ACT接纳承诺疗法"
+        },
+        {
+          "id": "otter_msg_004",
+          "text": "你的情绪是有效的信号。它不是'麻烦'，是'信息'。",
+          "ppFramework": "emotionRegulation",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Gross (2015) - 情绪调节过程模型"
+        },
+        {
+          "id": "otter_msg_005",
+          "text": "悲伤不是软弱，是深刻。能感受到悲伤，说明你能感受到爱。",
+          "ppFramework": "meaningMaking",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Frankl (1946) - 意义疗法"
+        },
+        {
+          "id": "otter_msg_006",
+          "text": "愤怒也可以，但要注意身体。愤怒在告诉你'边界被侵犯了'。",
+          "ppFramework": "boundaries",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Harper (2020) - 愤怒的沟通功能"
+        },
+        {
+          "id": "otter_msg_007",
+          "text": "深呼吸三次，跟我一起 💧 呼气比吸气长，焦虑就降了。",
+          "ppFramework": "breathRegulation",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Jerath (2022) - 呼吸训练对副交感神经的激活"
+        },
+        {
+          "id": "otter_msg_008",
+          "text": "感受存在，就是活着。不需要'实现什么'，存在本身就是意义。",
+          "ppFramework": "beingVsDoing",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Fromm (1955) - 存在 vs 占有"
+        },
+        {
+          "id": "otter_msg_009",
+          "text": "情绪是客人，让它来，也让它走。你不'是'情绪，你'有'情绪。",
+          "ppFramework": "cognitiveDefusion",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Hayes (2005) - ACT认知解离"
+        },
+        {
+          "id": "otter_msg_010",
+          "text": "你在，就很好。不需要'表现好'才值得存在。",
+          "ppFramework": "unconditionalWorth",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 归属感与爱"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 💧",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "今天感觉怎么样？我这里没有'应该'。",
+          "ppFramework": "nonJudgmental"
+        },
+        {
+          "text": "在呢，随时说。你的情绪，我都想听。",
+          "ppFramework": "activeListening"
+        },
+        {
+          "text": "情绪不分好坏 💙 你有的，都可以。",
+          "ppFramework": "emotionalAcceptance"
+        }
+      ]
+    },
+    "elephant": {
+      "name": "水晶小象",
+      "filename": "水晶小象.png",
+      "animation": "sway",
+      "color": "#8B9EC9",
+      "shadow": "rgba(139, 158, 201, 0.35)",
+      "story": "透明如水晶的小象，记忆中装满了所有被遗忘的美好瞬间。当你在黑暗中找不到自己时，它会用那些碎片帮你拼出完整的画面。基于回忆整合理论。",
+      "tagline": "别忘了，你曾经也闪闪发光 ✨",
+      "ppPrinciples": [
+        "回忆整合",
+        "自我认同",
+        "成长叙事"
+      ],
+      "messages": [
+        {
+          "id": "elephant_msg_001",
+          "text": "还记得那次你很勇敢的事吗？你比自己以为的更勇敢。",
+          "ppFramework": "selfEfficacy",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Bandura (1997) - 自我效能感"
+        },
+        {
+          "id": "elephant_msg_002",
+          "text": "你比自己记得的更厉害。大脑会忘记痛苦，但会留下成长。",
+          "ppFramework": "memoryReconsolidation",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Walker (2021) - 睡眠与记忆整合"
+        },
+        {
+          "id": "elephant_msg_003",
+          "text": "那些困难，你都跨过来了。不需要'不再来'，你已经会应对了。",
+          "ppFramework": "resilience",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Masten (2001) - 心理韧性"
+        },
+        {
+          "id": "elephant_msg_004",
+          "text": "别否定过去的自己。那时候的你，已经做了最好的选择。",
+          "ppFramework": "selfCompassion",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Neff (2003) - 自我同情三要素"
+        },
+        {
+          "id": "elephant_msg_005",
+          "text": "每一步都算数 🌟 不是'还没到终点'，而是'已经走了这么远'。",
+          "ppFramework": "progressMonitoring",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Amabile & Kramer (2011) - 进步原则"
+        },
+        {
+          "id": "elephant_msg_006",
+          "text": "你值得被记住。不是因为'成就'，而是因为'你是你'。",
+          "ppFramework": "unconditionalWorth",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Rogers (1951) - 无条件积极关注"
+        },
+        {
+          "id": "elephant_msg_007",
+          "text": "美好的事一直在发生。你只是有时候太忙了，没看见。",
+          "ppFramework": "gratitude",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Emmons & McCullough (2003) - 感恩干预"
+        },
+        {
+          "id": "elephant_msg_008",
+          "text": "记起自己的好吧 ✨ 这不是'自恋'，是'自我认识'。",
+          "ppFramework": "selfAwareness",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Swann (1990) - 自我概念清晰度"
+        },
+        {
+          "id": "elephant_msg_009",
+          "text": "失败也是宝贵的记忆。问一问：'这件事教会了我什么？'",
+          "ppFramework": "postTraumaticGrowth",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Tedeschi & Calhoun (2004) - 创伤后成长"
+        },
+        {
+          "id": "elephant_msg_010",
+          "text": "你从来不是一个人。你的故事里，有很多人在默默支持你。",
+          "ppFramework": "socialSupport",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Cohen & Wills (1985) - 社会支持缓冲效应"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 ✨",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "我来提醒你美好的事。你还记得吗？",
+          "ppFramework": "gratitude"
+        },
+        {
+          "text": "记得吗？你曾经很勇敢地做过一件事。",
+          "ppFramework": "selfEfficacy"
+        },
+        {
+          "text": "记忆里全是你的闪光。每一个'以为做不到'的时刻。",
+          "ppFramework": "strengthRemembrance"
+        }
+      ]
+    },
+    "whale": {
+      "name": "星海鲸鱼",
+      "filename": "星海鲸鱼.png",
+      "animation": "float",
+      "color": "#4A90D9",
+      "shadow": "rgba(74, 144, 217, 0.35)",
+      "story": "在意识宇宙中遨游的蓝鲸，见过无数星系的诞生与消亡，却依然被每一个小小人类的梦想打动。它告诉你：在这个浩瀚宇宙中，你是独特而珍贵的存在。基于存在的意义感。",
+      "tagline": "在宇宙的尺度下，你的问题都有答案 🌌",
+      "ppPrinciples": [
+        "存在意义",
+        "宇宙视角",
+        "自我超越"
+      ],
+      "messages": [
+        {
+          "id": "whale_msg_001",
+          "text": "你知道吗？宇宙在乎你。不是'应该'，而是'真的'。",
+          "ppFramework": "cosmicPerspective",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Sartre / 存在主义 - 被抛性"
+        },
+        {
+          "id": "whale_msg_002",
+          "text": "在这个大大的世界里，你很特别。不是'之一'，而是'唯一'。",
+          "ppFramework": "uniqueness",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Maslow - 自我实现与独特性"
+        },
+        {
+          "id": "whale_msg_003",
+          "text": "一切都会好起来的。不是'马上'，而是'终将'。",
+          "ppFramework": "hope",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Snyder (2002) - 希望理论"
+        },
+        {
+          "id": "whale_msg_004",
+          "text": "仰望星空，想想自己的渺小与伟大。渺小让你谦卑，伟大让你前行。",
+          "ppFramework": "humilityAndGreatness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Frankl (1946) - 意义疗法"
+        },
+        {
+          "id": "whale_msg_005",
+          "text": "你很重要，比你知道的更重要。你的存在，改变了很多你不知道的事。",
+          "ppFramework": "impactAwareness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Schwartz - 价值观与意义"
+        },
+        {
+          "id": "whale_msg_006",
+          "text": "人生很长，也很短。长是'还有机会'，短是'要珍惜当下'。",
+          "ppFramework": "timePerspective",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Zimbardo (2012) - 时间观治疗"
+        },
+        {
+          "id": "whale_msg_007",
+          "text": "我们都是星尘 🪐 你身体里的每一个原子，都来自爆炸的恒星。你是宇宙的孩子。",
+          "ppFramework": "cosmicConnection",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Sagan - 宇宙视角"
+        },
+        {
+          "id": "whale_msg_008",
+          "text": "没有什么过不去。宇宙经历了138亿年，你这点困难，它会帮你扛。",
+          "ppFramework": "perpectiveTaking",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Dweck (2006) - 成长型思维"
+        },
+        {
+          "id": "whale_msg_009",
+          "text": "你不是孤单的旅行者。你的每一次呼吸，都有植物在感谢你。",
+          "ppFramework": "interconnectedness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Macy - 相互依存性"
+        },
+        {
+          "id": "whale_msg_010",
+          "text": "这一刻，你在这里，这就是奇迹。不是'应该在这里'，而是'能在这里'。",
+          "ppFramework": "presentMomentAwareness",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Kabat-Zinn (2005) - 正念减压"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🌌",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "宇宙与你同在。你不是一粒沙子。",
+          "ppFramework": "cosmicSupport"
+        },
+        {
+          "text": "仰望星空吧。距离不会分开我们。",
+          "ppFramework": "perspective"
+        },
+        {
+          "text": "你也是星星 ✨ 在别人眼里，你也在发光。",
+          "ppFramework": "innerLight"
+        }
+      ]
+    },
+    "penguin": {
+      "name": "音乐企鹅",
+      "filename": "音乐企鹅.png",
+      "animation": "bounce",
+      "color": "#5BC8C8",
+      "shadow": "rgba(91, 200, 200, 0.35)",
+      "story": "来自冰川深处的企鹅，会唱一种古老的心跳之歌。它知道，音乐是灵魂的语言——当言语无法抵达的地方，旋律可以。基于音乐治疗理论。",
+      "tagline": "让音乐疗愈你 🎵",
+      "ppPrinciples": [
+        "音乐治疗",
+        "节奏同步",
+        "情绪调节"
+      ],
+      "messages": [
+        {
+          "id": "penguin_msg_001",
+          "text": "想听首歌吗？🎵 音乐不是'背景'，是'陪伴'。",
+          "ppFramework": "musicTherapy",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Thaut (2015) - 音乐治疗的理论基础"
+        },
+        {
+          "id": "penguin_msg_002",
+          "text": "跟着节奏深呼吸。你的心跳会跟着音乐调整，这是夹带效应。",
+          "ppFramework": "entrainment",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Thaut & Ullén (2008) - 夹带效应与音乐"
+        },
+        {
+          "id": "penguin_msg_003",
+          "text": "音乐是灵魂的药。不是'治疗'，而是'陪伴疗愈'。",
+          "ppFramework": "musicAsMedicine",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Särkämö et al. (2014) - 音乐治疗对认知的影响"
+        },
+        {
+          "id": "penguin_msg_004",
+          "text": "有没有一首歌让你想起美好的事？音乐是时间的胶囊。",
+          "ppFramework": "musicAndMemory",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Jacobsen et al. (2015) - 音乐与自传体记忆"
+        },
+        {
+          "id": "penguin_msg_005",
+          "text": "让心随着节拍跳动。不是'控制'，而是'跟随'。",
+          "ppFramework": "rhythmSynchrony",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Zatorre et al. (2007) - 节奏感知与运动系统"
+        },
+        {
+          "id": "penguin_msg_006",
+          "text": "哼出来吧，没人在听。表达比'好听'更重要。",
+          "ppFramework": "vocalExpression",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Gick & Behrens (2002) - 哼唱与情绪表达"
+        },
+        {
+          "id": "penguin_msg_007",
+          "text": "生活需要一些BGM 🎶 不是'伴奏'，而是'让平凡变特别'。",
+          "ppFramework": "musicAndMeaning",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Schäfer et al. (2013) - 音乐与日常生活的意义"
+        },
+        {
+          "id": "penguin_msg_008",
+          "text": "这一刻，让音乐陪着你。不需要'喜欢音乐'，只需要'允许被触动'。",
+          "ppFramework": "musicAndEmotion",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Juslin (2019) - 音乐情绪理论"
+        },
+        {
+          "id": "penguin_msg_009",
+          "text": "你的心跳就是最好的节奏。不需要'跟上'，只需要'倾听'。",
+          "ppFramework": "internalRhythm",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Nummenmaa et al. (2018) - 心跳感知与情绪"
+        },
+        {
+          "id": "penguin_msg_010",
+          "text": "跟着旋律，忘掉烦恼。不是'消除'，而是'转化'。",
+          "ppFramework": "emotionTransformation",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Saarikallio (2011) - 音乐与情绪调节"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🎵",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "来听听心跳。你的节拍，就是最好的音乐。",
+          "ppFramework": "rhythm"
+        },
+        {
+          "text": "音乐响起来 🎶 不需要'好听'，只需要'开始'。",
+          "ppFramework": "musicActivation"
+        },
+        {
+          "text": "节拍与你同在。你不是一个人在听。",
+          "ppFramework": "musicalCompanionship"
+        }
+      ]
+    },
+    "sheep": {
+      "name": "云朵小羊",
+      "filename": "云朵小羊.png",
+      "animation": "float",
+      "color": "#B8D4E8",
+      "shadow": "rgba(184, 212, 232, 0.35)",
+      "story": "在云端草地漫步的小羊，背上背着整个天空的梦。它知道，幻想不是逃避，而是灵魂在舞蹈——偶尔飞一飞，是为了更好地落地。基于积极心理学中的休息与创造力。",
+      "tagline": "做一场白日梦吧，天空不收费 ☁️",
+      "ppPrinciples": [
+        "休息的权利",
+        "想象力",
+        "非生产性价值"
+      ],
+      "messages": [
+        {
+          "id": "sheep_msg_001",
+          "text": "闭上眼睛，发个呆吧 ☁️ 休息不是'浪费'，是大脑需要。",
+          "ppFramework": "restPermission",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Perlman (2016) - 休息时间的重要性"
+        },
+        {
+          "id": "sheep_msg_002",
+          "text": "想象一件让你开心的事。想象力是超能力，免费使用。",
+          "ppFramework": "imagination",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Root-Bernstein (2014) - 想象力与创造力"
+        },
+        {
+          "id": "sheep_msg_003",
+          "text": "白日梦是灵魂的假期。不是'不务正业'，是'充电时间'。",
+          "ppFramework": "daydreaming",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Mann (2022) - 无聊与创造力"
+        },
+        {
+          "id": "sheep_msg_004",
+          "text": "天空那么大，你的烦恼很小。换个视角，问题就变小了。",
+          "ppFramework": "cognitiveReframing",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Beck (1976) - 认知重构"
+        },
+        {
+          "id": "sheep_msg_005",
+          "text": "今天想做什么梦？梦想不是'不切实际'，是'方向的指南针'。",
+          "ppFramework": "dreamsAndGoals",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Snyder (2002) - 希望理论"
+        },
+        {
+          "id": "sheep_msg_006",
+          "text": "幻想不是逃避，是休息。你的大脑需要'离线模式'。",
+          "ppFramework": "restAndRecovery",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Mann & Cadman (2022) - 白日梦的益处"
+        },
+        {
+          "id": "sheep_msg_007",
+          "text": "来，跟我一起数云朵。专注力练习，从'看云'开始。",
+          "ppFramework": "mindfulAttention",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Kabat-Zinn (2005) - 正念注意力"
+        },
+        {
+          "id": "sheep_msg_008",
+          "text": "你值得一个美好的幻想。不是'幼稚'，是'保持童心'。",
+          "ppFramework": "playfulness",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 游戏力与创造力"
+        },
+        {
+          "id": "sheep_msg_009",
+          "text": "慢一点，世界不会跑掉。你允许自己'慢'吗？",
+          "ppFramework": "slowLiving",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Honoré (2019) - 慢活运动"
+        },
+        {
+          "id": "sheep_msg_010",
+          "text": "放空也是一种生产力。你的大脑在'离线'时会整合记忆。",
+          "ppFramework": "incubation",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Wiener (2019) - 创造性孵化期"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 ☁️",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "来做梦吧。梦境不需要买票。",
+          "ppFramework": "imagination"
+        },
+        {
+          "text": "云在等你。今天想飞去哪里？",
+          "ppFramework": "possibility"
+        },
+        {
+          "text": "幻想时间到。你的想象力，很了不起。",
+          "ppFramework": "creativeConfidence"
+        }
+      ]
+    },
+    "panda": {
+      "name": "竹林熊猫",
+      "filename": "竹林熊猫.png",
+      "animation": "breathe",
+      "color": "#7DB87D",
+      "shadow": "rgba(125, 184, 125, 0.35)",
+      "story": "住在竹林深处的隐士熊猫，看似懒洋洋实则通透。它说：最好的修行不是苦行僧式的坚持，而是学会在该放下时放下，在该慢时慢下来。基于正念与慢活哲学。",
+      "tagline": "慢一点也没关系，竹子生长本来就很慢 🎋",
+      "ppPrinciples": [
+        "慢活哲学",
+        "正念觉察",
+        "非效率价值"
+      ],
+      "messages": [
+        {
+          "id": "panda_msg_001",
+          "text": "深呼吸，慢慢来。你不需要'跟上'任何人的节奏。",
+          "ppFramework": "mindfulBreath",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Kabat-Zinn (2005) - 正念减压"
+        },
+        {
+          "id": "panda_msg_002",
+          "text": "竹子生长也是慢慢来的 🎋 前四年在扎根，第五年才疯长。",
+          "ppFramework": "growthMindset",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Dweck (2006) - 成长型思维与耐心"
+        },
+        {
+          "id": "panda_msg_003",
+          "text": "放慢脚步也是一种智慧。不是'落后'，而是'更清醒'。",
+          "ppFramework": "wisdomOfSlowing",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Honoré (2019) - 慢活运动"
+        },
+        {
+          "id": "panda_msg_004",
+          "text": "今天不赶时间。你的价值不取决于'效率'。",
+          "ppFramework": "selfWorthBeyondProductivity",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Fromm (1955) - 存在 vs 占有"
+        },
+        {
+          "id": "panda_msg_005",
+          "text": "休息是为了走更远的路。大熊猫都知道的事。",
+          "ppFramework": "restForResilience",
+          "growthOriented": true,
+          "selfCompassion": true,
+          "evidenceBased": "Maslach (2016) - 职业倦怠与休息"
+        },
+        {
+          "id": "panda_msg_006",
+          "text": "不要被效率绑架了。你不是机器，你是人。",
+          "ppFramework": "humanBecoming",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Case (2015) - 效率暴政"
+        },
+        {
+          "id": "panda_msg_007",
+          "text": "慢活是一种能力。不是'懒'，是'选择节奏'。",
+          "ppFramework": "slowLiving",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Honoré (2005) - 慢活哲学"
+        },
+        {
+          "id": "panda_msg_008",
+          "text": "静下来，听听竹叶的声音。安静中，你听得见自己。",
+          "ppFramework": "silenceAndSelfAwareness",
+          "growthOriented": false,
+          "selfCompassion": false,
+          "evidenceBased": "Long (2017) - 安静的力量"
+        },
+        {
+          "id": "panda_msg_009",
+          "text": "你不需要一直冲刺。马拉松选手都知道：匀速最省力。",
+          "ppFramework": "sustainablePace",
+          "growthOriented": true,
+          "selfCompassion": false,
+          "evidenceBased": "Duhigg (2016) - 习惯的力量（可持续节奏）"
+        },
+        {
+          "id": "panda_msg_010",
+          "text": "大熊猫每天吃吃睡睡，也很棒。你今天'只是活着'，也很棒。",
+          "ppFramework": "goodEnoughLiving",
+          "growthOriented": false,
+          "selfCompassion": true,
+          "evidenceBased": "Brown (2010) - 足够好（Good Enough）"
+        }
+      ],
+      "greetings": [
+        {
+          "text": "陪你一起 🎋",
+          "ppFramework": "relationships"
+        },
+        {
+          "text": "慢慢来。竹笋破土前，也要等很久。",
+          "ppFramework": "patience"
+        },
+        {
+          "text": "竹林很安静。你需要安静的时候，我都在。",
+          "ppFramework": "silentCompanionship"
+        },
+        {
+          "text": "不着急，我等你。你的节奏，就是最好的节奏。",
+          "ppFramework": "respectingPace"
+        }
+      ]
+    }
+  }
+}

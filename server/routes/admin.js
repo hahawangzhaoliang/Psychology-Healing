@@ -291,6 +291,8 @@ router.post('/init-data', async (req, res) => {
         { local: 'knowledge.json', collection: 'knowledge' },
         { local: 'regulation.json', collection: 'regulation' },
         { local: 'tips.json', collection: 'tips' },
+        { local: 'companion-messages.json', collection: 'companion-messages' },
+        { local: 'emotion-suggestions.json', collection: 'emotion-suggestions' },
     ];
 
     const results = [];

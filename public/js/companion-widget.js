@@ -7,6 +7,45 @@
 (function() {
     'use strict';
 
+    // ========== API数据加载 ==========
+    let companionsData = null;
+    let useAPI = true;
+    let apiCompanions = null; // 存储从API加载的伙伴数据
+
+    async function loadCompanionData() {
+        try {
+            const response = await fetch('/api/knowledge/companion');
+            const result = await response.json();
+            if (result.success && result.data && result.data.companions) {
+                apiCompanions = result.data.companions;
+                companionsData = result.data;
+                console.log('[Companion Widget] API数据加载成功');
+                return true;
+            }
+        } catch (error) {
+            console.log('[Companion Widget] API加载失败，使用本地数据');
+        }
+        
+        // 降级到本地数据
+        useAPI = false;
+        apiCompanions = null;
+        companionsData = null;
+        return false;
+    }
+
+    // 根据ID获取伙伴数据（优先API，降级到本地）
+    function getCompanionById(id) {
+        // 优先使用API数据
+        if (apiCompanions && apiCompanions[id]) {
+            return apiCompanions[id];
+        }
+        // 降级到本地数据
+        if (companions && companions[id]) {
+            return companions[id];
+        }
+        return null;
+    }
+
     // ========== 动物数据（12个形象） ==========
     const companions = {
 
@@ -367,9 +406,11 @@
     function createCompanionWidget() {
         // 检查是否已选择动物
         const savedId = localStorage.getItem('xinqing_companion');
-        if (!savedId || !companions[savedId]) return;
+        if (!savedId) return;
         
-        const companion = companions[savedId];
+        // 优先从API数据获取，降级到本地
+        const companion = getCompanionById(savedId);
+        if (!companion) return;
         
         // 检查是否已存在
         if (document.getElementById('companionWidget')) return;
@@ -665,7 +706,7 @@
         if (!avatar) return;
 
         const savedId = localStorage.getItem('xinqing_companion');
-        const companion = companions[savedId];
+        const companion = getCompanionById(savedId);
 
         // 备用通用语料（以防 companion 未定义）
         const fallbackMessages = ['你好呀！', '今天感觉怎么样？', '我在陪你 🌟', '加油！', '休息一下吧'];
@@ -717,7 +758,7 @@
             const savedId = localStorage.getItem('xinqing_companion');
             if (!savedId || isDragging || !companionWidget) return;
 
-            const companion = companions[savedId];
+            const companion = getCompanionById(savedId);
             const fallbackGreetings = ['陪你一起 🌟', '有我在 🌸', '加油！'];
             const greetings = companion ? companion.greetings : fallbackGreetings;
 
@@ -741,7 +782,10 @@
     }
     
     // 初始化
-    function init() {
+    async function init() {
+        // 先尝试加载API数据
+        await loadCompanionData();
+        
         // 等待 DOM 加载完成
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', createCompanionWidget);

@@ -1,0 +1,344 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-05-14",
+    "basedOn": "Positive Psychology (PERMA, VIA, ACT, Gross Model)",
+    "description": "情绪觉察建议语料库 - 积极心理学优化版",
+    "totalEmotions": 8,
+    "totalSuggestions": 24,
+    "ppFrameworks": [
+      "cognitiveReappraisal",
+      "grounding",
+      "mindfulness",
+      "gratitude",
+      "selfCompassion",
+      "behavioralActivation",
+      "acceptance",
+      "meaningMaking"
+    ]
+  },
+  "suggestions": {
+    "joy": {
+      "emotion": "喜悦",
+      "color": "#10B981",
+      "ppPrinciples": ["积极情绪拓展", "感恩练习", "社会连接"],
+      "interventions": [
+        {
+          "id": "joy_001",
+          "title": "感恩练习（三件好事）",
+          "desc": "记录今天3件让你感恩的事，延续积极情绪。研究显示，持续1周可提升生活满意度（Seligman, 2011）。",
+          "ppFramework": "gratitude",
+          "evidenceBased": "Seligman et al. (2021) - 三件好事练习对抑郁症状的预防作用",
+          "action": "community.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "joy_002",
+          "title": "分享快乐（社会连接）",
+          "desc": "和朋友分享你的喜悦，增强幸福感。积极事件通过社会分享可延长积极情绪持续时间（Gable et al., 2004）。",
+          "ppFramework": "relationships",
+          "evidenceBased": "Gable et al. (2004) - 社会互动对积极情绪的影响",
+          "action": "community.html",
+          "duration": "10分钟"
+        },
+        {
+          "id": "joy_003",
+          "title": "正念品味（Savoring）",
+          "desc": "5分钟正念练习，深化当下的美好。有意识地品味积极体验可增强积极情绪（Bryant, 2003）。",
+          "ppFramework": "savoring",
+          "evidenceBased": "Bryant (2003) - 品味能力与主观幸福感",
+          "action": "relax.html",
+          "duration": "5分钟"
+        }
+      ]
+    },
+    "trust": {
+      "emotion": "信任",
+      "color": "#3B82F6",
+      "ppPrinciples": ["社会连接", "依恋安全", "共情理解"],
+      "interventions": [
+        {
+          "id": "trust_001",
+          "title": "建立连接（主动倾听）",
+          "desc": "与信任的人深入交流，强化关系。主动倾听可增强关系满意度（Rogers, 1951）。",
+          "ppFramework": "activeListening",
+          "evidenceBased": "Rogers (1951) - 来访者中心疗法中的倾听",
+          "action": "community.html",
+          "duration": "15分钟"
+        },
+        {
+          "id": "trust_002",
+          "title": "感恩日记（信任篇）",
+          "desc": "记录今天让你感到安全的事。感恩练习可提升社会信任水平（McCullough et al., 2001）。",
+          "ppFramework": "gratitude",
+          "evidenceBased": "McCullough et al. (2001) - 感恩与亲社会行为",
+          "action": "community.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "trust_003",
+          "title": "身体扫描（安全感重建）",
+          "desc": "3分钟身体觉察，感受当下的安全感。身体扫描可增强安全感体验（Kabat-Zinn, 2005）。",
+          "ppFramework": "mindfulBodyAwareness",
+          "evidenceBased": "Kabat-Zinn (2005) - 正念减压疗法",
+          "action": "relax.html",
+          "duration": "3分钟"
+        }
+      ]
+    },
+    "fear": {
+      "emotion": "恐惧/焦虑",
+      "color": "#F59E0B",
+      "ppPrinciples": ["接纳承诺", "认知重评", "生理调节"],
+      "interventions": [
+        {
+          "id": "fear_001",
+          "title": "5-4-3-2-1接地法",
+          "desc": "快速平静神经系统，缓解焦虑。感官锚定技术可中断焦虑螺旋（Wood, 2022）。",
+          "ppFramework": "grounding",
+          "evidenceBased": "Wood (2022) - 5-4-3-2-1技术在急性焦虑中的应用",
+          "action": "relax.html",
+          "duration": "3分钟"
+        },
+        {
+          "id": "fear_002",
+          "title": "呼吸觉察（副交感激活）",
+          "desc": "1分钟快速放松，降低心率。慢速深呼吸可激活副交感神经（Jerath et al., 2022）。",
+          "ppFramework": "breathRegulation",
+          "evidenceBased": "Jerath et al. (2022) - 呼吸训练对自主神经系统的影响",
+          "action": "relax.html",
+          "duration": "1分钟"
+        },
+        {
+          "id": "fear_003",
+          "title": "认知重评（ACT接纳）",
+          "desc": "改变看待问题的方式，减少恐惧。接纳承诺疗法可减少经验性回避（Hayes et al., 2023）。",
+          "ppFramework": "cognitiveReappraisal",
+          "evidenceBased": "Hayes et al. (2023) - ACT对焦虑的作用",
+          "action": "relax.html",
+          "duration": "5分钟"
+        }
+      ]
+    },
+    "surprise": {
+      "emotion": "惊讶",
+      "color": "#8B5CF6",
+      "ppPrinciples": ["正念觉察", "认知灵活性", "开放态度"],
+      "interventions": [
+        {
+          "id": "surprise_001",
+          "title": "正念觉察（开放注意）",
+          "desc": "观察这种惊讶感，不评判。正念觉察可增强认知灵活性（Moore & Malinowski, 2021）。",
+          "ppFramework": "mindfulObserving",
+          "evidenceBased": "Moore & Malinowski (2021) - 认知灵活性与正念",
+          "action": "relax.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "surprise_002",
+          "title": "记录发现（拓展视角）",
+          "desc": "写下今天让你惊讶的事。好奇心可增强探索行为（Kashdan & Silvia, 2009）。",
+          "ppFramework": "curiosity",
+          "evidenceBased": "Kashdan & Silvia (2009) - 好奇心与幸福感",
+          "action": "community.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "surprise_003",
+          "title": "深呼吸（神经系统复位）",
+          "desc": "3次深呼吸，平复心情。呼吸练习可快速调节自主神经系统（Jerath et al., 2022）。",
+          "ppFramework": "breathReset",
+          "evidenceBased": "Jerath et al. (2022) - 呼吸与自主神经调节",
+          "action": "relax.html",
+          "duration": "1分钟"
+        }
+      ]
+    },
+    "sadness": {
+      "emotion": "悲伤",
+      "color": "#6366F1",
+      "ppPrinciples": ["自我同情", "意义建构", "社会支持"],
+      "interventions": [
+        {
+          "id": "sadness_001",
+          "title": "自我关怀（Self-Compassion）",
+          "desc": "对自己温柔，接纳当下的情绪。自我同情比自尊更能预测情绪稳定性（Neff, 2021）。",
+          "ppFramework": "selfCompassion",
+          "evidenceBased": "Neff (2021) - 自我同情与心理健康",
+          "action": "relax.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "sadness_002",
+          "title": "身体扫描（情绪觉察）",
+          "desc": "3分钟身体觉察，连接内在感受。情绪粒度越高，调节能力越强（Barrett, 2018）。",
+          "ppFramework": "emotionalAwareness",
+          "evidenceBased": "Barrett (2018) - 情绪粒度与情绪障碍",
+          "action": "relax.html",
+          "duration": "3分钟"
+        },
+        {
+          "id": "sadness_003",
+          "title": "寻求支持（社会连接）",
+          "desc": "和朋友聊聊，不要独自承受。社会支持可缓冲抑郁风险（Ozbay et al., 2022）。",
+          "ppFramework": "socialSupport",
+          "evidenceBased": "Ozbay et al. (2022) - 社会支持对心理健康的保护机制",
+          "action": "community.html",
+          "duration": "15分钟"
+        }
+      ]
+    },
+    "disgust": {
+      "emotion": "厌恶",
+      "color": "#10B981",
+      "ppPrinciples": ["认知重评", "接纳", "价值澄清"],
+      "interventions": [
+        {
+          "id": "disgust_001",
+          "title": "认知重评（改变视角）",
+          "desc": "重新审视让你不适的事物。认知重评是最有效的情绪调节策略（Gross, 2015）。",
+          "ppFramework": "cognitiveReappraisal",
+          "evidenceBased": "Gross (2015) - 情绪调节过程模型",
+          "action": "relax.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "disgust_002",
+          "title": "呼吸练习（情绪复位）",
+          "desc": "1分钟呼吸，释放负面感受。慢速呼吸可激活副交感神经（Jerath et al., 2022）。",
+          "ppFramework": "breathRelease",
+          "evidenceBased": "Jerath et al. (2022) - 呼吸训练对情绪的调节",
+          "action": "relax.html",
+          "duration": "1分钟"
+        },
+        {
+          "id": "disgust_003",
+          "title": "转移注意（价值活动）",
+          "desc": "做一些让你愉悦的事。行为激活可改善情绪低落（Mazzucchelli et al., 2021）。",
+          "ppFramework": "behavioralActivation",
+          "evidenceBased": "Mazzucchelli et al. (2021) - 行为激活疗法对抑郁的效果",
+          "action": "charging-station.html",
+          "duration": "10分钟"
+        }
+      ]
+    },
+    "anger": {
+      "emotion": "愤怒",
+      "color": "#EF4444",
+      "ppPrinciples": ["情绪调节", "认知重评", "表达性写作"],
+      "interventions": [
+        {
+          "id": "anger_001",
+          "title": "深呼吸（生理复位）",
+          "desc": "1分钟呼吸练习，平复情绪。愤怒时杏仁核活跃度增加40%（Denson et al., 2018）。",
+          "ppFramework": "breathRegulation",
+          "evidenceBased": "Denson et al. (2018) - 愤怒的神经机制与调节",
+          "action": "relax.html",
+          "duration": "1分钟"
+        },
+        {
+          "id": "anger_002",
+          "title": "身体运动（能量释放）",
+          "desc": "释放愤怒能量，运动10分钟。运动可释放内啡肽，改善情绪（Craft & Perna, 2021）。",
+          "ppFramework": "exerciseRelease",
+          "evidenceBased": "Craft & Perna (2021) - 运动与心理健康",
+          "action": "#",
+          "duration": "10分钟"
+        },
+        {
+          "id": "anger_003",
+          "title": "写下感受（表达性写作）",
+          "desc": "把愤怒写下来，理清思绪。表达性写作可改善免疫功能（Pennebaker & Smyth, 2022）。",
+          "ppFramework": "expressiveWriting",
+          "evidenceBased": "Pennebaker & Smyth (2022) - 表达性写作对健康的影响",
+          "action": "community.html",
+          "duration": "10分钟"
+        }
+      ]
+    },
+    "anticipation": {
+      "emotion": "期待",
+      "color": "#F59E0B",
+      "ppPrinciples": ["希望理论", "目标设定", "前瞻思维"],
+      "interventions": [
+        {
+          "id": "anticipation_001",
+          "title": "正念冥想（享受期待）",
+          "desc": "5分钟冥想，享受期待的感觉。正念可增强对未来事件的积极预期（Snyder, 2012）。",
+          "ppFramework": "mindfulAnticipation",
+          "evidenceBased": "Snyder (2012) - 希望理论",
+          "action": "relax.html",
+          "duration": "5分钟"
+        },
+        {
+          "id": "anticipation_002",
+          "title": "制定计划（目标设定）",
+          "desc": "为期待的事做准备。目标设定可增强动机和幸福感（Locke & Latham, 2019）。",
+          "ppFramework": "goalSetting",
+          "evidenceBased": "Locke & Latham (2019) - 目标设定理论",
+          "action": "#",
+          "duration": "10分钟"
+        },
+        {
+          "id": "anticipation_003",
+          "title": "感恩练习（珍惜期待）",
+          "desc": "感谢这份期待带来的动力。感恩可增强积极情绪的持久性（Emmons & McCullough, 2003）。",
+          "ppFramework": "gratitude",
+          "evidenceBased": "Emmons & McCullough (2003) - 感恩干预研究",
+          "action": "community.html",
+          "duration": "5分钟"
+        }
+      ]
+    }
+  },
+  "ppInterventions": [
+    {
+      "id": "cognitiveReappraisal",
+      "name": "认知重评",
+      "basedOn": "Gross (2015) - 情绪调节过程模型",
+      "description": "重新解释情境意义，改变情绪体验"
+    },
+    {
+      "id": "grounding",
+      "name": "接地技术",
+      "basedOn": "Wood (2022) - 5-4-3-2-1技术",
+      "description": "通过感官锚定快速中断焦虑螺旋"
+    },
+    {
+      "id": "gratitude",
+      "name": "感恩练习",
+      "basedOn": "Seligman et al. (2021) - 三件好事",
+      "description": "记录感恩事项，提升主观幸福感"
+    },
+    {
+      "id": "selfCompassion",
+      "name": "自我同情",
+      "basedOn": "Neff (2021) - 自我同情三要素",
+      "description": "用温暖而非评判的态度对待自己"
+    },
+    {
+      "id": "behavioralActivation",
+      "name": "行为激活",
+      "basedOn": "Mazzucchelli et al. (2021)",
+      "description": "增加愉快/成就活动，改善情绪"
+    },
+    {
+      "id": "mindfulness",
+      "name": "正念觉察",
+      "basedOn": "Kabat-Zinn (2005) - 正念减压",
+      "description": "不加评判地觉察当下体验"
+    },
+    {
+      "id": "socialSupport",
+      "name": "社会支持",
+      "basedOn": "Cohen & Wills (1985) - 缓冲效应",
+      "description": "通过社会连接缓冲压力影响"
+    },
+    {
+      "id": "acceptance",
+      "name": "接纳承诺",
+      "basedOn": "Hayes et al. (2023) - ACT",
+      "description": "与负面情绪建立新关系，而非消除"
+    }
+  ]
+}
