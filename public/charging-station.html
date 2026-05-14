@@ -9,7 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ---------- 页面级覆盖 ---------- */
         body {
@@ -18,51 +18,60 @@
             color: var(--theme-text);
         }
 
-        /* ---------- 页面头部区域 ---------- */
+        /* ---------- 页面头部区域（优化放松氛围）---------- */
         .page-hero {
-            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 50%, var(--color-primary-100) 100%);
-            padding-top: 80px;
-            padding-bottom: 2.5rem;
+            background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 30%, var(--color-primary-100) 70%, var(--color-warm-100) 100%);
+            padding-top: 100px;
+            padding-bottom: 5rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-        /* 动态渐变气泡 */
+        /* 增强动态渐变气泡 - 双层，更柔和 */
         .page-hero::before {
             content: '';
             position: absolute;
-            width: 500px;
-            height: 500px;
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--color-primary-200), transparent 60%);
-            opacity: 0.1;
-            top: -200px;
-            right: -150px;
-            animation: float 10s ease-in-out infinite;
+            background: radial-gradient(circle, var(--color-primary-200), transparent 70%);
+            opacity: 0.08;
+            top: -250px;
+            right: -200px;
+            animation: float 18s ease-in-out infinite;
             pointer-events: none;
         }
         .page-hero::after {
             content: '';
             position: absolute;
-            width: 350px;
-            height: 350px;
+            width: 450px;
+            height: 450px;
             border-radius: 45% 55% 55% 45% / 55% 45% 55% 45%;
-            background: radial-gradient(circle, var(--color-warm-200), transparent 60%);
-            opacity: 0.12;
-            bottom: -100px;
-            left: -100px;
-            animation: fluidMorph 14s ease-in-out infinite;
+            background: radial-gradient(circle, var(--color-warm-200), transparent 70%);
+            opacity: 0.1;
+            bottom: -150px;
+            left: -150px;
+            animation: fluidMorph 16s ease-in-out infinite;
             pointer-events: none;
         }
 
-        /* ---------- 场景选择器 ---------- */
+        /* 标题使用 Playfair Display（Impeccable 字体搭配）*/
+        .page-title {
+            font-family: 'Playfair Display', var(--font-display);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        /* ---------- 场景选择器（优化间距和视觉节奏）---------- */
         .scenario-tabs {
             display: inline-flex;
-            background: var(--theme-card);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: var(--radius-full);
-            padding: 4px;
-            box-shadow: var(--shadow-sm);
-            gap: 4px;
+            padding: 6px;
+            box-shadow: var(--shadow-md);
+            gap: 6px;
         }
         .scenario-btn {
             padding: 0.625rem 1.5rem;
@@ -88,29 +97,47 @@
             box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
         }
 
-        /* ---------- 内容网格 ---------- */
+        /* ---------- 内容网格（优化间距节奏）---------- */
         .content-grid {
             max-width: 72rem;
             margin: 0 auto;
-            padding: 2rem 1.5rem 3rem;
+            padding: 3rem 2rem 4rem;
+            display: grid;
+            gap: 2rem;
         }
 
         @media (min-width: 640px) {
             .content-grid {
-                padding: 3rem 2rem;
+                padding: 3rem 2rem 4rem;
             }
         }
 
-        /* ---------- 内容卡片 ---------- */
+        /* ---------- 内容卡片（统一设计语言，消除割裂感）---------- */
         .content-card {
             background: var(--theme-card);
             border-radius: var(--radius-xl);
-            padding: 1.75rem 1.5rem;
+            padding: 2rem 1.5rem;
             box-shadow: var(--shadow-sm);
             transition: transform var(--duration-normal) var(--ease-spring),
-                        box-shadow var(--duration-normal) var(--ease-standard);
+                        box-shadow var(--duration-normal) var(--ease-standard),
+                        border-color var(--duration-normal) var(--ease-standard);
             opacity: 0;
-            transform: translateY(16px);
+            transform: translateY(20px);
+            border: 1px solid var(--theme-border);
+            position: relative;
+            overflow: hidden;
+        }
+        /* 统一顶部渐变边框（视觉连接元素）*/
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary-400), var(--color-warm-400), var(--color-primary-400));
+            opacity: 0;
+            transition: opacity var(--duration-normal) var(--ease-standard);
         }
         .content-card.visible {
             opacity: 1;
@@ -119,6 +146,32 @@
         .content-card:hover {
             transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-200);
+        }
+        .content-card:hover::before {
+            opacity: 1;
+        }
+        /* 统一卡片序号标识（增强视觉连贯性）*/
+        .content-card::after {
+            content: attr(data-step);
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--color-primary-50);
+            color: var(--color-primary-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            opacity: 0.6;
+            transition: opacity var(--duration-fast) var(--ease-standard);
+        }
+        .content-card:hover::after {
+            opacity: 1;
         }
 
         /* 卡片头部 */
@@ -159,13 +212,14 @@
             transform: rotate(180deg) scale(0.9);
         }
 
-        /* ---------- 治愈图片 ---------- */
+        /* ---------- 治愈图片（优化过渡效果）---------- */
         .image-container {
             position: relative;
             border-radius: var(--radius-lg);
             overflow: hidden;
             aspect-ratio: 4/3;
             margin-bottom: 1rem;
+            cursor: pointer;
         }
         .image-container img {
             width: 100%;
@@ -176,10 +230,19 @@
         .image-container:hover img {
             transform: scale(1.05);
         }
+        /* 图片加载过渡 */
+        .image-container img {
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
         .image-caption {
             font-size: 0.85rem;
             color: var(--theme-text-light);
             text-align: center;
+            font-style: italic;
         }
 
         /* ---------- 神经音乐播放器 ---------- */
@@ -287,13 +350,17 @@
             border-color: var(--color-primary-500);
         }
 
-        /* ---------- 微故事 ---------- */
+        /* ---------- 微故事（优化排版和氛围）---------- */
         .story-content {
             font-size: 0.95rem;
             color: var(--theme-text);
             line-height: 1.9;
             margin-bottom: 1.25rem;
             white-space: pre-line;
+            padding: 1rem;
+            background: var(--color-primary-50);
+            border-radius: var(--radius-md);
+            border-left: 3px solid var(--color-primary-300);
         }
         .story-meta {
             display: flex;
@@ -320,16 +387,17 @@
             transform: scale(1.03);
         }
 
-        /* ---------- 快速行动按钮 ---------- */
+        /* ---------- 快速行动按钮（优化视觉焦点）---------- */
         .quick-action {
             text-align: center;
-            padding: 2rem 1.5rem;
+            padding: 3rem 1.5rem;
+            background: linear-gradient(180deg, var(--theme-bg), var(--color-primary-50));
         }
         .charge-btn {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
             border-radius: var(--radius-full);
             background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             color: white;
@@ -342,7 +410,7 @@
         }
         .charge-btn:hover {
             box-shadow: 0 8px 32px rgba(90, 154, 138, 0.45);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
         .charge-btn:active {
             transform: scale(0.97);
@@ -418,7 +486,7 @@
     <!-- ===== 页面头部 ===== -->
     <section class="page-hero">
         <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1;">
-            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up">⚡ 5分钟充电站</h1>
+            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up page-title">⚡ 5分钟充电站</h1>
             <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);margin-bottom:2rem;" class="fade-in-up" style="animation-delay:0.1s;">选择你的场景，获取专属能量包</p>
 
             <!-- 场景选择器 -->
@@ -434,7 +502,7 @@
     <!-- ===== 内容网格 ===== -->
     <div class="content-grid" id="contentPack">
         <!-- 治愈图片 -->
-        <div class="content-card" id="imageCard" style="transition-delay:0.05s;">
+        <div class="content-card" id="imageCard" style="transition-delay:0.05s;" data-step="1">
             <div class="card-header">
                 <h2 class="card-title">📸 治愈图片</h2>
                 <button class="refresh-btn" onclick="refreshImage()" title="换一张">
@@ -450,7 +518,7 @@
         </div>
 
         <!-- 神经音乐 + 环境音 -->
-        <div class="content-card" id="musicCard" style="transition-delay:0.15s;">
+        <div class="content-card" id="musicCard" style="transition-delay:0.15s;" data-step="2">
             <div class="card-header">
                 <h2 class="card-title">🎵 神经音乐</h2>
                 <button class="refresh-btn" onclick="refreshMusic()" title="换一首">
@@ -527,7 +595,7 @@
         </div>
 
         <!-- 微故事 -->
-        <div class="content-card" id="storyCard" style="transition-delay:0.25s;">
+        <div class="content-card" id="storyCard" style="transition-delay:0.25s;" data-step="3">
             <div class="card-header">
                 <h2 class="card-title">📖 微故事</h2>
                 <button class="refresh-btn" onclick="refreshStory()" title="换一个">
@@ -713,7 +781,7 @@
             return stories[idx % stories.length];
         }
 
-        /* ========== 场景选择 ========== */
+        /* ========== 场景选择（优化过渡效果，消除割裂感）========== */
         function selectScenario(scenario) {
             if (scenario === currentScenario) return;
             currentScenario = scenario;
@@ -727,30 +795,44 @@
             /* 停止播放 */
             if (isPlaying) togglePlay();
 
-            /* 使用每日种子的图片索引 */
-            const seed = dailySeed[scenario];
-            const images = imagePool[scenario] || imagePool.morning;
-            currentImageIndex = seed.image;
-            const img = images[currentImageIndex];
-            document.getElementById('healing-image').src = img.url;
-            document.getElementById('image-caption').textContent = img.caption;
-
-            /* 重置索引 */
-            currentMusicIndex = Math.floor(Math.abs(Math.sin(todaySeed() * (scenario.charCodeAt(0)))) * bgmList.length) % bgmList.length;
-            currentStoryIndex = 0;
-
-            /* 刷新音乐和故事 */
-            updateMusicDisplay();
-            refreshStory();
-
-            /* 隐藏内容卡片 */
+            /* 隐藏内容卡片（统一淡出）*/
             const cards = document.querySelectorAll('.content-card');
             cards.forEach(c => c.classList.remove('visible'));
 
-            /* 延迟显示卡片（流体效果） */
-            cards.forEach((card, i) => {
-                setTimeout(() => card.classList.add('visible'), 50 + i * 100);
-            });
+            /* 延迟加载新内容，创建流畅的过渡 */
+            setTimeout(() => {
+                /* 使用每日种子的图片索引 */
+                const seed = dailySeed[scenario];
+                const images = imagePool[scenario] || imagePool.morning;
+                currentImageIndex = seed.image;
+                const img = images[currentImageIndex];
+                
+                /* 图片交叉淡入淡出 */
+                const imgEl = document.getElementById('healing-image');
+                imgEl.style.opacity = '0';
+                imgEl.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    imgEl.src = img.url;
+                    imgEl.alt = img.caption;
+                    document.getElementById('image-caption').textContent = img.caption;
+                    imgEl.style.opacity = '1';
+                    imgEl.style.transform = 'scale(1)';
+                }, 300);
+
+                /* 重置索引 */
+                currentMusicIndex = Math.floor(Math.abs(Math.sin(todaySeed() * (scenario.charCodeAt(0)))) * bgmList.length) % bgmList.length;
+                currentStoryIndex = 0;
+
+                /* 刷新音乐和故事（与图片同步）*/
+                updateMusicDisplay();
+                refreshStory();
+
+                /* 延迟显示卡片（流体效果，与图片同步）*/
+                cards.forEach((card, i) => {
+                    setTimeout(() => card.classList.add('visible'), 50 + i * 150);
+                });
+            }, 400);
         }
 
         /* ========== 刷新图片 ========== */
