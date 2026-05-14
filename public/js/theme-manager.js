@@ -7,7 +7,6 @@
 class ThemeManager {
     constructor() {
         this.currentTheme = localStorage.getItem('theme') || 'home';
-        this.lampLevel = 3;
         this._themeListenerBound = false;
 
         this.themes = {
@@ -87,7 +86,6 @@ class ThemeManager {
 
         // 数据将在 init() 中从 JSON 文件异步加载
         this.emotionData = {};
-        this.teaEncouragements = [];
         this.petNames = [];
         this.petEmojis = [];
         this.petMoodTexts = [];
@@ -116,18 +114,14 @@ class ThemeManager {
      */
     async loadTextData() {
         try {
-            const [emotions, companions, encouragements, knowledge] = await Promise.all([
+            const [emotions, companions, knowledge] = await Promise.all([
                 fetch('data/emotions.json').then(r => r.json()),
                 fetch('data/companions.json').then(r => r.json()),
-                fetch('data/encouragements.json').then(r => r.json()),
                 fetch('data/knowledge.json').then(r => r.json())
             ]);
 
             // 填充情绪数据
             this.emotionData = emotions.emotions || {};
-
-            // 填充静心茶语录
-            this.teaEncouragements = encouragements.tea || [];
 
             // 填充宠物数据
             if (companions.companions) {
@@ -248,52 +242,6 @@ class ThemeManager {
                     transition:opacity 0.2s ease;
                 }
                 .tool-btn:hover .tooltip { opacity:1; }
-                .tool-lamp { overflow:visible; }
-                .tool-lamp .lamp-glow-ring {
-                    position:absolute; inset:-8px;
-                    border-radius:20px;
-                    background:radial-gradient(circle, rgba(255,215,0,0.4) 0%, transparent 70%);
-                    opacity:0; transition:all 0.4s ease;
-                    pointer-events:none;
-                }
-                .tool-lamp.level-1 .lamp-glow-ring{opacity:0.3;}
-                .tool-lamp.level-2 .lamp-glow-ring{opacity:0.5;}
-                .tool-lamp.level-3 .lamp-glow-ring{opacity:0.7;}
-                .tool-lamp.level-4 .lamp-glow-ring{opacity:0.85;}
-                .tool-lamp.level-5 .lamp-glow-ring{opacity:1;box-shadow:0 0 20px rgba(255,215,0,0.6);}
-                .tool-tea .steam-anim {
-                    position:absolute; top:-10px; left:50%;
-                    transform:translateX(-50%); display:flex; gap:3px;
-                }
-                .tool-tea .steam-anim span {
-                    width:3px; height:8px; background:rgba(150,150,150,0.6);
-                    border-radius:3px; animation:steam-bounce 2s ease-in-out infinite;
-                }
-                .tool-tea .steam-anim span:nth-child(2){animation-delay:0.3s;height:10px;}
-                .tool-tea .steam-anim span:nth-child(3){animation-delay:0.6s;}
-                @keyframes steam-bounce {
-                    0%,100%{opacity:0.4;transform:translateY(0) scaleX(1);}
-                    50%{opacity:0.9;transform:translateY(-5px) scaleX(1.2);}
-                }
-                .energy-indicator {
-                    position:fixed; right:12px; bottom:20px;
-                    background:rgba(255,255,255,0.95); padding:10px 16px;
-                    border-radius:18px; box-shadow:0 6px 20px rgba(0,0,0,0.1);
-                    font-size:12px; color:#8B7355; z-index:100;
-                    backdrop-filter:blur(10px);
-                }
-                .energy-label { display:flex; align-items:center; gap:6px; margin-bottom:8px; font-weight:600; }
-                .energy-bars { display:flex; gap:4px; }
-                .energy-bar {
-                    width:18px; height:8px; background:#E8E8E8; border-radius:4px;
-                    transition:all 0.3s ease;
-                }
-                .energy-bar.active { background:linear-gradient(90deg,#FFD700,#FFA500); }
-                .energy-bar.active:nth-child(1){animation:glow-pulse 1.5s ease-in-out infinite;}
-                @keyframes glow-pulse {
-                    0%,100%{box-shadow:0 0 5px rgba(255,215,0,0.3);}
-                    50%{box-shadow:0 0 12px rgba(255,215,0,0.6);}
-                }
                 .popup-overlay {
                     position:fixed;top:0;left:0;width:100%;height:100%;
                     background:rgba(0,0,0,0.4);z-index:199;
@@ -413,34 +361,14 @@ class ThemeManager {
                 }
             </style>
             <div class="home-bg-overlay" id="homeBgOverlay"></div>
-            <div class="energy-indicator">
-                <div class="energy-label"><span>🌟</span><span>心理能量</span></div>
-                <div class="energy-bars" id="energyBars">
-                    <div class="energy-bar active"></div>
-                    <div class="energy-bar active"></div>
-                    <div class="energy-bar active"></div>
-                    <div class="energy-bar"></div>
-                    <div class="energy-bar"></div>
-                </div>
-            </div>
             <div class="home-toolbar">
                 <div class="tool-btn tool-knowledge" onclick="themeManager.toggleKnowledge()">
                     <span class="icon">📖</span>
                     <span class="tooltip">疗愈知识</span>
                 </div>
-                <div class="tool-btn tool-lamp" id="toolLamp" onclick="themeManager.toggleLamp()">
-                    <span class="icon">💡</span>
-                    <div class="lamp-glow-ring"></div>
-                    <span class="tooltip">台灯</span>
-                </div>
                 <div class="tool-btn tool-pet" onclick="themeManager.togglePet()">
                     <span class="icon">🐰</span>
                     <span class="tooltip">宠物伙伴</span>
-                </div>
-                <div class="tool-btn tool-tea" onclick="themeManager.sipTea()">
-                    <span class="icon">☕</span>
-                    <div class="steam-anim"><span></span><span></span><span></span></div>
-                    <span class="tooltip">静心茶</span>
                 </div>
             </div>
             <div class="popup-overlay" id="popupOverlay" onclick="themeManager.closePopup()"></div>
@@ -754,31 +682,6 @@ class ThemeManager {
         });
     }
 
-    /* ===== 台灯 ===== */
-    toggleLamp() {
-        this.lampLevel = (this.lampLevel % 5) + 1;
-        const toolLamp = document.getElementById('toolLamp');
-        const bars  = document.querySelectorAll('.energy-bar');
-        const bgOverlay = document.getElementById('homeBgOverlay');
-
-        toolLamp?.classList.remove('level-1','level-2','level-3','level-4','level-5');
-        toolLamp?.classList.add(`level-${this.lampLevel}`);
-
-        bars.forEach((bar, i) => bar.classList.toggle('active', i < this.lampLevel));
-
-        if (bgOverlay) {
-            const opacities = [0, 0.15, 0.25, 0.4, 0.55, 0.7];
-            bgOverlay.style.background = `
-                radial-gradient(ellipse at 80% 20%, rgba(232,184,125,${opacities[this.lampLevel]}) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 80%, rgba(168,196,212,${opacities[this.lampLevel] * 0.7}) 0%, transparent 50%),
-                radial-gradient(circle at 70% 30%, rgba(255,215,0,${opacities[this.lampLevel] * 0.3}) 0%, transparent 40%)
-            `;
-        }
-
-        const msgs = { 1:'调暗一些，让自己休息...', 2:'柔和的灯光，适合放松', 3:'适中的亮度，刚刚好', 4:'明亮一些，更有能量', 5:'满满的能量，充满动力！' };
-        this.showHomeToast(msgs[this.lampLevel]);
-    }
-
     /* ===== 情绪卡片 ===== */
     openEmotionCard(emotion) {
         const data = this.emotionData[emotion];
@@ -796,43 +699,6 @@ class ThemeManager {
         document.getElementById('knowledgePopup')?.classList.remove('show');
         document.getElementById('knowledgeDetailPopup')?.classList.remove('show');
         document.getElementById('petPopup')?.classList.remove('show');
-    }
-
-    /* ===== 静心茶 ===== */
-    sipTea() {
-        const msg = this.teaEncouragements[Math.floor(Math.random() * this.teaEncouragements.length)];
-        this.showHomeToast(msg);
-        const btn = document.querySelector('.tool-tea');
-        if (btn) {
-            btn.style.transform = 'scale(0.9)';
-            setTimeout(() => { btn.style.transform = ''; }, 200);
-        }
-    }
-
-    /* ===== Toast 提示 ===== */
-    showHomeToast(message) {
-        document.querySelector('.home-toast')?.remove();
-        const toast = document.createElement('div');
-        toast.className = 'home-toast';
-        Object.assign(toast.style, {
-            position: 'fixed', bottom: '200px', left: '50%',
-            transform: 'translateX(-50%) translateY(10px)',
-            background: 'white', padding: '12px 24px', borderRadius: '25px',
-            boxShadow: '0 6px 25px rgba(232,184,125,0.3)', fontSize: '14px',
-            color: '#8B7355', zIndex: '300', opacity: '0', whiteSpace: 'nowrap',
-            transition: 'all 0.3s cubic-bezier(0.34,1.56,0.64,1)'
-        });
-        toast.textContent = message;
-        document.body.appendChild(toast);
-        requestAnimationFrame(() => {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-        });
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(-50%) translateY(-10px)';
-            setTimeout(() => toast.remove(), 300);
-        }, 2500);
     }
 
     /* ===== 顶部主题下拉切换 ===== */
