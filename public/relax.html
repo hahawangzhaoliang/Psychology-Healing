@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ---------- 页面级覆盖 ---------- */
@@ -987,7 +988,7 @@
 
             try {
                 // 优先从 API 读取（Vercel Blob 存储）
-                const response = await fetch('/api/knowledge/exercises?limit=100');
+                const response = await Cache.cachedFetch('/api/knowledge/exercises?limit=100');
 
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
@@ -1000,7 +1001,7 @@
 
                 // API 失败时降级到本地 JSON
                 try {
-                    const localRes = await fetch('/data/exercises.json');
+                    const localRes = await Cache.cachedFetch('/data/exercises.json');
                     if (localRes.ok) {
                         const localData = await localRes.json();
                         console.log('✅ 从本地 JSON 加载成功');

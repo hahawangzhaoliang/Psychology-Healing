@@ -9,6 +9,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -881,7 +882,7 @@
             // 优先从 API 加载（Blob 存储）
             let data = null;
             try {
-                const res = await fetch('/api/knowledge/graph');
+                const res = await Cache.cachedFetch('/api/knowledge/graph');
                 if (res.ok) {
                     const json = await res.json();
                     data = { nodes: json.nodes || [], edges: json.edges || [] };
@@ -892,7 +893,7 @@
 
             // API 失败则降级到本地 JSON
             if (!data || !data.nodes.length) {
-                const res = await fetch('/data/graph.json');
+                const res = await Cache.cachedFetch('/data/graph.json');
                 if (res.ok) {
                     data = await res.json();
                 }

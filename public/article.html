@@ -7,6 +7,7 @@
     <meta name="description" content="轻量心理科普，用易懂的方式了解自己。阅读温暖的心理健康内容，学习照顾自己的方法。">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -223,32 +224,25 @@
 
         async function loadKnowledge() {
             try {
-                // 优先从 API 读取（Vercel Blob 存储）
-                const response = await fetch('/api/knowledge/psychology?limit=100');
-
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.knowledge && data.knowledge.length > 0) {
-                        allKnowledge = data.knowledge;
-                        renderArticles(allKnowledge);
-                        return;
-                    }
+                // 优先从 API 读取（Vercel Blob 存储），带智能缓存
+                const data = await Cache.cachedFetch('/api/knowledge/psychology?limit=100');
+                if (data.knowledge && data.knowledge.length > 0) {
+                    allKnowledge = data.knowledge;
+                    renderArticles(allKnowledge);
+                    return;
                 }
             } catch (error) {
                 console.warn('API 加载失败，尝试本地降级:', error.message);
             }
 
-            // API 失败时尝试本地 JSON
+            // API 失败时尝试本地 JSON（也走缓存）
             try {
-                const localRes = await fetch('/data/knowledge.json');
-                if (localRes.ok) {
-                    const localData = await localRes.json();
-                    if (localData && localData.length > 0) {
-                        console.log('✅ 从本地 JSON 加载知识库');
-                        allKnowledge = localData;
-                        renderArticles(allKnowledge);
-                        return;
-                    }
+                const localData = await Cache.cachedFetch('/data/knowledge.json');
+                if (localData && localData.length > 0) {
+                    console.log('✅ 从本地 JSON 加载知识库');
+                    allKnowledge = localData;
+                    renderArticles(allKnowledge);
+                    return;
                 }
             } catch (localError) {
                 console.warn('本地 JSON 也加载失败:', localError);

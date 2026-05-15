@@ -14,6 +14,60 @@ let crawlTab = 'exercises';
 let editingId = null;
 let editingRecord = null; // 当前编辑的完整记录（用于JSON编辑器）
 
+// ─── 智能缓存配置 ─────────────────────────────────────────────
+const CACHE_TTL = 5 * 60 * 1000; // 5分钟 TTL
+const CACHE_PREFIX = 'xq_cache_';
+
+function getCacheKey(path, options = {}) {
+    // 将请求路径和方法组合成缓存 key
+    const method = (options.method || 'GET').toUpperCase();
+    return CACHE_PREFIX + method + ':' + path;
+}
+
+function getCache(path, options = {}) {
+    try {
+        const key = getCacheKey(path, options);
+        const raw = sessionStorage.getItem(key);
+        if (!raw) return null;
+        const entry = JSON.parse(raw);
+        if (Date.now() - entry.ts > CACHE_TTL) {
+            sessionStorage.removeItem(key);
+            return null;
+        }
+        return entry.data;
+    } catch {
+        return null;
+    }
+}
+
+function setCache(path, options = {}, data) {
+    try {
+        const key = getCacheKey(path, options);
+        sessionStorage.setItem(key, JSON.stringify({
+            ts: Date.now(),
+            data
+        }));
+    } catch {
+        // sessionStorage 满了，忽略
+    }
+}
+
+function clearCache(pathPattern) {
+    // 清除匹配的缓存，不传参数则清除全部
+    if (!pathPattern) {
+        Object.keys(sessionStorage).forEach(k => {
+            if (k.startsWith(CACHE_PREFIX)) sessionStorage.removeItem(k);
+        });
+        return;
+    }
+    const regex = new RegExp(pathPattern);
+    Object.keys(sessionStorage).forEach(k => {
+        if (k.startsWith(CACHE_PREFIX) && regex.test(k)) {
+            sessionStorage.removeItem(k);
+        }
+    });
+}
+
 // ─── API 基础路径 ─────────────────────────────────────────────
 const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
     ? 'http://localhost:3000/api'
@@ -26,8 +80,21 @@ function authHeaders() {
         : {};
 }
 
-// ─── 通用 API 请求（带超时保护）───────────────────────────────
+// ─── 通用 API 请求（带超时保护 + 智能缓存）───────────────────────
 async function api(path, options = {}) {
+    const method = (options.method || 'GET').toUpperCase();
+    const useCache = options.useCache !== false && method === 'GET';
+    const bypassCache = options.bypassCache === true;
+
+    // 检查缓存（仅 GET 请求）
+    if (useCache && !bypassCache) {
+        const cached = getCache(path, options);
+        if (cached) {
+            console.log(`[缓存命中] GET ${path}`);
+            return cached;
+        }
+    }
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s 超时
     try {
@@ -43,6 +110,13 @@ async function api(path, options = {}) {
         clearTimeout(timeoutId);
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+        // 写入缓存（仅 GET 请求）
+        if (useCache && data) {
+            setCache(path, options, data);
+            console.log(`[缓存写入] GET ${path}`);
+        }
+
         return data;
     } catch (e) {
         clearTimeout(timeoutId);
@@ -253,7 +327,10 @@ function renderPagination(p) {
     `;
 }
 
-function refreshData() { loadData(1); }
+function refreshData() {
+    clearCache(`/admin/data/${CURRENT_COLLECTION}`);
+    loadData(1);
+}
 
 function getRecordPreview(item) {
     // 优先显示 title，其次 content/description 的前 60 字符
@@ -398,19 +475,20 @@ async function submitModal() {
     try {
         if (editingId) {
             const res = await api(`/admin/data/${CURRENT_COLLECTION}/${editingId}`, {
-                method: 'PUT', body: JSON.stringify(payload)
+                method: 'PUT', body: JSON.stringify(payload), useCache: false
             });
             if (!res.success) throw new Error(res.error);
             showToast('更新成功', 'success');
         } else {
             const res = await api(`/admin/data/${CURRENT_COLLECTION}`, {
-                method: 'POST', body: JSON.stringify(payload)
+                method: 'POST', body: JSON.stringify(payload), useCache: false
             });
             if (!res.success) throw new Error(res.error);
             showToast('创建成功', 'success');
         }
 
         closeModal();
+        clearCache(`/admin/data/${CURRENT_COLLECTION}`);
         loadData(CURRENT_PAGE);
     } catch (e) {
         showToast('保存失败：' + e.message, 'error');
@@ -426,7 +504,8 @@ function closeModal() {
 async function confirmDelete(id) {
     if (!confirm(`确定要删除记录 ${id} 吗？此操作不可恢复。`)) return;
     try {
-        await api(`/admin/data/${CURRENT_COLLECTION}/${id}`, { method: 'DELETE' });
+        await api(`/admin/data/${CURRENT_COLLECTION}/${id}`, { method: 'DELETE', useCache: false });
+        clearCache(`/admin/data/${CURRENT_COLLECTION}`);
         loadData(CURRENT_PAGE);
     } catch (e) {
         alert('删除失败：' + e.message);
@@ -916,6 +995,7 @@ async function importSelectedCrawlResults() {
         }
 
         showToast(`成功导入 ${imported} 条数据`, 'success');
+        clearCache(); // 清除所有缓存（导入了新数据）
         loadCrawlResults();
         loadDashboard();
     } catch (e) {
@@ -924,6 +1004,7 @@ async function importSelectedCrawlResults() {
 }
 
 function refreshCrawlResults() {
+    clearCache('/crawler/results');
     loadCrawlResults();
 }
 
@@ -1033,6 +1114,7 @@ async function importJsonFile(input) {
         });
         if (!res.success) throw new Error(res.error);
         showToast(`导入成功！更新了 ${res.data?.length || 0} 个集合`, 'success');
+        clearCache(); // 清除所有缓存
         loadSettings();
         loadDashboard();
     } catch (e) {
@@ -1066,6 +1148,7 @@ async function initDataFromLocal() {
                 <div style="margin-top:8px;padding:8px;background:var(--bg);border-radius:4px;">${details}</div>
             `;
             showToast('数据初始化成功', 'success');
+            clearCache(); // 清除所有缓存（数据已重新初始化）
             loadDashboard();
         } else {
             throw new Error(res.error || '初始化失败');
@@ -1082,9 +1165,11 @@ async function confirmClearCollection() {
     try {
         await api(`/admin/data/${CURRENT_COLLECTION}/batch-delete`, {
             method: 'POST',
-            body: JSON.stringify({ ids: ['__clear_all__'] })
+            body: JSON.stringify({ ids: ['__clear_all__'] }),
+            useCache: false
         });
         showToast('已清空集合', 'success');
+        clearCache(`/admin/data/${CURRENT_COLLECTION}`);
         loadData(1);
     } catch (e) {
         showToast('操作失败：' + e.message, 'error');
@@ -1176,6 +1261,7 @@ async function loadMedia() {
 }
 
 function refreshMedia() {
+    clearCache('/admin/media');
     loadMedia();
 }
 

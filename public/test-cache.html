@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>缓存逻辑测试</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family: monospace; padding:20px; background:#1a1a2e; color:#e0e0e0; }
+        .container { max-width:900px; margin:0 auto; }
+        h1 { color:#5A9A8A; border-bottom:1px solid #333; padding-bottom:10px; }
+        .step { background:#16213e; padding:15px; border-radius:8px; margin:15px 0; }
+        .step-title { color:#5A9A8A; font-weight:bold; margin-bottom:8px; }
+        button { padding:10px 20px; margin:5px; cursor:pointer; border:none; border-radius:6px; font-size:0.9rem; }
+        .btn-primary { background:#5A9A8A; color:white; }
+        .btn-danger { background:#EF4444; color:white; }
+        .btn-outline { background:transparent; color:#5A9A8A; border:1px solid #5A9A8A; }
+        .log { background:#0f3460; padding:15px; border-radius:8px; margin-top:20px; max-height:400px; overflow-y:auto; }
+        .log-entry { margin:3px 0; font-size:0.85rem; }
+        .success { color:#10B981; }
+        .error { color:#EF4444; }
+        .info { color:#60A5FA; }
+        .warn { color:#F59E0B; }
+        .cache-hit { color:#8B5CF6; }
+        .cache-miss { color:#F97316; }
+        input[type="text"] { padding:8px; width:300px; background:#16213e; color:white; border:1px solid #333; border-radius:6px; }
+        .badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:0.75rem; margin-left:8px; }
+        .badge-on { background:#10B981; color:white; }
+        .badge-off { background:#EF4444; color:white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 admin.js 缓存逻辑测试工具</h1>
+        
+        <div class="step">
+            <div class="step-title">步骤 1：设置令牌</div>
+            <input type="text" id="token-input" placeholder="输入 ADMIN_TOKEN" style="margin-bottom:10px;display:block;">
+            <button class="btn-primary" onclick="setToken()">设置令牌</button>
+            <span id="token-status"></span>
+        </div>
+
+        <div class="step">
+            <div class="step-title">步骤 2：测试缓存逻辑</div>
+            <p style="font-size:0.85rem;color:#9CA3AF;margin-bottom:10px;">
+                打开浏览器控制台（F12），然后点击下面的按钮。观察 Console 标签中的日志。
+            </p>
+            <button class="btn-primary" onclick="testCacheHit()">🔄 测试缓存命中</button>
+            <button class="btn-outline" onclick="testBypassCache()">⏭️ 测试绕过缓存（刷新）</button>
+            <button class="btn-danger" onclick="clearAllCache()">🗑️ 清除所有缓存</button>
+        </div>
+
+        <div class="step">
+            <div class="step-title">步骤 3：模拟真实操作</div>
+            <button class="btn-primary" onclick="simulateSwitchTab()">模拟切换标签</button>
+            <button class="btn-outline" onclick="simulateRefresh()">模拟点击刷新</button>
+            <button class="btn-outline" onclick="simulateEdit()">模拟编辑后刷新</button>
+        </div>
+
+        <div class="step">
+            <div class="step-title">步骤 4：查看缓存状态</div>
+            <button class="btn-primary" onclick="showCacheStatus()">📦 查看缓存</button>
+            <div id="cache-status" style="margin-top:10px;font-size:0.85rem;"></div>
+        </div>
+
+        <div class="log" id="log">
+            <div class="log-entry info">[初始化] 测试工具已就绪，请按步骤操作...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let token = '';
+
+        function log(msg, type = 'info') {
+            const el = document.getElementById('log');
+            const time = new Date().toLocaleTimeString();
+            const prefix = type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warn' ? '⚠️' : type === 'cache-hit' ? '💾' : type === 'cache-miss' ? '🌐' : 'ℹ️';
+            el.innerHTML += `<div class="log-entry ${type}">[${time}] ${prefix} ${msg}</div>`;
+            el.scrollTop = el.scrollHeight;
+        }
+
+        function setToken() {
+            token = document.getElementById('token-input').value.trim();
+            if (!token) {
+                document.getElementById('token-status').innerHTML = '<span class="badge badge-off">未输入</span>';
+                log('请输入令牌', 'error');
+                return;
+            }
+            document.getElementById('token-status').innerHTML = '<span class="badge badge-on">已设置</span>';
+            log(`令牌已设置：${token.substring(0, 10)}...`, 'success');
+            
+            // 保存到 localStorage（模拟 admin.js 的行为）
+            localStorage.setItem('admin_token', token);
+        }
+
+        // ─── 复制 admin.js 中的缓存函数 ───────────────────
+        const CACHE_TTL = 5 * 60 * 1000;
+        const CACHE_PREFIX = 'xq_cache_';
+
+        function getCacheKey(path, options = {}) {
+            const method = (options.method || 'GET').toUpperCase();
+            return CACHE_PREFIX + method + ':' + path;
+        }
+
+        function getCache(path, options = {}) {
+            try {
+                const key = getCacheKey(path, options);
+                const raw = sessionStorage.getItem(key);
+                if (!raw) return null;
+                const entry = JSON.parse(raw);
+                if (Date.now() - entry.ts > CACHE_TTL) {
+                    sessionStorage.removeItem(key);
+                    return null;
+                }
+                return entry.data;
+            } catch { return null; }
+        }
+
+        function setCache(path, options = {}, data) {
+            try {
+                const key = getCacheKey(path, options);
+                sessionStorage.setItem(key, JSON.stringify({ ts: Date.now(), data }));
+            } catch {}
+        }
+
+        function clearCache(pathPattern) {
+            if (!pathPattern) {
+                Object.keys(sessionStorage).forEach(k => {
+                    if (k.startsWith(CACHE_PREFIX)) sessionStorage.removeItem(k);
+                });
+                return;
+            }
+            const regex = new RegExp(pathPattern);
+            Object.keys(sessionStorage).forEach(k => {
+                if (k.startsWith(CACHE_PREFIX) && regex.test(k)) {
+                    sessionStorage.removeItem(k);
+                }
+            });
+        }
+
+        // ─── 模拟 admin.js 的 api() 函数 ───────────────────
+        async function api(path, options = {}) {
+            const method = (options.method || 'GET').toUpperCase();
+            const useCache = options.useCache !== false && method === 'GET';
+            const bypassCache = options.bypassCache === true;
+
+            if (useCache && !bypassCache) {
+                const cached = getCache(path, options);
+                if (cached) {
+                    log(`[缓存命中] GET ${path}`, 'cache-hit');
+                    console.log(`[缓存命中] GET ${path}`, cached);
+                    return cached;
+                }
+            }
+
+            log(`[缓存未命中] GET ${path}，正在请求...`, 'cache-miss');
+            console.log(`[缓存未命中] GET ${path}`);
+
+            const res = await fetch(`${API_BASE}${path}`, {
+                ...options,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Admin-Token': token,
+                    'Authorization': `Bearer ${token}`,
+                    ...(options.headers || {})
+                }
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+            if (useCache && data) {
+                setCache(path, options, data);
+                log(`[缓存写入] GET ${path}`, 'info');
+                console.log(`[缓存写入] GET ${path}`);
+            }
+
+            return data;
+        }
+
+        // ─── 测试函数 ────────────────────────────────────────
+        async function testCacheHit() {
+            log('开始测试缓存命中逻辑...', 'info');
+            
+            // 第一次请求（应该未命中）
+            try {
+                await api('/admin/stats');
+                log('第一次请求完成', 'success');
+            } catch(e) {
+                log(`第一次请求失败：${e.message}`, 'error');
+                return;
+            }
+
+            // 第二次请求（应该命中缓存）
+            try {
+                const data = await api('/admin/stats');
+                if (data) {
+                    log('第二次请求完成（应该命中缓存，查看 Console 确认）', 'success');
+                    log('👉 请查看浏览器控制台（F12），应该看到 "[缓存命中] GET /admin/stats"', 'warn');
+                }
+            } catch(e) {
+                log(`第二次请求失败：${e.message}`, 'error');
+            }
+        }
+
+        async function testBypassCache() {
+            log('开始测试绕过缓存（模拟刷新操作）...', 'info');
+            
+            // 先确保有缓存
+            try {
+                await api('/admin/stats');
+                log('已写入缓存，现在测试绕过...', 'info');
+            } catch(e) {
+                log(`写入缓存失败：${e.message}`, 'error');
+                return;
+            }
+
+            // 绕过缓存重新请求
+            try {
+                const data = await api('/admin/stats', { bypassCache: true });
+                if (data) {
+                    log('绕过缓存成功，数据已重新获取', 'success');
+                    log('👉 请查看浏览器控制台（F12），应该看到 "[缓存未命中] GET /admin/stats"', 'warn');
+                }
+            } catch(e) {
+                log(`绕过缓存失败：${e.message}`, 'error');
+            }
+        }
+
+        function clearAllCache() {
+            clearCache();
+            log('已清除所有缓存', 'success');
+            showCacheStatus();
+        }
+
+        async function simulateSwitchTab() {
+            log('模拟切换标签（数据管理）...', 'info');
+            try {
+                const data = await api(`/admin/data/exercises?page=1&limit=10`);
+                log(`加载数据管理页完成，记录数：${data.total || 0}`, 'success');
+                log('再次调用同一接口，应该命中缓存（5分钟内）', 'warn');
+            } catch(e) {
+                log(`切换标签失败：${e.message}`, 'error');
+            }
+        }
+
+        async function simulateRefresh() {
+            log('模拟点击刷新按钮...', 'info');
+            // 先清除缓存
+            clearCache('/admin/data/exercises');
+            log('已清除数据管理缓存，现在重新请求...', 'info');
+            try {
+                const data = await api(`/admin/data/exercises?page=1&limit=10`, { bypassCache: true });
+                log(`刷新完成，记录数：${data.total || 0}`, 'success');
+            } catch(e) {
+                log(`刷新失败：${e.message}`, 'error');
+            }
+        }
+
+        async function simulateEdit() {
+            log('模拟编辑后刷新...', 'info');
+            // 模拟编辑操作（POST/PUT，不缓存）
+            log('模拟 POST 请求（不缓存）...', 'info');
+            
+            // 然后清除缓存
+            clearCache('/admin/data/exercises');
+            log('已模拟清除相关缓存，下次加载将重新请求', 'success');
+        }
+
+        function showCacheStatus() {
+            const entries = [];
+            let count = 0;
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                if (key.startsWith(CACHE_PREFIX)) {
+                    count++;
+                    try {
+                        const entry = JSON.parse(sessionStorage.getItem(key));
+                        const age = Math.round((Date.now() - entry.ts) / 1000);
+                        const ttl = 300 - age;
+                        entries.push(`<div style="margin:3px 0;"><span style="color:#5A9A8A;">${key.replace(CACHE_PREFIX, '')}</span> <span style="color:#9CA3AF;font-size:0.8rem;">${ttl > 0 ? ttl + '秒后过期' : '已过期'}</span></div>`);
+                    } catch {
+                        entries.push(`<div style="color:#EF4444;">${key} (无效)</div>`);
+                    }
+                }
+            }
+
+            document.getElementById('cache-status').innerHTML = count === 0 
+                ? '<span style="color:#9CA3AF;">暂无缓存</span>' 
+                : `<div>共 ${count} 条缓存：</div>${entries.join('')}`;
+        }
+
+        // 页面加载时检查 token
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('admin_token');
+            if (saved) {
+                token = saved;
+                document.getElementById('token-input').value = saved;
+                document.getElementById('token-status').innerHTML = '<span class="badge badge-on">已恢复</span>';
+                log('已从 localStorage 恢复令牌', 'success');
+            }
+        });
+    </script>
+</body>
+</html>

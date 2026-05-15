@@ -1,0 +1,889 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2026-05-15T00:00:00Z",
+  "categories": [
+    {
+      "id": "creative",
+      "name": "创造性活动",
+      "icon": "🎨",
+      "description": "通过创作表达自我,获得成就感",
+      "subcategories": [
+        {
+          "id": "art",
+          "name": "艺术创作",
+          "activities": [
+            {
+              "id": "digital-painting",
+              "name": "数字油画",
+              "description": "按照数字提示填充颜色,完成一幅画作",
+              "duration": [15, 30, 45, 60],
+              "difficulty": 2,
+              "requiredSkills": ["耐心", "细心"],
+              "tags": ["艺术", "创作", "放松", "入门"],
+              "benefits": ["提升专注力", "培养耐心", "获得成就感"],
+              "scientificBasis": "明确目标(数字提示)、即时反馈(看到效果)、技能挑战平衡(自选难度)",
+              "materials": ["数字油画套装", "安静环境"],
+              "tips": [
+                "选择你喜欢的图案",
+                "从简单的区域开始",
+                "不要追求完美,享受过程"
+              ],
+              "popularity": 85,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "sketching",
+              "name": "素描练习",
+              "description": "用铅笔描绘静物、人物或风景",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["观察力", "耐心"],
+              "tags": ["艺术", "创作", "观察"],
+              "benefits": ["提升观察力", "培养专注", "表达情感"],
+              "scientificBasis": "明确目标(完成作品)、即时反馈(看到线条)、技能挑战平衡(选择题材)",
+              "materials": ["素描本", "铅笔", "橡皮"],
+              "tips": [
+                "从简单的几何体开始",
+                "注意光影变化",
+                "放松手腕,自然运笔"
+              ],
+              "popularity": 75,
+              "avgFlowScore": 4.1
+            },
+            {
+              "id": "watercolor",
+              "name": "水彩画",
+              "description": "用水彩颜料创作色彩丰富的画作",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 4,
+              "requiredSkills": ["色彩感", "耐心", "创造力"],
+              "tags": ["艺术", "创作", "色彩"],
+              "benefits": ["表达情感", "培养审美", "放松身心"],
+              "scientificBasis": "明确目标(完成作品)、即时反馈(色彩呈现)、技能挑战平衡(选择题材)",
+              "materials": ["水彩颜料", "画笔", "水彩纸", "水"],
+              "tips": [
+                "从简单的风景开始",
+                "控制水量,避免过度晕染",
+                "享受色彩流动的美感"
+              ],
+              "popularity": 70,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "calligraphy",
+              "name": "书法练习",
+              "description": "练习毛笔或硬笔书法,感受文字之美",
+              "duration": [15, 30, 45],
+              "difficulty": 3,
+              "requiredSkills": ["耐心", "专注"],
+              "tags": ["艺术", "传统文化", "静心"],
+              "benefits": ["培养专注力", "修身养性", "传承文化"],
+              "scientificBasis": "明确目标(写好字)、即时反馈(看到笔画)、技能挑战平衡(选择字体)",
+              "materials": ["毛笔/硬笔", "墨水", "宣纸/练习纸"],
+              "tips": [
+                "从基本笔画开始",
+                "保持呼吸平稳",
+                "不要急躁,慢慢练习"
+              ],
+              "popularity": 65,
+              "avgFlowScore": 4.2
+            },
+            {
+              "id": "handcraft",
+              "name": "手工制作",
+              "description": "制作手工艺品,如编织、折纸、串珠等",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 3,
+              "requiredSkills": ["耐心", "动手能力"],
+              "tags": ["手工", "创作", "实用"],
+              "benefits": ["培养耐心", "提升动手能力", "获得成就感"],
+              "scientificBasis": "明确目标(完成作品)、即时反馈(看到进展)、技能挑战平衡(选择项目)",
+              "materials": ["根据项目准备材料"],
+              "tips": [
+                "选择感兴趣的项目",
+                "按照教程一步步来",
+                "享受制作过程"
+              ],
+              "popularity": 72,
+              "avgFlowScore": 4.0
+            },
+            {
+              "id": "photography",
+              "name": "摄影创作",
+              "description": "用相机或手机拍摄有意义的照片",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 3,
+              "requiredSkills": ["观察力", "审美"],
+              "tags": ["艺术", "观察", "记录"],
+              "benefits": ["提升观察力", "记录美好", "表达创意"],
+              "scientificBasis": "明确目标(拍摄主题)、即时反馈(看到照片)、技能挑战平衡(选择题材)",
+              "materials": ["相机或手机"],
+              "tips": [
+                "选择一个主题进行拍摄",
+                "注意光线和构图",
+                "多角度尝试"
+              ],
+              "popularity": 80,
+              "avgFlowScore": 4.3
+            }
+          ]
+        },
+        {
+          "id": "writing",
+          "name": "文字创作",
+          "activities": [
+            {
+              "id": "journaling",
+              "name": "写日记",
+              "description": "记录每天的想法、感受和经历",
+              "duration": [15, 30],
+              "difficulty": 1,
+              "requiredSkills": ["表达能力"],
+              "tags": ["写作", "自我探索", "入门"],
+              "benefits": ["整理思绪", "释放情绪", "自我成长"],
+              "scientificBasis": "明确目标(记录今天)、即时反馈(看到文字)、技能挑战平衡(自由表达)",
+              "materials": ["笔记本", "笔"],
+              "tips": [
+                "不需要追求完美",
+                "写下真实的感受",
+                "可以配上简单的插画"
+              ],
+              "popularity": 88,
+              "avgFlowScore": 4.5
+            },
+            {
+              "id": "creative-writing",
+              "name": "创意写作",
+              "description": "创作小说、诗歌或散文",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 4,
+              "requiredSkills": ["想象力", "表达能力"],
+              "tags": ["写作", "创作", "想象"],
+              "benefits": ["表达创意", "提升表达能力", "获得成就感"],
+              "scientificBasis": "明确目标(完成作品)、即时反馈(看到文字)、技能挑战平衡(选择题材)",
+              "materials": ["电脑或笔记本"],
+              "tips": [
+                "从短篇开始",
+                "不要边写边改",
+                "享受创作过程"
+              ],
+              "popularity": 68,
+              "avgFlowScore": 4.2
+            },
+            {
+              "id": "letter-writing",
+              "name": "写信",
+              "description": "给朋友、家人或未来的自己写一封信",
+              "duration": [30, 45],
+              "difficulty": 2,
+              "requiredSkills": ["表达能力", "情感表达"],
+              "tags": ["写作", "情感", "连接"],
+              "benefits": ["表达情感", "加深连接", "留下回忆"],
+              "scientificBasis": "明确目标(完成信件)、即时反馈(看到文字)、技能挑战平衡(选择收信人)",
+              "materials": ["信纸", "笔", "信封"],
+              "tips": [
+                "写下真实的心里话",
+                "不要担心字迹",
+                "可以配上小礼物"
+              ],
+              "popularity": 60,
+              "avgFlowScore": 4.6
+            }
+          ]
+        },
+        {
+          "id": "music",
+          "name": "音乐创作",
+          "activities": [
+            {
+              "id": "instrument-practice",
+              "name": "乐器练习",
+              "description": "练习吉他、钢琴、小提琴等乐器",
+              "duration": [30, 45, 60],
+              "difficulty": 4,
+              "requiredSkills": ["音乐感", "耐心"],
+              "tags": ["音乐", "技能", "艺术"],
+              "benefits": ["提升技能", "培养专注", "表达情感"],
+              "scientificBasis": "明确目标(学会曲目)、即时反馈(听到声音)、技能挑战平衡(选择曲目)",
+              "materials": ["乐器", "乐谱"],
+              "tips": [
+                "从简单的曲目开始",
+                "分段练习,逐步提升",
+                "享受音乐本身"
+              ],
+              "popularity": 72,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "singing",
+              "name": "唱歌练习",
+              "description": "练习喜欢的歌曲,提升演唱技巧",
+              "duration": [15, 30, 45],
+              "difficulty": 2,
+              "requiredSkills": ["音乐感"],
+              "tags": ["音乐", "表达", "放松"],
+              "benefits": ["释放压力", "表达情感", "提升自信"],
+              "scientificBasis": "明确目标(学会歌曲)、即时反馈(听到声音)、技能挑战平衡(选择歌曲)",
+              "materials": ["歌词", "伴奏"],
+              "tips": [
+                "选择喜欢的歌曲",
+                "注意呼吸和发声",
+                "不要担心唱得好不好"
+              ],
+              "popularity": 78,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "music-composition",
+              "name": "音乐创作",
+              "description": "尝试创作简单的旋律或歌曲",
+              "duration": [45, 60, 90],
+              "difficulty": 5,
+              "requiredSkills": ["音乐感", "创造力", "乐理知识"],
+              "tags": ["音乐", "创作", "表达"],
+              "benefits": ["表达创意", "获得成就感", "提升音乐素养"],
+              "scientificBasis": "明确目标(完成作品)、即时反馈(听到旋律)、技能挑战平衡(选择风格)",
+              "materials": ["乐器或音乐软件"],
+              "tips": [
+                "从简单的旋律开始",
+                "记录灵感",
+                "不要追求完美"
+              ],
+              "popularity": 55,
+              "avgFlowScore": 4.7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "learning",
+      "name": "学习性活动",
+      "icon": "📚",
+      "description": "通过学习获得知识和技能",
+      "subcategories": [
+        {
+          "id": "reading",
+          "name": "阅读学习",
+          "activities": [
+            {
+              "id": "book-reading",
+              "name": "深度阅读",
+              "description": "专注阅读一本书,做笔记和思考",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["阅读", "学习", "思考"],
+              "benefits": ["获取知识", "拓展视野", "提升思维"],
+              "scientificBasis": "明确目标(读完章节)、即时反馈(理解内容)、技能挑战平衡(选择书籍)",
+              "materials": ["书籍", "笔记本"],
+              "tips": [
+                "选择感兴趣的书籍",
+                "边读边思考",
+                "记录有启发的句子"
+              ],
+              "popularity": 85,
+              "avgFlowScore": 4.2
+            },
+            {
+              "id": "article-reading",
+              "name": "文章阅读",
+              "description": "深度阅读一篇有价值的文章",
+              "duration": [15, 30],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["阅读", "学习", "碎片化"],
+              "benefits": ["获取信息", "拓展知识", "启发思考"],
+              "scientificBasis": "明确目标(读完文章)、即时反馈(理解内容)、技能挑战平衡(选择文章)",
+              "materials": ["文章", "笔记本"],
+              "tips": [
+                "选择有价值的文章",
+                "不要快速浏览",
+                "思考文章观点"
+              ],
+              "popularity": 82,
+              "avgFlowScore": 4.0
+            },
+            {
+              "id": "poetry-reading",
+              "name": "诗歌朗诵",
+              "description": "朗诵诗歌,感受文字之美",
+              "duration": [15, 30],
+              "difficulty": 2,
+              "requiredSkills": ["表达能力", "审美"],
+              "tags": ["阅读", "艺术", "表达"],
+              "benefits": ["感受美", "提升表达", "陶冶情操"],
+              "scientificBasis": "明确目标(朗诵诗歌)、即时反馈(听到声音)、技能挑战平衡(选择诗歌)",
+              "materials": ["诗集"],
+              "tips": [
+                "选择喜欢的诗歌",
+                "注意节奏和情感",
+                "享受朗诵过程"
+              ],
+              "popularity": 58,
+              "avgFlowScore": 4.4
+            }
+          ]
+        },
+        {
+          "id": "skill-learning",
+          "name": "技能学习",
+          "activities": [
+            {
+              "id": "coding",
+              "name": "编程练习",
+              "description": "学习编程语言,完成编程项目",
+              "duration": [45, 60, 90, 120],
+              "difficulty": 4,
+              "requiredSkills": ["逻辑思维", "耐心"],
+              "tags": ["技能", "逻辑", "创造"],
+              "benefits": ["提升逻辑思维", "解决问题", "创造价值"],
+              "scientificBasis": "明确目标(完成项目)、即时反馈(运行结果)、技能挑战平衡(选择项目)",
+              "materials": ["电脑", "编程环境"],
+              "tips": [
+                "从简单的项目开始",
+                "遇到问题不要放弃",
+                "享受解决问题的过程"
+              ],
+              "popularity": 75,
+              "avgFlowScore": 4.5
+            },
+            {
+              "id": "language-learning",
+              "name": "语言学习",
+              "description": "学习一门新语言,练习听说读写",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["记忆力", "表达能力"],
+              "tags": ["技能", "语言", "文化"],
+              "benefits": ["拓展视野", "提升认知", "增加机会"],
+              "scientificBasis": "明确目标(学会内容)、即时反馈(能说出来)、技能挑战平衡(选择内容)",
+              "materials": ["学习资料", "练习工具"],
+              "tips": [
+                "每天坚持练习",
+                "多听多说",
+                "不要害怕犯错"
+              ],
+              "popularity": 80,
+              "avgFlowScore": 4.1
+            },
+            {
+              "id": "cooking",
+              "name": "烹饪学习",
+              "description": "学习制作一道新菜或烘焙",
+              "duration": [45, 60, 90],
+              "difficulty": 3,
+              "requiredSkills": ["动手能力", "创造力"],
+              "tags": ["技能", "生活", "创造"],
+              "benefits": ["提升生活技能", "获得成就感", "享受美食"],
+              "scientificBasis": "明确目标(完成菜品)、即时反馈(品尝味道)、技能挑战平衡(选择菜谱)",
+              "materials": ["食材", "厨具", "菜谱"],
+              "tips": [
+                "从简单的菜开始",
+                "按照菜谱步骤",
+                "享受烹饪过程"
+              ],
+              "popularity": 76,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "gardening",
+              "name": "园艺种植",
+              "description": "种植和照料植物,观察生长",
+              "duration": [30, 45, 60],
+              "difficulty": 2,
+              "requiredSkills": ["耐心", "观察力"],
+              "tags": ["技能", "自然", "生活"],
+              "benefits": ["培养耐心", "连接自然", "获得成就感"],
+              "scientificBasis": "明确目标(照料植物)、即时反馈(看到变化)、技能挑战平衡(选择植物)",
+              "materials": ["植物", "花盆", "土壤", "工具"],
+              "tips": [
+                "选择适合的植物",
+                "定期浇水施肥",
+                "观察生长变化"
+              ],
+              "popularity": 68,
+              "avgFlowScore": 4.2
+            }
+          ]
+        },
+        {
+          "id": "research",
+          "name": "知识探索",
+          "activities": [
+            {
+              "id": "topic-research",
+              "name": "主题研究",
+              "description": "深入研究一个感兴趣的主题",
+              "duration": [60, 90, 120],
+              "difficulty": 4,
+              "requiredSkills": ["研究能力", "批判性思维"],
+              "tags": ["学习", "研究", "深度"],
+              "benefits": ["深度理解", "拓展知识", "提升思维"],
+              "scientificBasis": "明确目标(理解主题)、即时反馈(获得新知)、技能挑战平衡(选择主题)",
+              "materials": ["资料来源", "笔记本"],
+              "tips": [
+                "选择感兴趣的主题",
+                "多角度收集信息",
+                "整理和总结"
+              ],
+              "popularity": 62,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "puzzle-solving",
+              "name": "解谜游戏",
+              "description": "玩数独、填字游戏或逻辑谜题",
+              "duration": [15, 30, 45],
+              "difficulty": 3,
+              "requiredSkills": ["逻辑思维", "耐心"],
+              "tags": ["游戏", "逻辑", "思考"],
+              "benefits": ["锻炼思维", "提升专注", "获得成就感"],
+              "scientificBasis": "明确目标(解开谜题)、即时反馈(知道对错)、技能挑战平衡(选择难度)",
+              "materials": ["谜题", "笔"],
+              "tips": [
+                "选择适合的难度",
+                "不要急于看答案",
+                "享受思考过程"
+              ],
+              "popularity": 70,
+              "avgFlowScore": 4.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "physical",
+      "name": "运动性活动",
+      "icon": "🏃",
+      "description": "通过身体运动获得身心愉悦",
+      "subcategories": [
+        {
+          "id": "aerobic",
+          "name": "有氧运动",
+          "activities": [
+            {
+              "id": "running",
+              "name": "跑步",
+              "description": "户外或室内跑步,感受身体律动",
+              "duration": [30, 45, 60],
+              "difficulty": 2,
+              "requiredSkills": ["体力"],
+              "tags": ["运动", "有氧", "户外"],
+              "benefits": ["提升体能", "释放压力", "改善情绪"],
+              "scientificBasis": "明确目标(完成距离/时间)、即时反馈(身体感受)、技能挑战平衡(选择强度)",
+              "materials": ["跑鞋", "运动服"],
+              "tips": [
+                "从慢跑开始",
+                "注意呼吸节奏",
+                "享受跑步过程"
+              ],
+              "popularity": 82,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "swimming",
+              "name": "游泳",
+              "description": "在水中游泳,感受水的包裹",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["游泳技能"],
+              "tags": ["运动", "有氧", "水"],
+              "benefits": ["全身锻炼", "放松身心", "提升心肺"],
+              "scientificBasis": "明确目标(完成圈数/时间)、即时反馈(身体感受)、技能挑战平衡(选择强度)",
+              "materials": ["泳衣", "泳镜", "泳帽"],
+              "tips": [
+                "注意安全",
+                "保持呼吸节奏",
+                "享受水的触感"
+              ],
+              "popularity": 75,
+              "avgFlowScore": 4.5
+            },
+            {
+              "id": "cycling",
+              "name": "骑行",
+              "description": "户外骑行,欣赏沿途风景",
+              "duration": [45, 60, 90, 120],
+              "difficulty": 2,
+              "requiredSkills": ["骑行技能"],
+              "tags": ["运动", "有氧", "户外"],
+              "benefits": ["锻炼腿部", "探索环境", "放松心情"],
+              "scientificBasis": "明确目标(完成路线/时间)、即时反馈(身体感受)、技能挑战平衡(选择路线)",
+              "materials": ["自行车", "头盔"],
+              "tips": [
+                "选择安全路线",
+                "注意交通安全",
+                "享受沿途风景"
+              ],
+              "popularity": 78,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "walking",
+              "name": "散步",
+              "description": "悠闲地散步,观察周围环境",
+              "duration": [15, 30, 45],
+              "difficulty": 1,
+              "requiredSkills": [],
+              "tags": ["运动", "轻松", "观察"],
+              "benefits": ["放松身心", "观察环境", "整理思绪"],
+              "scientificBasis": "明确目标(散步时间)、即时反馈(身体感受)、技能挑战平衡(选择路线)",
+              "materials": ["舒适的鞋子"],
+              "tips": [
+                "选择安静的路线",
+                "放慢脚步",
+                "观察周围细节"
+              ],
+              "popularity": 88,
+              "avgFlowScore": 4.2
+            }
+          ]
+        },
+        {
+          "id": "mind-body",
+          "name": "身心练习",
+          "activities": [
+            {
+              "id": "yoga",
+              "name": "瑜伽练习",
+              "description": "练习瑜伽体式,连接身心",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["柔韧性", "平衡感"],
+              "tags": ["运动", "身心", "冥想"],
+              "benefits": ["提升柔韧性", "放松身心", "培养专注"],
+              "scientificBasis": "明确目标(完成体式)、即时反馈(身体感受)、技能挑战平衡(选择体式)",
+              "materials": ["瑜伽垫", "舒适衣物"],
+              "tips": [
+                "从基础体式开始",
+                "注意呼吸配合",
+                "不要勉强身体"
+              ],
+              "popularity": 80,
+              "avgFlowScore": 4.6
+            },
+            {
+              "id": "tai-chi",
+              "name": "太极练习",
+              "description": "练习太极拳,感受气的流动",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["平衡感", "专注力"],
+              "tags": ["运动", "传统", "身心"],
+              "benefits": ["提升平衡", "放松身心", "培养专注"],
+              "scientificBasis": "明确目标(完成套路)、即时反馈(身体感受)、技能挑战平衡(选择套路)",
+              "materials": ["舒适衣物"],
+              "tips": [
+                "从简单动作开始",
+                "注意呼吸配合",
+                "感受气的流动"
+              ],
+              "popularity": 65,
+              "avgFlowScore": 4.5
+            },
+            {
+              "id": "dance",
+              "name": "舞蹈练习",
+              "description": "学习舞蹈,用身体表达情感",
+              "duration": [30, 45, 60],
+              "difficulty": 3,
+              "requiredSkills": ["节奏感", "协调性"],
+              "tags": ["运动", "艺术", "表达"],
+              "benefits": ["提升协调", "表达情感", "获得快乐"],
+              "scientificBasis": "明确目标(学会舞蹈)、即时反馈(看到动作)、技能挑战平衡(选择舞蹈)",
+              "materials": ["音乐", "舒适衣物"],
+              "tips": [
+                "从简单的舞蹈开始",
+                "感受音乐节奏",
+                "享受舞动过程"
+              ],
+              "popularity": 76,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "stretching",
+              "name": "拉伸练习",
+              "description": "进行全身拉伸,放松肌肉",
+              "duration": [15, 30],
+              "difficulty": 1,
+              "requiredSkills": [],
+              "tags": ["运动", "放松", "入门"],
+              "benefits": ["放松肌肉", "改善柔韧", "缓解疲劳"],
+              "scientificBasis": "明确目标(完成拉伸)、即时反馈(身体感受)、技能挑战平衡(选择动作)",
+              "materials": ["瑜伽垫"],
+              "tips": [
+                "动作要缓慢",
+                "不要过度拉伸",
+                "配合呼吸"
+              ],
+              "popularity": 82,
+              "avgFlowScore": 4.1
+            }
+          ]
+        },
+        {
+          "id": "outdoor",
+          "name": "户外活动",
+          "activities": [
+            {
+              "id": "hiking",
+              "name": "徒步",
+              "description": "在自然环境中徒步,感受自然之美",
+              "duration": [60, 90, 120, 180],
+              "difficulty": 3,
+              "requiredSkills": ["体力", "方向感"],
+              "tags": ["户外", "自然", "探索"],
+              "benefits": ["锻炼体能", "连接自然", "放松心情"],
+              "scientificBasis": "明确目标(完成路线)、即时反馈(看到风景)、技能挑战平衡(选择路线)",
+              "materials": ["徒步鞋", "背包", "水"],
+              "tips": [
+                "选择适合的路线",
+                "注意安全",
+                "享受自然风景"
+              ],
+              "popularity": 78,
+              "avgFlowScore": 4.6
+            },
+            {
+              "id": "nature-observation",
+              "name": "自然观察",
+              "description": "观察自然中的植物、动物、天空等",
+              "duration": [30, 45, 60],
+              "difficulty": 1,
+              "requiredSkills": ["观察力"],
+              "tags": ["户外", "自然", "观察"],
+              "benefits": ["提升观察力", "连接自然", "放松身心"],
+              "scientificBasis": "明确目标(观察对象)、即时反馈(看到细节)、技能挑战平衡(选择对象)",
+              "materials": ["笔记本", "望远镜(可选)"],
+              "tips": [
+                "选择安静的环境",
+                "慢慢观察细节",
+                "记录观察结果"
+              ],
+              "popularity": 70,
+              "avgFlowScore": 4.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "contemplative",
+      "name": "专注性活动",
+      "icon": "🧘",
+      "description": "通过专注练习培养内心平静",
+      "subcategories": [
+        {
+          "id": "meditation",
+          "name": "冥想练习",
+          "activities": [
+            {
+              "id": "mindfulness-meditation",
+              "name": "正念冥想",
+              "description": "专注于呼吸或身体感受,培养觉察力",
+              "duration": [5, 10, 15, 20, 30],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["冥想", "正念", "入门"],
+              "benefits": ["提升专注", "减少焦虑", "培养觉察"],
+              "scientificBasis": "明确目标(专注呼吸)、即时反馈(觉察分心)、技能挑战平衡(选择时长)",
+              "materials": ["安静环境", "坐垫"],
+              "tips": [
+                "从短时间开始",
+                "不要评判自己",
+                "温柔地拉回注意力"
+              ],
+              "popularity": 85,
+              "avgFlowScore": 4.5
+            },
+            {
+              "id": "breathing-exercise",
+              "name": "呼吸练习",
+              "description": "专注于呼吸,调节身心状态",
+              "duration": [5, 10, 15],
+              "difficulty": 1,
+              "requiredSkills": [],
+              "tags": ["冥想", "呼吸", "入门"],
+              "benefits": ["放松身心", "调节情绪", "改善睡眠"],
+              "scientificBasis": "明确目标(专注呼吸)、即时反馈(身体感受)、技能挑战平衡(选择时长)",
+              "materials": ["安静环境"],
+              "tips": [
+                "从自然呼吸开始",
+                "注意呼吸节奏",
+                "不要强迫呼吸"
+              ],
+              "popularity": 88,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "body-scan",
+              "name": "身体扫描",
+              "description": "逐一觉察身体各部位的感受",
+              "duration": [10, 15, 20, 30],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["冥想", "身体觉察", "放松"],
+              "benefits": ["提升身体觉察", "放松肌肉", "减少紧张"],
+              "scientificBasis": "明确目标(扫描身体)、即时反馈(觉察感受)、技能挑战平衡(选择时长)",
+              "materials": ["安静环境", "瑜伽垫"],
+              "tips": [
+                "从脚部开始",
+                "慢慢向上扫描",
+                "不要评判感受"
+              ],
+              "popularity": 82,
+              "avgFlowScore": 4.4
+            },
+            {
+              "id": "loving-kindness",
+              "name": "慈悲冥想",
+              "description": "培养对自己和他人的慈悲心",
+              "duration": [10, 15, 20],
+              "difficulty": 3,
+              "requiredSkills": ["专注力", "情感表达"],
+              "tags": ["冥想", "慈悲", "情感"],
+              "benefits": ["培养慈悲", "改善关系", "提升幸福感"],
+              "scientificBasis": "明确目标(培养慈悲)、即时反馈(情感感受)、技能挑战平衡(选择对象)",
+              "materials": ["安静环境"],
+              "tips": [
+                "从自己开始",
+                "慢慢扩展到他人",
+                "感受慈悲的能量"
+              ],
+              "popularity": 72,
+              "avgFlowScore": 4.6
+            }
+          ]
+        },
+        {
+          "id": "focus-training",
+          "name": "专注训练",
+          "activities": [
+            {
+              "id": "pomodoro",
+              "name": "番茄工作法",
+              "description": "25分钟专注工作+5分钟休息",
+              "duration": [25, 50, 75, 100],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["专注", "效率", "工作"],
+              "benefits": ["提升效率", "培养专注", "减少拖延"],
+              "scientificBasis": "明确目标(完成任务)、即时反馈(完成番茄)、技能挑战平衡(选择任务)",
+              "materials": ["计时器"],
+              "tips": [
+                "选择一个任务",
+                "专注25分钟",
+                "休息5分钟"
+              ],
+              "popularity": 85,
+              "avgFlowScore": 4.2
+            },
+            {
+              "id": "single-tasking",
+              "name": "单任务专注",
+              "description": "一次只做一件事,完全投入",
+              "duration": [30, 45, 60],
+              "difficulty": 2,
+              "requiredSkills": ["专注力"],
+              "tags": ["专注", "效率", "生活"],
+              "benefits": ["提升效率", "减少焦虑", "提高质量"],
+              "scientificBasis": "明确目标(完成任务)、即时反馈(看到进展)、技能挑战平衡(选择任务)",
+              "materials": ["任务清单"],
+              "tips": [
+                "选择一个任务",
+                "关闭干扰",
+                "完全投入"
+              ],
+              "popularity": 78,
+              "avgFlowScore": 4.3
+            },
+            {
+              "id": "deep-work",
+              "name": "深度工作",
+              "description": "在无干扰环境中进行深度思考或创作",
+              "duration": [60, 90, 120],
+              "difficulty": 4,
+              "requiredSkills": ["专注力", "自律"],
+              "tags": ["专注", "深度", "创造"],
+              "benefits": ["提升效率", "深度思考", "创造价值"],
+              "scientificBasis": "明确目标(完成工作)、即时反馈(看到进展)、技能挑战平衡(选择工作)",
+              "materials": ["安静环境", "工作材料"],
+              "tips": [
+                "选择重要工作",
+                "关闭所有干扰",
+                "设定明确目标"
+              ],
+              "popularity": 70,
+              "avgFlowScore": 4.5
+            }
+          ]
+        },
+        {
+          "id": "organization",
+          "name": "整理收纳",
+          "activities": [
+            {
+              "id": "decluttering",
+              "name": "断舍离",
+              "description": "整理物品,留下真正需要的",
+              "duration": [30, 45, 60, 90],
+              "difficulty": 2,
+              "requiredSkills": ["决策力"],
+              "tags": ["整理", "生活", "简约"],
+              "benefits": ["减少杂乱", "提升效率", "获得清晰"],
+              "scientificBasis": "明确目标(整理区域)、即时反馈(看到变化)、技能挑战平衡(选择区域)",
+              "materials": ["收纳盒", "垃圾袋"],
+              "tips": [
+                "从一个区域开始",
+                "问自己'是否需要'",
+                "不要追求完美"
+              ],
+              "popularity": 76,
+              "avgFlowScore": 4.1
+            },
+            {
+              "id": "space-organizing",
+              "name": "空间整理",
+              "description": "重新规划和整理生活或工作空间",
+              "duration": [45, 60, 90, 120],
+              "difficulty": 3,
+              "requiredSkills": ["规划能力", "审美"],
+              "tags": ["整理", "空间", "生活"],
+              "benefits": ["提升效率", "改善心情", "获得掌控感"],
+              "scientificBasis": "明确目标(整理空间)、即时反馈(看到变化)、技能挑战平衡(选择空间)",
+              "materials": ["收纳工具", "清洁用品"],
+              "tips": [
+                "先规划后整理",
+                "分类收纳",
+                "保持简洁"
+              ],
+              "popularity": 72,
+              "avgFlowScore": 4.2
+            },
+            {
+              "id": "digital-organizing",
+              "name": "数字整理",
+              "description": "整理电脑文件、手机应用等数字资产",
+              "duration": [30, 45, 60],
+              "difficulty": 2,
+              "requiredSkills": ["分类能力"],
+              "tags": ["整理", "数字", "效率"],
+              "benefits": ["提升效率", "减少焦虑", "获得清晰"],
+              "scientificBasis": "明确目标(整理数字资产)、即时反馈(看到变化)、技能挑战平衡(选择范围)",
+              "materials": ["电脑或手机"],
+              "tips": [
+                "从桌面开始",
+                "建立文件夹系统",
+                "删除不需要的"
+              ],
+              "popularity": 68,
+              "avgFlowScore": 4.0
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

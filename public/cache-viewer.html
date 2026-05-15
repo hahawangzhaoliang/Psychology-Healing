@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>缓存状态查看</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #5A9A8A 0%, #3D7A6A 100%);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .box {
+            background: white; border-radius: 16px; padding: 40px;
+            width: 90%; max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        h1 { color: #5A9A8A; margin-bottom: 8px; font-size: 1.5rem; }
+        .subtitle { color: #6B7280; margin-bottom: 24px; font-size: 0.85rem; }
+        .section { margin-bottom: 24px; }
+        .section-title { font-weight: 600; margin-bottom: 12px; color: #1F2937; font-size: 1rem; }
+        .cache-entry {
+            background: #F3F6F8; border-radius: 8px; padding: 12px; margin-bottom: 8px;
+            font-size: 0.85rem; font-family: monospace;
+        }
+        .cache-key { color: #3D7A6A; font-weight: 600; word-break: break-all; }
+        .cache-time { color: #6B7280; font-size: 0.8rem; margin-top: 4px; }
+        .cache-expired { color: #EF4444; }
+        .cache-fresh { color: #10B981; }
+        .btn {
+            padding: 10px 20px; border: none; border-radius: 6px;
+            cursor: pointer; font-size: 0.85rem; margin-right: 8px; margin-bottom: 8px;
+        }
+        .btn-primary { background: #5A9A8A; color: white; }
+        .btn-danger { background: #EF4444; color: white; }
+        .btn-outline { background: white; color: #5A9A8A; border: 1px solid #5A9A8A; }
+        .status {
+            padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem;
+        }
+        .status.info { background: #E8F4F0; color: #3D7A6A; }
+        .status.warning { background: #FEF3C7; color: #92400E; }
+        .empty { color: #9CA3AF; font-style: italic; }
+        code { background: #E5E7EB; padding: 2px 6px; border-radius: 4px; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>📦 缓存状态查看器</h1>
+        <p class="subtitle">查看 <code>sessionStorage</code> 中的 API 缓存数据</p>
+
+        <div class="status info">
+            💡 <strong>使用说明：</strong>先打开管理后台（<code>admin.html</code>），再打开此页面，即可查看缓存状态。
+            缓存有效期 5 分钟，关闭标签页后自动清除。
+        </div>
+
+        <div class="section">
+            <div class="section-title">当前缓存条目</div>
+            <div id="cache-list"><span class="empty">正在读取...</span></div>
+        </div>
+
+        <div>
+            <button class="btn btn-danger" onclick="clearAllCache()">🗑️ 清除所有缓存</button>
+            <button class="btn btn-outline" onclick="refreshList()">🔄 刷新列表</button>
+            <button class="btn btn-primary" onclick="testCache()">🧪 测试缓存逻辑</button>
+        </div>
+
+        <div id="test-result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const CACHE_PREFIX = 'xq_cache_';
+        const CACHE_TTL = 5 * 60 * 1000;
+
+        function formatTime(ts) {
+            if (!ts) return '-';
+            return new Date(ts).toLocaleTimeString('zh-CN');
+        }
+
+        function getStatus(ts) {
+            if (!ts) return { text: '未知', className: '' };
+            const age = Date.now() - ts;
+            if (age > CACHE_TTL) {
+                return { text: `已过期（${Math.round(age / 1000)}秒前）`, className: 'cache-expired' };
+            }
+            return { text: `有效（${Math.round((CACHE_TTL - age) / 1000)}秒后过期）`, className: 'cache-fresh' };
+        }
+
+        function refreshList() {
+            const list = document.getElementById('cache-list');
+            const entries = [];
+
+            for (let i = 0; i < sessionStorage.length; i++) {
+                const key = sessionStorage.key(i);
+                if (!key.startsWith(CACHE_PREFIX)) continue;
+
+                try {
+                    const entry = JSON.parse(sessionStorage.getItem(key));
+                    const status = getStatus(entry.ts);
+                    // 去掉前缀，显示可读的路径
+                    const displayKey = key.replace(CACHE_PREFIX, '').replace(/^GET:/, '').replace(/^POST:/, 'POST ');
+                    entries.push(`
+                        <div class="cache-entry">
+                            <div class="cache-key">${displayKey}</div>
+                            <div class="cache-time ${status.className}">
+                                缓存时间：${formatTime(entry.ts)} | ${status.text}
+                            </div>
+                        </div>
+                    `);
+                } catch {
+                    entries.push(`<div class="cache-entry"><span style="color:#EF4444;">无效缓存条目：${key}</span></div>`);
+                }
+            }
+
+            if (entries.length === 0) {
+                list.innerHTML = '<span class="empty">📦 暂无缓存数据。请先打开管理后台并切换标签页加载数据。</span>';
+            } else {
+                list.innerHTML = entries.join('');
+            }
+        }
+
+        function clearAllCache() {
+            if (!confirm('确定要清除所有缓存吗？下次访问页面将重新请求 Blob。')) return;
+            let count = 0;
+            for (let i = sessionStorage.length - 1; i >= 0; i--) {
+                const key = sessionStorage.key(i);
+                if (key.startsWith(CACHE_PREFIX)) {
+                    sessionStorage.removeItem(key);
+                    count++;
+                }
+            }
+            document.getElementById('test-result').innerHTML = `
+                <div style="background:#D1FAE5;color:#065F46;padding:12px;border-radius:8px;">
+                    ✅ 已清除 ${count} 条缓存
+                </div>
+            `;
+            refreshList();
+        }
+
+        function testCache() {
+            const result = document.getElementById('test-result');
+            result.innerHTML = `
+                <div style="background:#E8F4F0;color:#3D7A6A;padding:12px;border-radius:8px;">
+                    ⏳ 测试缓存逻辑中...<br>
+                    请查看浏览器控制台（F12）中 <code>[缓存命中]</code> 和 <code>[缓存写入]</code> 的日志。
+                </div>
+            `;
+            setTimeout(() => {
+                result.innerHTML += `
+                    <div style="margin-top:8px;font-size:0.85rem;color:#6B7280;">
+                        测试方法：打开管理后台 → 切换标签页（首次会请求 Blob）→ 再次切换回该标签（应命中缓存，不请求 Blob）
+                    </div>
+                `;
+            }, 100);
+        }
+
+        // 页面加载时自动刷新
+        refreshList();
+        setInterval(refreshList, 5000);
+    </script>
+</body>
+</html>
