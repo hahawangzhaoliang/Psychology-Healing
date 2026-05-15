@@ -1,0 +1,30 @@
+{
+  "companions": [
+    { "name": "爱心兔兔",   "emoji": "🐰", "mood": "💕 温暖治愈", "greeting": "陪你一起 💕" },
+    { "name": "金毛陪伴犬", "emoji": "🐶", "mood": "🐾 无言拥抱", "greeting": "陪你一起 🐾" },
+    { "name": "困困猫咪",   "emoji": "🐱", "mood": "🌙 慵懒治愈", "greeting": "陪你一起 🌙" },
+    { "name": "绿光灵狐",   "emoji": "🦊", "mood": "✨ 智慧引路", "greeting": "陪你一起 ✨" },
+    { "name": "暖光刺猬",   "emoji": "🦔", "mood": "🌰 柔软之心", "greeting": "陪你一起 🌰" },
+    { "name": "漂浮柯基",   "emoji": "🐕", "mood": "☀️ 快乐制造", "greeting": "陪你一起 ☀️" },
+    { "name": "水波水獭",   "emoji": "🦦", "mood": "💧 情绪调色", "greeting": "陪你一起 💧" },
+    { "name": "水晶小象",   "emoji": "🐘", "mood": "✨ 记忆收藏", "greeting": "陪你一起 ✨" },
+    { "name": "星海鲸鱼",   "emoji": "🐋", "mood": "🌌 宇宙陪伴", "greeting": "陪你一起 🌌" },
+    { "name": "音乐企鹅",   "emoji": "🐧", "mood": "🎵 节奏疗愈", "greeting": "陪你一起 🎵" },
+    { "name": "云朵小羊",   "emoji": "🐑", "mood": "☁️ 天空幻想", "greeting": "陪你一起 ☁️" },
+    { "name": "竹林熊猫",   "emoji": "🐼", "mood": "🎋 竹林隐士", "greeting": "陪你一起 🎋" }
+  ],
+  "interactions": {
+    "pat": {
+      "messages": ["摸摸头～", "好舒服！", "再摸一下嘛～", "开心！", "你真好～"],
+      "mood": "💕 被宠爱"
+    },
+    "hug": {
+      "messages": ["抱抱！", "温暖～", "好安心！", "不想松手～", "永远在一起～"],
+      "mood": "🤗 被拥抱"
+    },
+    "play": {
+      "messages": ["一起玩！", "好开心！", "再来再来！", "最喜欢你了！", "玩不够～"],
+      "mood": "✨ 开心玩耍"
+    }
+  }
+}

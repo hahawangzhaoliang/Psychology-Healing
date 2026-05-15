@@ -882,21 +882,15 @@
             // 优先从 API 加载（Blob 存储）
             let data = null;
             try {
-                const res = await Cache.cachedFetch('/api/knowledge/graph');
-                if (res.ok) {
-                    const json = await res.json();
-                    data = { nodes: json.nodes || [], edges: json.edges || [] };
-                }
+                const json = await Cache.cachedFetch('/api/knowledge/graph');
+                data = { nodes: json.nodes || [], edges: json.edges || [] };
             } catch (apiErr) {
                 console.log('API 加载失败，尝试本地降级', apiErr);
             }
 
             // API 失败则降级到本地 JSON
             if (!data || !data.nodes.length) {
-                const res = await Cache.cachedFetch('/data/graph.json');
-                if (res.ok) {
-                    data = await res.json();
-                }
+                data = await Cache.cachedFetch('/data/graph.json');
             }
 
             if (!data || !data.nodes.length) {

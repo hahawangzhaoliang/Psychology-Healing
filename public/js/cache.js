@@ -98,9 +98,10 @@ async function cachedFetch(path, options = {}) {
     }
 
     // 实际请求
+    // path 已经是完整路径（如 /api/knowledge/graph），生产环境直接拼接，本地开发加 localhost 前缀
     const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
-        ? 'http://localhost:3000/api'
-        : '/api';
+        ? 'http://localhost:3000'
+        : '';
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);

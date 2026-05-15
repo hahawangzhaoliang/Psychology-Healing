@@ -988,26 +988,17 @@
 
             try {
                 // 优先从 API 读取（Vercel Blob 存储）
-                const response = await Cache.cachedFetch('/api/knowledge/exercises?limit=100');
-
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-
-                const data = await response.json();
+                const data = await Cache.cachedFetch('/api/knowledge/exercises?limit=100');
                 renderExercises(data.exercises || [], loading, list);
             } catch (error) {
                 console.warn('API 加载失败，尝试本地降级:', error.message);
 
                 // API 失败时降级到本地 JSON
                 try {
-                    const localRes = await Cache.cachedFetch('/data/exercises.json');
-                    if (localRes.ok) {
-                        const localData = await localRes.json();
-                        console.log('✅ 从本地 JSON 加载成功');
-                        renderExercises(localData, loading, list);
-                        return;
-                    }
+                    const localData = await Cache.cachedFetch('/data/exercises.json');
+                    console.log('✅ 从本地 JSON 加载成功');
+                    renderExercises(localData, loading, list);
+                    return;
                 } catch (localError) {
                     console.error('本地 JSON 也加载失败:', localError);
                 }

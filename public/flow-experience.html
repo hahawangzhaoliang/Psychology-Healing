@@ -1,0 +1,2427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心流体验室 — 发现你的热爱，获得心流体验</title>
+    <meta name="description" content="心流体验室帮助你发现并投入自己热爱的活动，在15-60分钟的深度投入中获得心流体验与成长。">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#F97316">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 神经美学设计系统 -->
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 页面级样式 */
+        body {
+            font-family: var(--font-sans);
+            background: var(--theme-bg);
+            color: var(--theme-text);
+        }
+
+        /* ========== 导航栏样式 ========== */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-neutral-200);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        /* 桌面端导航 */
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .desktop-nav {
+                display: flex;
+            }
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--theme-text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover {
+            color: var(--theme-text);
+        }
+
+        .nav-link.active {
+            color: var(--color-primary-500);
+        }
+
+        /* 下拉菜单 */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+        }
+
+        .dropdown-icon {
+            width: 12px;
+            height: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-icon {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            min-width: 280px;
+            background: white;
+            border-radius: var(--radius-xl);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            padding: 0.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background: var(--color-primary-50);
+        }
+
+        .dropdown-item-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .dropdown-item-icon {
+            font-size: 1.25rem;
+        }
+
+        .dropdown-item-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--theme-text);
+        }
+
+        .dropdown-item-desc {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+            margin: 0;
+        }
+
+        .dropdown-item-highlight {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            border: 2px solid var(--color-primary-200);
+        }
+
+        .dropdown-item-highlight:hover {
+            background: linear-gradient(135deg, var(--color-primary-100), var(--color-warm-100));
+            border-color: var(--color-primary-300);
+        }
+
+        .dropdown-item-badge {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #F97316, #FB923C);
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* 移动端菜单按钮 */
+        .mobile-menu-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        @media (min-width: 768px) {
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        /* ========== 页面内容样式 ========== */
+        .page-container {
+            padding-top: 64px;
+            min-height: 100vh;
+        }
+
+        /* Tab导航 */
+        .page-tabs {
+            background: white;
+            border-bottom: 1px solid var(--color-neutral-200);
+            position: sticky;
+            top: 64px;
+            z-index: 100;
+        }
+
+        .page-tabs-inner {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .page-tab {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            color: var(--theme-text-light);
+            text-decoration: none;
+            font-weight: 500;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .page-tab:hover {
+            color: var(--theme-text);
+            background: var(--color-primary-50);
+        }
+
+        .page-tab.active {
+            color: var(--color-primary-500);
+            border-bottom-color: var(--color-primary-500);
+        }
+
+        .page-tab-badge {
+            font-size: 0.625rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, #F97316, #FB923C);
+            padding: 2px 6px;
+            border-radius: var(--radius-full);
+        }
+
+        /* 内容区域 */
+        .content-section {
+            max-width: 72rem;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ========== Dashboard样式 ========== */
+        .dashboard-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--theme-text);
+        }
+
+        .stat-unit {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+            margin-left: 0.25rem;
+        }
+
+        /* 今日推荐卡片 */
+        .recommendation-card {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            border: 2px solid var(--color-primary-200);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .recommendation-card:hover {
+            box-shadow: var(--shadow-warm);
+            transform: translateY(-4px);
+            border-color: var(--color-primary-300);
+        }
+
+        .recommendation-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-icon {
+            font-size: 2rem;
+        }
+
+        .recommendation-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--theme-text);
+        }
+
+        .recommendation-reason {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+            margin-bottom: 1rem;
+        }
+
+        .recommendation-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .recommendation-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+
+        /* 快速开始网格 */
+        .quick-start-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .quick-start-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .quick-start-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+        }
+
+        .quick-start-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .quick-start-card.highlight {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            border: 2px solid var(--color-primary-200);
+        }
+
+        .quick-start-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .quick-start-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 0.25rem;
+        }
+
+        .quick-start-duration {
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+        }
+
+        /* ========== 活动发现样式 ========== */
+        .activity-filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: white;
+            border: 1px solid var(--color-neutral-300);
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--theme-text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--color-primary-300);
+            color: var(--theme-text);
+        }
+
+        .filter-btn.active {
+            background: var(--color-primary-500);
+            border-color: var(--color-primary-500);
+            color: white;
+        }
+
+        .activity-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .activity-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .activity-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .activity-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .activity-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--color-primary-300);
+        }
+
+        .activity-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .activity-icon {
+            font-size: 2rem;
+        }
+
+        .activity-difficulty {
+            display: flex;
+            gap: 0.125rem;
+        }
+
+        .difficulty-star {
+            color: var(--color-neutral-300);
+            font-size: 0.875rem;
+        }
+
+        .difficulty-star.filled {
+            color: var(--color-primary-400);
+        }
+
+        .activity-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-desc {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .activity-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .activity-tag {
+            padding: 0.25rem 0.75rem;
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+            border-radius: var(--radius-full);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .activity-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-neutral-200);
+        }
+
+        .activity-duration {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+
+        .activity-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .activity-btn:hover {
+            background: var(--color-primary-600);
+            transform: translateY(-1px);
+        }
+
+        /* ========== 心流准备样式 ========== */
+        .preparation-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .preparation-progress {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .progress-step {
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            background: var(--color-neutral-200);
+            color: var(--theme-text-light);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: var(--color-primary-500);
+            color: white;
+        }
+
+        .progress-step.completed {
+            background: var(--color-success-500);
+            color: white;
+        }
+
+        .preparation-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .preparation-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .preparation-desc {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+            margin-bottom: 2rem;
+        }
+
+        .duration-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .duration-option {
+            padding: 1rem;
+            background: var(--color-neutral-100);
+            border: 2px solid transparent;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .duration-option:hover {
+            background: var(--color-primary-50);
+            border-color: var(--color-primary-200);
+        }
+
+        .duration-option.selected {
+            background: var(--color-primary-100);
+            border-color: var(--color-primary-500);
+        }
+
+        .duration-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--theme-text);
+        }
+
+        .duration-unit {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+
+        .goal-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .goal-input:focus {
+            outline: none;
+            border-color: var(--color-primary-400);
+            box-shadow: 0 0 0 3px var(--color-primary-100);
+        }
+
+        .preparation-tip {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1rem;
+            background: var(--color-info-50);
+            border-radius: var(--radius-lg);
+            margin-top: 1rem;
+        }
+
+        .tip-icon {
+            color: var(--color-info-500);
+            font-size: 1.25rem;
+        }
+
+        .tip-text {
+            font-size: 0.875rem;
+            color: var(--theme-text);
+            line-height: 1.5;
+        }
+
+        .preparation-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            padding: 1rem;
+            background: var(--color-neutral-100);
+            color: var(--theme-text);
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-neutral-200);
+        }
+
+        .btn-primary {
+            flex: 2;
+            padding: 1rem;
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-600);
+            transform: translateY(-1px);
+        }
+
+        /* ========== 专注模式样式 ========== */
+        .focus-mode {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 2rem;
+        }
+
+        .focus-activity-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 2rem;
+        }
+
+        .focus-timer {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .focus-time {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .focus-time-target {
+            font-size: 1.5rem;
+            color: var(--theme-text-light);
+            margin-left: 0.5rem;
+        }
+
+        .progress-ring-container {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: var(--color-primary-200);
+            stroke-width: 8;
+        }
+
+        .progress-ring-progress {
+            fill: none;
+            stroke: var(--color-primary-500);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 1s ease-in-out;
+        }
+
+        .progress-ring-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-percentage {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--theme-text);
+        }
+
+        .progress-label {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+        }
+
+        .focus-goal {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+        }
+
+        .goal-icon {
+            color: var(--color-primary-500);
+        }
+
+        .goal-text {
+            font-size: 1rem;
+            color: var(--theme-text);
+        }
+
+        .focus-sound {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+        }
+
+        .sound-label {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+
+        .sound-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--theme-text);
+        }
+
+        .sound-change {
+            padding: 0.5rem 1rem;
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sound-change:hover {
+            background: var(--color-primary-200);
+        }
+
+        .focus-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .focus-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .focus-btn.pause {
+            background: white;
+            color: var(--theme-text);
+            box-shadow: var(--shadow-md);
+        }
+
+        .focus-btn.pause:hover {
+            background: var(--color-neutral-100);
+        }
+
+        .focus-btn.stop {
+            background: var(--color-neutral-200);
+            color: var(--theme-text);
+        }
+
+        .focus-btn.stop:hover {
+            background: var(--color-neutral-300);
+        }
+
+        /* ========== 心流评估样式 ========== */
+        .assessment-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .celebration {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .celebration-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .celebration-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+        }
+
+        .celebration-desc {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+        }
+
+        .assessment-card {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 1.5rem;
+        }
+
+        .assessment-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 1.5rem;
+        }
+
+        .assessment-question {
+            margin-bottom: 2rem;
+        }
+
+        .question-text {
+            font-size: 1rem;
+            color: var(--theme-text);
+            margin-bottom: 1rem;
+        }
+
+        .score-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .score-btn {
+            flex: 1;
+            aspect-ratio: 1;
+            border: 2px solid var(--color-neutral-300);
+            border-radius: var(--radius-lg);
+            background: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--theme-text-light);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .score-btn:hover {
+            border-color: var(--color-primary-300);
+            color: var(--theme-text);
+        }
+
+        .score-btn.selected {
+            background: var(--color-primary-500);
+            border-color: var(--color-primary-500);
+            color: white;
+        }
+
+        .diary-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 1rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+
+        .diary-textarea:focus {
+            outline: none;
+            border-color: var(--color-primary-400);
+            box-shadow: 0 0 0 3px var(--color-primary-100);
+        }
+
+        .assessment-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        /* ========== 隐藏状态 ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ========== 动画 ========== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            animation: slideUp 0.5s ease;
+        }
+
+        /* ========== 移动端菜单 ========== */
+        .mobile-menu {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-content {
+            background: white;
+            max-width: 320px;
+            margin-left: auto;
+            height: 100%;
+            padding: 1.5rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open .mobile-menu-content {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 1rem;
+            color: var(--theme-text);
+            text-decoration: none;
+            font-weight: 500;
+            border-radius: var(--radius-lg);
+            transition: all 0.2s ease;
+            margin-bottom: 0.5rem;
+        }
+
+        .mobile-nav-link:hover {
+            background: var(--color-primary-50);
+        }
+
+        .mobile-nav-link.active {
+            background: var(--color-primary-100);
+            color: var(--color-primary-600);
+        }
+
+        .mobile-submenu {
+            margin-left: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--color-neutral-200);
+        }
+
+        .mobile-submenu-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--theme-text-light);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            margin-bottom: 0.25rem;
+        }
+
+        .mobile-submenu-item:hover {
+            background: var(--color-primary-50);
+            color: var(--theme-text);
+        }
+
+        .mobile-submenu-item.highlight {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            color: var(--color-primary-600);
+            font-weight: 600;
+        }
+
+        /* ========== Toast提示 ========== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: rgba(0, 0, 0, 0.85);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 0.95rem;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: toastIn 0.3s ease forwards;
+            pointer-events: auto;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, #10B981, #059669);
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, #F59E0B, #D97706);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+        }
+
+        .toast.hiding {
+            animation: toastOut 0.3s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+
+        /* ========== 背景音选项 ========== */
+        .sound-option {
+            padding: 1rem;
+            background: white;
+            border: 2px solid var(--color-neutral-200);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sound-option:hover {
+            border-color: var(--color-primary-300);
+            background: var(--color-primary-50);
+        }
+
+        .sound-option.selected {
+            border-color: var(--color-primary-500);
+            background: var(--color-primary-100);
+        }
+
+        /* ========== 移动端优化 ========== */
+        @media (max-width: 767px) {
+            /* 增大按钮点击区域 */
+            .btn-primary, .btn-secondary, .activity-btn, .focus-btn {
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .score-btn {
+                min-height: 48px;
+                min-width: 48px;
+            }
+
+            /* 优化Tab滚动 */
+            .page-tabs-inner {
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+
+            .page-tab {
+                scroll-snap-align: start;
+            }
+
+            /* 添加触摸反馈 */
+            .activity-card:active,
+            .quick-start-card:active,
+            .stat-card:active {
+                transform: scale(0.98);
+                transition: transform 0.1s ease;
+            }
+
+            /* 优化输入框 */
+            .goal-input, .diary-textarea {
+                font-size: 16px; /* 防止iOS自动缩放 */
+            }
+
+            /* 优化活动卡片间距 */
+            .activity-grid {
+                gap: 0.75rem;
+            }
+
+            /* 优化统计卡片 */
+            .stat-card {
+                padding: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* 触摸设备优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .activity-card:hover,
+            .quick-start-card:hover,
+            .stat-card:hover {
+                transform: none;
+            }
+
+            .activity-card:active {
+                transform: scale(0.98);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast容器 -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobile-menu" onclick="closeMobileMenu(event)">
+        <div class="mobile-menu-content" onclick="event.stopPropagation()">
+            <a href="index.html" class="mobile-nav-link">首页</a>
+            
+            <div class="mobile-nav-link" style="cursor: pointer;">疗愈练习</div>
+            <div class="mobile-submenu">
+                <a href="relax.html" class="mobile-submenu-item">🌊 快速放松</a>
+                <a href="flow-experience.html" class="mobile-submenu-item highlight">⚡ 心流体验</a>
+                <a href="#" class="mobile-submenu-item" style="opacity: 0.5; cursor: not-allowed;">🧘 深度冥想（即将上线）</a>
+            </div>
+            
+            <a href="emotion.html" class="mobile-nav-link">情绪觉察</a>
+            <a href="knowledge-graph.html" class="mobile-nav-link">知识图谱</a>
+            <a href="about.html" class="mobile-nav-link">关于我们</a>
+            <a href="companion.html" class="mobile-nav-link">我的伙伴</a>
+        </div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="nav-container">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">🌿</div>
+                <span>心晴空间</span>
+            </a>
+
+            <!-- 桌面端导航 -->
+            <div class="desktop-nav">
+                <a href="index.html" class="nav-link">首页</a>
+                
+                <!-- 疗愈练习下拉菜单 -->
+                <div class="dropdown">
+                    <div class="nav-link dropdown-toggle">
+                        疗愈练习
+                        <svg class="dropdown-icon" viewBox="0 0 12 12" fill="none">
+                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="dropdown-menu">
+                        <a href="relax.html" class="dropdown-item">
+                            <div class="dropdown-item-header">
+                                <span class="dropdown-item-icon">🌊</span>
+                                <span class="dropdown-item-title">快速放松</span>
+                            </div>
+                            <p class="dropdown-item-desc">1-7分钟，快速缓解压力</p>
+                        </a>
+                        <a href="flow-experience.html" class="dropdown-item dropdown-item-highlight">
+                            <div class="dropdown-item-header">
+                                <span class="dropdown-item-icon">⚡</span>
+                                <span class="dropdown-item-title">心流体验</span>
+                                <span class="dropdown-item-badge">NEW</span>
+                            </div>
+                            <p class="dropdown-item-desc">15-60分钟，发现你的热爱</p>
+                        </a>
+                        <a href="#" class="dropdown-item" style="opacity: 0.5; cursor: not-allowed;">
+                            <div class="dropdown-item-header">
+                                <span class="dropdown-item-icon">🧘</span>
+                                <span class="dropdown-item-title">深度冥想</span>
+                                <span class="dropdown-item-badge" style="background: var(--color-neutral-400);">即将上线</span>
+                            </div>
+                            <p class="dropdown-item-desc">敬请期待</p>
+                        </a>
+                    </div>
+                </div>
+
+                <a href="emotion.html" class="nav-link">情绪觉察</a>
+                <a href="knowledge-graph.html" class="nav-link">知识图谱</a>
+                <a href="about.html" class="nav-link">关于我们</a>
+                <a href="companion.html" class="nav-link">我的伙伴</a>
+            </div>
+
+            <!-- 移动端菜单按钮 -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 页面内容 -->
+    <div class="page-container">
+        <!-- Tab导航 -->
+        <div class="page-tabs">
+            <div class="page-tabs-inner">
+                <a href="#dashboard" class="page-tab active" data-tab="dashboard">
+                    <span>📊</span>
+                    <span>概览</span>
+                </a>
+                <a href="#discover" class="page-tab" data-tab="discover">
+                    <span>🔍</span>
+                    <span>发现</span>
+                </a>
+                <a href="#focus" class="page-tab" data-tab="focus">
+                    <span>⚡</span>
+                    <span>专注</span>
+                    <span class="page-tab-badge">NEW</span>
+                </a>
+                <a href="#records" class="page-tab" data-tab="records">
+                    <span>📝</span>
+                    <span>记录</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Dashboard页面 -->
+        <div id="dashboard-section" class="content-section">
+            <div class="dashboard-grid">
+                <!-- 统计卡片 -->
+                <div class="stat-card">
+                    <div class="stat-label">本周心流时长</div>
+                    <div class="stat-value">5.2<span class="stat-unit">小时</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">心流活动次数</div>
+                    <div class="stat-value">12<span class="stat-unit">次</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">平均心流质量</div>
+                    <div class="stat-value">4.2<span class="stat-unit">/ 5</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">连续天数</div>
+                    <div class="stat-value">5<span class="stat-unit">天</span></div>
+                </div>
+            </div>
+
+            <!-- 今日推荐 -->
+            <div style="margin-top: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;">💡 今日推荐</h2>
+                <div class="recommendation-card" onclick="startFlowExperience('digital-painting')">
+                    <div class="recommendation-header">
+                        <span class="recommendation-icon">🎨</span>
+                        <div class="recommendation-title">数字油画</div>
+                    </div>
+                    <p class="recommendation-reason">基于你的艺术兴趣推荐</p>
+                    <div class="recommendation-meta">
+                        <div class="recommendation-meta-item">
+                            <span>难度:</span>
+                            <span>⭐⭐</span>
+                        </div>
+                        <div class="recommendation-meta-item">
+                            <span>时长:</span>
+                            <span>30分钟</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary" style="width: 100%;">开始心流体验</button>
+                </div>
+            </div>
+
+            <!-- 快速开始 -->
+            <div style="margin-top: 2rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;">⚡ 快速开始</h2>
+                <div class="quick-start-grid">
+                    <a href="#" class="quick-start-card" onclick="startFlowExperience('reading'); return false;">
+                        <div class="quick-start-icon">📖</div>
+                        <div class="quick-start-title">深度阅读</div>
+                        <div class="quick-start-duration">30分钟</div>
+                    </a>
+                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('yoga'); return false;">
+                        <div class="quick-start-icon">🧘‍♀️</div>
+                        <div class="quick-start-title">瑜伽练习</div>
+                        <div class="quick-start-duration">45分钟</div>
+                    </a>
+                    <a href="#" class="quick-start-card" onclick="startFlowExperience('painting'); return false;">
+                        <div class="quick-start-icon">🎨</div>
+                        <div class="quick-start-title">绘画创作</div>
+                        <div class="quick-start-duration">45分钟</div>
+                    </a>
+                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('meditation'); return false;">
+                        <div class="quick-start-icon">🧘</div>
+                        <div class="quick-start-title">正念冥想</div>
+                        <div class="quick-start-duration">20分钟</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 活动发现页面 -->
+        <div id="discover-section" class="content-section hidden">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;">探索心流活动</h2>
+            
+            <!-- 筛选按钮 -->
+            <div class="activity-filters">
+                <button class="filter-btn active" onclick="filterActivities('all')">全部</button>
+                <button class="filter-btn" onclick="filterActivities('creative')">创造性活动</button>
+                <button class="filter-btn" onclick="filterActivities('learning')">学习性活动</button>
+                <button class="filter-btn" onclick="filterActivities('physical')">运动性活动</button>
+                <button class="filter-btn" onclick="filterActivities('contemplative')">专注性活动</button>
+            </div>
+
+            <!-- 活动网格 -->
+            <div class="activity-grid" id="activity-grid">
+                <!-- 活动卡片会通过JavaScript动态生成 -->
+            </div>
+        </div>
+
+        <!-- 心流准备页面 -->
+        <div id="preparation-section" class="content-section hidden">
+            <div class="preparation-container">
+                <!-- 进度指示 -->
+                <div class="preparation-progress">
+                    <div class="progress-step active" data-step="1">1</div>
+                    <div class="progress-step" data-step="2">2</div>
+                    <div class="progress-step" data-step="3">3</div>
+                    <div class="progress-step" data-step="4">4</div>
+                </div>
+
+                <!-- 步骤1: 设定目标 -->
+                <div id="step-1" class="preparation-card slide-up">
+                    <h2 class="preparation-title">设定目标</h2>
+                    <p class="preparation-desc">选择你想要投入的时长，并设定一个具体可完成的目标</p>
+
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择时长</h3>
+                    <div class="duration-options">
+                        <div class="duration-option" onclick="selectDuration(15)">
+                            <div class="duration-value">15</div>
+                            <div class="duration-unit">分钟</div>
+                        </div>
+                        <div class="duration-option selected" onclick="selectDuration(30)">
+                            <div class="duration-value">30</div>
+                            <div class="duration-unit">分钟</div>
+                        </div>
+                        <div class="duration-option" onclick="selectDuration(45)">
+                            <div class="duration-value">45</div>
+                            <div class="duration-unit">分钟</div>
+                        </div>
+                        <div class="duration-option" onclick="selectDuration(60)">
+                            <div class="duration-value">60</div>
+                            <div class="duration-unit">分钟</div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">设定目标</h3>
+                    <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input">
+
+                    <div class="preparation-tip">
+                        <span class="tip-icon">💡</span>
+                        <span class="tip-text">建议选择一个具体可完成的目标，这样更容易进入心流状态</span>
+                    </div>
+
+                    <div class="preparation-actions">
+                        <button class="btn-secondary" onclick="goToTab('discover')">返回</button>
+                        <button class="btn-primary" onclick="nextStep(2)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤2: 评估挑战 -->
+                <div id="step-2" class="preparation-card hidden">
+                    <h2 class="preparation-title">评估挑战</h2>
+                    <p class="preparation-desc">评估你的技能水平和活动难度，找到最佳平衡点</p>
+
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">你的技能水平</h3>
+                    <div class="score-buttons" style="margin-bottom: 1.5rem;">
+                        <button class="score-btn" onclick="selectSkillLevel(1)">1</button>
+                        <button class="score-btn" onclick="selectSkillLevel(2)">2</button>
+                        <button class="score-btn selected" onclick="selectSkillLevel(3)">3</button>
+                        <button class="score-btn" onclick="selectSkillLevel(4)">4</button>
+                        <button class="score-btn" onclick="selectSkillLevel(5)">5</button>
+                    </div>
+
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">活动挑战程度</h3>
+                    <div class="score-buttons">
+                        <button class="score-btn" onclick="selectChallengeLevel(1)">1</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(2)">2</button>
+                        <button class="score-btn selected" onclick="selectChallengeLevel(3)">3</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(4)">4</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(5)">5</button>
+                    </div>
+
+                    <div class="preparation-tip">
+                        <span class="tip-icon">💡</span>
+                        <span class="tip-text">技能与挑战平衡时最容易进入心流状态。如果差距太大，建议调整目标或选择其他活动</span>
+                    </div>
+
+                    <div class="preparation-actions">
+                        <button class="btn-secondary" onclick="prevStep(1)">上一步</button>
+                        <button class="btn-primary" onclick="nextStep(3)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤3: 环境准备 -->
+                <div id="step-3" class="preparation-card hidden">
+                    <h2 class="preparation-title">环境准备</h2>
+                    <p class="preparation-desc">准备好你的心流环境，减少干扰</p>
+
+                    <div style="background: var(--color-primary-50); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">📋 准备清单</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                                <span>关闭手机通知或开启勿扰模式</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" style="width: 20px; height: 20px;">
+                                <span>准备好所需的工具和材料</span>
+                            </label>
+                            <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="checkbox" style="width: 20px; height: 20px;">
+                                <span>找一个安静舒适的环境</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择背景音</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;" id="sound-options">
+                        <div class="sound-option selected" data-sound="rain" onclick="selectSound('rain')">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌧️</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;">轻柔雨声</div>
+                        </div>
+                        <div class="sound-option" data-sound="ocean" onclick="selectSound('ocean')">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌊</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;">海浪声</div>
+                        </div>
+                        <div class="sound-option" data-sound="music" onclick="selectSound('music')">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎵</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;">轻音乐</div>
+                        </div>
+                        <div class="sound-option" data-sound="silence" onclick="selectSound('silence')">
+                            <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔇</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;">静音</div>
+                        </div>
+                    </div>
+
+                    <div class="preparation-actions">
+                        <button class="btn-secondary" onclick="prevStep(2)">上一步</button>
+                        <button class="btn-primary" onclick="nextStep(4)">下一步</button>
+                    </div>
+                </div>
+
+                <!-- 步骤4: 心理准备 -->
+                <div id="step-4" class="preparation-card hidden">
+                    <h2 class="preparation-title">心理准备</h2>
+                    <p class="preparation-desc">进行1分钟呼吸练习，让自己进入专注状态</p>
+
+                    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50)); border-radius: var(--radius-xl); margin-bottom: 1.5rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🌬️</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;">深呼吸</div>
+                        <div style="font-size: 1rem; color: var(--theme-text-light);">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
+                    </div>
+
+                    <div style="background: var(--color-success-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                            <span style="color: var(--color-success-500);">✓</span>
+                            <span style="font-weight: 600; color: var(--theme-text);">准备好了吗？</span>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--theme-text); margin: 0;">
+                            你即将开始 <strong id="summary-duration">30分钟</strong> 的心流体验<br>
+                            目标：<strong id="summary-goal">完成线稿上色</strong>
+                        </p>
+                    </div>
+
+                    <div class="preparation-actions">
+                        <button class="btn-secondary" onclick="prevStep(3)">上一步</button>
+                        <button class="btn-primary" onclick="startFocusMode()">开始心流体验</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 专注模式 -->
+        <div id="focus-mode" class="focus-mode hidden">
+            <div class="focus-activity-name" id="focus-activity-name">🎨 数字油画</div>
+            
+            <div class="focus-timer">
+                <span class="focus-time" id="focus-time">00:00</span>
+                <span class="focus-time-target">/ <span id="focus-target">30:00</span></span>
+            </div>
+
+            <div class="progress-ring-container">
+                <svg class="progress-ring" width="280" height="280">
+                    <circle class="progress-ring-bg" cx="140" cy="140" r="120"></circle>
+                    <circle class="progress-ring-progress" cx="140" cy="140" r="120" 
+                            stroke-dasharray="754" stroke-dashoffset="754" id="progress-circle"></circle>
+                </svg>
+                <div class="progress-ring-text">
+                    <div class="progress-percentage" id="progress-percentage">0%</div>
+                    <div class="progress-label">完成</div>
+                </div>
+            </div>
+
+            <div class="focus-goal">
+                <span class="goal-icon">💡</span>
+                <span class="goal-text" id="focus-goal-text">当前目标：完成线稿上色</span>
+            </div>
+
+            <div class="focus-sound">
+                <div>
+                    <div class="sound-label">背景音</div>
+                    <div class="sound-name" id="focus-sound-name">🌧️ 轻柔雨声</div>
+                </div>
+                <button class="sound-change" onclick="changeSound()">更换</button>
+            </div>
+
+            <div class="focus-actions">
+                <button class="focus-btn pause" id="pause-btn" onclick="togglePause()">暂停</button>
+                <button class="focus-btn stop" onclick="stopFocusMode()">结束</button>
+            </div>
+        </div>
+
+        <!-- 心流评估页面 -->
+        <div id="assessment-section" class="content-section hidden">
+            <div class="assessment-container">
+                <div class="celebration slide-up">
+                    <div class="celebration-icon">🎉</div>
+                    <h1 class="celebration-title">太棒了！</h1>
+                    <p class="celebration-desc">你刚刚完成了 <span id="completed-duration">30</span> 分钟的心流体验</p>
+                </div>
+
+                <div class="assessment-card">
+                    <h2 class="assessment-title">📊 心流体验评估</h2>
+                    <p style="font-size: 0.875rem; color: var(--theme-text-light); margin-bottom: 1.5rem;">
+                        请评价你在这次活动中的体验（1=很不同意，5=完全同意）
+                    </p>
+
+                    <div class="assessment-question">
+                        <div class="question-text">我完全专注于这个活动</div>
+                        <div class="score-buttons" data-question="focus">
+                            <button class="score-btn" onclick="selectScore('focus', 1)">1</button>
+                            <button class="score-btn" onclick="selectScore('focus', 2)">2</button>
+                            <button class="score-btn" onclick="selectScore('focus', 3)">3</button>
+                            <button class="score-btn" onclick="selectScore('focus', 4)">4</button>
+                            <button class="score-btn" onclick="selectScore('focus', 5)">5</button>
+                        </div>
+                    </div>
+
+                    <div class="assessment-question">
+                        <div class="question-text">我没有意识到时间的流逝</div>
+                        <div class="score-buttons" data-question="time">
+                            <button class="score-btn" onclick="selectScore('time', 1)">1</button>
+                            <button class="score-btn" onclick="selectScore('time', 2)">2</button>
+                            <button class="score-btn" onclick="selectScore('time', 3)">3</button>
+                            <button class="score-btn" onclick="selectScore('time', 4)">4</button>
+                            <button class="score-btn" onclick="selectScore('time', 5)">5</button>
+                        </div>
+                    </div>
+
+                    <div class="assessment-question">
+                        <div class="question-text">这个活动的难度对我来说刚刚好</div>
+                        <div class="score-buttons" data-question="challenge">
+                            <button class="score-btn" onclick="selectScore('challenge', 1)">1</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 2)">2</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 3)">3</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 4)">4</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 5)">5</button>
+                        </div>
+                    </div>
+
+                    <div class="assessment-question">
+                        <div class="question-text">我享受这个活动的过程</div>
+                        <div class="score-buttons" data-question="enjoy">
+                            <button class="score-btn" onclick="selectScore('enjoy', 1)">1</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 2)">2</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 3)">3</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 4)">4</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 5)">5</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="assessment-card">
+                    <h2 class="assessment-title">📝 心流日记（可选）</h2>
+                    <textarea class="diary-textarea" placeholder="记录这次心流体验的感受、收获或想法..." id="diary-text"></textarea>
+                </div>
+
+                <div class="assessment-actions">
+                    <button class="btn-secondary" onclick="skipAssessment()">跳过</button>
+                    <button class="btn-primary" onclick="saveAssessment()">保存并查看统计</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 记录页面 -->
+        <div id="records-section" class="content-section hidden">
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;">心流记录</h2>
+            
+            <div class="dashboard-grid" style="margin-bottom: 2rem;">
+                <div class="stat-card">
+                    <div class="stat-label">总心流时长</div>
+                    <div class="stat-value">15.8<span class="stat-unit">小时</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">总活动次数</div>
+                    <div class="stat-value">32<span class="stat-unit">次</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">平均心流质量</div>
+                    <div class="stat-value">4.3<span class="stat-unit">/ 5</span></div>
+                </div>
+            </div>
+
+            <div style="background: white; border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-md);">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">🏆 活动排行</h3>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-primary-50); border-radius: var(--radius-lg);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">🎨</span>
+                            <div>
+                                <div style="font-weight: 600;">数字油画</div>
+                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">8次 · 3.5小时</div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.3</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-neutral-50); border-radius: var(--radius-lg);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">📖</span>
+                            <div>
+                                <div style="font-weight: 600;">深度阅读</div>
+                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">5次 · 2.5小时</div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.1</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-neutral-50); border-radius: var(--radius-lg);">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <span style="font-size: 1.5rem;">🧘‍♀️</span>
+                            <div>
+                                <div style="font-weight: 600;">瑜伽练习</div>
+                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">3次 · 1.5小时</div>
+                            </div>
+                        </div>
+                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 全局状态 ==========
+        let currentTab = 'dashboard';
+        let currentStep = 1;
+        let selectedDuration = 30;
+        let selectedGoal = '';
+        let skillLevel = 3;
+        let challengeLevel = 3;
+        let assessmentScores = {
+            focus: null,
+            time: null,
+            challenge: null,
+            enjoy: null
+        };
+
+        // 专注模式状态
+        let focusTimer = null;
+        let focusSeconds = 0;
+        let focusTargetSeconds = 0;
+        let isPaused = false;
+        let selectedSound = 'rain'; // 默认雨声
+        let selectedActivity = null; // 当前选择的活动
+
+        // 活动数据（从JSON加载）
+        let activities = [];
+
+        // 加载活动数据
+        async function loadActivitiesData() {
+            try {
+                const response = await fetch('../server/data/flow-activities.json');
+                const data = await response.json();
+                
+                // 将嵌套的活动数据扁平化
+                const flatActivities = [];
+                data.categories.forEach(category => {
+                    category.subcategories.forEach(subcategory => {
+                        subcategory.activities.forEach(activity => {
+                            flatActivities.push({
+                                id: activity.id,
+                                name: activity.name,
+                                icon: getCategoryIcon(category.id),
+                                category: category.id,
+                                description: activity.description,
+                                duration: activity.duration,
+                                difficulty: activity.difficulty,
+                                tags: activity.tags,
+                                benefits: activity.benefits,
+                                popularity: activity.popularity,
+                                avgFlowScore: activity.avgFlowScore
+                            });
+                        });
+                    });
+                });
+                
+                activities = flatActivities;
+                console.log(`已加载 ${activities.length} 个活动`);
+            } catch (error) {
+                console.error('加载活动数据失败:', error);
+                // 使用默认数据
+                activities = getDefaultActivities();
+            }
+        }
+
+        function getCategoryIcon(categoryId) {
+            const icons = {
+                'creative': '🎨',
+                'learning': '📚',
+                'physical': '🏃',
+                'contemplative': '🧘'
+            };
+            return icons[categoryId] || '✨';
+        }
+
+        function getDefaultActivities() {
+            return [
+                {
+                    id: 'digital-painting',
+                    name: '数字油画',
+                    icon: '🎨',
+                    category: 'creative',
+                    difficulty: 2,
+                    duration: [15, 30, 45, 60],
+                    description: '按照数字提示填充颜色，完成一幅画作',
+                    tags: ['艺术', '创作', '放松']
+                },
+                {
+                    id: 'reading',
+                    name: '深度阅读',
+                    icon: '📖',
+                    category: 'learning',
+                    difficulty: 2,
+                    duration: [30, 45, 60],
+                    description: '专注阅读一本书，做笔记和思考',
+                    tags: ['学习', '思考', '成长']
+                },
+                {
+                    id: 'yoga',
+                    name: '瑜伽练习',
+                    icon: '🧘‍♀️',
+                    category: 'physical',
+                    difficulty: 3,
+                    duration: [30, 45, 60],
+                    description: '练习瑜伽体式，连接身心',
+                    tags: ['运动', '身心', '冥想']
+                },
+                {
+                    id: 'meditation',
+                    name: '正念冥想',
+                    icon: '🧘',
+                    category: 'contemplative',
+                    difficulty: 2,
+                    duration: [10, 15, 20, 30],
+                    description: '专注于呼吸或身体感受，培养觉察力',
+                    tags: ['冥想', '正念', '放松']
+                },
+                {
+                    id: 'writing',
+                    name: '创意写作',
+                    icon: '✍️',
+                    category: 'creative',
+                    difficulty: 3,
+                    duration: [30, 45, 60],
+                    description: '创作小说、诗歌或散文',
+                    tags: ['创作', '表达', '想象']
+                },
+                {
+                    id: 'coding',
+                    name: '编程练习',
+                    icon: '💻',
+                    category: 'learning',
+                    difficulty: 4,
+                    duration: [45, 60, 90],
+                    description: '学习编程语言，完成编程项目',
+                    tags: ['技能', '逻辑', '创造']
+                }
+            ];
+        }
+
+        // ========== Tab切换 ==========
+        document.querySelectorAll('.page-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetTab = tab.getAttribute('data-tab');
+                goToTab(targetTab);
+            });
+        });
+
+        function goToTab(tabName) {
+            // 更新Tab状态
+            document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // 显示对应内容
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(`${tabName}-section`).classList.remove('hidden');
+
+            currentTab = tabName;
+
+            // 如果是发现页面，加载活动
+            if (tabName === 'discover') {
+                loadActivities('all');
+            }
+        }
+
+        // ========== 活动发现 ==========
+        function loadActivities(category) {
+            const grid = document.getElementById('activity-grid');
+            const filteredActivities = category === 'all' 
+                ? activities 
+                : activities.filter(a => a.category === category);
+
+            grid.innerHTML = filteredActivities.map(activity => `
+                <div class="activity-card" onclick="selectActivity('${activity.id}')">
+                    <div class="activity-card-header">
+                        <span class="activity-icon">${activity.icon}</span>
+                        <div class="activity-difficulty">
+                            ${[1,2,3,4,5].map(i => 
+                                `<span class="difficulty-star ${i <= activity.difficulty ? 'filled' : ''}">⭐</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                    <h3 class="activity-name">${activity.name}</h3>
+                    <p class="activity-desc">${activity.description}</p>
+                    <div class="activity-tags">
+                        ${activity.tags.map(tag => `<span class="activity-tag">${tag}</span>`).join('')}
+                    </div>
+                    <div class="activity-meta">
+                        <span class="activity-duration">${activity.duration[0]}-${activity.duration[activity.duration.length-1]}分钟</span>
+                        <button class="activity-btn">开始</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterActivities(category) {
+            // 更新筛选按钮状态
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // 加载活动
+            loadActivities(category);
+        }
+
+        function selectActivity(activityId) {
+            const activity = activities.find(a => a.id === activityId);
+            if (activity) {
+                selectedDuration = activity.duration[1]; // 默认选择中间时长
+                goToTab('preparation');
+            }
+        }
+
+        // ========== 心流准备流程 ==========
+        function selectDuration(duration) {
+            selectedDuration = duration;
+            document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.duration-option').classList.add('selected');
+        }
+
+        function selectSkillLevel(level) {
+            skillLevel = level;
+            // 选择步骤2中的第一个评分按钮组（技能水平）
+            const step2 = document.getElementById('step-2');
+            const firstScoreGroup = step2.querySelector('.score-buttons');
+            const buttons = firstScoreGroup.querySelectorAll('.score-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('selected', index + 1 === level);
+            });
+        }
+
+        function selectChallengeLevel(level) {
+            challengeLevel = level;
+            // 选择步骤2中的第二个评分按钮组（挑战程度）
+            const step2 = document.getElementById('step-2');
+            const scoreGroups = step2.querySelectorAll('.score-buttons');
+            const secondScoreGroup = scoreGroups[1];
+            const buttons = secondScoreGroup.querySelectorAll('.score-btn');
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('selected', index + 1 === level);
+            });
+        }
+
+        function nextStep(step) {
+            // 隐藏当前步骤
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            
+            // 显示下一步
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            document.getElementById(`step-${step}`).classList.add('slide-up');
+
+            // 更新进度指示
+            document.querySelectorAll('.progress-step').forEach((s, index) => {
+                if (index + 1 < step) {
+                    s.classList.remove('active');
+                    s.classList.add('completed');
+                } else if (index + 1 === step) {
+                    s.classList.add('active');
+                    s.classList.remove('completed');
+                } else {
+                    s.classList.remove('active', 'completed');
+                }
+            });
+
+            // 更新摘要信息
+            if (step === 4) {
+                selectedGoal = document.getElementById('goal-input').value || '完成活动';
+                document.getElementById('summary-duration').textContent = selectedDuration;
+                document.getElementById('summary-goal').textContent = selectedGoal;
+            }
+
+            currentStep = step;
+        }
+
+        function prevStep(step) {
+            nextStep(step);
+        }
+
+        // ========== 背景音选择 ==========
+        function selectSound(sound) {
+            selectedSound = sound;
+            document.querySelectorAll('.sound-option').forEach(opt => {
+                opt.classList.toggle('selected', opt.dataset.sound === sound);
+            });
+        }
+
+        const soundNames = {
+            'rain': '🌧️ 轻柔雨声',
+            'ocean': '🌊 海浪声',
+            'music': '🎵 轻音乐',
+            'silence': '🔇 静音'
+        };
+
+        function changeSound() {
+            // 循环切换背景音
+            const sounds = ['rain', 'ocean', 'music', 'silence'];
+            const currentIndex = sounds.indexOf(selectedSound);
+            const nextIndex = (currentIndex + 1) % sounds.length;
+            selectedSound = sounds[nextIndex];
+            
+            // 更新显示
+            document.getElementById('focus-sound-name').textContent = soundNames[selectedSound];
+            showToast(`已切换到${soundNames[selectedSound]}`, 'info', 2000);
+        }
+
+        // ========== 专注模式 ==========
+        function startFlowExperience(activityId) {
+            selectActivity(activityId);
+        }
+
+        function startFocusMode() {
+            // 隐藏准备页面
+            document.getElementById('preparation-section').classList.add('hidden');
+            
+            // 显示专注模式
+            document.getElementById('focus-mode').classList.remove('hidden');
+
+            // 设置目标时间
+            focusTargetSeconds = selectedDuration * 60;
+            focusSeconds = 0;
+
+            // 更新显示
+            document.getElementById('focus-target').textContent = formatTime(focusTargetSeconds);
+            document.getElementById('focus-goal-text').textContent = `当前目标：${selectedGoal}`;
+            
+            // 更新背景音显示
+            document.querySelector('.focus-sound .sound-name').textContent = soundNames[selectedSound];
+
+            // 开始计时
+            startTimer();
+        }
+
+        function startTimer() {
+            focusTimer = setInterval(() => {
+                if (!isPaused) {
+                    focusSeconds++;
+                    updateTimerDisplay();
+                    
+                    if (focusSeconds >= focusTargetSeconds) {
+                        completeFocusMode();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            // 更新时间显示
+            document.getElementById('focus-time').textContent = formatTime(focusSeconds);
+            
+            // 更新进度环
+            const progress = (focusSeconds / focusTargetSeconds) * 100;
+            const circumference = 754; // 2 * π * 120
+            const offset = circumference - (progress / 100) * circumference;
+            document.getElementById('progress-circle').style.strokeDashoffset = offset;
+            
+            // 更新百分比
+            document.getElementById('progress-percentage').textContent = `${Math.round(progress)}%`;
+
+            // 里程碑提示
+            if (focusSeconds === Math.floor(focusTargetSeconds * 0.25)) {
+                showMilestone('做得很好！继续加油 💪');
+            } else if (focusSeconds === Math.floor(focusTargetSeconds * 0.5)) {
+                showMilestone('已经完成一半了！🌟');
+            } else if (focusSeconds === Math.floor(focusTargetSeconds * 0.75)) {
+                showMilestone('快要完成了！加油！🎉');
+            }
+        }
+
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            const btn = document.getElementById('pause-btn');
+            btn.textContent = isPaused ? '继续' : '暂停';
+        }
+
+        function stopFocusMode() {
+            if (confirm('确定要结束心流体验吗？')) {
+                clearInterval(focusTimer);
+                completeFocusMode();
+            }
+        }
+
+        function completeFocusMode() {
+            clearInterval(focusTimer);
+            
+            // 隐藏专注模式
+            document.getElementById('focus-mode').classList.add('hidden');
+            
+            // 显示评估页面
+            document.getElementById('assessment-section').classList.remove('hidden');
+            document.getElementById('completed-duration').textContent = Math.floor(focusSeconds / 60);
+        }
+
+        function showMilestone(message) {
+            showToast(message, 'success', 4000);
+        }
+        }
+
+        // ========== 心流评估 ==========
+        function selectScore(question, score) {
+            assessmentScores[question] = score;
+            
+            // 更新按钮状态
+            const buttons = document.querySelectorAll(`[data-question="${question}"] .score-btn`);
+            buttons.forEach((btn, index) => {
+                btn.classList.toggle('selected', index + 1 === score);
+            });
+        }
+
+        function saveAssessment() {
+            // 检查是否完成所有评分
+            if (Object.values(assessmentScores).some(score => score === null)) {
+                showToast('请完成所有评分', 'warning');
+                return;
+            }
+
+            // 计算平均分
+            const avgScore = Object.values(assessmentScores).reduce((a, b) => a + b, 0) / 4;
+            
+            // 保存数据到localStorage
+            const record = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                duration: focusSeconds,
+                goal: selectedGoal,
+                scores: assessmentScores,
+                avgScore: avgScore,
+                diary: document.getElementById('diary-text').value
+            };
+            
+            saveRecord(record);
+            showToast('心流记录已保存！', 'success');
+
+            // 跳转到记录页面
+            goToTab('records');
+            
+            // 重置状态
+            resetState();
+        }
+
+        function skipAssessment() {
+            goToTab('records');
+            resetState();
+        }
+
+        function resetState() {
+            currentStep = 1;
+            assessmentScores = { focus: null, time: null, challenge: null, enjoy: null };
+            focusSeconds = 0;
+            isPaused = false;
+            
+            // 重置步骤显示
+            document.querySelectorAll('[id^="step-"]').forEach(step => step.classList.add('hidden'));
+            document.getElementById('step-1').classList.remove('hidden');
+            
+            // 重置进度指示
+            document.querySelectorAll('.progress-step').forEach((s, index) => {
+                s.classList.remove('active', 'completed');
+                if (index === 0) s.classList.add('active');
+            });
+        }
+
+        // ========== Toast提示 ==========
+        function showToast(message, type = 'info', duration = 3000) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+
+            // 自动移除
+            setTimeout(() => {
+                toast.classList.add('hiding');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, duration);
+        }
+
+        // ========== 移动端菜单 ==========
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+
+        function closeMobileMenu(event) {
+            if (event.target.id === 'mobile-menu') {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.remove('open');
+            }
+        }
+
+        // ========== 数据持久化 ==========
+        function saveRecord(record) {
+            const records = JSON.parse(localStorage.getItem('flowRecords') || '[]');
+            records.unshift(record);
+            localStorage.setItem('flowRecords', JSON.stringify(records));
+            updateDashboardStats();
+        }
+
+        function getRecords() {
+            return JSON.parse(localStorage.getItem('flowRecords') || '[]');
+        }
+
+        function updateDashboardStats() {
+            const records = getRecords();
+            const now = new Date();
+            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            
+            // 本周记录
+            const weekRecords = records.filter(r => new Date(r.date) >= weekAgo);
+            
+            // 计算统计数据
+            const weekDuration = weekRecords.reduce((sum, r) => sum + r.duration, 0);
+            const weekCount = weekRecords.length;
+            const avgScore = weekRecords.length > 0 
+                ? (weekRecords.reduce((sum, r) => sum + r.avgScore, 0) / weekRecords.length).toFixed(1)
+                : 0;
+            
+            // 连续天数
+            const streak = calculateStreak(records);
+            
+            // 更新显示
+            const statCards = document.querySelectorAll('.stat-card .stat-value');
+            if (statCards.length >= 4) {
+                statCards[0].innerHTML = `${(weekDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
+                statCards[1].innerHTML = `${weekCount}<span class="stat-unit">次</span>`;
+                statCards[2].innerHTML = `${avgScore}<span class="stat-unit">/ 5</span>`;
+                statCards[3].innerHTML = `${streak}<span class="stat-unit">天</span>`;
+            }
+        }
+
+        function calculateStreak(records) {
+            if (records.length === 0) return 0;
+            
+            let streak = 0;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            for (let i = 0; i < 365; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(checkDate.getDate() - i);
+                
+                const hasRecord = records.some(r => {
+                    const recordDate = new Date(r.date);
+                    recordDate.setHours(0, 0, 0, 0);
+                    return recordDate.getTime() === checkDate.getTime();
+                });
+                
+                if (hasRecord) {
+                    streak++;
+                } else if (i > 0) {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        // ========== 初始化 ==========
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 加载活动数据
+            await loadActivitiesData();
+            
+            // 更新统计数据
+            updateDashboardStats();
+            
+            // 默认显示Dashboard
+            goToTab('dashboard');
+        });
+    </script>
+</body>
+</html>

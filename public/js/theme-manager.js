@@ -110,20 +110,23 @@ class ThemeManager {
     }
 
     /**
-     * 从 JSON 文件加载文本数据
+     * 从 JSON 文件加载文本数据（各自独立，一个失败不影响其他）
      */
     async loadTextData() {
+        // 加载情绪数据
         try {
-            const [emotions, companions, knowledge] = await Promise.all([
-                fetch('data/emotions.json').then(r => r.json()),
-                fetch('data/companions.json').then(r => r.json()),
-                fetch('data/knowledge.json').then(r => r.json())
-            ]);
-
-            // 填充情绪数据
+            const res = await fetch('data/emotions.json');
+            const emotions = await res.json();
             this.emotionData = emotions.emotions || {};
+            console.log('[ThemeManager] emotions.json 加载成功');
+        } catch (e) {
+            console.warn('[ThemeManager] emotions.json 加载失败:', e.message);
+        }
 
-            // 填充宠物数据
+        // 加载宠物数据
+        try {
+            const res = await fetch('data/companions.json');
+            const companions = await res.json();
             if (companions.companions) {
                 this.petNames     = companions.companions.map(c => c.name);
                 this.petEmojis    = companions.companions.map(c => c.emoji);
@@ -131,9 +134,24 @@ class ThemeManager {
                 this.petGreetings = companions.companions.map(c => c.greeting);
             }
             this.petInteractions = companions.interactions || {};
+            console.log('[ThemeManager] companions.json 加载成功');
+        } catch (e) {
+            console.warn('[ThemeManager] companions.json 加载失败:', e.message);
+        }
 
-            // 填充知识库
-            this.knowledgeLibrary = knowledge.articles || {};
+        // 加载知识库
+        try {
+            const res = await fetch('data/knowledge.json');
+            const knowledge = await res.json();
+            this.knowledgeLibrary = {};
+            if (Array.isArray(knowledge)) {
+                knowledge.forEach((item, idx) => {
+                    const key = item.id || `article_${idx}`;
+                    this.knowledgeLibrary[key] = item;
+                });
+            } else if (knowledge.articles) {
+                this.knowledgeLibrary = knowledge.articles;
+            }
 
             // 构建分类索引
             this.knowledgeCategories = {};
@@ -142,11 +160,12 @@ class ThemeManager {
                 if (!this.knowledgeCategories[cat]) this.knowledgeCategories[cat] = [];
                 this.knowledgeCategories[cat].push({ key, ...item });
             });
-
-            console.log('[ThemeManager] 文本数据加载完成');
+            console.log('[ThemeManager] knowledge.json 加载成功');
         } catch (e) {
-            console.error('[ThemeManager] 数据加载失败:', e);
+            console.warn('[ThemeManager] knowledge.json 加载失败:', e.message);
         }
+
+        console.log('[ThemeManager] 文本数据加载完成');
     }
 
     applyTheme(themeName) {

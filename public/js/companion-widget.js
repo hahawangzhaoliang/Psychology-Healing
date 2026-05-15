@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 虚拟动物陪伴组件
  * 在页面左上角显示用户选择的虚拟动物，提供温暖的陪伴感
  * 每个动物都有独特的个性、故事背景和口头禅
@@ -13,20 +13,7 @@
     let apiCompanions = null; // 存储从API加载的伙伴数据
 
     async function loadCompanionData() {
-        try {
-            const response = await fetch('/api/knowledge/companion');
-            const result = await response.json();
-            if (result.success && result.data && result.data.companions) {
-                apiCompanions = result.data.companions;
-                companionsData = result.data;
-                console.log('[Companion Widget] API数据加载成功');
-                return true;
-            }
-        } catch (error) {
-            console.log('[Companion Widget] API加载失败，使用本地数据');
-        }
-        
-        // 降级到本地数据
+        // 不再请求不存在的 API，直接使用内置数据
         useAPI = false;
         apiCompanions = null;
         companionsData = null;
