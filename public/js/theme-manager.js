@@ -445,7 +445,7 @@ class ThemeManager {
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
                 <div class="pet-interaction">
                     <div class="pet-avatar" onclick="themeManager.petInteract('pat')">
-                        <img src="images/companions/爱心兔兔.png" alt="宠物" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🐰</span>'">
+                        <img src="assets/images/companions/爱心兔兔.png" alt="宠物" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🐰</span>'">
                         <div class="pet-action">🐰</div>
                     </div>
                     <div class="pet-name" id="petName">爱心兔兔</div>
@@ -502,7 +502,7 @@ class ThemeManager {
             const img = petAvatar.querySelector('img');
             const action = petAvatar.querySelector('.pet-action');
             if (img) {
-                img.src = `images/companions/${petName}.png`;
+                img.src = `assets/images/companions/${petName}.png`;
                 img.alt = petName;
             }
             if (action) action.textContent = petEmoji;

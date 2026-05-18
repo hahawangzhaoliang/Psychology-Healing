@@ -407,7 +407,7 @@
         companionWidget.id = 'companionWidget';
         companionWidget.innerHTML = `
             <div class="companion-avatar ${'companion-' + companion.animation}" id="companionAvatar">
-                <img src="images/companions/${companion.filename}"
+                <img src="assets/images/companions/${companion.filename}"
                      alt="${companion.name}"
                      onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><text y=%2248%22 font-size=%2248%22>🐾</text></svg>'">
             </div>
