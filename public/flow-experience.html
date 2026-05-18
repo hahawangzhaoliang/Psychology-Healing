@@ -1870,41 +1870,49 @@
         let selectedSound = 'rain'; // 默认雨声
         let selectedActivity = null; // 当前选择的活动
 
-        // 活动数据（从JSON加载）
+        // 活动数据（从API加载）
         let activities = [];
+
+        // API基础路径
+        const API_BASE = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api/flow' 
+            : '/api/flow';
+
+        // 加载状态
+        let isLoading = false;
+
+        // 显示加载状态
+        function showLoading(message = '加载中...') {
+            isLoading = true;
+            showToast(message, 'info', 10000);
+        }
+
+        // 隐藏加载状态
+        function hideLoading() {
+            isLoading = false;
+            const container = document.getElementById('toast-container');
+            const toasts = container.querySelectorAll('.toast.info');
+            toasts.forEach(toast => {
+                toast.classList.add('hiding');
+                setTimeout(() => toast.remove(), 300);
+            });
+        }
 
         // 加载活动数据
         async function loadActivitiesData() {
             try {
-                const response = await fetch('../server/data/flow-activities.json');
-                const data = await response.json();
+                const response = await fetch(`${API_BASE}/activities`);
+                const result = await response.json();
                 
-                // 将嵌套的活动数据扁平化
-                const flatActivities = [];
-                data.categories.forEach(category => {
-                    category.subcategories.forEach(subcategory => {
-                        subcategory.activities.forEach(activity => {
-                            flatActivities.push({
-                                id: activity.id,
-                                name: activity.name,
-                                icon: getCategoryIcon(category.id),
-                                category: category.id,
-                                description: activity.description,
-                                duration: activity.duration,
-                                difficulty: activity.difficulty,
-                                tags: activity.tags,
-                                benefits: activity.benefits,
-                                popularity: activity.popularity,
-                                avgFlowScore: activity.avgFlowScore
-                            });
-                        });
-                    });
-                });
-                
-                activities = flatActivities;
-                console.log(`已加载 ${activities.length} 个活动`);
+                if (result.success) {
+                    activities = result.activities;
+                    console.log(`已加载 ${activities.length} 个活动`);
+                } else {
+                    throw new Error(result.error || '加载失败');
+                }
             } catch (error) {
                 console.error('加载活动数据失败:', error);
+                showToast('加载活动数据失败，使用默认数据', 'warning');
                 // 使用默认数据
                 activities = getDefaultActivities();
             }
@@ -2271,12 +2279,11 @@
             // 计算平均分
             const avgScore = Object.values(assessmentScores).reduce((a, b) => a + b, 0) / 4;
             
-            // 保存数据到localStorage
+            // 保存数据
             const record = {
-                id: Date.now(),
-                date: new Date().toISOString(),
                 duration: focusSeconds,
                 goal: selectedGoal,
+                activityId: selectedActivity ? selectedActivity.id : null,
                 scores: assessmentScores,
                 avgScore: avgScore,
                 diary: document.getElementById('diary-text').value
@@ -2345,42 +2352,91 @@
         }
 
         // ========== 数据持久化 ==========
-        function saveRecord(record) {
-            const records = JSON.parse(localStorage.getItem('flowRecords') || '[]');
-            records.unshift(record);
-            localStorage.setItem('flowRecords', JSON.stringify(records));
-            updateDashboardStats();
+        async function saveRecord(record) {
+            try {
+                const response = await fetch(`${API_BASE}/records`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(record)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    console.log('记录已保存到服务器');
+                    updateDashboardStats();
+                } else {
+                    throw new Error(result.error || '保存失败');
+                }
+            } catch (error) {
+                console.error('保存记录失败:', error);
+                // 降级到localStorage
+                const records = JSON.parse(localStorage.getItem('flowRecords') || '[]');
+                records.unshift(record);
+                localStorage.setItem('flowRecords', JSON.stringify(records));
+                updateDashboardStats();
+            }
         }
 
-        function getRecords() {
-            return JSON.parse(localStorage.getItem('flowRecords') || '[]');
+        async function getRecords() {
+            try {
+                const response = await fetch(`${API_BASE}/records?limit=100`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    return result.records;
+                } else {
+                    throw new Error(result.error || '获取失败');
+                }
+            } catch (error) {
+                console.error('获取记录失败:', error);
+                // 降级到localStorage
+                return JSON.parse(localStorage.getItem('flowRecords') || '[]');
+            }
         }
 
-        function updateDashboardStats() {
-            const records = getRecords();
-            const now = new Date();
-            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-            
-            // 本周记录
-            const weekRecords = records.filter(r => new Date(r.date) >= weekAgo);
-            
-            // 计算统计数据
-            const weekDuration = weekRecords.reduce((sum, r) => sum + r.duration, 0);
-            const weekCount = weekRecords.length;
-            const avgScore = weekRecords.length > 0 
-                ? (weekRecords.reduce((sum, r) => sum + r.avgScore, 0) / weekRecords.length).toFixed(1)
-                : 0;
-            
-            // 连续天数
-            const streak = calculateStreak(records);
-            
-            // 更新显示
-            const statCards = document.querySelectorAll('.stat-card .stat-value');
-            if (statCards.length >= 4) {
-                statCards[0].innerHTML = `${(weekDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
-                statCards[1].innerHTML = `${weekCount}<span class="stat-unit">次</span>`;
-                statCards[2].innerHTML = `${avgScore}<span class="stat-unit">/ 5</span>`;
-                statCards[3].innerHTML = `${streak}<span class="stat-unit">天</span>`;
+        async function updateDashboardStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats?period=week`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.stats;
+                    
+                    // 更新显示
+                    const statCards = document.querySelectorAll('.stat-card .stat-value');
+                    if (statCards.length >= 4) {
+                        statCards[0].innerHTML = `${(stats.totalDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
+                        statCards[1].innerHTML = `${stats.totalSessions}<span class="stat-unit">次</span>`;
+                        statCards[2].innerHTML = `${stats.avgScore}<span class="stat-unit">/ 5</span>`;
+                        statCards[3].innerHTML = `${stats.streak}<span class="stat-unit">天</span>`;
+                    }
+                }
+            } catch (error) {
+                console.error('更新统计数据失败:', error);
+                // 降级到本地计算
+                const records = await getRecords();
+                const now = new Date();
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                
+                const weekRecords = records.filter(r => new Date(r.date) >= weekAgo);
+                const weekDuration = weekRecords.reduce((sum, r) => sum + r.duration, 0);
+                const weekCount = weekRecords.length;
+                const avgScore = weekRecords.length > 0 
+                    ? (weekRecords.reduce((sum, r) => sum + r.avgScore, 0) / weekRecords.length).toFixed(1)
+                    : 0;
+                
+                const streak = calculateStreak(records);
+                
+                const statCards = document.querySelectorAll('.stat-card .stat-value');
+                if (statCards.length >= 4) {
+                    statCards[0].innerHTML = `${(weekDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
+                    statCards[1].innerHTML = `${weekCount}<span class="stat-unit">次</span>`;
+                    statCards[2].innerHTML = `${avgScore}<span class="stat-unit">/ 5</span>`;
+                    statCards[3].innerHTML = `${streak}<span class="stat-unit">天</span>`;
+                }
             }
         }
 

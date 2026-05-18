@@ -2023,12 +2023,42 @@ const DOM = {};
 //  初始化
 // ═══════════════════════════════════════════════════
 function init() {
+    // ★ 清理所有可能残留的遮罩（防止刷新后遮罩残留导致无法操作）
+    cleanupAllOverlays();
+
     cacheDOM();
     applySettings();
     bindEvents();
     // 初始化家园系统
     HomeSystem.init();
     startLevel(1);
+    // 显示新手引导（首次）
+    TutorialManager.show();
+}
+
+/**
+ * 清理所有可能残留的遮罩层
+ */
+function cleanupAllOverlays() {
+    const overlayIds = [
+        'tutorial-overlay',
+        'item-hint-overlay',
+        'cat-thanks-modal',
+        'affinity-levelup-modal',
+        'request-intro',
+        'home-screen',
+        'affinity-panel',
+        'cat-interaction-layer',
+    ];
+    overlayIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    });
+    // 清理暂停/胜利模态框的 hidden 类
+    const pauseModal = document.getElementById('pause-modal');
+    const winModal = document.getElementById('win-modal');
+    if (pauseModal) pauseModal.classList.add('hidden');
+    if (winModal) winModal.classList.add('hidden');
 }
 
 function cacheDOM() {
@@ -2177,6 +2207,20 @@ function bindEvents() {
     };
     document.addEventListener('touchstart', initAudio, { once: true, passive: true });
     document.addEventListener('mousedown', initAudio, { once: true });
+
+    // ★ 全局 ESC 键关闭所有遮罩
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            TutorialManager.close();
+            removeItemHints();
+            closeRequestIntro();
+            closeThanksModal();
+            closeAffinityLevelUp();
+            closeAffinityPanel();
+            closeHomeScreen();
+            resumeGame();
+        }
+    });
 }
 
 // ═══════════════════════════════════════════════════
@@ -2196,6 +2240,9 @@ function handleTouchStart(e) {
         row: parseInt(cell.dataset.row),
         col: parseInt(cell.dataset.col),
     };
+    // 添加触摸按压反馈
+    cell.style.transform = 'scale(0.92)';
+    cell.style.transition = 'transform 0.1s ease';
     if (gameState.activeItem === 'bomb') {
         showBombRange(touchStartCell.row, touchStartCell.col);
     }
@@ -2223,6 +2270,14 @@ function handleTouchMove(e) {
 }
 
 function handleTouchEnd(e) {
+    // 恢复触摸按压效果
+    if (touchStartCell) {
+        const cell = getCellElement(touchStartCell.row, touchStartCell.col);
+        if (cell) {
+            cell.style.transform = '';
+            cell.style.transition = '';
+        }
+    }
     if (gameState.activeItem === 'bomb' && touchStartCell) {
         useBomb(touchStartCell.row, touchStartCell.col);
     }
@@ -2294,6 +2349,9 @@ function handleMouseDown(e) {
     mouseStartCell = { row: clickedRow, col: clickedCol };
     cell.classList.add('selected');
     gameState.selectedCell = { row: clickedRow, col: clickedCol };
+
+    // 高亮可交换的邻居格子
+    highlightSelectableNeighbors(clickedRow, clickedCol);
 }
 
 /**
@@ -2705,11 +2763,22 @@ async function processMatches() {
                 affinityMultiplier += (AffinityManager.getScoreBonus(type) - 1) * (count / allCells.length);
             });
 
-            gameState.score += Math.floor(baseScore * comboBonus * buffMultiplier * affinityMultiplier);
+            const totalScore = Math.floor(baseScore * comboBonus * buffMultiplier * affinityMultiplier);
+            gameState.score += totalScore;
+
+            // 显示得分飘字（在第一个消除的格子上）
+            if (allCells.length > 0) {
+                const firstPos = allCells[0];
+                const popupType = gameState.combo >= 3 ? 'combo' :
+                                  (topShape === MATCH_SHAPE.LINE5 || topShape === MATCH_SHAPE.CROSS) ? 'special' : 'normal';
+                showScorePopup(firstPos.row, firstPos.col, totalScore, popupType);
+            }
 
             if (gameState.combo > 1) {
                 showCombo(gameState.combo);
                 playSound('combo', gameState.combo);
+                // 连击屏幕震动（强度随连击增加）
+                triggerScreenShake(Math.min(gameState.combo - 1, 5));
             } else {
                 // 根据最高阶形状选择音效
                 const topShape = getTopShape(groups);
@@ -2774,7 +2843,10 @@ function animateMatches(matches) {
     return new Promise(resolve => {
         matches.forEach(pos => {
             const cell = getCellElement(pos.row, pos.col);
-            if (cell) cell.classList.add('matched');
+            if (cell) {
+                cell.classList.add('matched');
+                cell.classList.add('flash-effect');
+            }
         });
         matches.forEach(pos => createParticles(pos.row, pos.col));
 
@@ -2790,11 +2862,97 @@ function animateMatches(matches) {
             }
         }
 
-        setTimeout(resolve, CONFIG.ANIMATION_DURATION);
+        setTimeout(() => {
+            matches.forEach(pos => {
+                const cell = getCellElement(pos.row, pos.col);
+                if (cell) cell.classList.remove('flash-effect');
+            });
+            resolve();
+        }, CONFIG.ANIMATION_DURATION);
     });
 }
 
-// 粒子特效
+// ═══════════════════════════════════════════════════
+//  得分飘字动画
+// ═══════════════════════════════════════════════════
+function showScorePopup(row, col, score, type = 'normal') {
+    const cell = getCellElement(row, col);
+    if (!cell) return;
+    const rect = cell.getBoundingClientRect();
+    const boardRect = DOM.board.getBoundingClientRect();
+
+    const popup = document.createElement('div');
+    popup.className = `score-popup ${type}`;
+    popup.textContent = score > 0 ? `+${score}` : `${score}`;
+
+    // 计算在棋盘内的相对位置
+    const left = rect.left - boardRect.left + rect.width / 2;
+    const top = rect.top - boardRect.top;
+
+    popup.style.left = `${left}px`;
+    popup.style.top = `${top}px`;
+
+    DOM.effectsLayer.appendChild(popup);
+    setTimeout(() => popup.remove(), 1000);
+}
+
+// ═══════════════════════════════════════════════════
+//  可交换邻居高亮
+// ═══════════════════════════════════════════════════
+function highlightSelectableNeighbors(row, col) {
+    clearSelectableNeighbors();
+    const directions = [
+        { r: -1, c: 0 }, { r: 1, c: 0 },
+        { r: 0, c: -1 }, { r: 0, c: 1 }
+    ];
+
+    directions.forEach(({ r, c }) => {
+        const nr = row + r, nc = col + c;
+        if (nr >= 0 && nr < CONFIG.BOARD_ROWS && nc >= 0 && nc < CONFIG.BOARD_COLS) {
+            const neighbor = getCellElement(nr, nc);
+            if (neighbor) {
+                // 检查交换后是否能消除
+                swapCells(row, col, nr, nc);
+                const hasMatch = findMatches().length > 0;
+                swapCells(row, col, nr, nc); // 复原
+
+                if (hasMatch) {
+                    neighbor.classList.add('selectable-neighbor');
+                }
+            }
+        }
+    });
+}
+
+function clearSelectableNeighbors() {
+    document.querySelectorAll('.selectable-neighbor').forEach(el => {
+        el.classList.remove('selectable-neighbor');
+    });
+}
+
+// ═══════════════════════════════════════════════════
+//  屏幕震动效果（连击时）
+// ═══════════════════════════════════════════════════
+function triggerScreenShake(intensity = 1) {
+    const board = document.getElementById('board-container');
+    if (!board) return;
+    // 移除旧动画
+    board.classList.remove('shake-screen');
+    // 强制重绘
+    void board.offsetWidth;
+    // 根据强度调整动画
+    const duration = Math.min(0.2 + intensity * 0.1, 0.5);
+    board.style.animation = `screenShake ${duration}s ease-in-out`;
+    board.classList.add('shake-screen');
+    setTimeout(() => {
+        board.classList.remove('shake-screen');
+        board.style.animation = '';
+    }, duration * 1000);
+}
+
+// ═══════════════════════════════════════════════════
+//  粒子特效
+// ═══════════════════════════════════════════════════
 function createParticles(row, col) {
     const cell = getCellElement(row, col);
     if (!cell) return;
@@ -2970,6 +3128,10 @@ async function spawnSpecialItem(row, col, specialType) {
     if (el) {
         el.classList.add('special-item', `special-${specialType}`);
         el.dataset.special = specialType;
+        const specialInfo = SPECIAL_ITEMS[specialType];
+        if (specialInfo) {
+            el.dataset.specialName = specialInfo.name;
+        }
 
         // 生成动画
         el.style.animation = 'none';
@@ -3069,6 +3231,7 @@ function tryTriggerSpecialItem(row, col) {
     if (el) {
         el.classList.remove('special-item', `special-${specialType}`);
         delete el.dataset.special;
+        delete el.dataset.specialName;
         const iconEl = el.querySelector('.special-icon');
         if (iconEl) iconEl.remove();
     }
@@ -3313,11 +3476,20 @@ function updateTargetProgress(matches) {
 
 // 显示连击
 function showCombo(combo) {
-    const texts = ['', '', 'Nice!', 'Great!', 'Awesome!', 'Amazing!', 'Incredible!', 'Godlike!'];
-    const text = texts[Math.min(combo, texts.length - 1)] || 'LEGENDARY!';
-    DOM.comboText.textContent = `${combo}连击! ${text}`;
+    const comboData = [
+        { text: '', color: '#FF6B9D' },
+        { text: '', color: '#FF6B9D' },
+        { text: 'Nice!', color: '#88D8E8' },
+        { text: 'Great!', color: '#A8E6CF' },
+        { text: 'Awesome!', color: '#FFD93D' },
+        { text: 'Amazing!', color: '#FF8FAB' },
+        { text: 'Incredible!', color: '#C8A8E9' },
+        { text: 'Godlike!', color: '#FF6B9D' }
+    ];
+    const data = comboData[Math.min(combo, comboData.length - 1)] || { text: 'LEGENDARY!', color: '#FF6B9D' };
+    DOM.comboText.innerHTML = `<span style="color:${data.color};display:block;font-size:0.6em;margin-bottom:4px;">${data.text}</span>${combo}连击!`;
     DOM.comboDisplay.classList.remove('hidden');
-    setTimeout(() => DOM.comboDisplay.classList.add('hidden'), 700);
+    setTimeout(() => DOM.comboDisplay.classList.add('hidden'), 900);
 }
 
 // ═══════════════════════════════════════════════════
@@ -3333,13 +3505,21 @@ function renderBoard() {
             cell.dataset.col = col;
             const catData = gameState.board[row][col];
             if (catData && catData.type) {
+                // ★ 优化：为每种猫咪添加独特的类型class，提高区分度
+                cell.classList.add(`cat-type-${catData.type}`);
                 const cat = document.createElement('img');
                 cat.className = 'cat';
                 cat.src = `assets/images/cats/${CAT_TYPES[catData.type - 1].file}`;
                 cat.alt = CAT_TYPES[catData.type - 1].name;
                 cat.onerror = () => { cat.style.display = 'none'; };
                 cell.appendChild(cat);
-                if (catData.special) cell.classList.add(`special-${catData.special}`);
+                if (catData.special) {
+                    cell.classList.add(`special-${catData.special}`);
+                    const specialInfo = SPECIAL_ITEMS[catData.special];
+                    if (specialInfo) {
+                        cell.dataset.specialName = specialInfo.name;
+                    }
+                }
                 if (catData.obstacle) cell.classList.add(`obstacle-${catData.obstacle}`);
             }
             DOM.board.appendChild(cell);
@@ -3357,6 +3537,7 @@ function clearSelection() {
         if (cell) cell.classList.remove('selected');
         gameState.selectedCell = null;
     }
+    clearSelectableNeighbors();
 }
 
 // ═══════════════════════════════════════════════════
@@ -4087,6 +4268,11 @@ function updateRequestUI() {
         }
     }
 
+    // 请求完成时给面板添加完成动画
+    if (DOM.requestPanel) {
+        DOM.requestPanel.classList.toggle('completed', isCompleted);
+    }
+
     // 更新进度条
     if (DOM.progressFill) {
         DOM.progressFill.style.width = `${progressPercent}%`;
@@ -4347,21 +4533,66 @@ function resumeGame() {
 }
 
 // ═══════════════════════════════════════════════════
+//  道具提示系统
+// ═══════════════════════════════════════════════════
+function showItemHint(itemType) {
+    removeItemHints();
+    const hints = {
+        bomb: '点击棋盘上的格子，引爆3×3区域',
+        shuffle: '重新打乱所有猫咪的位置',
+        refresh: '重新生成整个棋盘',
+        hint: '高亮显示一个可消除的组合'
+    };
+    const hintText = hints[itemType];
+    if (!hintText) return;
+
+    const overlay = document.createElement('div');
+    overlay.id = 'item-hint-overlay';
+    overlay.className = 'item-hint-overlay';
+    overlay.innerHTML = `
+        <div class="item-hint-bubble">
+            <div style="font-size:18px;margin-bottom:6px;">💡 提示</div>
+            <div>${hintText}</div>
+            <div style="margin-top:10px;font-size:12px;opacity:0.8;">点击任意处关闭</div>
+        </div>
+    `;
+    overlay.addEventListener('click', removeItemHints);
+    document.body.appendChild(overlay);
+}
+
+function removeItemHints() {
+    const overlay = document.getElementById('item-hint-overlay');
+    if (overlay) overlay.remove();
+}
+
+// ═══════════════════════════════════════════════════
 //  道具系统
 // ═══════════════════════════════════════════════════
 function handleItemClick(itemType) {
     if (gameState.items[itemType] <= 0 || gameState.isAnimating) return;
 
+    // ★ 优化：移除其他道具的引导提示
+    removeItemHints();
+
     if (gameState.activeItem === itemType) {
+        // 取消激活
         gameState.activeItem = null;
         document.querySelector(`[data-item="${itemType}"]`).classList.remove('active');
         DOM.board.classList.remove('bomb-mode');
+        clearBombRange();
     } else {
         if (gameState.activeItem) {
             document.querySelector(`[data-item="${gameState.activeItem}"]`).classList.remove('active');
         }
         gameState.activeItem = itemType;
-        document.querySelector(`[data-item="${itemType}"]`).classList.add('active');
+        const itemEl = document.querySelector(`[data-item="${itemType}"]`);
+        itemEl.classList.add('active');
+        
+        // ★ 优化：显示道具使用引导提示
+        showItemHint(itemType);
+
+        // 播放道具选中音效
+        playSound('bell');
 
         if (itemType === 'bomb') {
             DOM.board.classList.add('bomb-mode');
@@ -4369,6 +4600,7 @@ function handleItemClick(itemType) {
             DOM.board.classList.remove('bomb-mode');
         }
 
+        // 立即使用的道具（shuffle/refresh/hint）
         if (itemType === 'shuffle') useShuffle();
         else if (itemType === 'refresh') useRefresh();
         else if (itemType === 'hint') useHint();
@@ -5403,6 +5635,94 @@ function getHomeScreenStyles() {
         }
     `;
 }
+
+// ═══════════════════════════════════════════════════
+//  新手引导系统
+// ═══════════════════════════════════════════════════
+const TutorialManager = {
+    hasShown: false,
+
+    shouldShow() {
+        return localStorage.getItem('cat-game-tutorial-shown') !== 'true';
+    },
+
+    markShown() {
+        localStorage.setItem('cat-game-tutorial-shown', 'true');
+    },
+
+    show() {
+        if (this.hasShown || !this.shouldShow()) return;
+        this.hasShown = true;
+
+        // 延迟显示引导
+        setTimeout(() => {
+            this.showStep1();
+        }, 1000);
+    },
+
+    showStep1() {
+        const board = document.getElementById('board-container');
+        if (!board) return;
+
+        this.createHighlight(board, '点击两个相邻的猫咪来交换它们的位置，凑齐3个或以上相同的猫咪即可消除！');
+    },
+
+    createHighlight(targetEl, text) {
+        const overlay = document.createElement('div');
+        overlay.className = 'item-hint-overlay';
+        overlay.id = 'tutorial-overlay';
+        overlay.style.background = 'rgba(0,0,0,0.4)';
+
+        const rect = targetEl.getBoundingClientRect();
+        const highlight = document.createElement('div');
+        highlight.className = 'tutorial-highlight';
+        highlight.style.cssText = `
+            position: fixed;
+            left: ${rect.left - 8}px;
+            top: ${rect.top - 8}px;
+            width: ${rect.width + 16}px;
+            height: ${rect.height + 16}px;
+            pointer-events: none;
+        `;
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'tutorial-tooltip';
+        tooltip.style.cssText = `
+            position: fixed;
+            left: 50%;
+            top: ${rect.bottom + 20}px;
+            transform: translateX(-50%);
+            max-width: 280px;
+            z-index: 601;
+        `;
+        tooltip.innerHTML = `
+            <div style="font-size:16px;margin-bottom:8px;">🎮 游戏玩法</div>
+            <div style="margin-bottom:12px;line-height:1.5;">${text}</div>
+            <button class="btn btn-primary" style="padding:8px 20px;font-size:14px;" onclick="TutorialManager.close()">知道了</button>
+        `;
+
+        overlay.appendChild(highlight);
+        overlay.appendChild(tooltip);
+        document.body.appendChild(overlay);
+
+        // ★ 点击遮罩背景也能关闭（点击 tooltip 除外）
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay || e.target === highlight) {
+                TutorialManager.close();
+            }
+        });
+    },
+
+    close() {
+        const overlay = document.getElementById('tutorial-overlay');
+        if (overlay) {
+            overlay.style.opacity = '0';
+            overlay.style.transition = 'opacity 0.3s ease';
+            setTimeout(() => overlay.remove(), 300);
+        }
+        this.markShown();
+    }
+};
 
 // ═══════════════════════════════════════════════════
 //  启动
