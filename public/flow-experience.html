@@ -8,278 +8,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#F97316">
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="theme-color" content="#5cb8a8">
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/neuroaesthetics.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* 页面级样式 */
-        body {
-            font-family: var(--font-sans);
-            background: var(--theme-bg);
-            color: var(--theme-text);
-        }
-
-        /* ========== 导航栏样式 ========== */
-        .nav-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--color-neutral-200);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .nav-inner {
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
+        /* ========== 导航栏补充样式 ========== */
         .nav-logo {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--theme-text);
             text-decoration: none;
         }
-
         .nav-logo-icon {
             width: 32px;
             height: 32px;
+            border-radius: var(--radius-md);
             background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
-            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-size: 1.25rem;
         }
-
-        /* 桌面端导航 */
         .desktop-nav {
             display: none;
             align-items: center;
-            gap: 2rem;
+            gap: 1.5rem;
         }
-
         @media (min-width: 768px) {
             .desktop-nav {
                 display: flex;
             }
         }
-
-        .nav-link {
-            position: relative;
+        .desktop-nav a {
             color: var(--theme-text-light);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s ease;
-            padding: 0.5rem 0;
+            transition: color 0.2s;
+            font-size: 0.95rem;
         }
-
-        .nav-link:hover {
-            color: var(--theme-text);
-        }
-
-        .nav-link.active {
+        .desktop-nav a:hover {
             color: var(--color-primary-500);
         }
-
-        /* 下拉菜单 */
-        .dropdown {
-            position: relative;
+        .desktop-nav a.active {
+            color: var(--color-primary-500);
+            font-weight: 500;
         }
-
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-            cursor: pointer;
-        }
-
-        .dropdown-icon {
-            width: 12px;
-            height: 12px;
-            transition: transform 0.3s ease;
-        }
-
-        .dropdown:hover .dropdown-icon {
-            transform: rotate(180deg);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(-10px);
-            min-width: 280px;
-            background: white;
-            border-radius: var(--radius-xl);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            padding: 0.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1001;
-            margin-top: 0.5rem;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .dropdown-item {
-            display: block;
-            padding: 1rem;
-            border-radius: var(--radius-lg);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background: var(--color-primary-50);
-        }
-
-        .dropdown-item-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .dropdown-item-icon {
-            font-size: 1.25rem;
-        }
-
-        .dropdown-item-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--theme-text);
-        }
-
-        .dropdown-item-desc {
-            font-size: 0.875rem;
-            color: var(--theme-text-light);
-            margin: 0;
-        }
-
-        .dropdown-item-highlight {
-            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
-            border: 2px solid var(--color-primary-200);
-        }
-
-        .dropdown-item-highlight:hover {
-            background: linear-gradient(135deg, var(--color-primary-100), var(--color-warm-100));
-            border-color: var(--color-primary-300);
-        }
-
-        .dropdown-item-badge {
-            font-size: 0.625rem;
-            font-weight: 700;
-            color: white;
-            background: linear-gradient(135deg, #F97316, #FB923C);
-            padding: 2px 8px;
-            border-radius: var(--radius-full);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* 移动端菜单按钮 */
         .mobile-menu-btn {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
+            padding: 0.5rem;
+            color: var(--theme-text-light);
+            background: none;
             border: none;
-            background: transparent;
             cursor: pointer;
-            padding: 0;
         }
-
         @media (min-width: 768px) {
             .mobile-menu-btn {
                 display: none;
             }
         }
-
-        /* ========== 页面内容样式 ========== */
-        .page-container {
-            padding-top: 64px;
-            min-height: 100vh;
+        .mobile-menu {
+            display: none;
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+        }
+        .mobile-menu.open {
+            display: block;
+            animation: fadeInDown 0.25s var(--ease-standard) both;
+        }
+        .mobile-menu a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            color: var(--theme-text-light);
+            text-decoration: none;
+            transition: background var(--duration-fast) var(--ease-standard),
+                        color var(--duration-fast) var(--ease-standard);
+        }
+        .mobile-menu a:hover {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+        }
+        .mobile-menu a.active {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+            font-weight: 600;
         }
 
-        /* Tab导航 */
-        .page-tabs {
-            background: white;
-            border-bottom: 1px solid var(--color-neutral-200);
-            position: sticky;
-            top: 64px;
-            z-index: 100;
+        /* ========== 页面英雄区 ========== */
+        .page-hero {
+            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-warm-50) 50%, var(--color-primary-100) 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease-in-out infinite;
+            padding: 6rem 1.5rem 2rem;
+            text-align: center;
         }
 
-        .page-tabs-inner {
+        .page-hero-inner {
             max-width: 72rem;
             margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
-        .page-tab {
+        .page-hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: var(--theme-text);
+            margin-bottom: 1rem;
+        }
+
+        .page-hero-title .highlight {
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--theme-text-light);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.6;
+        }
+
+        /* ========== Tab导航 ========== */
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-nav .page-tab {
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.5rem;
             color: var(--theme-text-light);
             text-decoration: none;
             font-weight: 500;
             white-space: nowrap;
             border-bottom: 2px solid transparent;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-standard);
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
         }
 
-        .page-tab:hover {
+        .tab-nav .page-tab:hover {
             color: var(--theme-text);
-            background: var(--color-primary-50);
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        .page-tab.active {
+        .tab-nav .page-tab.active {
             color: var(--color-primary-500);
             border-bottom-color: var(--color-primary-500);
+            background: rgba(255, 255, 255, 0.8);
         }
 
-        .page-tab-badge {
-            font-size: 0.625rem;
-            font-weight: 700;
-            color: white;
-            background: linear-gradient(135deg, #F97316, #FB923C);
-            padding: 2px 6px;
-            border-radius: var(--radius-full);
-        }
-
-        /* 内容区域 */
+        /* ========== 内容区域 ========== */
         .content-section {
             max-width: 72rem;
             margin: 0 auto;
@@ -290,6 +180,7 @@
         .dashboard-grid {
             display: grid;
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         @media (min-width: 768px) {
@@ -300,21 +191,23 @@
 
         @media (min-width: 1024px) {
             .dashboard-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
+        /* 统计卡片 */
         .stat-card {
-            background: white;
-            border-radius: var(--radius-xl);
+            background: var(--theme-card);
+            border-radius: var(--radius-lg);
             padding: 1.5rem;
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
         }
 
         .stat-card:hover {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
         }
 
         .stat-label {
@@ -342,12 +235,12 @@
             border-radius: var(--radius-xl);
             padding: 2rem;
             box-shadow: var(--shadow-md);
-            transition: all 0.3s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
             cursor: pointer;
         }
 
         .recommendation-card:hover {
-            box-shadow: var(--shadow-warm);
+            box-shadow: var(--shadow-glow);
             transform: translateY(-4px);
             border-color: var(--color-primary-300);
         }
@@ -355,12 +248,13 @@
         .recommendation-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             margin-bottom: 1rem;
         }
 
         .recommendation-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            animation: float 4s ease-in-out infinite;
         }
 
         .recommendation-title {
@@ -377,7 +271,7 @@
 
         .recommendation-meta {
             display: flex;
-            gap: 1rem;
+            gap: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
@@ -392,45 +286,54 @@
         /* 快速开始网格 */
         .quick-start-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
         }
 
         @media (min-width: 640px) {
+            .quick-start-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 1024px) {
             .quick-start-grid {
                 grid-template-columns: repeat(4, 1fr);
             }
         }
 
         .quick-start-card {
-            background: white;
+            background: var(--theme-card);
             border-radius: var(--radius-lg);
             padding: 1.5rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
             text-decoration: none;
             display: block;
+            border: 2px solid transparent;
         }
 
         .quick-start-card:hover {
             box-shadow: var(--shadow-md);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            border-color: var(--color-primary-200);
         }
 
         .quick-start-card.highlight {
             background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
-            border: 2px solid var(--color-primary-200);
+            border-color: var(--color-primary-200);
         }
 
         .quick-start-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            animation: float 4s ease-in-out infinite;
+            animation-delay: calc(var(--stagger-index, 0) * 0.2s);
         }
 
         .quick-start-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--theme-text);
             margin-bottom: 0.25rem;
@@ -452,27 +355,29 @@
         }
 
         .filter-btn {
-            padding: 0.5rem 1rem;
-            background: white;
-            border: 1px solid var(--color-neutral-300);
+            padding: 0.5rem 1.25rem;
+            background: var(--theme-card);
+            border: 2px solid var(--theme-border);
             border-radius: var(--radius-full);
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--theme-text-light);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
             white-space: nowrap;
         }
 
         .filter-btn:hover {
             border-color: var(--color-primary-300);
             color: var(--theme-text);
+            transform: translateY(-2px);
         }
 
         .filter-btn.active {
-            background: var(--color-primary-500);
-            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            border-color: transparent;
             color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.3);
         }
 
         .activity-grid {
@@ -493,12 +398,12 @@
         }
 
         .activity-card {
-            background: white;
+            background: var(--theme-card);
             border-radius: var(--radius-xl);
             padding: 1.5rem;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
             border: 2px solid transparent;
         }
 
@@ -516,7 +421,8 @@
         }
 
         .activity-icon {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            animation: float 4s ease-in-out infinite;
         }
 
         .activity-difficulty {
@@ -525,7 +431,7 @@
         }
 
         .difficulty-star {
-            color: var(--color-neutral-300);
+            color: var(--color-primary-200);
             font-size: 0.875rem;
         }
 
@@ -568,7 +474,7 @@
             justify-content: space-between;
             align-items: center;
             padding-top: 1rem;
-            border-top: 1px solid var(--color-neutral-200);
+            border-top: 1px solid var(--theme-border);
         }
 
         .activity-duration {
@@ -578,19 +484,97 @@
 
         .activity-btn {
             padding: 0.5rem 1.25rem;
-            background: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             color: white;
             border: none;
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-full);
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
+            box-shadow: 0 4px 12px rgba(90, 154, 138, 0.3);
         }
 
         .activity-btn:hover {
-            background: var(--color-primary-600);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(90, 154, 138, 0.4);
+        }
+
+        /* ========== 活动详情弹窗 ========== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--duration-normal) var(--ease-standard);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-panel {
+            background: var(--theme-card);
+            border-radius: var(--radius-xl);
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(16px);
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+
+        .modal-overlay.active .modal-panel {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--theme-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--color-primary-50);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--theme-text-light);
+            transition: all var(--duration-fast) var(--ease-standard);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--color-primary-100);
+            color: var(--theme-text);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--theme-border);
+            display: flex;
+            gap: 1rem;
         }
 
         /* ========== 心流准备样式 ========== */
@@ -602,7 +586,7 @@
         .preparation-progress {
             display: flex;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             margin-bottom: 2rem;
         }
 
@@ -615,23 +599,24 @@
             justify-content: center;
             font-size: 0.875rem;
             font-weight: 600;
-            background: var(--color-neutral-200);
+            background: var(--color-primary-100);
             color: var(--theme-text-light);
-            transition: all 0.3s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
         .progress-step.active {
-            background: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.3);
         }
 
         .progress-step.completed {
-            background: var(--color-success-500);
+            background: var(--color-success);
             color: white;
         }
 
         .preparation-card {
-            background: white;
+            background: var(--theme-card);
             border-radius: var(--radius-xl);
             padding: 2rem;
             box-shadow: var(--shadow-md);
@@ -648,6 +633,7 @@
             font-size: 1rem;
             color: var(--theme-text-light);
             margin-bottom: 2rem;
+            line-height: 1.6;
         }
 
         .duration-options {
@@ -659,22 +645,24 @@
 
         .duration-option {
             padding: 1rem;
-            background: var(--color-neutral-100);
+            background: var(--color-primary-50);
             border: 2px solid transparent;
             border-radius: var(--radius-lg);
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
         .duration-option:hover {
-            background: var(--color-primary-50);
+            background: var(--color-primary-100);
             border-color: var(--color-primary-200);
+            transform: translateY(-2px);
         }
 
         .duration-option.selected {
             background: var(--color-primary-100);
             border-color: var(--color-primary-500);
+            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.15);
         }
 
         .duration-value {
@@ -691,16 +679,20 @@
         .goal-input {
             width: 100%;
             padding: 1rem;
-            border: 2px solid var(--color-neutral-200);
+            border: 2px solid var(--theme-border);
             border-radius: var(--radius-lg);
             font-size: 1rem;
-            transition: all 0.2s ease;
+            font-family: var(--font-sans);
+            transition: border-color var(--duration-fast) var(--ease-standard),
+                        box-shadow var(--duration-fast) var(--ease-standard);
+            outline: none;
+            background: var(--theme-card);
+            color: var(--theme-text);
         }
 
         .goal-input:focus {
-            outline: none;
             border-color: var(--color-primary-400);
-            box-shadow: 0 0 0 3px var(--color-primary-100);
+            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.15);
         }
 
         .preparation-tip {
@@ -708,13 +700,13 @@
             align-items: flex-start;
             gap: 0.5rem;
             padding: 1rem;
-            background: var(--color-info-50);
+            background: var(--color-primary-50);
             border-radius: var(--radius-lg);
             margin-top: 1rem;
         }
 
         .tip-icon {
-            color: var(--color-info-500);
+            color: var(--color-primary-500);
             font-size: 1.25rem;
         }
 
@@ -728,41 +720,6 @@
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
-        }
-
-        .btn-secondary {
-            flex: 1;
-            padding: 1rem;
-            background: var(--color-neutral-100);
-            color: var(--theme-text);
-            border: none;
-            border-radius: var(--radius-lg);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-secondary:hover {
-            background: var(--color-neutral-200);
-        }
-
-        .btn-primary {
-            flex: 2;
-            padding: 1rem;
-            background: var(--color-primary-500);
-            color: white;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            background: var(--color-primary-600);
-            transform: translateY(-1px);
         }
 
         /* ========== 专注模式样式 ========== */
@@ -828,7 +785,7 @@
             stroke: var(--color-primary-500);
             stroke-width: 8;
             stroke-linecap: round;
-            transition: stroke-dashoffset 1s ease-in-out;
+            transition: stroke-dashoffset 1s var(--ease-standard);
         }
 
         .progress-ring-text {
@@ -901,7 +858,8 @@
             font-size: 0.875rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-fast) var(--ease-standard);
+            margin-left: auto;
         }
 
         .sound-change:hover {
@@ -920,7 +878,7 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
         .focus-btn.pause {
@@ -930,16 +888,18 @@
         }
 
         .focus-btn.pause:hover {
-            background: var(--color-neutral-100);
+            background: var(--color-primary-50);
+            transform: translateY(-2px);
         }
 
         .focus-btn.stop {
-            background: var(--color-neutral-200);
+            background: var(--color-primary-100);
             color: var(--theme-text);
         }
 
         .focus-btn.stop:hover {
-            background: var(--color-neutral-300);
+            background: var(--color-primary-200);
+            transform: translateY(-2px);
         }
 
         /* ========== 心流评估样式 ========== */
@@ -956,6 +916,7 @@
         .celebration-icon {
             font-size: 4rem;
             margin-bottom: 1rem;
+            animation: float 4s ease-in-out infinite;
         }
 
         .celebration-title {
@@ -971,7 +932,7 @@
         }
 
         .assessment-card {
-            background: white;
+            background: var(--theme-card);
             border-radius: var(--radius-xl);
             padding: 2rem;
             box-shadow: var(--shadow-md);
@@ -1003,43 +964,48 @@
         .score-btn {
             flex: 1;
             aspect-ratio: 1;
-            border: 2px solid var(--color-neutral-300);
+            border: 2px solid var(--theme-border);
             border-radius: var(--radius-lg);
-            background: white;
+            background: var(--theme-card);
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--theme-text-light);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
         .score-btn:hover {
             border-color: var(--color-primary-300);
             color: var(--theme-text);
+            transform: translateY(-2px);
         }
 
         .score-btn.selected {
-            background: var(--color-primary-500);
-            border-color: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            border-color: transparent;
             color: white;
+            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.3);
         }
 
         .diary-textarea {
             width: 100%;
             min-height: 120px;
             padding: 1rem;
-            border: 2px solid var(--color-neutral-200);
+            border: 2px solid var(--theme-border);
             border-radius: var(--radius-lg);
             font-size: 1rem;
-            font-family: inherit;
+            font-family: var(--font-sans);
             resize: vertical;
-            transition: all 0.2s ease;
+            transition: border-color var(--duration-fast) var(--ease-standard),
+                        box-shadow var(--duration-fast) var(--ease-standard);
+            outline: none;
+            background: var(--theme-card);
+            color: var(--theme-text);
         }
 
         .diary-textarea:focus {
-            outline: none;
             border-color: var(--color-primary-400);
-            box-shadow: 0 0 0 3px var(--color-primary-100);
+            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.15);
         }
 
         .assessment-actions {
@@ -1047,115 +1013,58 @@
             gap: 1rem;
         }
 
-        /* ========== 隐藏状态 ========== */
-        .hidden {
-            display: none !important;
+        /* ========== 记录页面样式 ========== */
+        .records-ranking {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        /* ========== 动画 ========== */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            animation: slideUp 0.5s ease;
-        }
-
-        /* ========== 移动端菜单 ========== */
-        .mobile-menu {
-            position: fixed;
-            top: 64px;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu.open {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-menu-content {
-            background: white;
-            max-width: 320px;
-            margin-left: auto;
-            height: 100%;
-            padding: 1.5rem;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-        }
-
-        .mobile-menu.open .mobile-menu-content {
-            transform: translateX(0);
-        }
-
-        .mobile-nav-link {
-            display: block;
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
             padding: 1rem;
-            color: var(--theme-text);
-            text-decoration: none;
-            font-weight: 500;
+            background: var(--color-primary-50);
             border-radius: var(--radius-lg);
-            transition: all 0.2s ease;
-            margin-bottom: 0.5rem;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
-        .mobile-nav-link:hover {
-            background: var(--color-primary-50);
-        }
-
-        .mobile-nav-link.active {
+        .ranking-item:hover {
             background: var(--color-primary-100);
-            color: var(--color-primary-600);
+            transform: translateX(4px);
         }
 
-        .mobile-submenu {
-            margin-left: 1rem;
-            padding-left: 1rem;
-            border-left: 2px solid var(--color-neutral-200);
+        .ranking-rank {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary-500);
+            min-width: 2rem;
         }
 
-        .mobile-submenu-item {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--theme-text-light);
-            text-decoration: none;
-            border-radius: var(--radius-md);
-            transition: all 0.2s ease;
-            margin-bottom: 0.25rem;
+        .ranking-icon {
+            font-size: 2rem;
         }
 
-        .mobile-submenu-item:hover {
-            background: var(--color-primary-50);
+        .ranking-info {
+            flex: 1;
+        }
+
+        .ranking-name {
+            font-size: 1rem;
+            font-weight: 600;
             color: var(--theme-text);
         }
 
-        .mobile-submenu-item.highlight {
-            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
-            color: var(--color-primary-600);
+        .ranking-meta {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+
+        .ranking-duration {
+            font-size: 1rem;
             font-weight: 600;
+            color: var(--theme-text);
         }
 
         /* ========== Toast提示 ========== */
@@ -1181,26 +1090,26 @@
             font-weight: 500;
             opacity: 0;
             transform: translateY(-20px);
-            animation: toastIn 0.3s ease forwards;
+            animation: toastIn var(--duration-normal) var(--ease-standard) forwards;
             pointer-events: auto;
             max-width: 90vw;
             text-align: center;
         }
 
         .toast.success {
-            background: linear-gradient(135deg, #10B981, #059669);
+            background: linear-gradient(135deg, var(--color-success), #059669);
         }
 
         .toast.warning {
-            background: linear-gradient(135deg, #F59E0B, #D97706);
+            background: linear-gradient(135deg, var(--color-warning), #D97706);
         }
 
         .toast.error {
-            background: linear-gradient(135deg, #EF4444, #DC2626);
+            background: linear-gradient(135deg, var(--color-error), #DC2626);
         }
 
         .toast.hiding {
-            animation: toastOut 0.3s ease forwards;
+            animation: toastOut var(--duration-normal) var(--ease-standard) forwards;
         }
 
         @keyframes toastIn {
@@ -1226,89 +1135,154 @@
         }
 
         /* ========== 背景音选项 ========== */
+        .sound-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
         .sound-option {
             padding: 1rem;
-            background: white;
-            border: 2px solid var(--color-neutral-200);
+            background: var(--theme-card);
+            border: 2px solid var(--theme-border);
             border-radius: var(--radius-lg);
             text-align: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--duration-normal) var(--ease-spring);
         }
 
         .sound-option:hover {
             border-color: var(--color-primary-300);
             background: var(--color-primary-50);
+            transform: translateY(-2px);
         }
 
         .sound-option.selected {
             border-color: var(--color-primary-500);
             background: var(--color-primary-100);
+            box-shadow: 0 0 0 3px rgba(90, 154, 138, 0.15);
         }
 
-        /* ========== 移动端优化 ========== */
+        /* ========== 移动端菜单 ========== */
+        .mobile-menu {
+            position: fixed;
+            top: 64px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--duration-normal) var(--ease-standard);
+        }
+
+        .mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-menu-content {
+            background: var(--theme-card);
+            max-width: 320px;
+            margin-left: auto;
+            height: 100%;
+            padding: 1.5rem;
+            transform: translateX(100%);
+            transition: transform var(--duration-normal) var(--ease-standard);
+            overflow-y: auto;
+        }
+
+        .mobile-menu.open .mobile-menu-content {
+            transform: translateX(0);
+        }
+
+        /* ========== 隐藏状态 ========== */
+        .hidden {
+            display: none !important;
+        }
+
+        /* ========== 动画类 ========== */
+        .fade-in-up {
+            animation: fadeInUp var(--duration-slow) var(--ease-standard) both;
+        }
+
+        .slide-up {
+            animation: fadeInUp var(--duration-slow) var(--ease-spring) both;
+        }
+
+        /* ========== 响应式优化 ========== */
         @media (max-width: 767px) {
-            /* 增大按钮点击区域 */
-            .btn-primary, .btn-secondary, .activity-btn, .focus-btn {
-                min-height: 48px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
+            .page-hero {
+                padding: 5rem 1rem 1.5rem;
             }
 
-            .score-btn {
-                min-height: 48px;
-                min-width: 48px;
+            .tab-nav {
+                justify-content: flex-start;
             }
 
-            /* 优化Tab滚动 */
-            .page-tabs-inner {
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
+            .preparation-progress {
+                gap: 0.5rem;
             }
 
-            .page-tab {
-                scroll-snap-align: start;
+            .progress-step {
+                width: 2rem;
+                height: 2rem;
+                font-size: 0.75rem;
             }
 
-            /* 添加触摸反馈 */
-            .activity-card:active,
-            .quick-start-card:active,
-            .stat-card:active {
-                transform: scale(0.98);
-                transition: transform 0.1s ease;
+            .duration-options {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            /* 优化输入框 */
-            .goal-input, .diary-textarea {
-                font-size: 16px; /* 防止iOS自动缩放 */
+            .focus-time {
+                font-size: 3rem;
             }
 
-            /* 优化活动卡片间距 */
-            .activity-grid {
-                gap: 0.75rem;
+            .progress-ring-container {
+                width: 220px;
+                height: 220px;
             }
 
-            /* 优化统计卡片 */
-            .stat-card {
-                padding: 1.25rem;
+            .progress-ring {
+                width: 220px;
+                height: 220px;
             }
 
-            .stat-value {
-                font-size: 1.75rem;
+            .progress-ring-bg,
+            .progress-ring-progress {
+                cx: 110;
+                cy: 110;
+                r: 90;
+            }
+
+            .progress-percentage {
+                font-size: 2.5rem;
+            }
+
+            .score-buttons {
+                gap: 0.25rem;
+            }
+
+            .assessment-actions,
+            .preparation-actions,
+            .focus-actions {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
             }
         }
 
         /* 触摸设备优化 */
         @media (hover: none) and (pointer: coarse) {
-            .activity-card:hover,
-            .quick-start-card:hover,
-            .stat-card:hover {
-                transform: none;
-            }
-
-            .activity-card:active {
+            .activity-card:active,
+            .quick-start-card:active,
+            .stat-card:active {
                 transform: scale(0.98);
+                transition: transform 0.1s var(--ease-standard);
             }
         }
     </style>
@@ -1317,115 +1291,132 @@
     <!-- Toast容器 -->
     <div class="toast-container" id="toast-container"></div>
 
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu" id="mobile-menu" onclick="closeMobileMenu(event)">
-        <div class="mobile-menu-content" onclick="event.stopPropagation()">
-            <a href="index.html" class="mobile-nav-link">首页</a>
-            
-            <div class="mobile-nav-link" style="cursor: pointer;">疗愈练习</div>
-            <div class="mobile-submenu">
-                <a href="relax.html" class="mobile-submenu-item">🌊 快速放松</a>
-                <a href="flow-experience.html" class="mobile-submenu-item highlight">⚡ 心流体验</a>
-                <a href="#" class="mobile-submenu-item" style="opacity: 0.5; cursor: not-allowed;">🧘 深度冥想（即将上线）</a>
+    <!-- 活动详情弹窗 -->
+    <div class="modal-overlay" id="activity-modal">
+        <div class="modal-panel" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--theme-text);" id="modal-activity-name">活动名称</h3>
+                <button class="modal-close" onclick="closeActivityModal()">&times;</button>
             </div>
-            
-            <a href="emotion.html" class="mobile-nav-link">情绪觉察</a>
-            <a href="knowledge-graph.html" class="mobile-nav-link">知识图谱</a>
-            <a href="about.html" class="mobile-nav-link">关于我们</a>
-            <a href="companion.html" class="mobile-nav-link">我的伙伴</a>
+            <div class="modal-body">
+                <div style="margin-bottom: 1.5rem;">
+                    <p style="font-size: 1rem; color: var(--theme-text); line-height: 1.6;" id="modal-activity-description">活动描述</p>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">🎯 适合时长</h4>
+                    <p id="modal-activity-duration" style="color: var(--theme-text-light);">15-60分钟</p>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">💪 活动益处</h4>
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="modal-activity-benefits">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">💡 实用技巧</h4>
+                    <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="modal-activity-tips">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+                
+                <div id="modal-scientific-section">
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">📚 科学依据</h4>
+                    <p style="font-size: 0.875rem; color: var(--theme-text-light); line-height: 1.6; background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg);" id="modal-activity-scientific">
+                        心流理论支持
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" style="flex: 1;" onclick="closeActivityModal()">关闭</button>
+                <button class="btn-primary" style="flex: 1;" id="modal-start-btn">开始体验</button>
+            </div>
         </div>
     </div>
 
     <!-- 导航栏 -->
-    <nav class="nav-container">
-        <div class="nav-inner">
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
             <a href="index.html" class="nav-logo">
                 <div class="nav-logo-icon">🌿</div>
-                <span>心晴空间</span>
+                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
             </a>
 
-            <!-- 桌面端导航 -->
+            <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html" class="nav-link">首页</a>
-                
-                <!-- 疗愈练习下拉菜单 -->
-                <div class="dropdown">
-                    <div class="nav-link dropdown-toggle">
-                        疗愈练习
-                        <svg class="dropdown-icon" viewBox="0 0 12 12" fill="none">
-                            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-                    <div class="dropdown-menu">
-                        <a href="relax.html" class="dropdown-item">
-                            <div class="dropdown-item-header">
-                                <span class="dropdown-item-icon">🌊</span>
-                                <span class="dropdown-item-title">快速放松</span>
-                            </div>
-                            <p class="dropdown-item-desc">1-7分钟，快速缓解压力</p>
-                        </a>
-                        <a href="flow-experience.html" class="dropdown-item dropdown-item-highlight">
-                            <div class="dropdown-item-header">
-                                <span class="dropdown-item-icon">⚡</span>
-                                <span class="dropdown-item-title">心流体验</span>
-                                <span class="dropdown-item-badge">NEW</span>
-                            </div>
-                            <p class="dropdown-item-desc">15-60分钟，发现你的热爱</p>
-                        </a>
-                        <a href="#" class="dropdown-item" style="opacity: 0.5; cursor: not-allowed;">
-                            <div class="dropdown-item-header">
-                                <span class="dropdown-item-icon">🧘</span>
-                                <span class="dropdown-item-title">深度冥想</span>
-                                <span class="dropdown-item-badge" style="background: var(--color-neutral-400);">即将上线</span>
-                            </div>
-                            <p class="dropdown-item-desc">敬请期待</p>
-                        </a>
-                    </div>
-                </div>
-
-                <a href="emotion.html" class="nav-link">情绪觉察</a>
-                <a href="knowledge-graph.html" class="nav-link">知识图谱</a>
-                <a href="about.html" class="nav-link">关于我们</a>
-                <a href="companion.html" class="nav-link">我的伙伴</a>
+                <a href="index.html">首页</a>
+                <a href="relax.html">疗愈练习</a>
+                <a href="flow-experience.html" class="active" style="display:flex;align-items:center;gap:0.35rem;">
+                    心流体验
+                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
+                </a>
+                <a href="emotion.html">情绪觉察</a>
+                <a href="knowledge-graph.html">知识图谱</a>
+                <a href="about.html">关于我们</a>
+                <a href="companion.html">我的伙伴</a>
             </div>
 
             <!-- 移动端菜单按钮 -->
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round"/>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="打开菜单">
+                <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </div>
+
+        <!-- 移动端菜单 -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
+                <a href="index.html">首页</a>
+                <a href="relax.html">疗愈练习</a>
+                <a href="flow-experience.html" class="active" style="display:flex;align-items:center;justify-content:space-between;">
+                    <span>心流体验</span>
+                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.5rem;border-radius:var(--radius-full);font-size:0.65rem;font-weight:700;">NEW</span>
+                </a>
+                <a href="emotion.html">情绪觉察</a>
+                <a href="knowledge-graph.html">知识图谱</a>
+                <a href="about.html">关于我们</a>
+                <a href="companion.html">我的伙伴</a>
+            </div>
+        </div>
     </nav>
 
-    <!-- 页面内容 -->
-    <div class="page-container">
-        <!-- Tab导航 -->
-        <div class="page-tabs">
-            <div class="page-tabs-inner">
-                <a href="#dashboard" class="page-tab active" data-tab="dashboard">
+    <!-- 页面英雄区 -->
+    <div class="page-hero">
+        <div class="page-hero-inner">
+            <h1 class="page-hero-title">
+                发现你的<span class="highlight">心流</span>体验
+            </h1>
+            <p class="page-hero-subtitle">
+                选择一项你热爱的活动，投入15-60分钟，体验完全专注的心流状态
+            </p>
+            
+            <!-- Tab导航 -->
+            <div class="tab-nav">
+                <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback>
                     <span>📊</span>
                     <span>概览</span>
                 </a>
-                <a href="#discover" class="page-tab" data-tab="discover">
+                <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback>
                     <span>🔍</span>
                     <span>发现</span>
                 </a>
-                <a href="#focus" class="page-tab" data-tab="focus">
-                    <span>⚡</span>
-                    <span>专注</span>
-                    <span class="page-tab-badge">NEW</span>
-                </a>
-                <a href="#records" class="page-tab" data-tab="records">
+                <a href="#records" class="page-tab" data-tab="records" data-touch-feedback>
                     <span>📝</span>
                     <span>记录</span>
                 </a>
             </div>
         </div>
+    </div>
+
+    <!-- 页面内容 -->
+    <div class="page-container">
 
         <!-- Dashboard页面 -->
         <div id="dashboard-section" class="content-section">
-            <div class="dashboard-grid">
+            <div class="dashboard-grid" data-stagger="fade-in-up">
                 <!-- 统计卡片 -->
                 <div class="stat-card">
                     <div class="stat-label">本周心流时长</div>
@@ -1447,11 +1438,13 @@
 
             <!-- 今日推荐 -->
             <div style="margin-top: 2rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;">💡 今日推荐</h2>
-                <div class="recommendation-card" onclick="startFlowExperience('digital-painting')">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">💡 今日推荐</h2>
+                <div class="recommendation-card" onclick="startFlowExperience('digital-painting')" data-touch-feedback>
                     <div class="recommendation-header">
                         <span class="recommendation-icon">🎨</span>
-                        <div class="recommendation-title">数字油画</div>
+                        <div>
+                            <div class="recommendation-title">数字油画</div>
+                        </div>
                     </div>
                     <p class="recommendation-reason">基于你的艺术兴趣推荐</p>
                     <div class="recommendation-meta">
@@ -1464,30 +1457,30 @@
                             <span>30分钟</span>
                         </div>
                     </div>
-                    <button class="btn-primary" style="width: 100%;">开始心流体验</button>
+                    <button class="btn-primary" style="width: 100%;" data-touch-feedback>开始心流体验</button>
                 </div>
             </div>
 
             <!-- 快速开始 -->
             <div style="margin-top: 2rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;">⚡ 快速开始</h2>
-                <div class="quick-start-grid">
-                    <a href="#" class="quick-start-card" onclick="startFlowExperience('reading'); return false;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">⚡ 快速开始</h2>
+                <div class="quick-start-grid" data-stagger="fade-in-up">
+                    <a href="#" class="quick-start-card" onclick="startFlowExperience('reading'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">📖</div>
                         <div class="quick-start-title">深度阅读</div>
                         <div class="quick-start-duration">30分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('yoga'); return false;">
+                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('yoga'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘‍♀️</div>
                         <div class="quick-start-title">瑜伽练习</div>
                         <div class="quick-start-duration">45分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card" onclick="startFlowExperience('painting'); return false;">
+                    <a href="#" class="quick-start-card" onclick="startFlowExperience('painting'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🎨</div>
                         <div class="quick-start-title">绘画创作</div>
                         <div class="quick-start-duration">45分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('meditation'); return false;">
+                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('meditation'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘</div>
                         <div class="quick-start-title">正念冥想</div>
                         <div class="quick-start-duration">20分钟</div>
@@ -1498,19 +1491,19 @@
 
         <!-- 活动发现页面 -->
         <div id="discover-section" class="content-section hidden">
-            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;">探索心流活动</h2>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">探索心流活动</h2>
             
             <!-- 筛选按钮 -->
-            <div class="activity-filters">
-                <button class="filter-btn active" onclick="filterActivities('all')">全部</button>
-                <button class="filter-btn" onclick="filterActivities('creative')">创造性活动</button>
-                <button class="filter-btn" onclick="filterActivities('learning')">学习性活动</button>
-                <button class="filter-btn" onclick="filterActivities('physical')">运动性活动</button>
-                <button class="filter-btn" onclick="filterActivities('contemplative')">专注性活动</button>
+            <div class="activity-filters" data-stagger="fade-in-up">
+                <button class="filter-btn active" onclick="filterActivities('all')" data-touch-feedback>全部</button>
+                <button class="filter-btn" onclick="filterActivities('creative')" data-touch-feedback>创造性活动</button>
+                <button class="filter-btn" onclick="filterActivities('learning')" data-touch-feedback>学习性活动</button>
+                <button class="filter-btn" onclick="filterActivities('physical')" data-touch-feedback>运动性活动</button>
+                <button class="filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback>专注性活动</button>
             </div>
 
             <!-- 活动网格 -->
-            <div class="activity-grid" id="activity-grid">
+            <div class="activity-grid" id="activity-grid" data-stagger="fade-in-up">
                 <!-- 活动卡片会通过JavaScript动态生成 -->
             </div>
         </div>
@@ -1533,19 +1526,19 @@
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择时长</h3>
                     <div class="duration-options">
-                        <div class="duration-option" onclick="selectDuration(15)">
+                        <div class="duration-option" onclick="selectDuration(15)" data-touch-feedback>
                             <div class="duration-value">15</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="duration-option selected" onclick="selectDuration(30)">
+                        <div class="duration-option selected" onclick="selectDuration(30)" data-touch-feedback>
                             <div class="duration-value">30</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="duration-option" onclick="selectDuration(45)">
+                        <div class="duration-option" onclick="selectDuration(45)" data-touch-feedback>
                             <div class="duration-value">45</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="duration-option" onclick="selectDuration(60)">
+                        <div class="duration-option" onclick="selectDuration(60)" data-touch-feedback>
                             <div class="duration-value">60</div>
                             <div class="duration-unit">分钟</div>
                         </div>
@@ -1572,20 +1565,20 @@
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">你的技能水平</h3>
                     <div class="score-buttons" style="margin-bottom: 1.5rem;">
-                        <button class="score-btn" onclick="selectSkillLevel(1)">1</button>
-                        <button class="score-btn" onclick="selectSkillLevel(2)">2</button>
-                        <button class="score-btn selected" onclick="selectSkillLevel(3)">3</button>
-                        <button class="score-btn" onclick="selectSkillLevel(4)">4</button>
-                        <button class="score-btn" onclick="selectSkillLevel(5)">5</button>
+                        <button class="score-btn" onclick="selectSkillLevel(1)" data-touch-feedback>1</button>
+                        <button class="score-btn" onclick="selectSkillLevel(2)" data-touch-feedback>2</button>
+                        <button class="score-btn selected" onclick="selectSkillLevel(3)" data-touch-feedback>3</button>
+                        <button class="score-btn" onclick="selectSkillLevel(4)" data-touch-feedback>4</button>
+                        <button class="score-btn" onclick="selectSkillLevel(5)" data-touch-feedback>5</button>
                     </div>
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">活动挑战程度</h3>
                     <div class="score-buttons">
-                        <button class="score-btn" onclick="selectChallengeLevel(1)">1</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(2)">2</button>
-                        <button class="score-btn selected" onclick="selectChallengeLevel(3)">3</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(4)">4</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(5)">5</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(1)" data-touch-feedback>1</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(2)" data-touch-feedback>2</button>
+                        <button class="score-btn selected" onclick="selectChallengeLevel(3)" data-touch-feedback>3</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(4)" data-touch-feedback>4</button>
+                        <button class="score-btn" onclick="selectChallengeLevel(5)" data-touch-feedback>5</button>
                     </div>
 
                     <div class="preparation-tip">
@@ -1608,35 +1601,35 @@
                         <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">📋 准备清单</h3>
                         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                                <input type="checkbox" checked style="width: 20px; height: 20px;">
+                                <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
                                 <span>关闭手机通知或开启勿扰模式</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                                <input type="checkbox" style="width: 20px; height: 20px;">
+                                <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
                                 <span>准备好所需的工具和材料</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
-                                <input type="checkbox" style="width: 20px; height: 20px;">
+                                <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
                                 <span>找一个安静舒适的环境</span>
                             </label>
                         </div>
                     </div>
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择背景音</h3>
-                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;" id="sound-options">
-                        <div class="sound-option selected" data-sound="rain" onclick="selectSound('rain')">
+                    <div class="sound-options" id="sound-options">
+                        <div class="sound-option selected" data-sound="rain" onclick="selectSound('rain')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌧️</div>
                             <div style="font-size: 0.875rem; font-weight: 600;">轻柔雨声</div>
                         </div>
-                        <div class="sound-option" data-sound="ocean" onclick="selectSound('ocean')">
+                        <div class="sound-option" data-sound="ocean" onclick="selectSound('ocean')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌊</div>
                             <div style="font-size: 0.875rem; font-weight: 600;">海浪声</div>
                         </div>
-                        <div class="sound-option" data-sound="music" onclick="selectSound('music')">
+                        <div class="sound-option" data-sound="music" onclick="selectSound('music')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎵</div>
                             <div style="font-size: 0.875rem; font-weight: 600;">轻音乐</div>
                         </div>
-                        <div class="sound-option" data-sound="silence" onclick="selectSound('silence')">
+                        <div class="sound-option" data-sound="silence" onclick="selectSound('silence')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔇</div>
                             <div style="font-size: 0.875rem; font-weight: 600;">静音</div>
                         </div>
@@ -1654,25 +1647,26 @@
                     <p class="preparation-desc">进行1分钟呼吸练习，让自己进入专注状态</p>
 
                     <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50)); border-radius: var(--radius-xl); margin-bottom: 1.5rem;">
-                        <div style="font-size: 4rem; margin-bottom: 1rem;">🌬️</div>
+                        <div style="font-size: 4rem; margin-bottom: 1rem; animation: breathe 8s var(--ease-breathe) infinite;">🌬️</div>
                         <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;">深呼吸</div>
                         <div style="font-size: 1rem; color: var(--theme-text-light);">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
                     </div>
 
-                    <div style="background: var(--color-success-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
+                    <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-                            <span style="color: var(--color-success-500);">✓</span>
+                            <span style="color: var(--color-success); font-size: 1.25rem;">✓</span>
                             <span style="font-weight: 600; color: var(--theme-text);">准备好了吗？</span>
                         </div>
                         <p style="font-size: 0.875rem; color: var(--theme-text); margin: 0;">
                             你即将开始 <strong id="summary-duration">30分钟</strong> 的心流体验<br>
+                            <span id="summary-activity-container" style="display:none;">活动：<strong id="summary-activity"></strong><br></span>
                             目标：<strong id="summary-goal">完成线稿上色</strong>
                         </p>
                     </div>
 
                     <div class="preparation-actions">
                         <button class="btn-secondary" onclick="prevStep(3)">上一步</button>
-                        <button class="btn-primary" onclick="startFocusMode()">开始心流体验</button>
+                        <button class="btn-primary" onclick="beginFocusMode()">开始心流体验</button>
                     </div>
                 </div>
             </div>
@@ -1736,44 +1730,44 @@
                     <div class="assessment-question">
                         <div class="question-text">我完全专注于这个活动</div>
                         <div class="score-buttons" data-question="focus">
-                            <button class="score-btn" onclick="selectScore('focus', 1)">1</button>
-                            <button class="score-btn" onclick="selectScore('focus', 2)">2</button>
-                            <button class="score-btn" onclick="selectScore('focus', 3)">3</button>
-                            <button class="score-btn" onclick="selectScore('focus', 4)">4</button>
-                            <button class="score-btn" onclick="selectScore('focus', 5)">5</button>
+                            <button class="score-btn" onclick="selectScore('focus', 1)" data-touch-feedback>1</button>
+                            <button class="score-btn" onclick="selectScore('focus', 2)" data-touch-feedback>2</button>
+                            <button class="score-btn" onclick="selectScore('focus', 3)" data-touch-feedback>3</button>
+                            <button class="score-btn" onclick="selectScore('focus', 4)" data-touch-feedback>4</button>
+                            <button class="score-btn" onclick="selectScore('focus', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">我没有意识到时间的流逝</div>
                         <div class="score-buttons" data-question="time">
-                            <button class="score-btn" onclick="selectScore('time', 1)">1</button>
-                            <button class="score-btn" onclick="selectScore('time', 2)">2</button>
-                            <button class="score-btn" onclick="selectScore('time', 3)">3</button>
-                            <button class="score-btn" onclick="selectScore('time', 4)">4</button>
-                            <button class="score-btn" onclick="selectScore('time', 5)">5</button>
+                            <button class="score-btn" onclick="selectScore('time', 1)" data-touch-feedback>1</button>
+                            <button class="score-btn" onclick="selectScore('time', 2)" data-touch-feedback>2</button>
+                            <button class="score-btn" onclick="selectScore('time', 3)" data-touch-feedback>3</button>
+                            <button class="score-btn" onclick="selectScore('time', 4)" data-touch-feedback>4</button>
+                            <button class="score-btn" onclick="selectScore('time', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">这个活动的难度对我来说刚刚好</div>
                         <div class="score-buttons" data-question="challenge">
-                            <button class="score-btn" onclick="selectScore('challenge', 1)">1</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 2)">2</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 3)">3</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 4)">4</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 5)">5</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 1)" data-touch-feedback>1</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 2)" data-touch-feedback>2</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 3)" data-touch-feedback>3</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 4)" data-touch-feedback>4</button>
+                            <button class="score-btn" onclick="selectScore('challenge', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">我享受这个活动的过程</div>
                         <div class="score-buttons" data-question="enjoy">
-                            <button class="score-btn" onclick="selectScore('enjoy', 1)">1</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 2)">2</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 3)">3</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 4)">4</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 5)">5</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 1)" data-touch-feedback>1</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 2)" data-touch-feedback>2</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 3)" data-touch-feedback>3</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 4)" data-touch-feedback>4</button>
+                            <button class="score-btn" onclick="selectScore('enjoy', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
                 </div>
@@ -1792,691 +1786,642 @@
 
         <!-- 记录页面 -->
         <div id="records-section" class="content-section hidden">
-            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;">心流记录</h2>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">心流记录</h2>
             
-            <div class="dashboard-grid" style="margin-bottom: 2rem;">
-                <div class="stat-card">
-                    <div class="stat-label">总心流时长</div>
-                    <div class="stat-value">15.8<span class="stat-unit">小时</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">总活动次数</div>
-                    <div class="stat-value">32<span class="stat-unit">次</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">平均心流质量</div>
-                    <div class="stat-value">4.3<span class="stat-unit">/ 5</span></div>
+            <div class="dashboard-grid" style="margin-bottom: 2rem;" id="records-stats">
+                <!-- 动态加载统计数据 -->
+            </div>
+
+            <div class="assessment-card">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">🏆 活动排行</h3>
+                <div class="records-ranking" id="records-ranking">
+                    <!-- 动态加载活动排行 -->
                 </div>
             </div>
 
-            <div style="background: white; border-radius: var(--radius-xl); padding: 2rem; box-shadow: var(--shadow-md);">
-                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">🏆 活动排行</h3>
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-primary-50); border-radius: var(--radius-lg);">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.5rem;">🎨</span>
-                            <div>
-                                <div style="font-weight: 600;">数字油画</div>
-                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">8次 · 3.5小时</div>
-                            </div>
-                        </div>
-                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.3</div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-neutral-50); border-radius: var(--radius-lg);">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.5rem;">📖</span>
-                            <div>
-                                <div style="font-weight: 600;">深度阅读</div>
-                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">5次 · 2.5小时</div>
-                            </div>
-                        </div>
-                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.1</div>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; background: var(--color-neutral-50); border-radius: var(--radius-lg);">
-                        <div style="display: flex; align-items: center; gap: 0.75rem;">
-                            <span style="font-size: 1.5rem;">🧘‍♀️</span>
-                            <div>
-                                <div style="font-weight: 600;">瑜伽练习</div>
-                                <div style="font-size: 0.875rem; color: var(--theme-text-light);">3次 · 1.5小时</div>
-                            </div>
-                        </div>
-                        <div style="font-weight: 600; color: var(--color-primary-500);">⭐ 4.5</div>
-                    </div>
+            <div style="margin-top: 2rem;" id="records-history-container">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">📅 历史记录</h3>
+                <div id="records-history">
+                    <!-- 动态加载历史记录 -->
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // ========== 全局状态 ==========
-        let currentTab = 'dashboard';
-        let currentStep = 1;
-        let selectedDuration = 30;
-        let selectedGoal = '';
-        let skillLevel = 3;
-        let challengeLevel = 3;
-        let assessmentScores = {
-            focus: null,
-            time: null,
-            challenge: null,
-            enjoy: null
-        };
+    <!-- ===== 页脚 ===== -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div style="display:grid;gap:2rem;" class="sm:grid-cols-2 lg:grid-cols-4">
+                <div>
+                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
+                        <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                            <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                            </svg>
+                        </div>
+                        <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+                    </div>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);line-height:1.6;">
+                        公益心理疗愈平台<br>碎片化疗愈，陪伴你的每一刻
+                    </p>
+                </div>
 
-        // 专注模式状态
+                <div>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">核心功能</h4>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
+                        <li><a href="relax.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">疗愈练习</a></li>
+                        <li><a href="flow-experience.html" style="color:inherit;text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">心流体验 <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.1rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;">NEW</span></a></li>
+                        <li><a href="emotion.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">情绪觉察</a></li>
+                        <li><a href="knowledge-graph.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">知识图谱</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">关于我们</h4>
+                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
+                        <li><a href="about.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">平台介绍</a></li>
+                        <li><a href="about.html#disclaimer" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">免责声明</a></li>
+                        <li><a href="about.html#privacy" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">隐私政策</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">求助热线</h4>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">全国心理援助热线</p>
+                    <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">400-161-9995</p>
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
+                </div>
+            </div>
+
+            <div style="border-top:1px solid var(--theme-border);padding-top:2rem;margin-top:2rem;">
+                <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
+                        本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。如有严重心理困扰，请及时寻求专业帮助。
+                    </p>
+                </div>
+                <p style="text-align:center;font-size:0.875rem;color:var(--theme-text-light);">
+                    © 2026 心晴空间 · 公益心理疗愈平台 · 碎片化疗愈，陪伴你的每一刻
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ========== 活动数据 ========== */
+        const activities = [
+            {
+                id: 'reading',
+                name: '深度阅读',
+                icon: '📖',
+                difficulty: 2,
+                duration: '30-60分钟',
+                description: '选择一本你感兴趣的书籍，沉浸在文字的世界中',
+                tags: ['学习', '安静', '室内'],
+                benefits: ['提升专注力', '扩展知识', '减轻压力'],
+                tips: ['选择一个安静的角落', '关闭手机通知', '准备一杯茶或咖啡'],
+                scientific: '阅读能够激活大脑的多个区域，长期阅读可增强神经可塑性。'
+            },
+            {
+                id: 'writing',
+                name: '创意写作',
+                icon: '✍️',
+                difficulty: 3,
+                duration: '30-45分钟',
+                description: '自由书写或创作故事，让思绪自然流淌',
+                tags: ['创造性', '表达', '室内'],
+                benefits: ['提升表达能力', '情绪疏导', '激发创造力'],
+                tips: ['不要纠结于完美', '先写后改', '找个舒适的姿势'],
+                scientific: '写作有助于情绪调节和认知 processing，是积极心理学推荐的自我探索工具。'
+            },
+            {
+                id: 'painting',
+                name: '绘画创作',
+                icon: '🎨',
+                difficulty: 3,
+                duration: '45-60分钟',
+                description: '用色彩和线条表达内心世界，享受创作的乐趣',
+                tags: ['创造性', '艺术', '室内'],
+                benefits: ['激发创造力', '情绪表达', '提升专注'],
+                tips: ['不必追求完美', '尝试不同的媒介', '享受过程而非结果'],
+                scientific: '艺术创作能够激活大脑的奖赏回路，促进多巴胺分泌，提升幸福感。'
+            },
+            {
+                id: 'yoga',
+                name: '瑜伽练习',
+                icon: '🧘‍♀️',
+                difficulty: 2,
+                duration: '30-45分钟',
+                description: '通过体式和呼吸，连接身体与心灵',
+                tags: ['运动', '身心', '室内'],
+                benefits: ['增强身体感知', '减轻焦虑', '提升柔韧性'],
+                tips: ['关注呼吸节奏', '不与他人比较', '倾听身体的感受'],
+                scientific: '瑜伽结合呼吸与动作，能够降低皮质醇水平，促进副交感神经活跃。'
+            },
+            {
+                id: 'meditation',
+                name: '正念冥想',
+                icon: '🧘',
+                difficulty: 1,
+                duration: '15-20分钟',
+                description: '专注当下，观察呼吸和思绪的来去',
+                tags: ['专注', '安静', '室内'],
+                benefits: ['提升专注力', '减轻压力', '增强情绪调节'],
+                tips: ['找一个安静的地方', '保持脊柱挺直', '不要评判自己的思绪'],
+                scientific: '正念冥想能够改变大脑结构，增加前额叶皮层厚度，提升情绪调节能力。'
+            },
+            {
+                id: 'coding',
+                name: '编程学习',
+                icon: '💻',
+                difficulty: 4,
+                duration: '45-60分钟',
+                description: '解决一个编程问题或学习新技术',
+                tags: ['学习', '挑战', '室内'],
+                benefits: ['提升逻辑思维', '获得成就感', '增强问题解决能力'],
+                tips: ['分解大问题', '先理解再动手', '适时休息'],
+                scientific: '编程时的debug过程能够训练执行功能，提升认知灵活性。'
+            },
+            {
+                id: 'cooking',
+                name: '烹饪创作',
+                icon: '🍳',
+                difficulty: 3,
+                duration: '45-60分钟',
+                description: '尝试新食谱，用心准备一顿美味的餐食',
+                tags: ['创造性', '感官', '室内'],
+                benefits: ['提升幸福感', '感官愉悦', '成就感'],
+                tips: ['享受烹饪过程', '尝试新食材', '用心摆盘'],
+                scientific: '烹饪能够激活感官，促进正念状态，并与情绪改善显著相关。'
+            },
+            {
+                id: 'gardening',
+                name: '园艺种植',
+                icon: '🌱',
+                difficulty: 2,
+                duration: '30-45分钟',
+                description: '照料植物，感受生命成长的喜悦',
+                tags: ['自然', '耐心', '户外'],
+                benefits: ['减轻压力', '增强责任感', '连接自然'],
+                tips: ['观察植物的需求', '不要急于求成', '享受与泥土接触'],
+                scientific: '园艺活动能够降低皮质醇水平，提升积极情绪，被称为"自然疗法"。'
+            },
+            {
+                id: 'music',
+                name: '音乐创作/练习',
+                icon: '🎵',
+                difficulty: 3,
+                duration: '30-45分钟',
+                description: '练习乐器或尝试创作一段旋律',
+                tags: ['创造性', '艺术', '室内'],
+                benefits: ['提升专注力', '情绪表达', '增强协调性'],
+                tips: ['享受每一个音符', '不必追求完美', '记录你的创作'],
+                scientific: '音乐训练能够增强大脑多个区域的连接，促进神经可塑性。'
+            },
+            {
+                id: 'running',
+                name: '跑步/慢跑',
+                icon: '🏃',
+                difficulty: 2,
+                duration: '30-45分钟',
+                description: '在跑步中找到节奏，让思绪自由流淌',
+                tags: ['运动', '户外', '健康'],
+                benefits: ['释放内啡肽', '减轻焦虑', '提升体能'],
+                tips: ['保持舒适的节奏', '关注呼吸', '选择合适的路线'],
+                scientific: '有氧运动能够促进BDNF（脑源性神经营养因子）分泌，改善情绪和认知功能。'
+            }
+        ];
+
+        /* ========== 全局变量 ========== */
+        let currentDuration = 30;
+        let currentGoal = '';
+        let currentActivity = null;
+        let currentSkillLevel = 3;
+        let currentChallengeLevel = 3;
+        let selectedSound = 'rain';
         let focusTimer = null;
         let focusSeconds = 0;
-        let focusTargetSeconds = 0;
         let isPaused = false;
-        let selectedSound = 'rain'; // 默认雨声
-        let selectedActivity = null; // 当前选择的活动
+        let scores = {};
 
-        // 活动数据（从API加载）
-        let activities = [];
-
-        // API基础路径
-        const API_BASE = window.location.hostname === 'localhost' 
-            ? 'http://localhost:3000/api/flow' 
-            : '/api/flow';
-
-        // 加载状态
-        let isLoading = false;
-
-        // 显示加载状态
-        function showLoading(message = '加载中...') {
-            isLoading = true;
-            showToast(message, 'info', 10000);
-        }
-
-        // 隐藏加载状态
-        function hideLoading() {
-            isLoading = false;
-            const container = document.getElementById('toast-container');
-            const toasts = container.querySelectorAll('.toast.info');
-            toasts.forEach(toast => {
-                toast.classList.add('hiding');
-                setTimeout(() => toast.remove(), 300);
-            });
-        }
-
-        // 加载活动数据
-        async function loadActivitiesData() {
-            try {
-                const response = await fetch(`${API_BASE}/activities`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    activities = result.activities;
-                    console.log(`已加载 ${activities.length} 个活动`);
-                } else {
-                    throw new Error(result.error || '加载失败');
-                }
-            } catch (error) {
-                console.error('加载活动数据失败:', error);
-                showToast('加载活动数据失败，使用默认数据', 'warning');
-                // 使用默认数据
-                activities = getDefaultActivities();
-            }
-        }
-
-        function getCategoryIcon(categoryId) {
-            const icons = {
-                'creative': '🎨',
-                'learning': '📚',
-                'physical': '🏃',
-                'contemplative': '🧘'
-            };
-            return icons[categoryId] || '✨';
-        }
-
-        function getDefaultActivities() {
-            return [
-                {
-                    id: 'digital-painting',
-                    name: '数字油画',
-                    icon: '🎨',
-                    category: 'creative',
-                    difficulty: 2,
-                    duration: [15, 30, 45, 60],
-                    description: '按照数字提示填充颜色，完成一幅画作',
-                    tags: ['艺术', '创作', '放松']
-                },
-                {
-                    id: 'reading',
-                    name: '深度阅读',
-                    icon: '📖',
-                    category: 'learning',
-                    difficulty: 2,
-                    duration: [30, 45, 60],
-                    description: '专注阅读一本书，做笔记和思考',
-                    tags: ['学习', '思考', '成长']
-                },
-                {
-                    id: 'yoga',
-                    name: '瑜伽练习',
-                    icon: '🧘‍♀️',
-                    category: 'physical',
-                    difficulty: 3,
-                    duration: [30, 45, 60],
-                    description: '练习瑜伽体式，连接身心',
-                    tags: ['运动', '身心', '冥想']
-                },
-                {
-                    id: 'meditation',
-                    name: '正念冥想',
-                    icon: '🧘',
-                    category: 'contemplative',
-                    difficulty: 2,
-                    duration: [10, 15, 20, 30],
-                    description: '专注于呼吸或身体感受，培养觉察力',
-                    tags: ['冥想', '正念', '放松']
-                },
-                {
-                    id: 'writing',
-                    name: '创意写作',
-                    icon: '✍️',
-                    category: 'creative',
-                    difficulty: 3,
-                    duration: [30, 45, 60],
-                    description: '创作小说、诗歌或散文',
-                    tags: ['创作', '表达', '想象']
-                },
-                {
-                    id: 'coding',
-                    name: '编程练习',
-                    icon: '💻',
-                    category: 'learning',
-                    difficulty: 4,
-                    duration: [45, 60, 90],
-                    description: '学习编程语言，完成编程项目',
-                    tags: ['技能', '逻辑', '创造']
-                }
-            ];
-        }
-
-        // ========== Tab切换 ==========
+        /* ========== Tab切换 ========== */
         document.querySelectorAll('.page-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
                 e.preventDefault();
-                const targetTab = tab.getAttribute('data-tab');
-                goToTab(targetTab);
+                const targetTab = tab.dataset.tab;
+                
+                // 更新active状态
+                document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // 显示对应内容
+                document.getElementById('dashboard-section').classList.add('hidden');
+                document.getElementById('discover-section').classList.add('hidden');
+                document.getElementById('records-section').classList.add('hidden');
+                document.getElementById(`${targetTab}-section`).classList.remove('hidden');
+                
+                // 如果切换到发现页面，加载活动
+                if (targetTab === 'discover') {
+                    loadActivities('all');
+                } else if (targetTab === 'records') {
+                    loadRecords();
+                }
             });
         });
 
-        function goToTab(tabName) {
-            // 更新Tab状态
-            document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-            // 显示对应内容
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            document.getElementById(`${tabName}-section`).classList.remove('hidden');
-
-            currentTab = tabName;
-
-            // 如果是发现页面，加载活动
-            if (tabName === 'discover') {
-                loadActivities('all');
-            }
-        }
-
-        // ========== 活动发现 ==========
+        /* ========== 活动发现 ========== */
         function loadActivities(category) {
             const grid = document.getElementById('activity-grid');
-            const filteredActivities = category === 'all' 
-                ? activities 
-                : activities.filter(a => a.category === category);
-
-            grid.innerHTML = filteredActivities.map(activity => `
-                <div class="activity-card" onclick="selectActivity('${activity.id}')">
+            grid.innerHTML = '';
+            
+            const filtered = category === 'all' ? activities : 
+                            activities.filter(a => {
+                                if (category === 'creative') return a.tags.includes('创造性') || a.tags.includes('艺术');
+                                if (category === 'learning') return a.tags.includes('学习');
+                                if (category === 'physical') return a.tags.includes('运动') || a.tags.includes('身体');
+                                if (category === 'contemplative') return a.tags.includes('专注') || a.tags.includes('安静');
+                                return true;
+                            });
+            
+            filtered.forEach((activity, index) => {
+                const card = document.createElement('div');
+                card.className = 'activity-card';
+                card.style.setProperty('--stagger-index', index);
+                card.style.animationDelay = `${index * 80}ms`;
+                card.innerHTML = `
                     <div class="activity-card-header">
-                        <span class="activity-icon">${activity.icon}</span>
+                        <div class="activity-icon">${activity.icon}</div>
                         <div class="activity-difficulty">
-                            ${[1,2,3,4,5].map(i => 
-                                `<span class="difficulty-star ${i <= activity.difficulty ? 'filled' : ''}">⭐</span>`
-                            ).join('')}
+                            ${'⭐'.repeat(activity.difficulty)}${'☆'.repeat(5 - activity.difficulty)}
                         </div>
                     </div>
-                    <h3 class="activity-name">${activity.name}</h3>
-                    <p class="activity-desc">${activity.description}</p>
+                    <div class="activity-name">${activity.name}</div>
+                    <div class="activity-desc">${activity.description}</div>
                     <div class="activity-tags">
                         ${activity.tags.map(tag => `<span class="activity-tag">${tag}</span>`).join('')}
                     </div>
                     <div class="activity-meta">
-                        <span class="activity-duration">${activity.duration[0]}-${activity.duration[activity.duration.length-1]}分钟</span>
-                        <button class="activity-btn">开始</button>
+                        <div class="activity-duration">⏱️ ${activity.duration}</div>
+                        <button class="activity-btn" onclick="showActivityDetail('${activity.id}')" data-touch-feedback>查看详情</button>
                     </div>
-                </div>
-            `).join('');
+                `;
+                card.onclick = () => showActivityDetail(activity.id);
+                grid.appendChild(card);
+            });
         }
 
         function filterActivities(category) {
-            // 更新筛选按钮状态
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-
-            // 加载活动
             loadActivities(category);
         }
 
-        function selectActivity(activityId) {
+        /* ========== 活动详情弹窗 ========== */
+        function showActivityDetail(activityId) {
             const activity = activities.find(a => a.id === activityId);
-            if (activity) {
-                selectedDuration = activity.duration[1]; // 默认选择中间时长
-                goToTab('preparation');
+            if (!activity) return;
+            
+            currentActivity = activity;
+            
+            document.getElementById('modal-activity-name').textContent = `${activity.icon} ${activity.name}`;
+            document.getElementById('modal-activity-description').textContent = activity.description;
+            document.getElementById('modal-activity-duration').textContent = activity.duration;
+            
+            // 益处
+            const benefitsContainer = document.getElementById('modal-activity-benefits');
+            benefitsContainer.innerHTML = activity.benefits.map(b => 
+                `<span style="padding: 0.5rem 1rem; background: var(--color-primary-100); color: var(--color-primary-600); border-radius: var(--radius-full); font-size: 0.875rem; font-weight: 500;">${b}</span>`
+            ).join('');
+            
+            // 技巧
+            const tipsContainer = document.getElementById('modal-activity-tips');
+            tipsContainer.innerHTML = activity.tips.map(t => 
+                `<div style="display: flex; align-items: flex-start; gap: 0.5rem; padding: 0.75rem; background: var(--color-primary-50); border-radius: var(--radius-lg); font-size: 0.875rem; color: var(--theme-text);">
+                    <span>💡</span>
+                    <span>${t}</span>
+                </div>`
+            ).join('');
+            
+            // 科学依据
+            document.getElementById('modal-activity-scientific').textContent = activity.scientific;
+            
+            // 开始按钮
+            document.getElementById('modal-start-btn').onclick = () => {
+                closeActivityModal();
+                startFlowExperience(activityId);
+            };
+            
+            // 显示弹窗
+            document.getElementById('activity-modal').classList.add('active');
+        }
+
+        function closeActivityModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('activity-modal').classList.remove('active');
+        }
+
+        /* ========== 心流准备 ========== */
+        function startFlowExperience(activityId) {
+            // 切换到准备页面
+            document.getElementById('dashboard-section').classList.add('hidden');
+            document.getElementById('discover-section').classList.add('hidden');
+            document.getElementById('records-section').classList.add('hidden');
+            document.getElementById('preparation-section').classList.remove('hidden');
+            
+            // 如果指定了活动，更新摘要
+            if (activityId && activities.find(a => a.id === activityId)) {
+                const activity = activities.find(a => a.id === activityId);
+                document.getElementById('summary-activity-container').style.display = 'block';
+                document.getElementById('summary-activity').textContent = `${activity.icon} ${activity.name}`;
             }
         }
 
-        // ========== 心流准备流程 ==========
         function selectDuration(duration) {
-            selectedDuration = duration;
+            currentDuration = duration;
             document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
             event.target.closest('.duration-option').classList.add('selected');
         }
 
-        function selectSkillLevel(level) {
-            skillLevel = level;
-            // 选择步骤2中的第一个评分按钮组（技能水平）
-            const step2 = document.getElementById('step-2');
-            const firstScoreGroup = step2.querySelector('.score-buttons');
-            const buttons = firstScoreGroup.querySelectorAll('.score-btn');
-            buttons.forEach((btn, index) => {
-                btn.classList.toggle('selected', index + 1 === level);
-            });
-        }
-
-        function selectChallengeLevel(level) {
-            challengeLevel = level;
-            // 选择步骤2中的第二个评分按钮组（挑战程度）
-            const step2 = document.getElementById('step-2');
-            const scoreGroups = step2.querySelectorAll('.score-buttons');
-            const secondScoreGroup = scoreGroups[1];
-            const buttons = secondScoreGroup.querySelectorAll('.score-btn');
-            buttons.forEach((btn, index) => {
-                btn.classList.toggle('selected', index + 1 === level);
-            });
-        }
-
         function nextStep(step) {
-            // 隐藏当前步骤
-            document.getElementById(`step-${currentStep}`).classList.add('hidden');
-            
-            // 显示下一步
-            document.getElementById(`step-${step}`).classList.remove('hidden');
-            document.getElementById(`step-${step}`).classList.add('slide-up');
-
-            // 更新进度指示
-            document.querySelectorAll('.progress-step').forEach((s, index) => {
-                if (index + 1 < step) {
-                    s.classList.remove('active');
-                    s.classList.add('completed');
-                } else if (index + 1 === step) {
-                    s.classList.add('active');
-                    s.classList.remove('completed');
-                } else {
-                    s.classList.remove('active', 'completed');
+            // 验证当前步骤
+            if (step === 2) {
+                currentGoal = document.getElementById('goal-input').value;
+                if (!currentGoal) {
+                    showToast('请先设定一个目标', 'warning');
+                    return;
                 }
-            });
-
-            // 更新摘要信息
-            if (step === 4) {
-                selectedGoal = document.getElementById('goal-input').value || '完成活动';
-                document.getElementById('summary-duration').textContent = selectedDuration;
-                document.getElementById('summary-goal').textContent = selectedGoal;
             }
-
-            currentStep = step;
+            
+            // 隐藏所有步骤
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`step-${i}`).classList.add('hidden');
+                document.querySelector(`.progress-step[data-step="${i}"]`).classList.remove('active');
+            }
+            
+            // 显示目标步骤
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('active');
+            
+            // 更新摘要
+            if (step === 4) {
+                document.getElementById('summary-duration').textContent = `${currentDuration}分钟`;
+                document.getElementById('summary-goal').textContent = currentGoal;
+            }
         }
 
         function prevStep(step) {
             nextStep(step);
         }
 
-        // ========== 背景音选择 ==========
-        function selectSound(sound) {
-            selectedSound = sound;
-            document.querySelectorAll('.sound-option').forEach(opt => {
-                opt.classList.toggle('selected', opt.dataset.sound === sound);
+        function selectSkillLevel(level) {
+            currentSkillLevel = level;
+            document.querySelectorAll('#step-2 .score-btn').forEach((btn, idx) => {
+                btn.classList.toggle('selected', idx + 1 === level);
             });
         }
 
-        const soundNames = {
-            'rain': '🌧️ 轻柔雨声',
-            'ocean': '🌊 海浪声',
-            'music': '🎵 轻音乐',
-            'silence': '🔇 静音'
-        };
-
-        function changeSound() {
-            // 循环切换背景音
-            const sounds = ['rain', 'ocean', 'music', 'silence'];
-            const currentIndex = sounds.indexOf(selectedSound);
-            const nextIndex = (currentIndex + 1) % sounds.length;
-            selectedSound = sounds[nextIndex];
-            
-            // 更新显示
-            document.getElementById('focus-sound-name').textContent = soundNames[selectedSound];
-            showToast(`已切换到${soundNames[selectedSound]}`, 'info', 2000);
+        function selectChallengeLevel(level) {
+            currentChallengeLevel = level;
+            document.querySelectorAll('#step-3 .score-btn').forEach((btn, idx) => {
+                btn.classList.toggle('selected', idx + 1 === level);
+            });
         }
 
-        // ========== 专注模式 ==========
-        function startFlowExperience(activityId) {
-            selectActivity(activityId);
+        function selectSound(sound) {
+            selectedSound = sound;
+            document.querySelectorAll('.sound-option').forEach(opt => opt.classList.remove('selected'));
+            event.target.closest('.sound-option').classList.add('selected');
         }
 
-        function startFocusMode() {
-            // 隐藏准备页面
+        function goToTab(tab) {
+            document.querySelector(`.page-tab[data-tab="${tab}"]`).click();
+        }
+
+        /* ========== 专注模式 ========== */
+        function beginFocusMode() {
             document.getElementById('preparation-section').classList.add('hidden');
-            
-            // 显示专注模式
             document.getElementById('focus-mode').classList.remove('hidden');
-
-            // 设置目标时间
-            focusTargetSeconds = selectedDuration * 60;
-            focusSeconds = 0;
-
-            // 更新显示
-            document.getElementById('focus-target').textContent = formatTime(focusTargetSeconds);
-            document.getElementById('focus-goal-text').textContent = `当前目标：${selectedGoal}`;
             
-            // 更新背景音显示
-            document.querySelector('.focus-sound .sound-name').textContent = soundNames[selectedSound];
-
-            // 开始计时
-            startTimer();
-        }
-
-        function startTimer() {
+            // 更新活动名称
+            if (currentActivity) {
+                document.getElementById('focus-activity-name').textContent = `${currentActivity.icon} ${currentActivity.name}`;
+            }
+            
+            // 更新目标
+            document.getElementById('focus-goal-text').textContent = `当前目标：${currentGoal}`;
+            
+            // 更新目标时间
+            const targetMinutes = Math.floor(currentDuration);
+            const targetSeconds = targetMinutes * 60;
+            document.getElementById('focus-target').textContent = `${targetMinutes}:00`;
+            
+            // 开始计时器
+            focusSeconds = 0;
+            isPaused = false;
+            document.getElementById('pause-btn').textContent = '暂停';
+            
             focusTimer = setInterval(() => {
                 if (!isPaused) {
                     focusSeconds++;
-                    updateTimerDisplay();
+                    updateFocusDisplay();
                     
-                    if (focusSeconds >= focusTargetSeconds) {
-                        completeFocusMode();
+                    // 检查是否完成
+                    if (focusSeconds >= targetSeconds) {
+                        clearInterval(focusTimer);
+                        showAssessment();
                     }
                 }
             }, 1000);
         }
 
-        function updateTimerDisplay() {
-            // 更新时间显示
-            document.getElementById('focus-time').textContent = formatTime(focusSeconds);
+        function updateFocusDisplay() {
+            const minutes = Math.floor(focusSeconds / 60);
+            const seconds = focusSeconds % 60;
+            document.getElementById('focus-time').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             
             // 更新进度环
-            const progress = (focusSeconds / focusTargetSeconds) * 100;
-            const circumference = 754; // 2 * π * 120
-            const offset = circumference - (progress / 100) * circumference;
+            const targetSeconds = currentDuration * 60;
+            const progress = Math.min(focusSeconds / targetSeconds, 1);
+            const circumference = 2 * Math.PI * 120;
+            const offset = circumference * (1 - progress);
             document.getElementById('progress-circle').style.strokeDashoffset = offset;
             
             // 更新百分比
-            document.getElementById('progress-percentage').textContent = `${Math.round(progress)}%`;
-
-            // 里程碑提示
-            if (focusSeconds === Math.floor(focusTargetSeconds * 0.25)) {
-                showMilestone('做得很好！继续加油 💪');
-            } else if (focusSeconds === Math.floor(focusTargetSeconds * 0.5)) {
-                showMilestone('已经完成一半了！🌟');
-            } else if (focusSeconds === Math.floor(focusTargetSeconds * 0.75)) {
-                showMilestone('快要完成了！加油！🎉');
-            }
-        }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            document.getElementById('progress-percentage').textContent = `${Math.round(progress * 100)}%`;
         }
 
         function togglePause() {
             isPaused = !isPaused;
-            const btn = document.getElementById('pause-btn');
-            btn.textContent = isPaused ? '继续' : '暂停';
+            document.getElementById('pause-btn').textContent = isPaused ? '继续' : '暂停';
         }
 
         function stopFocusMode() {
-            if (confirm('确定要结束心流体验吗？')) {
-                clearInterval(focusTimer);
-                completeFocusMode();
-            }
-        }
-
-        function completeFocusMode() {
             clearInterval(focusTimer);
+            showAssessment();
+        }
+
+        function changeSound() {
+            // 简单的循环切换
+            const sounds = ['rain', 'ocean', 'music', 'silence'];
+            const currentIdx = sounds.indexOf(selectedSound);
+            const nextIdx = (currentIdx + 1) % sounds.length;
+            selectedSound = sounds[nextIdx];
             
-            // 隐藏专注模式
+            const soundNames = {
+                'rain': '🌧️ 轻柔雨声',
+                'ocean': '🌊 海浪声',
+                'music': '🎵 轻音乐',
+                'silence': '🔇 静音'
+            };
+            
+            document.getElementById('focus-sound-name').textContent = soundNames[selectedSound];
+            showToast(`已切换到${soundNames[selectedSound]}`, 'success');
+        }
+
+        /* ========== 心流评估 ========== */
+        function showAssessment() {
             document.getElementById('focus-mode').classList.add('hidden');
-            
-            // 显示评估页面
             document.getElementById('assessment-section').classList.remove('hidden');
-            document.getElementById('completed-duration').textContent = Math.floor(focusSeconds / 60);
-        }
-
-        function showMilestone(message) {
-            showToast(message, 'success', 4000);
-        }
-        }
-
-        // ========== 心流评估 ==========
-        function selectScore(question, score) {
-            assessmentScores[question] = score;
             
-            // 更新按钮状态
-            const buttons = document.querySelectorAll(`[data-question="${question}"] .score-btn`);
-            buttons.forEach((btn, index) => {
-                btn.classList.toggle('selected', index + 1 === score);
+            // 更新完成时长
+            const minutes = Math.floor(focusSeconds / 60);
+            document.getElementById('completed-duration').textContent = minutes;
+        }
+
+        function selectScore(dimension, score) {
+            scores[dimension] = score;
+            const container = document.querySelector(`[data-question="${dimension}"]`);
+            container.querySelectorAll('.score-btn').forEach((btn, idx) => {
+                btn.classList.toggle('selected', idx + 1 === score);
             });
         }
 
         function saveAssessment() {
-            // 检查是否完成所有评分
-            if (Object.values(assessmentScores).some(score => score === null)) {
-                showToast('请完成所有评分', 'warning');
-                return;
-            }
-
-            // 计算平均分
-            const avgScore = Object.values(assessmentScores).reduce((a, b) => a + b, 0) / 4;
+            const diary = document.getElementById('diary-text').value;
             
-            // 保存数据
+            // 这里可以保存到localStorage或发送到服务器
             const record = {
+                activity: currentActivity ? currentActivity.name : '未知活动',
                 duration: focusSeconds,
-                goal: selectedGoal,
-                activityId: selectedActivity ? selectedActivity.id : null,
-                scores: assessmentScores,
-                avgScore: avgScore,
-                diary: document.getElementById('diary-text').value
+                goal: currentGoal,
+                scores: scores,
+                diary: diary,
+                date: new Date().toISOString()
             };
             
-            saveRecord(record);
-            showToast('心流记录已保存！', 'success');
-
-            // 跳转到记录页面
-            goToTab('records');
+            // 保存到localStorage
+            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            records.push(record);
+            localStorage.setItem('flow-records', JSON.stringify(records));
             
-            // 重置状态
-            resetState();
+            showToast('评估已保存！', 'success');
+            
+            // 返回首页
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
         }
 
         function skipAssessment() {
-            goToTab('records');
-            resetState();
+            showToast('已跳过评估', 'warning');
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
         }
 
-        function resetState() {
-            currentStep = 1;
-            assessmentScores = { focus: null, time: null, challenge: null, enjoy: null };
-            focusSeconds = 0;
-            isPaused = false;
+        /* ========== 记录页面 ========== */
+        function loadRecords() {
+            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
             
-            // 重置步骤显示
-            document.querySelectorAll('[id^="step-"]').forEach(step => step.classList.add('hidden'));
-            document.getElementById('step-1').classList.remove('hidden');
+            // 统计
+            const totalDuration = records.reduce((sum, r) => sum + r.duration, 0);
+            const totalMinutes = Math.round(totalDuration / 60);
+            const avgQuality = records.length > 0 ? 
+                (records.reduce((sum, r) => sum + (r.scores.focus || 0), 0) / records.length).toFixed(1) : 0;
             
-            // 重置进度指示
-            document.querySelectorAll('.progress-step').forEach((s, index) => {
-                s.classList.remove('active', 'completed');
-                if (index === 0) s.classList.add('active');
+            document.getElementById('records-stats').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">总心流时长</div>
+                    <div class="stat-value">${(totalMinutes / 60).toFixed(1)}<span class="stat-unit">小时</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">完成次数</div>
+                    <div class="stat-value">${records.length}<span class="stat-unit">次</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">平均质量</div>
+                    <div class="stat-value">${avgQuality}<span class="stat-unit">/ 5</span></div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">最长单次</div>
+                    <div class="stat-value">${Math.round(Math.max(...records.map(r => r.duration)) / 60)}<span class="stat-unit">分钟</span></div>
+                </div>
+            `;
+            
+            // 活动排行
+            const activityCounts = {};
+            records.forEach(r => {
+                activityCounts[r.activity] = (activityCounts[r.activity] || 0) + 1;
             });
+            
+            const sortedActivities = Object.entries(activityCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+            
+            document.getElementById('records-ranking').innerHTML = sortedActivities.map(([name, count], idx) => `
+                <div class="ranking-item">
+                    <div class="ranking-rank">#${idx + 1}</div>
+                    <div class="ranking-icon">${activities.find(a => a.name === name)?.icon || '📌'}</div>
+                    <div class="ranking-info">
+                        <div class="ranking-name">${name}</div>
+                        <div class="ranking-meta">完成 ${count} 次</div>
+                    </div>
+                    <div class="ranking-duration">${count}次</div>
+                </div>
+            `).join('');
+            
+            // 历史记录
+            const recentRecords = records.slice(-10).reverse();
+            document.getElementById('records-history').innerHTML = recentRecords.map(r => `
+                <div style="padding: 1rem; background: var(--color-primary-50); border-radius: var(--radius-lg); margin-bottom: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <div style="font-weight: 600; color: var(--theme-text);">${r.activity}</div>
+                        <div style="font-size: 0.875rem; color: var(--theme-text-light);">${Math.round(r.duration / 60)}分钟</div>
+                    </div>
+                    <div style="font-size: 0.875rem; color: var(--theme-text-light);">目标：${r.goal}</div>
+                    <div style="font-size: 0.75rem; color: var(--theme-text-light); margin-top: 0.5rem;">${new Date(r.date).toLocaleDateString('zh-CN')}</div>
+                </div>
+            `).join('');
         }
 
-        // ========== Toast提示 ==========
-        function showToast(message, type = 'info', duration = 3000) {
+        /* ========== 移动端菜单 ========== */
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('open');
+        }
+
+        /* ========== Toast提示 ========== */
+        function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
             toast.textContent = message;
             container.appendChild(toast);
-
-            // 自动移除
+            
             setTimeout(() => {
                 toast.classList.add('hiding');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
-            }, duration);
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
         }
 
-        // ========== 移动端菜单 ==========
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('open');
-        }
-
-        function closeMobileMenu(event) {
-            if (event.target.id === 'mobile-menu') {
-                const menu = document.getElementById('mobile-menu');
-                menu.classList.remove('open');
-            }
-        }
-
-        // ========== 数据持久化 ==========
-        async function saveRecord(record) {
-            try {
-                const response = await fetch(`${API_BASE}/records`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(record)
-                });
-
-                const result = await response.json();
-                
-                if (result.success) {
-                    console.log('记录已保存到服务器');
-                    updateDashboardStats();
-                } else {
-                    throw new Error(result.error || '保存失败');
-                }
-            } catch (error) {
-                console.error('保存记录失败:', error);
-                // 降级到localStorage
-                const records = JSON.parse(localStorage.getItem('flowRecords') || '[]');
-                records.unshift(record);
-                localStorage.setItem('flowRecords', JSON.stringify(records));
-                updateDashboardStats();
-            }
-        }
-
-        async function getRecords() {
-            try {
-                const response = await fetch(`${API_BASE}/records?limit=100`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    return result.records;
-                } else {
-                    throw new Error(result.error || '获取失败');
-                }
-            } catch (error) {
-                console.error('获取记录失败:', error);
-                // 降级到localStorage
-                return JSON.parse(localStorage.getItem('flowRecords') || '[]');
-            }
-        }
-
-        async function updateDashboardStats() {
-            try {
-                const response = await fetch(`${API_BASE}/stats?period=week`);
-                const result = await response.json();
-                
-                if (result.success) {
-                    const stats = result.stats;
-                    
-                    // 更新显示
-                    const statCards = document.querySelectorAll('.stat-card .stat-value');
-                    if (statCards.length >= 4) {
-                        statCards[0].innerHTML = `${(stats.totalDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
-                        statCards[1].innerHTML = `${stats.totalSessions}<span class="stat-unit">次</span>`;
-                        statCards[2].innerHTML = `${stats.avgScore}<span class="stat-unit">/ 5</span>`;
-                        statCards[3].innerHTML = `${stats.streak}<span class="stat-unit">天</span>`;
-                    }
-                }
-            } catch (error) {
-                console.error('更新统计数据失败:', error);
-                // 降级到本地计算
-                const records = await getRecords();
-                const now = new Date();
-                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                
-                const weekRecords = records.filter(r => new Date(r.date) >= weekAgo);
-                const weekDuration = weekRecords.reduce((sum, r) => sum + r.duration, 0);
-                const weekCount = weekRecords.length;
-                const avgScore = weekRecords.length > 0 
-                    ? (weekRecords.reduce((sum, r) => sum + r.avgScore, 0) / weekRecords.length).toFixed(1)
-                    : 0;
-                
-                const streak = calculateStreak(records);
-                
-                const statCards = document.querySelectorAll('.stat-card .stat-value');
-                if (statCards.length >= 4) {
-                    statCards[0].innerHTML = `${(weekDuration / 60).toFixed(1)}<span class="stat-unit">小时</span>`;
-                    statCards[1].innerHTML = `${weekCount}<span class="stat-unit">次</span>`;
-                    statCards[2].innerHTML = `${avgScore}<span class="stat-unit">/ 5</span>`;
-                    statCards[3].innerHTML = `${streak}<span class="stat-unit">天</span>`;
-                }
-            }
-        }
-
-        function calculateStreak(records) {
-            if (records.length === 0) return 0;
+        /* ========== 初始化 ========== */
+        document.addEventListener('DOMContentLoaded', () => {
+            // 加载活动
+            loadActivities('all');
             
-            let streak = 0;
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            for (let i = 0; i < 365; i++) {
-                const checkDate = new Date(today);
-                checkDate.setDate(checkDate.getDate() - i);
-                
-                const hasRecord = records.some(r => {
-                    const recordDate = new Date(r.date);
-                    recordDate.setHours(0, 0, 0, 0);
-                    return recordDate.getTime() === checkDate.getTime();
-                });
-                
-                if (hasRecord) {
-                    streak++;
-                } else if (i > 0) {
-                    break;
-                }
+            // 初始化神经美学交互
+            if (window.NeuroAesthetics) {
+                window.NeuroAesthetics.initStaggerAnimations();
             }
-            
-            return streak;
-        }
-
-        // ========== 初始化 ==========
-        document.addEventListener('DOMContentLoaded', async () => {
-            // 加载活动数据
-            await loadActivitiesData();
-            
-            // 更新统计数据
-            updateDashboardStats();
-            
-            // 默认显示Dashboard
-            goToTab('dashboard');
         });
     </script>
 </body>
