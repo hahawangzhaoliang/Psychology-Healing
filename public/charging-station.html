@@ -390,13 +390,17 @@
                 <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
             </a>
 
-            <div style="display:none;align-items:center;gap:2rem;" class="md:flex">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;">首页</a>
-                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
-                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;">关于我们</a>
-                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;">我的伙伴</a>
+            <div class="desktop-nav">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">
+                    心流体验
+                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
+                </a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
             </div>
 
             <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="菜单">
@@ -406,13 +410,17 @@
             </button>
         </div>
 
-        <div id="mobileMenu" style="display:none;background:var(--theme-card);border-top:1px solid var(--theme-border);padding:0.75rem 1rem;" class="md:hidden">
-            <a href="index.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">首页</a>
-            <a href="emotion.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">情绪觉察</a>
-            <a href="relax.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">疗愈练习</a>
-            <a href="knowledge-graph.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">知识图谱</a>
-            <a href="about.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">关于我们</a>
-            <a href="companion.html" style="display:block;padding:0.5rem 0.75rem;color:var(--theme-text-light);text-decoration:none;">我的伙伴</a>
+        <!-- 移动端菜单 -->
+        <div class="mobile-menu" id="mobileMenu">
+            <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
+                <a href="index.html">首页</a>
+                <a href="relax.html">疗愈练习</a>
+                <a href="flow-experience.html">心流体验</a>
+                <a href="emotion.html">情绪觉察</a>
+                <a href="knowledge-graph.html">知识图谱</a>
+                <a href="about.html">关于我们</a>
+                <a href="companion.html">我的伙伴</a>
+            </div>
         </div>
     </nav>
 

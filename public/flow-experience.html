@@ -11,7 +11,8 @@
     <meta name="theme-color" content="#5cb8a8">
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
-    <script src="js/neuroaesthetics.js"></script>
+    <!-- 漫画风格引导样式 -->
+    <link rel="stylesheet" href="css/guide-comic.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -134,6 +135,73 @@
             line-height: 1.6;
         }
 
+        /* 英雄区CTA按钮 */
+        .hero-cta {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1.5rem 0 2.5rem;
+        }
+
+        .btn-hero-primary {
+            gap: 0.4rem;
+            padding: 0.65rem 1.75rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: none;
+            background: linear-gradient(135deg, #F97316, #EA580C);
+            color: white;
+            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
+            will-change: transform, box-shadow;
+        }
+
+        .btn-hero-primary:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
+        }
+
+        .btn-hero-primary:active {
+            transform: translateY(-1px) scale(1.01);
+        }
+
+        .btn-hero-secondary {
+            gap: 0.4rem;
+            padding: 0.65rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: all 0.3s var(--ease-standard);
+            border: 2px solid var(--color-primary-400);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-primary-600);
+            backdrop-filter: blur(10px);
+            will-change: transform, box-shadow;
+        }
+
+        .btn-hero-secondary:hover {
+            background: white;
+            border-color: var(--color-primary-500);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(92, 184, 168, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes focusBackground {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* ========== Tab导航 ========== */
         .tab-nav {
             display: flex;
@@ -195,21 +263,7 @@
             }
         }
 
-        /* 统计卡片 */
-        .stat-card {
-            background: var(--theme-card);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-            transition: transform var(--duration-normal) var(--ease-spring),
-                        box-shadow var(--duration-normal) var(--ease-standard);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
-
+        /* 统计卡片内部布局（使用 .card 类） */
         .stat-label {
             font-size: 0.875rem;
             color: var(--theme-text-light);
@@ -301,31 +355,7 @@
             }
         }
 
-        .quick-start-card {
-            background: var(--theme-card);
-            border-radius: var(--radius-lg);
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-spring);
-            text-decoration: none;
-            display: block;
-            border: 2px solid transparent;
-        }
-
-        .quick-start-card:hover {
-            box-shadow: var(--shadow-md);
-            transform: translateY(-4px);
-            border-color: var(--color-primary-200);
-        }
-
-        .quick-start-card.highlight {
-            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
-            border-color: var(--color-primary-200);
-        }
-
-        .quick-start-icon {
+            .quick-start-icon {
             font-size: 2.5rem;
             margin-bottom: 0.75rem;
             animation: float 4s ease-in-out infinite;
@@ -355,6 +385,7 @@
         }
 
         .filter-btn {
+            gap: var(--space-2);
             padding: 0.5rem 1.25rem;
             background: var(--theme-card);
             border: 2px solid var(--theme-border);
@@ -362,7 +393,6 @@
             font-size: 0.875rem;
             font-weight: 500;
             color: var(--theme-text-light);
-            cursor: pointer;
             transition: all var(--duration-normal) var(--ease-spring);
             white-space: nowrap;
         }
@@ -460,15 +490,6 @@
             margin-bottom: 1rem;
         }
 
-        .activity-tag {
-            padding: 0.25rem 0.75rem;
-            background: var(--color-primary-100);
-            color: var(--color-primary-600);
-            border-radius: var(--radius-full);
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
         .activity-meta {
             display: flex;
             justify-content: space-between;
@@ -482,61 +503,12 @@
             color: var(--theme-text-light);
         }
 
-        .activity-btn {
-            padding: 0.5rem 1.25rem;
-            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
-            color: white;
-            border: none;
-            border-radius: var(--radius-full);
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-spring);
-            box-shadow: 0 4px 12px rgba(90, 154, 138, 0.3);
-        }
-
-        .activity-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(90, 154, 138, 0.4);
-        }
-
-        /* ========== 活动详情弹窗 ========== */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            z-index: 2000;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity var(--duration-normal) var(--ease-standard);
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        /* 活动卡片内部布局结束 */
+        /* 活动详情弹窗需要更宽 */
         .modal-panel {
-            background: var(--theme-card);
-            border-radius: var(--radius-xl);
             max-width: 600px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            transform: scale(0.9) translateY(16px);
-            transition: transform var(--duration-normal) var(--ease-spring);
         }
-
-        .modal-overlay.active .modal-panel {
-            transform: scale(1) translateY(0);
-        }
-
+        
         .modal-header {
             padding: 1.5rem;
             border-bottom: 1px solid var(--theme-border);
@@ -729,7 +701,9 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50), var(--color-primary-100));
+            background-size: 200% 200%;
+            animation: focusBggradient 30s ease-in-out infinite;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -782,7 +756,7 @@
 
         .progress-ring-progress {
             fill: none;
-            stroke: var(--color-primary-500);
+            stroke: url(#progress-gradient);
             stroke-width: 8;
             stroke-linecap: round;
             transition: stroke-dashoffset 1s var(--ease-standard);
@@ -849,58 +823,11 @@
             color: var(--theme-text);
         }
 
-        .sound-change {
-            padding: 0.5rem 1rem;
-            background: var(--color-primary-100);
-            color: var(--color-primary-600);
-            border: none;
-            border-radius: var(--radius-md);
-            font-size: 0.875rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--duration-fast) var(--ease-standard);
-            margin-left: auto;
-        }
-
-        .sound-change:hover {
-            background: var(--color-primary-200);
-        }
-
         .focus-actions {
             display: flex;
             gap: 1rem;
         }
 
-        .focus-btn {
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: var(--radius-lg);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all var(--duration-normal) var(--ease-spring);
-        }
-
-        .focus-btn.pause {
-            background: white;
-            color: var(--theme-text);
-            box-shadow: var(--shadow-md);
-        }
-
-        .focus-btn.pause:hover {
-            background: var(--color-primary-50);
-            transform: translateY(-2px);
-        }
-
-        .focus-btn.stop {
-            background: var(--color-primary-100);
-            color: var(--theme-text);
-        }
-
-        .focus-btn.stop:hover {
-            background: var(--color-primary-200);
-            transform: translateY(-2px);
-        }
 
         /* ========== 心流评估样式 ========== */
         .assessment-container {
@@ -970,7 +897,6 @@
             font-size: 1.25rem;
             font-weight: 600;
             color: var(--theme-text-light);
-            cursor: pointer;
             transition: all var(--duration-normal) var(--ease-spring);
         }
 
@@ -1203,10 +1129,6 @@
         }
 
         /* ========== 动画类 ========== */
-        .fade-in-up {
-            animation: fadeInUp var(--duration-slow) var(--ease-standard) both;
-        }
-
         .slide-up {
             animation: fadeInUp var(--duration-slow) var(--ease-spring) both;
         }
@@ -1330,8 +1252,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" style="flex: 1;" onclick="closeActivityModal()">关闭</button>
-                <button class="btn-primary" style="flex: 1;" id="modal-start-btn">开始体验</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeActivityModal()">关闭</button>
+                <button class="btn btn-primary" style="flex: 1;" id="modal-start-btn">开始体验</button>
             </div>
         </div>
     </div>
@@ -1340,22 +1262,26 @@
     <nav class="navbar" id="navbar">
         <div class="navbar-inner">
             <a href="index.html" class="nav-logo">
-                <div class="nav-logo-icon">🌿</div>
+                <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
+                    <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                    </svg>
+                </div>
                 <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
             </a>
 
             <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html">首页</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html" class="active" style="display:flex;align-items:center;gap:0.35rem;">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:0.35rem;">
                     心流体验
                     <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
                 </a>
-                <a href="emotion.html">情绪觉察</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html">关于我们</a>
-                <a href="companion.html">我的伙伴</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
             </div>
 
             <!-- 移动端菜单按钮 -->
@@ -1393,6 +1319,18 @@
                 选择一项你热爱的活动，投入15-60分钟，体验完全专注的心流状态
             </p>
             
+            <!-- 快速开始CTA按钮 -->
+            <div class="hero-cta">
+                <button class="btn btn-hero-primary" onclick="quickStartFlow()" data-touch-feedback>
+                    <span style="font-size: 1.15rem;">🚀</span>
+                    开始心流体验
+                </button>
+                <button class="btn btn-hero-secondary" onclick="showGuideAgain()" data-touch-feedback>
+                    <span style="font-size: 1rem;">📖</span>
+                    查看引导
+                </button>
+            </div>
+            
             <!-- Tab导航 -->
             <div class="tab-nav">
                 <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback>
@@ -1418,19 +1356,19 @@
         <div id="dashboard-section" class="content-section">
             <div class="dashboard-grid" data-stagger="fade-in-up">
                 <!-- 统计卡片 -->
-                <div class="stat-card">
+                <div class="card">
                     <div class="stat-label">本周心流时长</div>
                     <div class="stat-value">5.2<span class="stat-unit">小时</span></div>
                 </div>
-                <div class="stat-card">
+                <div class="card">
                     <div class="stat-label">心流活动次数</div>
                     <div class="stat-value">12<span class="stat-unit">次</span></div>
                 </div>
-                <div class="stat-card">
+                <div class="card">
                     <div class="stat-label">平均心流质量</div>
                     <div class="stat-value">4.2<span class="stat-unit">/ 5</span></div>
                 </div>
-                <div class="stat-card">
+                <div class="card">
                     <div class="stat-label">连续天数</div>
                     <div class="stat-value">5<span class="stat-unit">天</span></div>
                 </div>
@@ -1439,7 +1377,7 @@
             <!-- 今日推荐 -->
             <div style="margin-top: 2rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">💡 今日推荐</h2>
-                <div class="recommendation-card" onclick="startFlowExperience('digital-painting')" data-touch-feedback>
+                <div class="card" onclick="startFlowExperience('digital-painting')" data-touch-feedback>
                     <div class="recommendation-header">
                         <span class="recommendation-icon">🎨</span>
                         <div>
@@ -1457,7 +1395,7 @@
                             <span>30分钟</span>
                         </div>
                     </div>
-                    <button class="btn-primary" style="width: 100%;" data-touch-feedback>开始心流体验</button>
+                    <button class="btn btn-primary" style="width: 100%;" data-touch-feedback>开始心流体验</button>
                 </div>
             </div>
 
@@ -1465,22 +1403,22 @@
             <div style="margin-top: 2rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">⚡ 快速开始</h2>
                 <div class="quick-start-grid" data-stagger="fade-in-up">
-                    <a href="#" class="quick-start-card" onclick="startFlowExperience('reading'); return false;" data-touch-feedback>
+                    <a href="#" class="card" onclick="startFlowExperience('reading'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">📖</div>
                         <div class="quick-start-title">深度阅读</div>
                         <div class="quick-start-duration">30分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('yoga'); return false;" data-touch-feedback>
+                    <a href="#" class="card highlight" onclick="startFlowExperience('yoga'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘‍♀️</div>
                         <div class="quick-start-title">瑜伽练习</div>
                         <div class="quick-start-duration">45分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card" onclick="startFlowExperience('painting'); return false;" data-touch-feedback>
+                    <a href="#" class="card" onclick="startFlowExperience('painting'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🎨</div>
                         <div class="quick-start-title">绘画创作</div>
                         <div class="quick-start-duration">45分钟</div>
                     </a>
-                    <a href="#" class="quick-start-card highlight" onclick="startFlowExperience('meditation'); return false;" data-touch-feedback>
+                    <a href="#" class="card highlight" onclick="startFlowExperience('meditation'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘</div>
                         <div class="quick-start-title">正念冥想</div>
                         <div class="quick-start-duration">20分钟</div>
@@ -1495,16 +1433,127 @@
             
             <!-- 筛选按钮 -->
             <div class="activity-filters" data-stagger="fade-in-up">
-                <button class="filter-btn active" onclick="filterActivities('all')" data-touch-feedback>全部</button>
-                <button class="filter-btn" onclick="filterActivities('creative')" data-touch-feedback>创造性活动</button>
-                <button class="filter-btn" onclick="filterActivities('learning')" data-touch-feedback>学习性活动</button>
-                <button class="filter-btn" onclick="filterActivities('physical')" data-touch-feedback>运动性活动</button>
-                <button class="filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback>专注性活动</button>
+                <button class="btn filter-btn active" onclick="filterActivities('all')" data-touch-feedback>全部</button>
+                <button class="btn filter-btn" onclick="filterActivities('creative')" data-touch-feedback>创造性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('learning')" data-touch-feedback>学习性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('physical')" data-touch-feedback>运动性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback>专注性活动</button>
             </div>
 
             <!-- 活动网格 -->
             <div class="activity-grid" id="activity-grid" data-stagger="fade-in-up">
                 <!-- 活动卡片会通过JavaScript动态生成 -->
+            </div>
+            
+            <!-- 心流知识卡片 -->
+            <div id="flow-education-section" style="margin-top: 3rem;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">
+                    📚 心流知识
+                </h2>
+                
+                <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+                    
+                    <!-- 卡片1: 什么是心流？ -->
+                    <div class="card education-card" onclick="toggleEducationCard(this)" data-touch-feedback>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #5cb8a8, #4a9a8c); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
+                                🧠
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;">什么是心流？</h3>
+                                <div style="font-size: 0.85rem; color: var(--theme-text-light);">Mihaly Csikszentmihalyi 的理论</div>
+                            </div>
+                        </div>
+                        
+                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;">
+                            心流（Flow）是一种完全沉浸、忘记时间的专注状态。当你挑战与技能完美平衡时，心流就会自然产生...
+                        </div>
+                        
+                        <div class="education-full" style="display: none; font-size: 0.95rem; color: var(--theme-text); line-height: 1.8;">
+                            <svg viewBox="0 0 280 160" style="width: 100%; height: auto; margin-bottom: 1rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, #f0fdfa, #fef3c7); padding: 1rem;">
+                                <circle cx="140" cy="80" r="40" fill="#5cb8a8" opacity="0.2"/>
+                                <circle cx="140" cy="80" r="25" fill="#FFD1A4"/>
+                                <rect x="125" y="105" width="30" height="40" rx="8" fill="#5cb8a8"/>
+                                <text x="140" y="170" font-size="14" fill="#374151" text-anchor="middle">完全专注的状态</text>
+                            </svg>
+                            
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">核心特征：</h4>
+                            <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
+                                <li>完全专注，忘记时间流逝</li>
+                                <li>活动本身带来内在愉悦</li>
+                                <li>感到掌控感和自主性</li>
+                                <li>自我意识消失</li>
+                                <li>感受到清晰的反馈</li>
+                            </ul>
+                            
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">科学依据：</h4>
+                            <p style="margin: 0 0 1rem;">神经科学研究表明，心流状态下大脑会释放多巴胺、内啡肽等神经递质，带来愉悦感和满足感。长期体验心流的人，幸福感显著更高。</p>
+                            
+                            <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-md); margin-top: 1rem;">
+                                <strong>💡 小提示：</strong> 心流不是"努力"出来的，而是当挑战与技能匹配时自然产生的状态。
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))">
+                            展开阅读 →
+                        </button>
+                    </div>
+                    
+                    <!-- 卡片2: 如何进入心流？ -->
+                    <div class="card education-card" onclick="toggleEducationCard(this)" data-touch-feedback>
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
+                                🎯
+                            </div>
+                            <div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;">如何进入心流？</h3>
+                                <div style="font-size: 0.85rem; color: var(--theme-text-light);">前提条件 + 实用技巧</div>
+                            </div>
+                        </div>
+                        
+                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;">
+                            进入心流需要满足几个前提条件：明确的目标、即时反馈、挑战与技能的平衡...
+                        </div>
+                        
+                        <div class="education-full" style="display: none; font-size: 0.95rem; color: var(--theme-text); line-height: 1.8;">
+                            <svg viewBox="0 0 280 200" style="width: 100%; height: auto; margin-bottom: 1rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 1rem;">
+                                <rect x="40" y="40" width="200" height="120" fill="white" stroke="#f59e0b" stroke-width="2" rx="8"/>
+                                <text x="140" y="65" font-size="12" fill="#374151" text-anchor="middle" font-weight="bold">挑战-技能平衡模型</text>
+                                
+                                <!-- 坐标轴 -->
+                                <line x1="60" y1="140" x2="220" y2="140" stroke="#9ca3af" stroke-width="2"/>
+                                <line x1="60" y1="140" x2="60" y2="60" stroke="#9ca3af" stroke-width="2"/>
+                                <text x="140" y="160" font-size="10" fill="#6b7280" text-anchor="middle">技能水平</text>
+                                <text x="40" y="100" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 40 100)">挑战难度</text>
+                                
+                                <!-- 心流区域 -->
+                                <circle cx="140" cy="100" r="25" fill="#f59e0b" opacity="0.3"/>
+                                <text x="140" y="105" font-size="11" fill="#92400e" text-anchor="middle" font-weight="bold">心流</text>
+                            </svg>
+                            
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">前提条件：</h4>
+                            <ol style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
+                                <li><strong>明确的目标</strong> - 知道要做什么，做到什么程度</li>
+                                <li><strong>即时反馈</strong> - 能清楚知道自己做得如何</li>
+                                <li><strong>挑战与技能平衡</strong> - 任务难度略高于当前能力</li>
+                                <li><strong>消除干扰</strong> - 关闭手机通知，创造安静环境</li>
+                            </ol>
+                            
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">实用技巧：</h4>
+                            <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
+                                <li>设定25-90分钟的专注时间块</li>
+                                <li>选择一个你真正感兴趣的活动</li>
+                                <li>提前准备好所有需要的工具</li>
+                                <li>从简单的部分开始，逐步增加难度</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))">
+                            展开阅读 →
+                        </button>
+                    </div>
+                    
+                </div>
             </div>
         </div>
 
@@ -1526,7 +1575,7 @@
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择时长</h3>
                     <div class="duration-options">
-                        <div class="duration-option" onclick="selectDuration(15)" data-touch-feedback>
+                        <div class="btn btn-ghost" onclick="selectDuration(15)" data-touch-feedback>
                             <div class="duration-value">15</div>
                             <div class="duration-unit">分钟</div>
                         </div>
@@ -1534,11 +1583,11 @@
                             <div class="duration-value">30</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="duration-option" onclick="selectDuration(45)" data-touch-feedback>
+                        <div class="btn btn-ghost" onclick="selectDuration(45)" data-touch-feedback>
                             <div class="duration-value">45</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="duration-option" onclick="selectDuration(60)" data-touch-feedback>
+                        <div class="btn btn-ghost" onclick="selectDuration(60)" data-touch-feedback>
                             <div class="duration-value">60</div>
                             <div class="duration-unit">分钟</div>
                         </div>
@@ -1553,8 +1602,8 @@
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn-secondary" onclick="goToTab('discover')">返回</button>
-                        <button class="btn-primary" onclick="nextStep(2)">下一步</button>
+                        <button class="btn btn-secondary" onclick="goToTab('discover')">返回</button>
+                        <button class="btn btn-primary" onclick="nextStep(2)">下一步</button>
                     </div>
                 </div>
 
@@ -1565,20 +1614,20 @@
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">你的技能水平</h3>
                     <div class="score-buttons" style="margin-bottom: 1.5rem;">
-                        <button class="score-btn" onclick="selectSkillLevel(1)" data-touch-feedback>1</button>
-                        <button class="score-btn" onclick="selectSkillLevel(2)" data-touch-feedback>2</button>
-                        <button class="score-btn selected" onclick="selectSkillLevel(3)" data-touch-feedback>3</button>
-                        <button class="score-btn" onclick="selectSkillLevel(4)" data-touch-feedback>4</button>
-                        <button class="score-btn" onclick="selectSkillLevel(5)" data-touch-feedback>5</button>
+                        <button class="btn score-btn" onclick="selectSkillLevel(1)" data-touch-feedback>1</button>
+                        <button class="btn score-btn" onclick="selectSkillLevel(2)" data-touch-feedback>2</button>
+                        <button class="btn score-btn selected" onclick="selectSkillLevel(3)" data-touch-feedback>3</button>
+                        <button class="btn score-btn" onclick="selectSkillLevel(4)" data-touch-feedback>4</button>
+                        <button class="btn score-btn" onclick="selectSkillLevel(5)" data-touch-feedback>5</button>
                     </div>
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">活动挑战程度</h3>
                     <div class="score-buttons">
-                        <button class="score-btn" onclick="selectChallengeLevel(1)" data-touch-feedback>1</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(2)" data-touch-feedback>2</button>
-                        <button class="score-btn selected" onclick="selectChallengeLevel(3)" data-touch-feedback>3</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(4)" data-touch-feedback>4</button>
-                        <button class="score-btn" onclick="selectChallengeLevel(5)" data-touch-feedback>5</button>
+                        <button class="btn score-btn" onclick="selectChallengeLevel(1)" data-touch-feedback>1</button>
+                        <button class="btn score-btn" onclick="selectChallengeLevel(2)" data-touch-feedback>2</button>
+                        <button class="btn score-btn selected" onclick="selectChallengeLevel(3)" data-touch-feedback>3</button>
+                        <button class="btn score-btn" onclick="selectChallengeLevel(4)" data-touch-feedback>4</button>
+                        <button class="btn score-btn" onclick="selectChallengeLevel(5)" data-touch-feedback>5</button>
                     </div>
 
                     <div class="preparation-tip">
@@ -1587,8 +1636,8 @@
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn-secondary" onclick="prevStep(1)">上一步</button>
-                        <button class="btn-primary" onclick="nextStep(3)">下一步</button>
+                        <button class="btn btn-secondary" onclick="prevStep(1)">上一步</button>
+                        <button class="btn btn-primary" onclick="nextStep(3)">下一步</button>
                     </div>
                 </div>
 
@@ -1636,8 +1685,8 @@
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn-secondary" onclick="prevStep(2)">上一步</button>
-                        <button class="btn-primary" onclick="nextStep(4)">下一步</button>
+                        <button class="btn btn-secondary" onclick="prevStep(2)">上一步</button>
+                        <button class="btn btn-primary" onclick="nextStep(4)">下一步</button>
                     </div>
                 </div>
 
@@ -1665,8 +1714,8 @@
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn-secondary" onclick="prevStep(3)">上一步</button>
-                        <button class="btn-primary" onclick="beginFocusMode()">开始心流体验</button>
+                        <button class="btn btn-secondary" onclick="prevStep(3)">上一步</button>
+                        <button class="btn btn-primary" onclick="beginFocusMode()">开始心流体验</button>
                     </div>
                 </div>
             </div>
@@ -1683,6 +1732,12 @@
 
             <div class="progress-ring-container">
                 <svg class="progress-ring" width="280" height="280">
+                    <defs>
+                        <linearGradient id="progress-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#5cb8a8;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#5A9A8A;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
                     <circle class="progress-ring-bg" cx="140" cy="140" r="120"></circle>
                     <circle class="progress-ring-progress" cx="140" cy="140" r="120" 
                             stroke-dasharray="754" stroke-dashoffset="754" id="progress-circle"></circle>
@@ -1703,12 +1758,15 @@
                     <div class="sound-label">背景音</div>
                     <div class="sound-name" id="focus-sound-name">🌧️ 轻柔雨声</div>
                 </div>
-                <button class="sound-change" onclick="changeSound()">更换</button>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-sm btn-ghost" id="sound-play-btn" onclick="toggleSoundPlayback()" data-touch-feedback>▶️ 播放</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changeSound()">更换</button>
+                </div>
             </div>
 
             <div class="focus-actions">
-                <button class="focus-btn pause" id="pause-btn" onclick="togglePause()">暂停</button>
-                <button class="focus-btn stop" onclick="stopFocusMode()">结束</button>
+                <button class="btn btn-secondary" id="pause-btn" onclick="togglePause()">暂停</button>
+                <button class="btn btn-ghost" onclick="stopFocusMode()">结束</button>
             </div>
         </div>
 
@@ -1721,7 +1779,7 @@
                     <p class="celebration-desc">你刚刚完成了 <span id="completed-duration">30</span> 分钟的心流体验</p>
                 </div>
 
-                <div class="assessment-card">
+                <div class="card">
                     <h2 class="assessment-title">📊 心流体验评估</h2>
                     <p style="font-size: 0.875rem; color: var(--theme-text-light); margin-bottom: 1.5rem;">
                         请评价你在这次活动中的体验（1=很不同意，5=完全同意）
@@ -1730,56 +1788,56 @@
                     <div class="assessment-question">
                         <div class="question-text">我完全专注于这个活动</div>
                         <div class="score-buttons" data-question="focus">
-                            <button class="score-btn" onclick="selectScore('focus', 1)" data-touch-feedback>1</button>
-                            <button class="score-btn" onclick="selectScore('focus', 2)" data-touch-feedback>2</button>
-                            <button class="score-btn" onclick="selectScore('focus', 3)" data-touch-feedback>3</button>
-                            <button class="score-btn" onclick="selectScore('focus', 4)" data-touch-feedback>4</button>
-                            <button class="score-btn" onclick="selectScore('focus', 5)" data-touch-feedback>5</button>
+                            <button class="btn score-btn" onclick="selectScore('focus', 1)" data-touch-feedback>1</button>
+                            <button class="btn score-btn" onclick="selectScore('focus', 2)" data-touch-feedback>2</button>
+                            <button class="btn score-btn" onclick="selectScore('focus', 3)" data-touch-feedback>3</button>
+                            <button class="btn score-btn" onclick="selectScore('focus', 4)" data-touch-feedback>4</button>
+                            <button class="btn score-btn" onclick="selectScore('focus', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">我没有意识到时间的流逝</div>
                         <div class="score-buttons" data-question="time">
-                            <button class="score-btn" onclick="selectScore('time', 1)" data-touch-feedback>1</button>
-                            <button class="score-btn" onclick="selectScore('time', 2)" data-touch-feedback>2</button>
-                            <button class="score-btn" onclick="selectScore('time', 3)" data-touch-feedback>3</button>
-                            <button class="score-btn" onclick="selectScore('time', 4)" data-touch-feedback>4</button>
-                            <button class="score-btn" onclick="selectScore('time', 5)" data-touch-feedback>5</button>
+                            <button class="btn score-btn" onclick="selectScore('time', 1)" data-touch-feedback>1</button>
+                            <button class="btn score-btn" onclick="selectScore('time', 2)" data-touch-feedback>2</button>
+                            <button class="btn score-btn" onclick="selectScore('time', 3)" data-touch-feedback>3</button>
+                            <button class="btn score-btn" onclick="selectScore('time', 4)" data-touch-feedback>4</button>
+                            <button class="btn score-btn" onclick="selectScore('time', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">这个活动的难度对我来说刚刚好</div>
                         <div class="score-buttons" data-question="challenge">
-                            <button class="score-btn" onclick="selectScore('challenge', 1)" data-touch-feedback>1</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 2)" data-touch-feedback>2</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 3)" data-touch-feedback>3</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 4)" data-touch-feedback>4</button>
-                            <button class="score-btn" onclick="selectScore('challenge', 5)" data-touch-feedback>5</button>
+                            <button class="btn score-btn" onclick="selectScore('challenge', 1)" data-touch-feedback>1</button>
+                            <button class="btn score-btn" onclick="selectScore('challenge', 2)" data-touch-feedback>2</button>
+                            <button class="btn score-btn" onclick="selectScore('challenge', 3)" data-touch-feedback>3</button>
+                            <button class="btn score-btn" onclick="selectScore('challenge', 4)" data-touch-feedback>4</button>
+                            <button class="btn score-btn" onclick="selectScore('challenge', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
 
                     <div class="assessment-question">
                         <div class="question-text">我享受这个活动的过程</div>
                         <div class="score-buttons" data-question="enjoy">
-                            <button class="score-btn" onclick="selectScore('enjoy', 1)" data-touch-feedback>1</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 2)" data-touch-feedback>2</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 3)" data-touch-feedback>3</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 4)" data-touch-feedback>4</button>
-                            <button class="score-btn" onclick="selectScore('enjoy', 5)" data-touch-feedback>5</button>
+                            <button class="btn score-btn" onclick="selectScore('enjoy', 1)" data-touch-feedback>1</button>
+                            <button class="btn score-btn" onclick="selectScore('enjoy', 2)" data-touch-feedback>2</button>
+                            <button class="btn score-btn" onclick="selectScore('enjoy', 3)" data-touch-feedback>3</button>
+                            <button class="btn score-btn" onclick="selectScore('enjoy', 4)" data-touch-feedback>4</button>
+                            <button class="btn score-btn" onclick="selectScore('enjoy', 5)" data-touch-feedback>5</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="assessment-card">
+                <div class="card">
                     <h2 class="assessment-title">📝 心流日记（可选）</h2>
                     <textarea class="diary-textarea" placeholder="记录这次心流体验的感受、收获或想法..." id="diary-text"></textarea>
                 </div>
 
                 <div class="assessment-actions">
-                    <button class="btn-secondary" onclick="skipAssessment()">跳过</button>
-                    <button class="btn-primary" onclick="saveAssessment()">保存并查看统计</button>
+                    <button class="btn btn-secondary" onclick="skipAssessment()">跳过</button>
+                    <button class="btn btn-primary" onclick="saveAssessment()">保存并查看统计</button>
                 </div>
             </div>
         </div>
@@ -1792,7 +1850,7 @@
                 <!-- 动态加载统计数据 -->
             </div>
 
-            <div class="assessment-card">
+            <div class="card">
                 <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">🏆 活动排行</h3>
                 <div class="records-ranking" id="records-ranking">
                     <!-- 动态加载活动排行 -->
@@ -1808,63 +1866,6 @@
         </div>
     </div>
 
-    <!-- ===== 页脚 ===== -->
-    <footer class="footer">
-        <div class="footer-inner">
-            <div style="display:grid;gap:2rem;" class="sm:grid-cols-2 lg:grid-cols-4">
-                <div>
-                    <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:1rem;">
-                        <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
-                            <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                        </div>
-                        <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
-                    </div>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);line-height:1.6;">
-                        公益心理疗愈平台<br>碎片化疗愈，陪伴你的每一刻
-                    </p>
-                </div>
-
-                <div>
-                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">核心功能</h4>
-                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
-                        <li><a href="relax.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">疗愈练习</a></li>
-                        <li><a href="flow-experience.html" style="color:inherit;text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">心流体验 <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.1rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;">NEW</span></a></li>
-                        <li><a href="emotion.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">情绪觉察</a></li>
-                        <li><a href="knowledge-graph.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">知识图谱</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">关于我们</h4>
-                    <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
-                        <li><a href="about.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">平台介绍</a></li>
-                        <li><a href="about.html#disclaimer" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">免责声明</a></li>
-                        <li><a href="about.html#privacy" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">隐私政策</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">求助热线</h4>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">全国心理援助热线</p>
-                    <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">400-161-9995</p>
-                    <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
-                </div>
-            </div>
-
-            <div style="border-top:1px solid var(--theme-border);padding-top:2rem;margin-top:2rem;">
-                <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
-                    <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
-                        本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。如有严重心理困扰，请及时寻求专业帮助。
-                    </p>
-                </div>
-                <p style="text-align:center;font-size:0.875rem;color:var(--theme-text-light);">
-                    © 2026 心晴空间 · 公益心理疗愈平台 · 碎片化疗愈，陪伴你的每一刻
-                </p>
-            </div>
-        </div>
-    </footer>
 
     <script>
         /* ========== 活动数据 ========== */
@@ -2044,7 +2045,7 @@
             
             filtered.forEach((activity, index) => {
                 const card = document.createElement('div');
-                card.className = 'activity-card';
+                card.className = 'card';
                 card.style.setProperty('--stagger-index', index);
                 card.style.animationDelay = `${index * 80}ms`;
                 card.innerHTML = `
@@ -2057,11 +2058,11 @@
                     <div class="activity-name">${activity.name}</div>
                     <div class="activity-desc">${activity.description}</div>
                     <div class="activity-tags">
-                        ${activity.tags.map(tag => `<span class="activity-tag">${tag}</span>`).join('')}
+                        ${activity.tags.map(tag => `<span class="badge badge-primary">${tag}</span>`).join('')}
                     </div>
                     <div class="activity-meta">
                         <div class="activity-duration">⏱️ ${activity.duration}</div>
-                        <button class="activity-btn" onclick="showActivityDetail('${activity.id}')" data-touch-feedback>查看详情</button>
+                        <button class="btn btn-primary btn-sm" onclick="showActivityDetail('${activity.id}')" data-touch-feedback>查看详情</button>
                     </div>
                 `;
                 card.onclick = () => showActivityDetail(activity.id);
@@ -2261,7 +2262,7 @@
         }
 
         function changeSound() {
-            // 简单的循环切换
+            // 循环切换声音
             const sounds = ['rain', 'ocean', 'music', 'silence'];
             const currentIdx = sounds.indexOf(selectedSound);
             const nextIdx = (currentIdx + 1) % sounds.length;
@@ -2275,7 +2276,29 @@
             };
             
             document.getElementById('focus-sound-name').textContent = soundNames[selectedSound];
+            
+            // 如果正在播放，切换到新声音
+            if (isPlaying) {
+                playAmbientSound(selectedSound);
+            }
+            
             showToast(`已切换到${soundNames[selectedSound]}`, 'success');
+        }
+        
+        // 添加播放/暂停环境音功能
+        function toggleSoundPlayback() {
+            if (selectedSound === 'silence') {
+                showToast('当前为静音模式，请先选择其他声音', 'warning');
+                return;
+            }
+            
+            toggleAmbientSound();
+            
+            // 更新按钮文本
+            const btn = document.getElementById('sound-play-btn');
+            if (btn) {
+                btn.textContent = isPlaying ? '⏸️ 暂停' : '▶️ 播放';
+            }
         }
 
         /* ========== 心流评估 ========== */
@@ -2394,6 +2417,259 @@
             `).join('');
         }
 
+        /* ========== 快速开始功能 ========== */
+        function quickStartFlow() {
+            // 智能推荐：根据用户历史记录推荐活动
+            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            let recommendedActivity = 'reading'; // 默认推荐
+            
+            if (records.length > 0) {
+                // 如果已有记录，推荐最常进行的活动
+                const activityCounts = {};
+                records.forEach(r => {
+                    activityCounts[r.activity] = (activityCounts[r.activity] || 0) + 1;
+                });
+                const mostFrequent = Object.entries(activityCounts)
+                    .sort((a, b) => b[1] - a[1])[0];
+                if (mostFrequent) {
+                    const activity = activities.find(a => a.name === mostFrequent[0]);
+                    if (activity) recommendedActivity = activity.id;
+                }
+            } else {
+                // 新用户，推荐简单的活动
+                recommendedActivity = 'meditation'; // 冥想最适合新手
+            }
+            
+            // 直接跳转到专注模式
+            showActivityDetail(recommendedActivity);
+            
+            showToast('已为你推荐最适合的活动！', 'success');
+        }
+        
+        function showGuideAgain() {
+            // 重新显示引导
+            if (confirm('重新查看引导教程吗？')) {
+                localStorage.removeItem('flowGuideCompleted');
+                location.reload();
+            }
+        }
+        
+        /* ========== 环境音播放功能 ========== */
+        let audioContext = null;
+        let currentSoundSource = null;
+        let isPlaying = false;
+        let gainNode = null;
+        
+        // 初始化音频上下文
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioContext.createGain();
+                gainNode.connect(audioContext.destination);
+                gainNode.gain.value = 0.5; // 默认音量50%
+            }
+        }
+        
+        // 生成雨声
+        function createRainSound() {
+            initAudioContext();
+            
+            const bufferSize = 2 * audioContext.sampleRate;
+            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            // 生成白噪声
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            
+            // 创建滤波器（让声音更像雨声）
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+            
+            const source = audioContext.createBufferSource();
+            source.buffer = noiseBuffer;
+            source.loop = true;
+            
+            source.connect(filter);
+            filter.connect(gainNode);
+            
+            return source;
+        }
+        
+        // 生成海浪声
+        function createOceanSound() {
+            initAudioContext();
+            
+            const bufferSize = 4 * audioContext.sampleRate;
+            const noiseBuffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            // 生成有节奏的噪声（模拟海浪）
+            for (let i = 0; i < bufferSize; i++) {
+                const t = i / audioContext.sampleRate;
+                const wave = Math.sin(2 * Math.PI * 0.1 * t) * 0.5 + 0.5; // 0.1Hz的波浪节奏
+                output[i] = (Math.random() * 2 - 1) * wave;
+            }
+            
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 800;
+            
+            const source = audioContext.createBufferSource();
+            source.buffer = noiseBuffer;
+            source.loop = true;
+            
+            source.connect(filter);
+            filter.connect(gainNode);
+            
+            return source;
+        }
+        
+        // 生成轻音乐（简单的和弦）
+        function createMusicSound() {
+            initAudioContext();
+            
+            // 创建多个振荡器（模拟和弦）
+            const oscillators = [];
+            const frequencies = [261.63, 329.63, 392.0]; // C大调和弦
+            
+            frequencies.forEach(freq => {
+                const osc = audioContext.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.value = freq;
+                
+                const oscGain = audioContext.createGain();
+                oscGain.gain.value = 0.1; // 音量较低
+                
+                osc.connect(oscGain);
+                oscGain.connect(gainNode);
+                
+                oscillators.push(osc);
+            });
+            
+            // 返回一个可以控制的对象
+            return {
+                start: () => oscillators.forEach(osc => osc.start()),
+                stop: () => oscillators.forEach(osc => osc.stop()),
+                oscillators: oscillators
+            };
+        }
+        
+        // 播放环境音
+        function playAmbientSound(soundType) {
+            stopAmbientSound(); // 先停止当前播放
+            
+            if (soundType === 'silence') {
+                showToast('已切换为静音模式', 'success');
+                return;
+            }
+            
+            initAudioContext();
+            
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            let source;
+            switch(soundType) {
+                case 'rain':
+                    source = createRainSound();
+                    break;
+                case 'ocean':
+                    source = createOceanSound();
+                    break;
+                case 'music':
+                    source = createMusicSound();
+                    break;
+                default:
+                    return;
+            }
+            
+            if (source) {
+                if (source.oscillators) {
+                    source.start();
+                    currentSoundSource = source;
+                } else {
+                    source.start();
+                    currentSoundSource = source;
+                }
+                isPlaying = true;
+                showToast(`正在播放${getSoundName(soundType)}`, 'success');
+            }
+        }
+        
+        // 停止环境音
+        function stopAmbientSound() {
+            if (currentSoundSource) {
+                try {
+                    if (currentSoundSource.oscillators) {
+                        currentSoundSource.stop();
+                    } else {
+                        currentSoundSource.stop();
+                    }
+                } catch(e) {
+                    console.log('停止音频时出错：', e);
+                }
+                currentSoundSource = null;
+                isPlaying = false;
+            }
+        }
+        
+        // 切换播放/暂停
+        function toggleAmbientSound() {
+            if (isPlaying) {
+                stopAmbientSound();
+                showToast('已暂停环境音', 'warning');
+            } else {
+                const currentSound = selectedSound || 'rain';
+                playAmbientSound(currentSound);
+            }
+        }
+        
+        // 获取环境音名称
+        function getSoundName(soundType) {
+            const names = {
+                'rain': '🌧️ 轻柔雨声',
+                'ocean': '🌊 海浪声',
+                'music': '🎵 轻音乐',
+                'silence': '🔇 静音'
+            };
+            return names[soundType] || soundType;
+        }
+        
+        // 音量控制
+        function setVolume(value) {
+            if (gainNode) {
+                gainNode.gain.value = value;
+            }
+        }
+        
+        /* ========== 心流知识卡片功能 ========== */
+        function toggleEducationCard(card) {
+            if (!card) return;
+            
+            const preview = card.querySelector('.education-preview');
+            const full = card.querySelector('.education-full');
+            const btn = card.querySelector('button');
+            
+            if (full.style.display === 'none') {
+                // 展开
+                preview.style.display = 'none';
+                full.style.display = 'block';
+                btn.textContent = '收起 ↑';
+                
+                // 滚动到卡片位置
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } else {
+                // 收起
+                preview.style.display = 'block';
+                full.style.display = 'none';
+                btn.textContent = '展开阅读 →';
+            }
+        }
+        
         /* ========== 移动端菜单 ========== */
         function toggleMobileMenu() {
             document.getElementById('mobileMenu').classList.toggle('open');
@@ -2424,5 +2700,12 @@
             }
         });
     </script>
+
+    <!-- 神经美学交互引擎 -->
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/companion-widget.js"></script>
+    <!-- 漫画风格引导系统 -->
+    <script src="js/guide-comic.js"></script>
 </body>
 </html>
