@@ -2885,15 +2885,29 @@ function showScorePopup(row, col, score, type = 'normal') {
     popup.className = `score-popup ${type}`;
     popup.textContent = score > 0 ? `+${score}` : `${score}`;
 
-    // 计算在棋盘内的相对位置
-    const left = rect.left - boardRect.left + rect.width / 2;
-    const top = rect.top - boardRect.top;
+    // 根据类型设置样式
+    if (type === 'combo') {
+        popup.style.fontSize = '22px';
+        popup.style.background = 'linear-gradient(135deg, #FF6B9D, #FF8FAB)';
+        popup.style.webkitBackgroundClip = 'text';
+        popup.style.webkitTextFillColor = 'transparent';
+        popup.style.filter = 'drop-shadow(0 0 6px rgba(255,107,157,0.8))';
+    } else if (type === 'special') {
+        popup.style.fontSize = '20px';
+        popup.style.color = '#FFD93D';
+        popup.style.filter = 'drop-shadow(0 0 6px rgba(255,217,61,0.8))';
+    }
+
+    // 计算在棋盘内的相对位置（随机偏移，更自然）
+    const offsetX = (Math.random() - 0.5) * 30;
+    const left = rect.left - boardRect.left + rect.width / 2 + offsetX;
+    const top = rect.top - boardRect.top - 10;
 
     popup.style.left = `${left}px`;
     popup.style.top = `${top}px`;
 
     DOM.effectsLayer.appendChild(popup);
-    setTimeout(() => popup.remove(), 1000);
+    setTimeout(() => popup.remove(), 1200);
 }
 
 // ═══════════════════════════════════════════════════
@@ -2958,20 +2972,75 @@ function createParticles(row, col) {
     if (!cell) return;
     const rect = cell.getBoundingClientRect();
     const boardRect = DOM.board.getBoundingClientRect();
-    const colors = ['#FF6B9D', '#88D8E8', '#FFD93D', '#A8E6CF', '#FFB6C1', '#C8A8E9'];
 
-    for (let i = 0; i < 10; i++) {
+    // 11种猫咪对应的独特粒子颜色
+    const catTypeColors = {
+        1: ['#FFB347', '#FFA500', '#FF8C00'],       // 橘猫 - 橙色系
+        2: ['#F5F5F5', '#FFFFFF', '#E8E8E8'],       // 白猫 - 白色系
+        3: ['#DAA520', '#CD853F', '#B8860B'],       // 豹猫 - 金棕色系
+        4: ['#B0C4DE', '#A9A9A9', '#C0C0C0'],       // 布偶猫 - 淡钢蓝/灰色系
+        5: ['#36454F', '#4A4A4A', '#2F4F4F'],       // 黑猫 - 深灰/炭色系
+        6: ['#D2691E', '#A0522D', '#8B4513'],       // 虎斑猫 - 棕色系
+        7: ['#5B8AC6', '#3A6EA5', '#4A90D9'],       // 蓝猫 - 蓝色系
+        8: ['#C4A77D', '#A08060', '#D2B48C'],       // 缅因猫 - 沙棕色系
+        9: ['#DAA520', '#B8860B', '#FFD700'],       // 拿破仑 - 金色系
+        10: ['#FFB6C1', '#FF69B4', '#FFC0CB'],      // 斯芬克斯猫 - 粉色系
+        11: ['#C8A8E9', '#9370DB', '#BA55D3']       // 暹罗猫 - 紫色系
+    };
+
+    const catType = gameState.board[row][col];
+    const colors = catTypeColors[catType] || ['#FF6B9D', '#88D8E8', '#FFD93D', '#A8E6CF', '#FFB6C1', '#C8A8E9'];
+
+    // 增强：15个粒子（原10个），增加大小变化和旋转
+    for (let i = 0; i < 15; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        // 随机大小（3-8px）
+        const size = 3 + Math.random() * 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.borderRadius = '50%';
+
         particle.style.left = `${rect.left - boardRect.left + rect.width / 2}px`;
         particle.style.top = `${rect.top - boardRect.top + rect.height / 2}px`;
-        const angle = (Math.PI * 2 * i) / 10;
-        const distance = 30 + Math.random() * 40;
-        particle.style.setProperty('--tx', `${Math.cos(angle) * distance}px`);
-        particle.style.setProperty('--ty', `${Math.sin(angle) * distance}px`);
+
+        const angle = (Math.PI * 2 * i) / 15 + (Math.random() - 0.5) * 0.5;
+        const distance = 25 + Math.random() * 50;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+
+        // 添加旋转
+        particle.style.setProperty('--rot', `${Math.random() * 360}deg`);
+
+        // 随机延迟（0-150ms），让爆炸更自然
+        particle.style.animationDelay = `${Math.random() * 150}ms`;
+
         DOM.effectsLayer.appendChild(particle);
-        setTimeout(() => particle.remove(), 850);
+        setTimeout(() => particle.remove(), 1000);
+    }
+
+    // 额外添加3-5个"星星"粒子（特殊形状）
+    const sparkCount = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < sparkCount; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'particle-spark';
+        spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        const sx = (Math.random() - 0.5) * 40;
+        const sy = -(20 + Math.random() * 30); // 向上飘
+        spark.style.setProperty('--sx', `${sx}px`);
+        spark.style.setProperty('--sy', `${sy}px`);
+        spark.style.left = `${rect.left - boardRect.left + rect.width / 2}px`;
+        spark.style.top = `${rect.top - boardRect.top + rect.height / 2}px`;
+        spark.style.width = '4px';
+        spark.style.height = '4px';
+        spark.style.borderRadius = '1px'; // 方形粒子
+        spark.style.animation = `sparkle 0.8s ease-out forwards`;
+        DOM.effectsLayer.appendChild(spark);
+        setTimeout(() => spark.remove(), 800);
     }
 }
 
@@ -3474,22 +3543,25 @@ function updateTargetProgress(matches) {
     });
 }
 
-// 显示连击
+// 显示连击（增强版：Good! → Great! → Amazing! → Purr-fect!）
 function showCombo(combo) {
     const comboData = [
         { text: '', color: '#FF6B9D' },
         { text: '', color: '#FF6B9D' },
-        { text: 'Nice!', color: '#88D8E8' },
-        { text: 'Great!', color: '#A8E6CF' },
-        { text: 'Awesome!', color: '#FFD93D' },
-        { text: 'Amazing!', color: '#FF8FAB' },
-        { text: 'Incredible!', color: '#C8A8E9' },
-        { text: 'Godlike!', color: '#FF6B9D' }
+        { text: 'Good!', color: '#88D8E8', emoji: '😺' },
+        { text: 'Great!', color: '#A8E6CF', emoji: '😸' },
+        { text: 'Amazing!', color: '#FFD93D', emoji: '🐱' },
+        { text: 'Purr-fect!', color: '#FF8FAB', emoji: '😻' },
+        { text: 'Incredible!', color: '#C8A8E9', emoji: '🐈⬛' },
+        { text: 'Godlike!', color: '#FF6B9D', emoji: '✨' }
     ];
-    const data = comboData[Math.min(combo, comboData.length - 1)] || { text: 'LEGENDARY!', color: '#FF6B9D' };
-    DOM.comboText.innerHTML = `<span style="color:${data.color};display:block;font-size:0.6em;margin-bottom:4px;">${data.text}</span>${combo}连击!`;
+    const data = comboData[Math.min(combo, comboData.length - 1)] || { text: 'LEGENDARY!', color: '#FF6B9D', emoji: '🏆' };
+    DOM.comboText.innerHTML = `<span style="font-size:1.5em;display:block;margin-bottom:6px;">${data.emoji}</span><span style="color:${data.color};display:block;font-size:0.7em;margin-bottom:4px;text-shadow:0 0 10px ${data.color};">${data.text}</span>${combo}连击!`;
     DOM.comboDisplay.classList.remove('hidden');
-    setTimeout(() => DOM.comboDisplay.classList.add('hidden'), 900);
+    DOM.comboDisplay.style.animation = 'none';
+    void DOM.comboDisplay.offsetWidth;
+    DOM.comboDisplay.style.animation = '';
+    setTimeout(() => DOM.comboDisplay.classList.add('hidden'), 1200);
 }
 
 // ═══════════════════════════════════════════════════
@@ -3547,10 +3619,13 @@ function updateUI() {
     DOM.score.textContent = gameState.score;
     if (DOM.cookies) DOM.cookies.textContent = gameState.cookies;
     DOM.level.textContent = gameState.level;
-    DOM.bombCount.textContent = gameState.items.bomb;
-    DOM.shuffleCount.textContent = gameState.items.shuffle;
-    DOM.refreshCount.textContent = gameState.items.refresh;
-    DOM.hintCount.textContent = gameState.items.hint;
+
+    // 道具数量变化动画（先添加 changing 类，更新数值，延迟移除类）
+    updateItemCount(DOM.bombCount, gameState.items.bomb);
+    updateItemCount(DOM.shuffleCount, gameState.items.shuffle);
+    updateItemCount(DOM.refreshCount, gameState.items.refresh);
+    updateItemCount(DOM.hintCount, gameState.items.hint);
+
     document.querySelectorAll('.item').forEach(item => {
         const type = item.dataset.item;
         item.classList.toggle('disabled', gameState.items[type] <= 0);
@@ -3563,6 +3638,34 @@ function updateUI() {
     if (gameState.target && DOM.targetCount) {
         DOM.targetCount.textContent = Math.max(0, gameState.target.count - gameState.targetProgress);
     }
+}
+
+/** 更新道具数量并显示弹跳动画 */
+function updateItemCount(el, newValue) {
+    if (!el) return;
+    const oldValue = parseInt(el.textContent) || 0;
+    el.textContent = newValue;
+    if (oldValue !== newValue) {
+        el.classList.remove('changing');
+        // 强制回流，确保动画重新触发
+        void el.offsetWidth;
+        el.classList.add('changing');
+        // 动画结束后移除类
+        setTimeout(() => el.classList.remove('changing'), 500);
+    }
+}
+
+/** 显示道具使用反馈通知 */
+function showItemFeedback(message) {
+    const feedback = document.createElement('div');
+    feedback.className = 'item-feedback';
+    feedback.textContent = message;
+    document.body.appendChild(feedback);
+    // 1.5秒后移除
+    setTimeout(() => {
+        feedback.style.animation = 'feedbackFadeOut 0.3s ease-in forwards';
+        setTimeout(() => feedback.remove(), 300);
+    }, 1200);
 }
 
 // ═══════════════════════════════════════════════════
@@ -4512,6 +4615,32 @@ function showWinModal() {
         star.classList.toggle('active', i < stars);
     });
     showModal(DOM.winModal);
+
+    // 彩纸飘落庆祝特效
+    let container = document.getElementById('confetti-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'confetti-container';
+        container.className = 'confetti-container';
+        document.body.appendChild(container);
+    }
+    container.innerHTML = '';
+    const colors = ['#FF6B9D','#FFD93D','#88D8E8','#A8E6CF','#C8A8E9','#FF8FAB','#5CB8A8','#FFB347'];
+    for (let i = 0; i < 80; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti ' + (Math.random() > 0.5 ? 'circle' : 'rect');
+        c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.width = (6 + Math.random() * 8) + 'px';
+        c.style.height = (4 + Math.random() * 8) + 'px';
+        const dur = 2 + Math.random() * 2;
+        const dly = Math.random() * 1.5;
+        const sway = (0.8 + Math.random() * 0.8) + 's';
+        c.style.animation = 'confetti-fall ' + dur + 's linear ' + dly + 's forwards, confetti-sway ' + sway + ' ease-in-out ' + dly + 's infinite alternate';
+        container.appendChild(c);
+        setTimeout(() => { if (c.parentNode) c.remove(); }, (dur + dly) * 1000 + 500);
+    }
+    setTimeout(() => { if (container && container.parentNode) container.remove(); }, 5000);
 }
 
 function showModal(modal) { modal.classList.remove('hidden'); }
@@ -4632,6 +4761,9 @@ async function useBomb(row, col) {
     gameState.combo = 0;
     await processMatches();
     checkGameState();
+
+    // 显示使用反馈
+    showItemFeedback('💥 炸弹已使用！');
 }
 
 function showBombRange(row, col) {
@@ -4655,6 +4787,7 @@ async function useShuffle() {
     document.querySelector('[data-item="shuffle"]').classList.remove('active');
     await shuffleBoard();
     updateUI();
+    showItemFeedback('🔀 洗牌完成！');
 }
 
 async function useRefresh() {
@@ -4671,6 +4804,7 @@ async function useRefresh() {
             all.push({ row: r, col: c });
     await animateFall(all);
     updateUI();
+    showItemFeedback('🔄 棋盘已刷新！');
 }
 
 function useHint() {
@@ -4689,6 +4823,7 @@ function useHint() {
                     playSound('hint');
                     showHint(row, col, row, col + 1);
                     updateUI();
+                    showItemFeedback('💡 提示已显示！');
                     return;
                 }
             }
@@ -4700,6 +4835,7 @@ function useHint() {
                     playSound('hint');
                     showHint(row, col, row + 1, col);
                     updateUI();
+                    showItemFeedback('💡 提示已显示！');
                     return;
                 }
             }

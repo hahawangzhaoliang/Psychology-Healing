@@ -47,6 +47,7 @@ coverage/
 # 内部文档（不发布到GitHub）
 docs/
 deliverables/
+prototype/
 
 # 工具文件夹
 .dumate/

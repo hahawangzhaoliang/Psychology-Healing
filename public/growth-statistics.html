@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成长统计 - 心晴空间</title>
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .stats-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .chart-container {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        
+        .chart-title {
+            font-size: var(--text-h3);
+            font-weight: 600;
+            color: var(--theme-text);
+            margin-bottom: 1.5rem;
+        }
+        
+        .records-list {
+            background: var(--color-white);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .record-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+        
+        .record-item:last-child {
+            border-bottom: none;
+        }
+        
+        .record-activity {
+            font-weight: 500;
+            color: var(--theme-text);
+        }
+        
+        .record-meta {
+            font-size: 0.875rem;
+            color: var(--theme-text-light);
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 3rem;
+            color: var(--theme-text-light);
+        }
+    </style>
+</head>
+<body>
+    <div class="stats-container">
+        <div class="stats-header">
+            <h1 class="hero-title">🌱 成长统计</h1>
+            <p style="color: var(--theme-text-light); margin-top: 0.5rem;">追踪你的心流之旅</p>
+        </div>
+        
+        <div class="stats-grid" id="summary-cards">
+            <!-- 动态生成统计卡片 -->
+        </div>
+        
+        <div class="chart-container">
+            <h2 class="chart-title">📈 心流质量趋势</h2>
+            <canvas id="quality-chart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h2 class="chart-title">📊 活动分布</h2>
+            <canvas id="activity-chart"></canvas>
+        </div>
+        
+        <div class="records-list">
+            <h2 class="chart-title">📝 最近记录</h2>
+            <div id="records-container">
+                <!-- 动态生成记录列表 -->
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 加载统计数据
+        function loadStatistics() {
+            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            
+            if (records.length === 0) {
+                showNoData();
+                return;
+            }
+            
+            renderSummaryCards(records);
+            renderQualityChart(records);
+            renderActivityChart(records);
+            renderRecordsList(records);
+        }
+        
+        // 显示无数据状态
+        function showNoData() {
+            document.getElementById('summary-cards').innerHTML = `
+                <div class="no-data">
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">暂无数据</p>
+                    <p>完成你的第一次心流体验吧！</p>
+                </div>
+            `;
+        }
+        
+        // 渲染统计卡片
+        function renderSummaryCards(records) {
+            const totalSessions = records.length;
+            const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
+            const totalMinutes = Math.round(totalDuration / 60);
+            const avgQuality = records.length > 0 
+                ? (records.reduce((sum, r) => sum + (r.scores?.focus || 0), 0) / records.length).toFixed(1)
+                : 0;
+            
+            document.getElementById('summary-cards').innerHTML = `
+                <div class="card stat-card">
+                    <div class="stat-number">${totalSessions}</div>
+                    <p>心流次数</p>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">${totalMinutes}h</div>
+                    <p>累计时长</p>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">${avgQuality}</div>
+                    <p>平均质量</p>
+                </div>
+            `;
+        }
+        
+        // 渲染质量趋势图
+        function renderQualityChart(records) {
+            const ctx = document.getElementById('quality-chart').getContext('2d');
+            const labels = records.map((r, i) => `#${i + 1}`);
+            const data = records.map(r => r.scores?.focus || 0);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '专注度',
+                        data: data,
+                        borderColor: 'var(--color-primary-500)',
+                        backgroundColor: 'var(--color-primary-100)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: { 
+                            beginAtZero: true, 
+                            max: 10,
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // 渲染活动分布图
+        function renderActivityChart(records) {
+            const ctx = document.getElementById('activity-chart').getContext('2d');
+            const activityCounts = {};
+            
+            records.forEach(r => {
+                const activity = r.activity || '未知';
+                activityCounts[activity] = (activityCounts[activity] || 0) + 1;
+            });
+            
+            const labels = Object.keys(activityCounts);
+            const data = Object.values(activityCounts);
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: [
+                            'var(--color-primary-500)',
+                            'var(--color-secondary-500)',
+                            'var(--color-success-500)',
+                            'var(--color-warning-500)',
+                            'var(--color-info-500)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true
+                }
+            });
+        }
+        
+        // 渲染记录列表
+        function renderRecordsList(records) {
+            const container = document.getElementById('records-container');
+            const recentRecords = records.slice(-10).reverse();
+            
+            if (recentRecords.length === 0) {
+                container.innerHTML = '<div class="no-data">暂无记录</div>';
+                return;
+            }
+            
+            container.innerHTML = recentRecords.map(r => `
+                <div class="record-item">
+                    <div>
+                        <div class="record-activity">${r.activity || '未知活动'}</div>
+                        <div class="record-meta">${new Date(r.date).toLocaleDateString('zh-CN')}</div>
+                    </div>
+                    <div class="record-meta">
+                        ${Math.round((r.duration || 0) / 60)}分钟
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 页面加载时执行
+        document.addEventListener('DOMContentLoaded', loadStatistics);
+    </script>
+</body>
+</html>

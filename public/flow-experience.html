@@ -707,7 +707,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            overflow-y: auto;
             z-index: 2000;
             padding: 2rem;
         }
@@ -827,6 +828,111 @@
             display: flex;
             gap: 1rem;
         }
+
+        /* ========== 活动专属主题（第一层视觉差异化）========== */
+        /* 1. 深度阅读 - 暖白渐变 + 翻页动画 */
+        .focus-mode.activity-reading {
+            background: linear-gradient(135deg, #FFFBEB, #FEF3C7, #FDE68A) !important;
+            background-size: 200% 200% !important;
+            animation: focusBgGradientReading 30s ease-in-out infinite;
+        }
+        .activity-reading #focus-activity-name {
+            animation: readingBounce 2.5s ease-in-out infinite;
+        }
+        @keyframes readingBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        @keyframes focusBgGradientReading {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 2. 创意写作 - 暖黄渐变 + 打字闪烁 */
+        .focus-mode.activity-writing {
+            background: linear-gradient(135deg, #FFFBEB, #FEF9C3, #FDE047) !important;
+            background-size: 200% 200% !important;
+            animation: focusBgGradientWriting 30s ease-in-out infinite;
+        }
+        .activity-writing #focus-activity-name::after {
+            content: '|';
+            animation: blinkCaret 1s step-end infinite;
+        }
+        @keyframes blinkCaret {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @keyframes focusBgGradientWriting {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 3. 编程学习 - 深蓝渐变 + 代码流 */
+        .focus-mode.activity-coding {
+            background: linear-gradient(135deg, #EFF6FF, #DBEAFE, #1E40AF) !important;
+            background-size: 200% 200% !important;
+            animation: focusBgGradientCoding 30s ease-in-out infinite;
+        }
+        .activity-coding #focus-activity-name {
+            animation: codingPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes codingPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        @keyframes focusBgGradientCoding {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* 4. 正念冥想 - 森林绿渐变 + 呼吸圆圈 */
+        .focus-mode.activity-meditation {
+            background: linear-gradient(135deg, #F0FDF4, #BBF7D0, #166534) !important;
+            background-size: 200% 200% !important;
+            animation: focusBgGradientMeditation 30s ease-in-out infinite;
+        }
+        .activity-meditation #focus-activity-name {
+            animation: breatheIcon 4s ease-in-out infinite;
+        }
+        @keyframes breatheIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        @keyframes focusBgGradientMeditation {
+            0% { background-position: 50% 0%; }
+            50% { background-position: 50% 100%; }
+            100% { background-position: 50% 0%; }
+        }
+
+        /* 5. 设计创作 - 淡紫渐变 + 调色盘旋转 */
+        .focus-mode.activity-design {
+            background: linear-gradient(135deg, #FAF5FF, #E9D5FF, #7C3AED) !important;
+            background-size: 200% 200% !important;
+            animation: focusBgGradientDesign 30s ease-in-out infinite;
+        }
+        .activity-design #focus-activity-name {
+            animation: designSpin 6s linear infinite;
+            display: inline-block;
+        }
+        @keyframes designSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes focusBgGradientDesign {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* 进度环颜色随活动变化 */
+        .activity-reading #progress-circle { stroke: #D97706 !important; }
+        .activity-writing #progress-circle { stroke: #CA8A04 !important; }
+        .activity-coding  #progress-circle { stroke: #2563EB !important; }
+        .activity-meditation #progress-circle { stroke: #16A34A !important; }
+        .activity-design  #progress-circle { stroke: #7C3AED !important; }
 
 
         /* ========== 心流评估样式 ========== */
@@ -1575,7 +1681,7 @@
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择时长</h3>
                     <div class="duration-options">
-                        <div class="btn btn-ghost" onclick="selectDuration(15)" data-touch-feedback>
+                        <div class="duration-option" onclick="selectDuration(15)" data-touch-feedback>
                             <div class="duration-value">15</div>
                             <div class="duration-unit">分钟</div>
                         </div>
@@ -1583,11 +1689,11 @@
                             <div class="duration-value">30</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="btn btn-ghost" onclick="selectDuration(45)" data-touch-feedback>
+                        <div class="duration-option" onclick="selectDuration(45)" data-touch-feedback>
                             <div class="duration-value">45</div>
                             <div class="duration-unit">分钟</div>
                         </div>
-                        <div class="btn btn-ghost" onclick="selectDuration(60)" data-touch-feedback>
+                        <div class="duration-option" onclick="selectDuration(60)" data-touch-feedback>
                             <div class="duration-value">60</div>
                             <div class="duration-unit">分钟</div>
                         </div>
@@ -2001,6 +2107,7 @@
         let selectedSound = 'rain';
         let focusTimer = null;
         let focusSeconds = 0;
+        let sessionStartTime = null;
         let isPaused = false;
         let scores = {};
 
@@ -2139,7 +2246,13 @@
         function selectDuration(duration) {
             currentDuration = duration;
             document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
-            event.target.closest('.duration-option').classList.add('selected');
+            // 找到包含对应duration数字的.duration-option并添加selected
+            document.querySelectorAll('.duration-option').forEach(opt => {
+                const valueEl = opt.querySelector('.duration-value');
+                if (valueEl && parseInt(valueEl.textContent) === duration) {
+                    opt.classList.add('selected');
+                }
+            });
         }
 
         function nextStep(step) {
@@ -2201,7 +2314,34 @@
         function beginFocusMode() {
             document.getElementById('preparation-section').classList.add('hidden');
             document.getElementById('focus-mode').classList.remove('hidden');
-            
+
+            // 活动专属主题（第一层视觉差异化）
+            const focusModeEl = document.getElementById('focus-mode');
+            const activityKeys = ['reading', 'writing', 'coding', 'meditation', 'design'];
+            activityKeys.forEach(key => focusModeEl.classList.remove(`activity-${key}`));
+            if (currentActivity) {
+                focusModeEl.classList.add(`activity-${currentActivity.id}`);
+            }
+
+            // 活动专属默认环境音
+            const defaultSounds = {
+                reading: 'rain',
+                writing: 'silence',
+                coding: 'rain',
+                meditation: 'ocean',
+                design: 'music'
+            };
+            if (currentActivity && defaultSounds[currentActivity.id]) {
+                selectedSound = defaultSounds[currentActivity.id];
+                const soundNames = {
+                    'rain': '🌧️ 轻柔雨声',
+                    'ocean': '🌊 海浪声',
+                    'music': '🎵 轻音乐',
+                    'silence': '🔇 静音'
+                };
+                document.getElementById('focus-sound-name').textContent = soundNames[selectedSound] || '🌧️ 轻柔雨声';
+            }
+
             // 更新活动名称
             if (currentActivity) {
                 document.getElementById('focus-activity-name').textContent = `${currentActivity.icon} ${currentActivity.name}`;
@@ -2217,6 +2357,7 @@
             
             // 开始计时器
             focusSeconds = 0;
+            sessionStartTime = new Date().toISOString();
             isPaused = false;
             document.getElementById('pause-btn').textContent = '暂停';
             
@@ -2324,11 +2465,14 @@
             
             // 这里可以保存到localStorage或发送到服务器
             const record = {
+                recordId: Date.now().toString(36) + Math.random().toString(36).substr(2),
                 activity: currentActivity ? currentActivity.name : '未知活动',
                 duration: focusSeconds,
                 goal: currentGoal,
                 scores: scores,
                 diary: diary,
+                startTime: sessionStartTime,
+                endTime: new Date().toISOString(),
                 date: new Date().toISOString()
             };
             
@@ -2357,7 +2501,7 @@
             const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
             
             // 统计
-            const totalDuration = records.reduce((sum, r) => sum + r.duration, 0);
+            const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
             const totalMinutes = Math.round(totalDuration / 60);
             const avgQuality = records.length > 0 ? 
                 (records.reduce((sum, r) => sum + (r.scores.focus || 0), 0) / records.length).toFixed(1) : 0;
