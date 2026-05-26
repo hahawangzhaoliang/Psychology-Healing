@@ -86,6 +86,17 @@ for (const [key, val] of Object.entries(COLLECTION_FILE_MAP)) {
  * @returns {Promise<Array>} 数据数组
  */
 async function readData(collection) {
+    // 分片集合：委托到 shardedStore
+    try {
+        const { SHARD_CONFIG } = require('./shardedStore');
+        if (SHARD_CONFIG && SHARD_CONFIG[collection]) {
+            const shardedStore = require('./shardedStore');
+            return shardedStore.readAll(collection);
+        }
+    } catch (e) {
+        // shardedStore 加载失败，降级到非分片逻辑
+    }
+
     const filename = COLLECTION_FILE_MAP[collection] || `${collection}.json`;
     
     // 1. 先查缓存

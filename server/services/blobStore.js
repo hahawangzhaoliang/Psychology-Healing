@@ -77,7 +77,31 @@ async function readJsonFromBlob(filename) {
     throw new Error(`Blob 读取失败（3次重试）: ${filename}`);
 }
 
-module.exports = { readJsonFromBlob, writeJsonToBlob };
+/**
+ * 列出指定前缀的所有 Blob 文件路径（通用方法，供分片存储使用）
+ * @param {string} prefix - 路径前缀，如 'data/tips/'
+ * @param {object} options - { limit: number, cursor: string }
+ * @returns {Promise<string[]>} 文件路径名数组，如 ['data/tips/2026-05.json', ...]
+ */
+async function listFiles(prefix, options = {}) {
+    const { list } = getBlobClient();
+    try {
+        const result = await list({
+            prefix,
+            limit: options.limit || 100,
+            cursor: options.cursor,
+        });
+        const paths = (result.blobs || []).map(b => b.pathname || b.url || '');
+        return {
+            paths: paths.filter(Boolean),
+            cursor: result.cursor,
+            hasMore: !!result.cursor,
+        };
+    } catch (error) {
+        console.error(`[BlobStore] listFiles(${prefix}) 失败:`, error.message);
+        return { paths: [], cursor: undefined, hasMore: false };
+    }
+}
 
 /**
  * 写入 JSON 数据文件（到 Blob）
@@ -222,6 +246,7 @@ module.exports = {
     uploadImage,
     uploadAudio,
     listMedia,
+    listFiles,
     deleteMedia,
     deleteMediaBatch,
     getMediaUrl,
