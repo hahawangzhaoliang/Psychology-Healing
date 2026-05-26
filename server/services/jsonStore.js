@@ -20,21 +20,19 @@ const { Redis } = require('@upstash/redis');
 const blobStore = require('./blobStore');
 
 // 初始化 Upstash Redis 客户端（REST API）
-// ⚠️ 暂时禁用：UPSTASH_REDIS_REST_TOKEN 认证失败 (WRONGPASS)
-// 待用户从 Upstash Console 获取正确 token 后重新启用
 let redisClient = null;
-// try {
-//     const redisUrl  = process.env.UPSTASH_REDIS_REST_URL;
-//     const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-//     if (redisUrl && redisToken) {
-//         redisClient = new Redis({ url: redisUrl, token: redisToken });
-//         console.log('[JSONStore] Upstash Redis 缓存层已启用');
-//     } else {
-//         console.warn('[JSONStore] 未找到 UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN，缓存层已禁用');
-//     }
-// } catch (err) {
-//     console.error('[JSONStore] Upstash Redis 初始化失败:', err.message);
-// }
+try {
+    const redisUrl  = process.env.UPSTASH_REDIS_REST_URL;
+    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (redisUrl && redisToken) {
+        redisClient = new Redis({ url: redisUrl, token: redisToken });
+        console.log('[JSONStore] Upstash Redis 缓存层已启用');
+    } else {
+        console.warn('[JSONStore] 未找到 UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN，缓存层已禁用');
+    }
+} catch (err) {
+    console.error('[JSONStore] Upstash Redis 初始化失败:', err.message);
+}
 
 const CACHE_TTL = 60; // 秒
 
@@ -42,7 +40,8 @@ async function getFromCache(key) {
     if (!redisClient) return null;
     try {
         const cached = await redisClient.get(key);
-        return cached ? JSON.parse(cached) : null;
+        // @upstash/redis v1.x 会自动 JSON.parse，所以 cached 已经是对象或 null
+        return cached || null;
     } catch (err) {
         console.warn('[JSONStore] Redis 读取缓存失败:', err.message);
         return null;
@@ -52,7 +51,8 @@ async function getFromCache(key) {
 async function setCache(key, value) {
     if (!redisClient) return;
     try {
-        await redisClient.set(key, JSON.stringify(value), { ex: CACHE_TTL });
+        // @upstash/redis v1.x 会自动 JSON.stringify 对象
+        await redisClient.set(key, value, { ex: CACHE_TTL });
     } catch (err) {
         console.warn('[JSONStore] Redis 写入缓存失败:', err.message);
     }
