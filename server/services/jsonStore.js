@@ -41,7 +41,7 @@ async function readData(collection) {
         return Array.isArray(data) ? data : [];
     } catch (error) {
         console.error(`[JSONStore] 读取 ${collection} 失败:`, error.message);
-        return [];
+        throw error; // 不再吞掉错误，让上层处理
     }
 }
 
@@ -58,39 +58,6 @@ async function writeData(collection, data) {
         console.error(`[JSONStore] Blob 写入 ${collection} 失败:`, error.message);
         throw error; // 不再降级到本地文件
     }
-}
-
-async function fallbackWriteLocal(filename, data) {
-    const fs = require('fs').promises;
-    const pathLib = require('path');
-    
-    // Serverless 环境的临时目录（唯一可写）
-    const tmpDir = '/tmp/xinqing-space';
-    // 本地开发环境的备选路径
-    const possiblePaths = [
-        // Vercel serverless 临时目录（优先）
-        pathLib.join(tmpDir, filename),
-        // 本地开发路径
-        pathLib.join(process.cwd(), 'server', 'data', filename),
-        pathLib.join(process.cwd(), 'public', 'data', filename),
-        pathLib.join(__dirname, '..', 'data', filename),
-    ];
-    
-    console.log(`[JSONStore] 尝试降级写入本地文件: ${filename}`);
-    console.log(`[JSONStore] 当前目录: ${process.cwd()}, __dirname: ${__dirname}`);
-    
-    for (const filePath of possiblePaths) {
-        console.log(`[JSONStore] 尝试路径: ${filePath}`);
-        try {
-            await fs.mkdir(pathLib.dirname(filePath), { recursive: true });
-            await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
-            console.log(`[JSONStore] ✅ 写入成功: ${filePath}`);
-            return;
-        } catch (e) {
-            console.log(`[JSONStore] ❌ 路径不可写: ${filePath} - ${e.message}`);
-        }
-    }
-    throw new Error('无法写入本地文件，所有路径均不可用');
 }
 
 /**

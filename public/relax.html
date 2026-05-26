@@ -992,23 +992,35 @@
         /* ========== 更多练习加载 ========== */
         async function loadExercises() {
             const loading = document.getElementById('exercisesLoading');
-            const list = document.getElementById('exercisesList');
+            const list   = document.getElementById('exercisesList');
+
+            // 重置状态
+            loading.classList.remove('hidden');
+            loading.innerHTML = `
+                <div style="width:32px;height:32px;border:3px solid var(--color-primary-100);border-top-color:var(--color-primary-400);border-radius:50%;animation:spinSlow 1s linear infinite;display:inline-block;"></div>
+                <p style="color:var(--theme-text-light);margin-top:1rem;font-size:0.9rem;">加载中...</p>
+            `;
+            list.classList.add('hidden');
+            list.style.display = 'none';
 
             try {
                 // 优先从 API 读取（Vercel Blob 存储）
                 const data = await Cache.cachedFetch('/api/knowledge/exercises?limit=100');
-                renderExercises(data.exercises || [], loading, list);
+                // API 返回格式: { exercises: [...], total, limit, offset }
+                const exercises = data && Array.isArray(data.exercises) ? data.exercises : [];
+                renderExercises(exercises, loading, list);
             } catch (error) {
-                console.warn('API 加载失败，尝试本地降级:', error.message);
+                console.warn('[更多练习] API 加载失败，尝试本地降级:', error.message);
 
                 // API 失败时降级到本地 JSON
                 try {
                     const localData = await Cache.cachedFetch('/data/exercises.json');
-                    console.log('✅ 从本地 JSON 加载成功');
-                    renderExercises(localData, loading, list);
+                    const exercises = Array.isArray(localData) ? localData : (localData && localData.exercises) || [];
+                    console.log('✅ [更多练习] 从本地 JSON 加载成功，共', exercises.length, '条');
+                    renderExercises(exercises, loading, list);
                     return;
                 } catch (localError) {
-                    console.error('本地 JSON 也加载失败:', localError);
+                    console.error('[更多练习] 本地 JSON 也加载失败:', localError);
                 }
 
                 // 显示重试按钮

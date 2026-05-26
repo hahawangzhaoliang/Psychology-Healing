@@ -77,56 +77,7 @@ async function readJsonFromBlob(filename) {
     throw new Error(`Blob 读取失败（3次重试）: ${filename}`);
 }
 
-/**
- * 本地文件降级读取
- */
-function fallbackToLocalFile(filename) {
-    const fs = require('fs');
-    const pathLib = require('path');
-
-    // 调试信息
-    console.log(`[BlobStore] 降级到本地文件: ${filename}`);
-    console.log(`[BlobStore] __dirname: ${__dirname}`);
-    console.log(`[BlobStore] process.cwd(): ${process.cwd()}`);
-
-    // Serverless 环境的临时目录（唯一可写）
-    const tmpDir = '/tmp/xinqing-space';
-    
-    // 尝试多种路径计算方式
-    const possiblePaths = [
-        // Vercel serverless 临时目录（优先）
-        pathLib.join(tmpDir, filename),
-        // Vercel Serverless 标准路径
-        pathLib.join(__dirname, '..', '..', 'server', 'data', filename),
-        pathLib.join(__dirname, '..', '..', 'public', 'data', filename),
-        // 本地开发路径
-        pathLib.join(process.cwd(), 'server', 'data', filename),
-        pathLib.join(process.cwd(), 'public', 'data', filename),
-        // 相对路径（相对于项目根目录）
-        pathLib.join(process.cwd(), '..', 'server', 'data', filename),
-        // 直接路径
-        pathLib.join(__dirname, '..', 'data', filename),
-    ];
-
-    for (const filePath of possiblePaths) {
-        console.log(`[BlobStore] 尝试路径: ${filePath}`);
-        if (fs.existsSync(filePath)) {
-            try {
-                const content = fs.readFileSync(filePath, 'utf-8');
-                const data = JSON.parse(content);
-                console.log(`[BlobStore] ✅ 加载成功: ${filePath} (${Array.isArray(data) ? data.length : 0} 条)`);
-                return data;
-            } catch (parseError) {
-                console.error(`[BlobStore] JSON 解析失败: ${filePath}`, parseError.message);
-            }
-        } else {
-            console.log(`[BlobStore] 文件不存在: ${filePath}`);
-        }
-    }
-
-    console.log(`[BlobStore] ⚠️  所有本地文件路径都不存在: ${filename}`);
-    return [];
-}
+module.exports = { readJsonFromBlob, writeJsonToBlob };
 
 /**
  * 写入 JSON 数据文件（到 Blob）
