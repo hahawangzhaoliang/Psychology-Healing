@@ -3,54 +3,67 @@
  * 替代本地文件系统，作为知识库主数据源
  * 所有方法均为异步（因为 Blob 读取是异步的）
  *
- * 缓存策略（P1 阶段：内存缓存）：
- * - 读取时先查缓存（TTL 60秒）
- * - 缓存未命中时读 Blob，然后写入缓存
- * - 写入时主动失效缓存（write-through）
+ * 缓存策略（P1 阶段：Upstash Redis REST API）：
+ * - 读取时先查 Redis 缓存（TTL 60秒）
+ * - 缓存未命中时读 Blob，然后写入 Redis
+ * - 写入时主动失效缓存（write-through / delete）
  *
- * TODO（P3 阶段）：迁移到 Upstash Redis，实现跨实例缓存共享
- * Vercel KV 已弃用，官方推荐 Upstash Redis：
- * https://vercel.com/marketplace?category=storage&search=redis
+ * 凭证来自 .env：
+ *   UPSTASH_REDIS_REST_URL
+ *   UPSTASH_REDIS_REST_TOKEN
  */
 
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env') });
+
+const { Redis } = require('@upstash/redis');
 const blobStore = require('./blobStore');
 
-// ========== 简单内存缓存（带 TTL）==========
-const cache = new Map(); // key -> { value, expiry }
+// 初始化 Upstash Redis 客户端（REST API）
+let redisClient = null;
+try {
+    const redisUrl  = process.env.UPSTASH_REDIS_REST_URL;
+    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (redisUrl && redisToken) {
+        redisClient = new Redis({ url: redisUrl, token: redisToken });
+        console.log('[JSONStore] Upstash Redis 缓存层已启用');
+    } else {
+        console.warn('[JSONStore] 未找到 Upstash Redis 凭证，缓存层已禁用');
+    }
+} catch (err) {
+    console.error('[JSONStore] Upstash Redis 初始化失败:', err.message);
+}
 
-const CACHE_TTL = 60 * 1000; // 60 秒
+const CACHE_TTL = 60; // 秒
 
-function getFromCache(key) {
-    const item = cache.get(key);
-    if (!item) return null;
-    if (Date.now() > item.expiry) {
-        cache.delete(key);
+async function getFromCache(key) {
+    if (!redisClient) return null;
+    try {
+        const cached = await redisClient.get(key);
+        return cached ? JSON.parse(cached) : null;
+    } catch (err) {
+        console.warn('[JSONStore] Redis 读取缓存失败:', err.message);
         return null;
     }
-    return item.value;
 }
 
-function setCache(key, value) {
-    cache.set(key, {
-        value,
-        expiry: Date.now() + CACHE_TTL,
-    });
-}
-
-function invalidateCache(key) {
-    cache.delete(key);
-}
-
-// 可选：定期清理过期缓存（避免内存泄漏）
-setInterval(() => {
-    const now = Date.now();
-    for (const [key, item] of cache.entries()) {
-        if (now > item.expiry) {
-            cache.delete(key);
-        }
+async function setCache(key, value) {
+    if (!redisClient) return;
+    try {
+        await redisClient.set(key, JSON.stringify(value), { ex: CACHE_TTL });
+    } catch (err) {
+        console.warn('[JSONStore] Redis 写入缓存失败:', err.message);
     }
-}, 5 * 60 * 1000); // 每 5 分钟清理一次
-// ================================================
+}
+
+async function invalidateCache(key) {
+    if (!redisClient) return;
+    try {
+        await redisClient.del(key);
+    } catch (err) {
+        console.warn('[JSONStore] Redis 失效缓存失败:', err.message);
+    }
+}
 
 // 集合名到文件名的映射
 const COLLECTION_FILE_MAP = {
@@ -76,9 +89,9 @@ async function readData(collection) {
     const filename = COLLECTION_FILE_MAP[collection] || `${collection}.json`;
     
     // 1. 先查缓存
-    const cached = getFromCache(filename);
+    const cached = await getFromCache(filename);
     if (cached) {
-        console.log(`[JSONStore] readData(${collection}) 缓存命中`);
+        console.log(`[JSONStore] readData(${collection}) Redis 缓存命中`);
         return cached;
     }
     
@@ -89,12 +102,12 @@ async function readData(collection) {
         console.log(`[JSONStore] readData(${collection}) 成功: ${Array.isArray(data) ? data.length : 0} 条`);
         
         // 3. 写入缓存
-        setCache(filename, data);
+        await setCache(filename, data);
         
         return Array.isArray(data) ? data : [];
     } catch (error) {
         console.error(`[JSONStore] 读取 ${collection} 失败:`, error.message);
-        throw error; // 不再吞掉错误，让上层处理
+        throw error;
     }
 }
 
@@ -108,12 +121,12 @@ async function writeData(collection, data) {
     try {
         await blobStore.writeJsonToBlob(filename, data);
         
-        // Write-through: 写入后失效缓存（或更新缓存）
-        invalidateCache(filename);
-        console.log(`[JSONStore] writeData(${collection}) 已失效缓存`);
+        // Write-through: 写入后失效缓存
+        await invalidateCache(filename);
+        console.log(`[JSONStore] writeData(${collection}) 已失效 Redis 缓存`);
     } catch (error) {
         console.error(`[JSONStore] Blob 写入 ${collection} 失败:`, error.message);
-        throw error; // 不再降级到本地文件
+        throw error;
     }
 }
 
