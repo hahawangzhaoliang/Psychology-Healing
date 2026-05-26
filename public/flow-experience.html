@@ -1378,16 +1378,17 @@
 
             <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
-                <a href="flow-experience.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:0.35rem;">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.home">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;display:flex;align-items:center;gap:0.35rem;" data-i18n="nav.flow">
                     心流体验
-                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
+                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;" data-i18n="nav.new_badge">NEW</span>
                 </a>
-                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
-                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
-                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.companion">我的伙伴</a>
+                <div class="i18n-switcher"></div>
             </div>
 
             <!-- 移动端菜单按钮 -->
@@ -1401,16 +1402,17 @@
         <!-- 移动端菜单 -->
         <div class="mobile-menu" id="mobileMenu">
             <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
-                <a href="index.html">首页</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html" class="active" style="display:flex;align-items:center;justify-content:space-between;">
+                <a href="index.html" data-i18n="nav.home">首页</a>
+                <a href="relax.html" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" class="active" style="display:flex;align-items:center;justify-content:space-between;" data-i18n="nav.flow">
                     <span>心流体验</span>
-                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.5rem;border-radius:var(--radius-full);font-size:0.65rem;font-weight:700;">NEW</span>
+                    <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.5rem;border-radius:var(--radius-full);font-size:0.65rem;font-weight:700;" data-i18n="nav.new_badge">NEW</span>
                 </a>
-                <a href="emotion.html">情绪觉察</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html">关于我们</a>
-                <a href="companion.html">我的伙伴</a>
+                <a href="emotion.html" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" data-i18n="nav.companion">我的伙伴</a>
+                <div class="i18n-switcher"></div>
             </div>
         </div>
     </nav>
@@ -1418,10 +1420,10 @@
     <!-- 页面英雄区 -->
     <div class="page-hero">
         <div class="page-hero-inner">
-            <h1 class="page-hero-title">
+            <h1 class="page-hero-title" data-i18n="flow.hero_title">
                 发现你的<span class="highlight">心流</span>体验
             </h1>
-            <p class="page-hero-subtitle">
+            <p class="page-hero-subtitle" data-i18n="flow.hero_subtitle">
                 选择一项你热爱的活动，投入15-60分钟，体验完全专注的心流状态
             </p>
             
@@ -1429,25 +1431,25 @@
             <div class="hero-cta">
                 <button class="btn btn-hero-primary" onclick="quickStartFlow()" data-touch-feedback>
                     <span style="font-size: 1.15rem;">🚀</span>
-                    开始心流体验
+                    <span data-i18n="flow.start_experience">开始心流体验</span>
                 </button>
                 <button class="btn btn-hero-secondary" onclick="showGuideAgain()" data-touch-feedback>
                     <span style="font-size: 1rem;">📖</span>
-                    查看引导
+                    <span data-i18n="flow.view_guide">查看引导</span>
                 </button>
             </div>
             
             <!-- Tab导航 -->
             <div class="tab-nav">
-                <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback>
+                <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback" data-i18n="flow.tab_overview">
                     <span>📊</span>
                     <span>概览</span>
                 </a>
-                <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback>
+                <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback" data-i18n="flow.tab_discover">
                     <span>🔍</span>
                     <span>发现</span>
                 </a>
-                <a href="#records" class="page-tab" data-tab="records" data-touch-feedback>
+                <a href="#records" class="page-tab" data-tab="records" data-touch-feedback" data-i18n="flow.tab_records">
                     <span>📝</span>
                     <span>记录</span>
                 </a>
@@ -1463,71 +1465,71 @@
             <div class="dashboard-grid" data-stagger="fade-in-up">
                 <!-- 统计卡片 -->
                 <div class="card">
-                    <div class="stat-label">本周心流时长</div>
-                    <div class="stat-value">5.2<span class="stat-unit">小时</span></div>
+                    <div class="stat-label" data-i18n="flow.stat_week_duration">本周心流时长</div>
+                    <div class="stat-value">5.2<span class="stat-unit" data-i18n="flow.unit_hours">小时</span></div>
                 </div>
                 <div class="card">
-                    <div class="stat-label">心流活动次数</div>
-                    <div class="stat-value">12<span class="stat-unit">次</span></div>
+                    <div class="stat-label" data-i18n="flow.stat_session_count">心流活动次数</div>
+                    <div class="stat-value">12<span class="stat-unit" data-i18n="flow.unit_sessions">次</span></div>
                 </div>
                 <div class="card">
-                    <div class="stat-label">平均心流质量</div>
-                    <div class="stat-value">4.2<span class="stat-unit">/ 5</span></div>
+                    <div class="stat-label" data-i18n="flow.stat_avg_quality">平均心流质量</div>
+                    <div class="stat-value">4.2<span class="stat-unit" data-i18n="flow.unit_rating">/ 5</span></div>
                 </div>
                 <div class="card">
-                    <div class="stat-label">连续天数</div>
-                    <div class="stat-value">5<span class="stat-unit">天</span></div>
+                    <div class="stat-label" data-i18n="flow.stat_streak_days">连续天数</div>
+                    <div class="stat-value">5<span class="stat-unit" data-i18n="flow.unit_days">天</span></div>
                 </div>
             </div>
 
             <!-- 今日推荐 -->
             <div style="margin-top: 2rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">💡 今日推荐</h2>
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up" data-i18n="flow.today_recommend">💡 今日推荐</h2>
                 <div class="card" onclick="startFlowExperience('digital-painting')" data-touch-feedback>
                     <div class="recommendation-header">
                         <span class="recommendation-icon">🎨</span>
                         <div>
-                            <div class="recommendation-title">数字油画</div>
+                            <div class="recommendation-title" data-i18n="flow.digital_painting">数字油画</div>
                         </div>
                     </div>
-                    <p class="recommendation-reason">基于你的艺术兴趣推荐</p>
+                    <p class="recommendation-reason" data-i18n="flow.based_on_interest">基于你的艺术兴趣推荐</p>
                     <div class="recommendation-meta">
                         <div class="recommendation-meta-item">
-                            <span>难度:</span>
+                            <span data-i18n="flow.difficulty_label">难度:</span>
                             <span>⭐⭐</span>
                         </div>
                         <div class="recommendation-meta-item">
-                            <span>时长:</span>
-                            <span>30分钟</span>
+                            <span data-i18n="flow.duration_label">时长:</span>
+                            <span data-i18n="flow.duration_30">30分钟</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;" data-touch-feedback>开始心流体验</button>
+                    <button class="btn btn-primary" style="width: 100%;" data-touch-feedback" data-i18n="flow.start_flow_experience">开始心流体验</button>
                 </div>
             </div>
 
             <!-- 快速开始 -->
             <div style="margin-top: 2rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up">⚡ 快速开始</h2>
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1rem;" class="fade-in-up" data-i18n="flow.quick_start">⚡ 快速开始</h2>
                 <div class="quick-start-grid" data-stagger="fade-in-up">
                     <a href="#" class="card" onclick="startFlowExperience('reading'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">📖</div>
-                        <div class="quick-start-title">深度阅读</div>
-                        <div class="quick-start-duration">30分钟</div>
+                        <div class="quick-start-title" data-i18n="flow.activity_reading">深度阅读</div>
+                        <div class="quick-start-duration" data-i18n="flow.duration_30min">30分钟</div>
                     </a>
                     <a href="#" class="card highlight" onclick="startFlowExperience('yoga'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘‍♀️</div>
-                        <div class="quick-start-title">瑜伽练习</div>
-                        <div class="quick-start-duration">45分钟</div>
+                        <div class="quick-start-title" data-i18n="flow.activity_yoga">瑜伽练习</div>
+                        <div class="quick-start-duration" data-i18n="flow.duration_45min_a">45分钟</div>
                     </a>
                     <a href="#" class="card" onclick="startFlowExperience('painting'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🎨</div>
-                        <div class="quick-start-title">绘画创作</div>
-                        <div class="quick-start-duration">45分钟</div>
+                        <div class="quick-start-title" data-i18n="flow.activity_painting">绘画创作</div>
+                        <div class="quick-start-duration" data-i18n="flow.duration_45min_b">45分钟</div>
                     </a>
                     <a href="#" class="card highlight" onclick="startFlowExperience('meditation'); return false;" data-touch-feedback>
                         <div class="quick-start-icon">🧘</div>
-                        <div class="quick-start-title">正念冥想</div>
-                        <div class="quick-start-duration">20分钟</div>
+                        <div class="quick-start-title" data-i18n="flow.activity_meditation">正念冥想</div>
+                        <div class="quick-start-duration" data-i18n="flow.duration_20min">20分钟</div>
                     </a>
                 </div>
             </div>
@@ -1535,15 +1537,15 @@
 
         <!-- 活动发现页面 -->
         <div id="discover-section" class="content-section hidden">
-            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">探索心流活动</h2>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up" data-i18n="flow.explore_activities">探索心流活动</h2>
             
             <!-- 筛选按钮 -->
             <div class="activity-filters" data-stagger="fade-in-up">
-                <button class="btn filter-btn active" onclick="filterActivities('all')" data-touch-feedback>全部</button>
-                <button class="btn filter-btn" onclick="filterActivities('creative')" data-touch-feedback>创造性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('learning')" data-touch-feedback>学习性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('physical')" data-touch-feedback>运动性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback>专注性活动</button>
+                <button class="btn filter-btn active" onclick="filterActivities('all')" data-touch-feedback" data-i18n="flow.filter_all">全部</button>
+                <button class="btn filter-btn" onclick="filterActivities('creative')" data-touch-feedback" data-i18n="flow.filter_creative">创造性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('learning')" data-touch-feedback" data-i18n="flow.filter_learning">学习性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('physical')" data-touch-feedback" data-i18n="flow.filter_physical">运动性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback" data-i18n="flow.filter_contemplative">专注性活动</button>
             </div>
 
             <!-- 活动网格 -->
@@ -1566,12 +1568,12 @@
                                 🧠
                             </div>
                             <div>
-                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;">什么是心流？</h3>
-                                <div style="font-size: 0.85rem; color: var(--theme-text-light);">Mihaly Csikszentmihalyi 的理论</div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;" data-i18n="flow.what_is_flow">什么是心流？</h3>
+                                <div style="font-size: 0.85rem; color: var(--theme-text-light);" data-i18n="flow.mihaly_theory">Mihaly Csikszentmihalyi 的理论</div>
                             </div>
                         </div>
                         
-                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;">
+                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;" data-i18n="flow.flow_preview">
                             心流（Flow）是一种完全沉浸、忘记时间的专注状态。当你挑战与技能完美平衡时，心流就会自然产生...
                         </div>
                         
@@ -1580,29 +1582,27 @@
                                 <circle cx="140" cy="80" r="40" fill="#5cb8a8" opacity="0.2"/>
                                 <circle cx="140" cy="80" r="25" fill="#FFD1A4"/>
                                 <rect x="125" y="105" width="30" height="40" rx="8" fill="#5cb8a8"/>
-                                <text x="140" y="170" font-size="14" fill="#374151" text-anchor="middle">完全专注的状态</text>
+                                <text x="140" y="170" font-size="14" fill="#374151" text-anchor="middle" data-i18n="flow.flow_state_label">完全专注的状态</text>
                             </svg>
                             
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">核心特征：</h4>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;" data-i18n="flow.core_features">核心特征：</h4>
                             <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li>完全专注，忘记时间流逝</li>
-                                <li>活动本身带来内在愉悦</li>
-                                <li>感到掌控感和自主性</li>
-                                <li>自我意识消失</li>
-                                <li>感受到清晰的反馈</li>
+                                <li data-i18n="flow.feature_1">完全专注，忘记时间流逝</li>
+                                <li data-i18n="flow.feature_2">活动本身带来内在愉悦</li>
+                                <li data-i18n="flow.feature_3">感到掌控感和自主性</li>
+                                <li data-i18n="flow.feature_4">自我意识消失</li>
+                                <li data-i18n="flow.feature_5">感受到清晰的反馈</li>
                             </ul>
                             
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">科学依据：</h4>
-                            <p style="margin: 0 0 1rem;">神经科学研究表明，心流状态下大脑会释放多巴胺、内啡肽等神经递质，带来愉悦感和满足感。长期体验心流的人，幸福感显著更高。</p>
+                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;" data-i18n="flow.scientific_basis">科学依据：</h4>
+                            <p style="margin: 0 0 1rem;" data-i18n="flow.flow_science">神经科学研究表明，心流状态下大脑会释放多巴胺、内啡肽等神经递质，带来愉悦感和满足感。长期体验心流的人，幸福感显著更高。</p>
                             
                             <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-md); margin-top: 1rem;">
-                                <strong>💡 小提示：</strong> 心流不是"努力"出来的，而是当挑战与技能匹配时自然产生的状态。
+                                <strong data-i18n="flow.tip_label">💡 小提示：</strong> <span data-i18n="flow.flow_tip">心流不是"努力"出来的，而是当挑战与技能匹配时自然产生的状态。</span>
                             </div>
                         </div>
                         
-                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))">
-                            展开阅读 →
-                        </button>
+                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))" data-i18n="flow.expand_read">展开阅读 →</button>
                     </div>
                     
                     <!-- 卡片2: 如何进入心流？ -->
@@ -1612,12 +1612,12 @@
                                 🎯
                             </div>
                             <div>
-                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;">如何进入心流？</h3>
-                                <div style="font-size: 0.85rem; color: var(--theme-text-light);">前提条件 + 实用技巧</div>
+                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;" data-i18n="flow.how_to_flow">如何进入心流？</h3>
+                                <div style="font-size: 0.85rem; color: var(--theme-text-light);" data-i18n="flow.preconditions_skills">前提条件 + 实用技巧</div>
                             </div>
                         </div>
                         
-                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;">
+                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;" data-i18n="flow.how_to_flow_preview">
                             进入心流需要满足几个前提条件：明确的目标、即时反馈、挑战与技能的平衡...
                         </div>
                         
@@ -1676,10 +1676,10 @@
 
                 <!-- 步骤1: 设定目标 -->
                 <div id="step-1" class="preparation-card slide-up">
-                    <h2 class="preparation-title">设定目标</h2>
-                    <p class="preparation-desc">选择你想要投入的时长，并设定一个具体可完成的目标</p>
+                    <h2 class="preparation-title" data-i18n="flow.set_goal">设定目标</h2>
+                    <p class="preparation-desc" data-i18n="flow.choose_duration_goal">选择你想要投入的时长，并设定一个具体可完成的目标</p>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择时长</h3>
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.choose_duration">选择时长</h3>
                     <div class="duration-options">
                         <div class="duration-option" onclick="selectDuration(15)" data-touch-feedback>
                             <div class="duration-value">15</div>
@@ -1699,26 +1699,26 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">设定目标</h3>
-                    <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input">
-
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.set_goal_input">设定目标</h3>
+                    <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input" data-i18n-placeholder="flow.goal_placeholder">
+                    
                     <div class="preparation-tip">
                         <span class="tip-icon">💡</span>
-                        <span class="tip-text">建议选择一个具体可完成的目标，这样更容易进入心流状态</span>
+                        <span class="tip-text" data-i18n="flow.goal_tip">建议选择一个具体可完成的目标，这样更容易进入心流状态</span>
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn btn-secondary" onclick="goToTab('discover')">返回</button>
-                        <button class="btn btn-primary" onclick="nextStep(2)">下一步</button>
+                        <button class="btn btn-secondary" onclick="goToTab('discover')" data-i18n="flow.btn_back">返回</button>
+                        <button class="btn btn-primary" onclick="nextStep(2)" data-i18n="flow.btn_next">下一步</button>
                     </div>
                 </div>
-
+                
                 <!-- 步骤2: 评估挑战 -->
                 <div id="step-2" class="preparation-card hidden">
-                    <h2 class="preparation-title">评估挑战</h2>
-                    <p class="preparation-desc">评估你的技能水平和活动难度，找到最佳平衡点</p>
+                    <h2 class="preparation-title" data-i18n="flow.assess_challenge">评估挑战</h2>
+                    <p class="preparation-desc" data-i18n="flow.assess_desc">评估你的技能水平和活动难度，找到最佳平衡点</p>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">你的技能水平</h3>
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.your_skill_level">你的技能水平</h3>
                     <div class="score-buttons" style="margin-bottom: 1.5rem;">
                         <button class="btn score-btn" onclick="selectSkillLevel(1)" data-touch-feedback>1</button>
                         <button class="btn score-btn" onclick="selectSkillLevel(2)" data-touch-feedback>2</button>
@@ -1727,7 +1727,7 @@
                         <button class="btn score-btn" onclick="selectSkillLevel(5)" data-touch-feedback>5</button>
                     </div>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">活动挑战程度</h3>
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.activity_challenge">活动挑战程度</h3>
                     <div class="score-buttons">
                         <button class="btn score-btn" onclick="selectChallengeLevel(1)" data-touch-feedback>1</button>
                         <button class="btn score-btn" onclick="selectChallengeLevel(2)" data-touch-feedback>2</button>
@@ -1738,81 +1738,81 @@
 
                     <div class="preparation-tip">
                         <span class="tip-icon">💡</span>
-                        <span class="tip-text">技能与挑战平衡时最容易进入心流状态。如果差距太大，建议调整目标或选择其他活动</span>
+                        <span class="tip-text" data-i18n="flow.balance_tip">技能与挑战平衡时最容易进入心流状态。如果差距太大，建议调整目标或选择其他活动</span>
                     </div>
-
+                    
                     <div class="preparation-actions">
-                        <button class="btn btn-secondary" onclick="prevStep(1)">上一步</button>
-                        <button class="btn btn-primary" onclick="nextStep(3)">下一步</button>
+                        <button class="btn btn-secondary" onclick="prevStep(1)" data-i18n="flow.btn_prev">上一步</button>
+                        <button class="btn btn-primary" onclick="nextStep(3)" data-i18n="flow.btn_next">下一步</button>
                     </div>
                 </div>
 
                 <!-- 步骤3: 环境准备 -->
                 <div id="step-3" class="preparation-card hidden">
-                    <h2 class="preparation-title">环境准备</h2>
-                    <p class="preparation-desc">准备好你的心流环境，减少干扰</p>
+                    <h2 class="preparation-title" data-i18n="flow.env_preparation">环境准备</h2>
+                    <p class="preparation-desc" data-i18n="flow.prepare_env">准备好你的心流环境，减少干扰</p>
 
                     <div style="background: var(--color-primary-50); padding: 1.5rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
-                        <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">📋 准备清单</h3>
+                        <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;" data-i18n="flow.checklist">📋 准备清单</h3>
                         <div style="display: flex; flex-direction: column; gap: 0.75rem;">
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
                                 <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
-                                <span>关闭手机通知或开启勿扰模式</span>
+                                <span data-i18n="flow.check_notif">关闭手机通知或开启勿扰模式</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
                                 <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
-                                <span>准备好所需的工具和材料</span>
+                                <span data-i18n="flow.check_tools">准备好所需的工具和材料</span>
                             </label>
                             <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
                                 <input type="checkbox" style="width: 20px; height: 20px; accent-color: var(--color-primary-500);">
-                                <span>找一个安静舒适的环境</span>
+                                <span data-i18n="flow.check_env">找一个安静舒适的环境</span>
                             </label>
                         </div>
                     </div>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">选择背景音</h3>
+                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.choose_sound">选择背景音</h3>
                     <div class="sound-options" id="sound-options">
                         <div class="sound-option selected" data-sound="rain" onclick="selectSound('rain')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌧️</div>
-                            <div style="font-size: 0.875rem; font-weight: 600;">轻柔雨声</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;" data-i18n="flow.sound_rain">轻柔雨声</div>
                         </div>
                         <div class="sound-option" data-sound="ocean" onclick="selectSound('ocean')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌊</div>
-                            <div style="font-size: 0.875rem; font-weight: 600;">海浪声</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;" data-i18n="flow.sound_ocean">海浪声</div>
                         </div>
                         <div class="sound-option" data-sound="music" onclick="selectSound('music')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🎵</div>
-                            <div style="font-size: 0.875rem; font-weight: 600;">轻音乐</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;" data-i18n="flow.sound_music">轻音乐</div>
                         </div>
                         <div class="sound-option" data-sound="silence" onclick="selectSound('silence')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🔇</div>
-                            <div style="font-size: 0.875rem; font-weight: 600;">静音</div>
+                            <div style="font-size: 0.875rem; font-weight: 600;" data-i18n="flow.sound_silence">静音</div>
                         </div>
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn btn-secondary" onclick="prevStep(2)">上一步</button>
-                        <button class="btn btn-primary" onclick="nextStep(4)">下一步</button>
+                        <button class="btn btn-secondary" onclick="prevStep(2)" data-i18n="flow.btn_prev">上一步</button>
+                        <button class="btn btn-primary" onclick="nextStep(4)" data-i18n="flow.btn_next">下一步</button>
                     </div>
                 </div>
-
+                
                 <!-- 步骤4: 心理准备 -->
                 <div id="step-4" class="preparation-card hidden">
-                    <h2 class="preparation-title">心理准备</h2>
-                    <p class="preparation-desc">进行1分钟呼吸练习，让自己进入专注状态</p>
+                    <h2 class="preparation-title" data-i18n="flow.mental_preparation">心理准备</h2>
+                    <p class="preparation-desc" data-i18n="flow.breathing_exercise">进行1分钟呼吸练习，让自己进入专注状态</p>
 
                     <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50)); border-radius: var(--radius-xl); margin-bottom: 1.5rem;">
                         <div style="font-size: 4rem; margin-bottom: 1rem; animation: breathe 8s var(--ease-breathe) infinite;">🌬️</div>
-                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;">深呼吸</div>
-                        <div style="font-size: 1rem; color: var(--theme-text-light);">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;" data-i18n="flow.deep_breath">深呼吸</div>
+                        <div style="font-size: 1rem; color: var(--theme-text-light);" data-i18n="flow.breath_guide">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
                     </div>
 
                     <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
                             <span style="color: var(--color-success); font-size: 1.25rem;">✓</span>
-                            <span style="font-weight: 600; color: var(--theme-text);">准备好了吗？</span>
+                            <span style="font-weight: 600; color: var(--theme-text);" data-i18n="flow.ready_question">准备好了吗？</span>
                         </div>
-                        <p style="font-size: 0.875rem; color: var(--theme-text); margin: 0;">
+                        <p class="summary-text" data-i18n-html="flow.summary_text" style="font-size: 0.875rem; color: var(--theme-text); margin: 0;">
                             你即将开始 <strong id="summary-duration">30分钟</strong> 的心流体验<br>
                             <span id="summary-activity-container" style="display:none;">活动：<strong id="summary-activity"></strong><br></span>
                             目标：<strong id="summary-goal">完成线稿上色</strong>
@@ -1820,8 +1820,8 @@
                     </div>
 
                     <div class="preparation-actions">
-                        <button class="btn btn-secondary" onclick="prevStep(3)">上一步</button>
-                        <button class="btn btn-primary" onclick="beginFocusMode()">开始心流体验</button>
+                        <button class="btn btn-secondary" onclick="prevStep(3)" data-i18n="flow.btn_prev">上一步</button>
+                        <button class="btn btn-primary" onclick="beginFocusMode()" data-i18n="flow.start_flow_experience">开始心流体验</button>
                     </div>
                 </div>
             </div>
@@ -1829,7 +1829,7 @@
 
         <!-- 专注模式 -->
         <div id="focus-mode" class="focus-mode hidden">
-            <div class="focus-activity-name" id="focus-activity-name">🎨 数字油画</div>
+            <div class="focus-activity-name" id="focus-activity-name" data-i18n="flow.focus_activity">🎨 数字油画</div>
             
             <div class="focus-timer">
                 <span class="focus-time" id="focus-time">00:00</span>
@@ -1850,29 +1850,29 @@
                 </svg>
                 <div class="progress-ring-text">
                     <div class="progress-percentage" id="progress-percentage">0%</div>
-                    <div class="progress-label">完成</div>
+                    <div class="progress-label" data-i18n="flow.progress_complete">完成</div>
                 </div>
             </div>
 
             <div class="focus-goal">
                 <span class="goal-icon">💡</span>
-                <span class="goal-text" id="focus-goal-text">当前目标：完成线稿上色</span>
+                <span class="goal-text" id="focus-goal-text" data-i18n="flow.current_goal">当前目标：完成线稿上色</span>
             </div>
 
             <div class="focus-sound">
                 <div>
-                    <div class="sound-label">背景音</div>
-                    <div class="sound-name" id="focus-sound-name">🌧️ 轻柔雨声</div>
+                    <div class="sound-label" data-i18n="flow.sound_label">背景音</div>
+                    <div class="sound-name" id="focus-sound-name" data-i18n="flow.sound_rain">🌧️ 轻柔雨声</div>
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
-                    <button class="btn btn-sm btn-ghost" id="sound-play-btn" onclick="toggleSoundPlayback()" data-touch-feedback>▶️ 播放</button>
-                    <button class="btn btn-sm btn-ghost" onclick="changeSound()">更换</button>
+                    <button class="btn btn-sm btn-ghost" id="sound-play-btn" onclick="toggleSoundPlayback()" data-touch-feedback data-i18n="flow.sound_play">▶️ 播放</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changeSound()" data-i18n="flow.sound_change">更换</button>
                 </div>
             </div>
 
             <div class="focus-actions">
-                <button class="btn btn-secondary" id="pause-btn" onclick="togglePause()">暂停</button>
-                <button class="btn btn-ghost" onclick="stopFocusMode()">结束</button>
+                <button class="btn btn-secondary" id="pause-btn" onclick="togglePause()" data-i18n="flow.btn_pause">暂停</button>
+                <button class="btn btn-ghost" onclick="stopFocusMode()" data-i18n="flow.btn_stop">结束</button>
             </div>
         </div>
 
@@ -1881,18 +1881,18 @@
             <div class="assessment-container">
                 <div class="celebration slide-up">
                     <div class="celebration-icon">🎉</div>
-                    <h1 class="celebration-title">太棒了！</h1>
-                    <p class="celebration-desc">你刚刚完成了 <span id="completed-duration">30</span> 分钟的心流体验</p>
+                    <h1 class="celebration-title" data-i18n="flow.celebration_title">太棒了！</h1>
+                    <p class="celebration-desc" data-i18n="flow.celebration_desc">你刚刚完成了 <span id="completed-duration">30</span> 分钟的心流体验</p>
                 </div>
 
                 <div class="card">
-                    <h2 class="assessment-title">📊 心流体验评估</h2>
-                    <p style="font-size: 0.875rem; color: var(--theme-text-light); margin-bottom: 1.5rem;">
+                    <h2 class="assessment-title" data-i18n="flow.assessment_title">📊 心流体验评估</h2>
+                    <p style="font-size: 0.875rem; color: var(--theme-text-light); margin-bottom: 1.5rem;" data-i18n="flow.assessment_desc">
                         请评价你在这次活动中的体验（1=很不同意，5=完全同意）
                     </p>
 
                     <div class="assessment-question">
-                        <div class="question-text">我完全专注于这个活动</div>
+                        <div class="question-text" data-i18n="flow.question_focus">我完全专注于这个活动</div>
                         <div class="score-buttons" data-question="focus">
                             <button class="btn score-btn" onclick="selectScore('focus', 1)" data-touch-feedback>1</button>
                             <button class="btn score-btn" onclick="selectScore('focus', 2)" data-touch-feedback>2</button>
@@ -1903,7 +1903,7 @@
                     </div>
 
                     <div class="assessment-question">
-                        <div class="question-text">我没有意识到时间的流逝</div>
+                        <div class="question-text" data-i18n="flow.question_time">我没有意识到时间的流逝</div>
                         <div class="score-buttons" data-question="time">
                             <button class="btn score-btn" onclick="selectScore('time', 1)" data-touch-feedback>1</button>
                             <button class="btn score-btn" onclick="selectScore('time', 2)" data-touch-feedback>2</button>
@@ -1914,7 +1914,7 @@
                     </div>
 
                     <div class="assessment-question">
-                        <div class="question-text">这个活动的难度对我来说刚刚好</div>
+                        <div class="question-text" data-i18n="flow.question_challenge">这个活动的难度对我来说刚刚好</div>
                         <div class="score-buttons" data-question="challenge">
                             <button class="btn score-btn" onclick="selectScore('challenge', 1)" data-touch-feedback>1</button>
                             <button class="btn score-btn" onclick="selectScore('challenge', 2)" data-touch-feedback>2</button>
@@ -1925,7 +1925,7 @@
                     </div>
 
                     <div class="assessment-question">
-                        <div class="question-text">我享受这个活动的过程</div>
+                        <div class="question-text" data-i18n="flow.question_enjoy">我享受这个活动的过程</div>
                         <div class="score-buttons" data-question="enjoy">
                             <button class="btn score-btn" onclick="selectScore('enjoy', 1)" data-touch-feedback>1</button>
                             <button class="btn score-btn" onclick="selectScore('enjoy', 2)" data-touch-feedback>2</button>
@@ -1937,34 +1937,34 @@
                 </div>
 
                 <div class="card">
-                    <h2 class="assessment-title">📝 心流日记（可选）</h2>
-                    <textarea class="diary-textarea" placeholder="记录这次心流体验的感受、收获或想法..." id="diary-text"></textarea>
+                    <h2 class="assessment-title" data-i18n="flow.diary_title">📝 心流日记（可选）</h2>
+                    <textarea class="diary-textarea" data-i18n-placeholder="flow.diary_placeholder" placeholder="记录这次心流体验的感受、收获或想法..." id="diary-text"></textarea>
                 </div>
 
                 <div class="assessment-actions">
-                    <button class="btn btn-secondary" onclick="skipAssessment()">跳过</button>
-                    <button class="btn btn-primary" onclick="saveAssessment()">保存并查看统计</button>
+                    <button class="btn btn-secondary" onclick="skipAssessment()" data-i18n="flow.btn_skip">跳过</button>
+                    <button class="btn btn-primary" onclick="saveAssessment()" data-i18n="flow.btn_save_stats">保存并查看统计</button>
                 </div>
             </div>
         </div>
 
         <!-- 记录页面 -->
         <div id="records-section" class="content-section hidden">
-            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">心流记录</h2>
+            <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up" data-i18n="flow.records_title">心流记录</h2>
             
             <div class="dashboard-grid" style="margin-bottom: 2rem;" id="records-stats">
                 <!-- 动态加载统计数据 -->
             </div>
 
             <div class="card">
-                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">🏆 活动排行</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;" data-i18n="flow.activity_ranking">🏆 活动排行</h3>
                 <div class="records-ranking" id="records-ranking">
                     <!-- 动态加载活动排行 -->
                 </div>
             </div>
 
             <div style="margin-top: 2rem;" id="records-history-container">
-                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;">📅 历史记录</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 1rem;" data-i18n="flow.history_records">📅 历史记录</h3>
                 <div id="records-history">
                     <!-- 动态加载历史记录 -->
                 </div>
@@ -2098,6 +2098,144 @@
             }
         ];
 
+        /* ========== 活动数据（英文版） ========== */
+        const activitiesEn = [
+            {
+                id: 'reading',
+                name: 'Deep Reading',
+                icon: '📖',
+                difficulty: 2,
+                duration: '30-60 min',
+                description: 'Choose a book that interests you and immerse yourself in the world of words',
+                tags: ['Learning', 'Quiet', 'Indoor'],
+                benefits: ['Improve focus', 'Expand knowledge', 'Reduce stress'],
+                tips: ['Choose a quiet corner', 'Turn off phone notifications', 'Prepare a cup of tea or coffee'],
+                scientific: 'Reading activates multiple regions of the brain; long-term reading enhances neuroplasticity.'
+            },
+            {
+                id: 'writing',
+                name: 'Creative Writing',
+                icon: '✍️',
+                difficulty: 3,
+                duration: '30-45 min',
+                description: 'Free writing or story creation, let your thoughts flow naturally',
+                tags: ['Creative', 'Expression', 'Indoor'],
+                benefits: ['Improve expression', 'Emotional release', 'Stimulate creativity'],
+                tips: ['Don\'t obsess over perfection', 'Write first, edit later', 'Find a comfortable position'],
+                scientific: 'Writing aids emotional regulation and cognitive processing; recommended by positive psychology as a self-exploration tool.'
+            },
+            {
+                id: 'painting',
+                name: 'Painting',
+                icon: '🎨',
+                difficulty: 3,
+                duration: '45-60 min',
+                description: 'Express your inner world through colors and lines, enjoy the creative process',
+                tags: ['Creative', 'Art', 'Indoor'],
+                benefits: ['Stimulate creativity', 'Emotional expression', 'Improve focus'],
+                tips: ['Don\'t pursue perfection', 'Try different media', 'Enjoy the process, not the result'],
+                scientific: 'Art creation activates the brain\'s reward circuit, promotes dopamine secretion, and enhances well-being.'
+            },
+            {
+                id: 'yoga',
+                name: 'Yoga Practice',
+                icon: '🧘‍♀️',
+                difficulty: 2,
+                duration: '30-45 min',
+                description: 'Connect body and mind through postures and breathing',
+                tags: ['Physical', 'Mind-Body', 'Indoor'],
+                benefits: ['Enhance body awareness', 'Reduce anxiety', 'Improve flexibility'],
+                tips: ['Focus on breathing rhythm', 'Don\'t compare with others', 'Listen to your body'],
+                scientific: 'Yoga combines breathing and movement, reduces cortisol levels, and promotes parasympathetic nervous system activity.'
+            },
+            {
+                id: 'meditation',
+                name: 'Mindfulness Meditation',
+                icon: '🧘',
+                difficulty: 1,
+                duration: '15-20 min',
+                description: 'Focus on the present moment, observe the coming and going of breath and thoughts',
+                tags: ['Focus', 'Quiet', 'Indoor'],
+                benefits: ['Improve focus', 'Reduce stress', 'Enhance emotional regulation'],
+                tips: ['Find a quiet place', 'Keep your spine straight', 'Don\'t judge your thoughts'],
+                scientific: 'Mindfulness meditation can change brain structure, increase prefrontal cortex thickness, and enhance emotional regulation ability.'
+            },
+            {
+                id: 'coding',
+                name: 'Programming Learning',
+                icon: '💻',
+                difficulty: 4,
+                duration: '45-60 min',
+                description: 'Solve a programming problem or learn a new technology',
+                tags: ['Learning', 'Challenge', 'Indoor'],
+                benefits: ['Improve logical thinking', 'Gain sense of achievement', 'Enhance problem-solving ability'],
+                tips: ['Break down big problems', 'Understand before coding', 'Take breaks when needed'],
+                scientific: 'The debugging process in programming trains executive function and enhances cognitive flexibility.'
+            },
+            {
+                id: 'cooking',
+                name: 'Cooking Creation',
+                icon: '🍳',
+                difficulty: 3,
+                duration: '45-60 min',
+                description: 'Try a new recipe, prepare a delicious meal with care',
+                tags: ['Creative', 'Sensory', 'Indoor'],
+                benefits: ['Enhance well-being', 'Sensory pleasure', 'Sense of achievement'],
+                tips: ['Enjoy the cooking process', 'Try new ingredients', 'Plate with care'],
+                scientific: 'Cooking activates the senses, promotes mindfulness, and is significantly associated with improved mood.'
+            },
+            {
+                id: 'gardening',
+                name: 'Gardening',
+                icon: '🌱',
+                difficulty: 2,
+                duration: '30-45 min',
+                description: 'Care for plants, feel the joy of life growing',
+                tags: ['Nature', 'Patience', 'Outdoor'],
+                benefits: ['Reduce stress', 'Enhance sense of responsibility', 'Connect with nature'],
+                tips: ['Observe plant needs', 'Don\'t rush the process', 'Enjoy touching the soil'],
+                scientific: 'Gardening reduces cortisol levels and enhances positive emotions; it is known as "nature therapy".'
+            },
+            {
+                id: 'music',
+                name: 'Music Creation/Practice',
+                icon: '🎵',
+                difficulty: 3,
+                duration: '30-45 min',
+                description: 'Practice an instrument or try to create a melody',
+                tags: ['Creative', 'Art', 'Indoor'],
+                benefits: ['Improve focus', 'Emotional expression', 'Enhance coordination'],
+                tips: ['Enjoy every note', 'Don\'t pursue perfection', 'Record your creations'],
+                scientific: 'Music training enhances connections between multiple brain regions and promotes neuroplasticity.'
+            },
+            {
+                id: 'running',
+                name: 'Running/Jogging',
+                icon: '🏃',
+                difficulty: 2,
+                duration: '30-45 min',
+                description: 'Find your rhythm while running, let your thoughts flow freely',
+                tags: ['Physical', 'Outdoor', 'Health'],
+                benefits: ['Release endorphins', 'Reduce anxiety', 'Improve fitness'],
+                tips: ['Maintain a comfortable pace', 'Focus on breathing', 'Choose a suitable route'],
+                scientific: 'Aerobic exercise promotes BDNF (brain-derived neurotrophic factor) secretion, improving mood and cognitive function.'
+            }
+        ];
+
+        /* ========== 获取当前语言的活动数组 ========== */
+        function getActivities() {
+            if (window.I18N && I18N.currentLocale === 'en') {
+                return activitiesEn;
+            }
+            return activities;
+        }
+
+        /* ========== 根据 ID 获取当前语言的活动 ========== */
+        function getActivityById(id) {
+            const list = getActivities();
+            return list.find(a => a.id === id) || null;
+        }
+
         /* ========== 全局变量 ========== */
         let currentDuration = 30;
         let currentGoal = '';
@@ -2110,6 +2248,14 @@
         let sessionStartTime = null;
         let isPaused = false;
         let scores = {};
+
+        // i18n helper for dynamic text
+        function _t(key, zhText) {
+            if (window.I18N && I18N.currentLocale === 'en') {
+                return I18N.t(key) || zhText;
+            }
+            return zhText;
+        }
 
         /* ========== Tab切换 ========== */
         document.querySelectorAll('.page-tab').forEach(tab => {
@@ -2136,17 +2282,33 @@
             });
         });
 
+        /* ========== 监听语言切换事件 ========== */
+        document.addEventListener('localeChanged', (e) => {
+            const activeTab = document.querySelector('.page-tab.active');
+            if (activeTab) {
+                const targetTab = activeTab.dataset.tab;
+                if (targetTab === 'discover') {
+                    const activeFilter = document.querySelector('.filter-btn.active');
+                    const category = activeFilter ? activeFilter.dataset.category || 'all' : 'all';
+                    loadActivities(category);
+                } else if (targetTab === 'records') {
+                    loadRecords();
+                }
+            }
+        });
+
         /* ========== 活动发现 ========== */
         function loadActivities(category) {
             const grid = document.getElementById('activity-grid');
             grid.innerHTML = '';
             
-            const filtered = category === 'all' ? activities : 
-                            activities.filter(a => {
-                                if (category === 'creative') return a.tags.includes('创造性') || a.tags.includes('艺术');
-                                if (category === 'learning') return a.tags.includes('学习');
-                                if (category === 'physical') return a.tags.includes('运动') || a.tags.includes('身体');
-                                if (category === 'contemplative') return a.tags.includes('专注') || a.tags.includes('安静');
+            const allActivities = getActivities();
+            const filtered = category === 'all' ? allActivities : 
+                            allActivities.filter(a => {
+                                if (category === 'creative') return a.tags.some(t => ['创造性', '艺术', 'Creative', 'Art'].includes(t));
+                                if (category === 'learning') return a.tags.some(t => ['学习', 'Learning'].includes(t));
+                                if (category === 'physical') return a.tags.some(t => ['运动', '身体', 'Physical', 'Mind-Body'].includes(t));
+                                if (category === 'contemplative') return a.tags.some(t => ['专注', '安静', 'Focus', 'Quiet'].includes(t));
                                 return true;
                             });
             
@@ -2185,7 +2347,7 @@
 
         /* ========== 活动详情弹窗 ========== */
         function showActivityDetail(activityId) {
-            const activity = activities.find(a => a.id === activityId);
+            const activity = getActivityById(activityId);
             if (!activity) return;
             
             currentActivity = activity;
@@ -2331,15 +2493,21 @@
                 meditation: 'ocean',
                 design: 'music'
             };
+            
+            // 获取翻译后的声音名称
+            function getSoundName(sound) {
+                const soundNames = {
+                    'rain': _t('flow.sound_rain', '🌧️ 轻柔雨声'),
+                    'ocean': _t('flow.sound_ocean', '🌊 海浪声'),
+                    'music': _t('flow.sound_music', '🎵 轻音乐'),
+                    'silence': _t('flow.sound_silence', '🔇 静音')
+                };
+                return soundNames[sound] || soundNames['rain'];
+            }
+            
             if (currentActivity && defaultSounds[currentActivity.id]) {
                 selectedSound = defaultSounds[currentActivity.id];
-                const soundNames = {
-                    'rain': '🌧️ 轻柔雨声',
-                    'ocean': '🌊 海浪声',
-                    'music': '🎵 轻音乐',
-                    'silence': '🔇 静音'
-                };
-                document.getElementById('focus-sound-name').textContent = soundNames[selectedSound] || '🌧️ 轻柔雨声';
+                document.getElementById('focus-sound-name').textContent = getSoundName(selectedSound);
             }
 
             // 更新活动名称
@@ -2348,7 +2516,8 @@
             }
             
             // 更新目标
-            document.getElementById('focus-goal-text').textContent = `当前目标：${currentGoal}`;
+            const goalPrefix = _t('flow.goal_prefix', '当前目标：');
+            document.getElementById('focus-goal-text').textContent = `${goalPrefix}${currentGoal}`;
             
             // 更新目标时间
             const targetMinutes = Math.floor(currentDuration);
@@ -2359,7 +2528,7 @@
             focusSeconds = 0;
             sessionStartTime = new Date().toISOString();
             isPaused = false;
-            document.getElementById('pause-btn').textContent = '暂停';
+            document.getElementById('pause-btn').textContent = _t('flow.btn_pause', '暂停');
             
             focusTimer = setInterval(() => {
                 if (!isPaused) {
@@ -2394,7 +2563,7 @@
 
         function togglePause() {
             isPaused = !isPaused;
-            document.getElementById('pause-btn').textContent = isPaused ? '继续' : '暂停';
+            document.getElementById('pause-btn').textContent = isPaused ? _t('flow.btn_continue', '继续') : _t('flow.btn_pause', '暂停');
         }
 
         function stopFocusMode() {
@@ -2409,27 +2578,31 @@
             const nextIdx = (currentIdx + 1) % sounds.length;
             selectedSound = sounds[nextIdx];
             
-            const soundNames = {
-                'rain': '🌧️ 轻柔雨声',
-                'ocean': '🌊 海浪声',
-                'music': '🎵 轻音乐',
-                'silence': '🔇 静音'
-            };
+            // 获取翻译后的声音名称
+            function getSoundName(sound) {
+                const soundNames = {
+                    'rain': _t('flow.sound_rain', '🌧️ 轻柔雨声'),
+                    'ocean': _t('flow.sound_ocean', '🌊 海浪声'),
+                    'music': _t('flow.sound_music', '🎵 轻音乐'),
+                    'silence': _t('flow.sound_silence', '🔇 静音')
+                };
+                return soundNames[sound] || soundNames['rain'];
+            }
             
-            document.getElementById('focus-sound-name').textContent = soundNames[selectedSound];
+            document.getElementById('focus-sound-name').textContent = getSoundName(selectedSound);
             
             // 如果正在播放，切换到新声音
             if (isPlaying) {
                 playAmbientSound(selectedSound);
             }
             
-            showToast(`已切换到${soundNames[selectedSound]}`, 'success');
+            showToast(_t('flow.toast_sound_changed', `已切换到${getSoundName(selectedSound)}`), 'success');
         }
         
         // 添加播放/暂停环境音功能
         function toggleSoundPlayback() {
             if (selectedSound === 'silence') {
-                showToast('当前为静音模式，请先选择其他声音', 'warning');
+                showToast(_t('flow.toast_silence_warning', '当前为静音模式，请先选择其他声音'), 'warning');
                 return;
             }
             
@@ -2438,7 +2611,7 @@
             // 更新按钮文本
             const btn = document.getElementById('sound-play-btn');
             if (btn) {
-                btn.textContent = isPlaying ? '⏸️ 暂停' : '▶️ 播放';
+                btn.textContent = isPlaying ? _t('flow.sound_pause', '⏸️ 暂停') : _t('flow.sound_play', '▶️ 播放');
             }
         }
 
@@ -2466,7 +2639,8 @@
             // 这里可以保存到localStorage或发送到服务器
             const record = {
                 recordId: Date.now().toString(36) + Math.random().toString(36).substr(2),
-                activity: currentActivity ? currentActivity.name : '未知活动',
+                activityId: currentActivity ? currentActivity.id : null,
+                activityName: currentActivity ? currentActivity.name : _t('flow.unknown_activity', '未知活动'),
                 duration: focusSeconds,
                 goal: currentGoal,
                 scores: scores,
@@ -2481,7 +2655,7 @@
             records.push(record);
             localStorage.setItem('flow-records', JSON.stringify(records));
             
-            showToast('评估已保存！', 'success');
+            showToast(_t('flow.toast_assessment_saved', '评估已保存！'), 'success');
             
             // 返回首页
             setTimeout(() => {
@@ -2490,7 +2664,7 @@
         }
 
         function skipAssessment() {
-            showToast('已跳过评估', 'warning');
+            showToast(_t('flow.toast_assessment_skipped', '已跳过评估'), 'warning');
             setTimeout(() => {
                 location.reload();
             }, 1500);

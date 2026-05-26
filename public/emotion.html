@@ -417,17 +417,20 @@
             </a>
 
         <div class="desktop-nav">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
-                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.home">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.flow">
                     心流体验
                     <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
                 </a>
-                <a href="emotion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">情绪觉察</a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
-                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
-                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
+                <a href="emotion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.companion">我的伙伴</a>
             </div>
+
+            <!-- 语言切换 -->
+            <div class="i18n-switcher" style="display:flex;align-items:center;margin-left:0.5rem;"></div>
 
             <!-- 移动端菜单按钮 -->
             <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="打开菜单">
@@ -440,13 +443,14 @@
         <!-- 移动端菜单 -->
         <div class="mobile-menu" id="mobileMenu">
             <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
-                <a href="index.html">首页</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html">心流体验</a>
-                <a href="emotion.html" class="active">情绪觉察</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html">关于我们</a>
-                <a href="companion.html">我的伙伴</a>
+                <a href="index.html" data-i18n="nav.home">首页</a>
+                <a href="relax.html" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" data-i18n="nav.flow">心流体验</a>
+                <a href="emotion.html" class="active" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" data-i18n="nav.companion">我的伙伴</a>
+                <div class="i18n-switcher" style="padding:0.5rem 0;"></div>
             </div>
         </div>
     </nav>
@@ -454,8 +458,8 @@
     <!-- ===== 页面头部 ===== -->
     <section class="page-hero">
         <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;">
-            <h1 class="page-title fade-in-up" style="animation-delay:0.1s;">探索你的情绪世界</h1>
-            <p class="page-subtitle fade-in-up" style="animation-delay:0.2s;">
+            <h1 class="page-title fade-in-up" style="animation-delay:0.1s;" data-i18n="emotion.page_title">探索你的情绪世界</h1>
+            <p class="page-subtitle fade-in-up" style="animation-delay:0.2s;" data-i18n="emotion.page_subtitle">
                 基于 Plutchik 情绪轮盘理论，可视化探索和理解你的情绪
             </p>
         </div>
@@ -466,17 +470,17 @@
         <!-- 标签页切换 -->
         <div style="display:flex;justify-content:center;margin-bottom:2rem;" class="fade-in-up" style="animation-delay:0.15s;">
             <div class="tab-bar" role="tablist">
-                <button class="tab-btn active" data-tab="record" role="tab" aria-selected="true">📝 记录情绪</button>
-                <button class="tab-btn" data-tab="analysis" role="tab" aria-selected="false">📊 情绪分析</button>
-                <button class="tab-btn" data-tab="suggestions" role="tab" aria-selected="false">💡 调节建议</button>
+                <button class="tab-btn active" data-tab="record" role="tab" aria-selected="true" data-i18n="emotion.tab_record">📝 记录情绪</button>
+                <button class="tab-btn" data-tab="analysis" role="tab" aria-selected="false" data-i18n="emotion.tab_analysis">📊 情绪分析</button>
+                <button class="tab-btn" data-tab="suggestions" role="tab" aria-selected="false" data-i18n="emotion.tab_suggestions">💡 调节建议</button>
             </div>
         </div>
 
         <!-- ===== 记录情绪面板 ===== -->
         <div class="tab-content active" id="tab-record">
             <div class="form-card fade-in-up" style="animation-delay:0.2s;">
-                <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;">选择你的情绪</h2>
-                <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:1.5rem;">点击轮盘选择情绪，最多可选2个相邻情绪。悬停在扇区上可预览，点击确认选择。</p>
+                <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="emotion.select_emotion">选择你的情绪</h2>
+                <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:1.5rem;" data-i18n="emotion.select_emotion_desc">点击轮盘选择情绪，最多可选2个相邻情绪。悬停在扇区上可预览，点击确认选择。</p>
 
                 <!-- 情绪轮盘 -->
                 <div class="wheel-wrapper">
@@ -485,11 +489,11 @@
                         <!-- Canvas 由 emotion-wheel.js 插入 -->
                     </div>
                 </div>
-                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;">基于 Plutchik 情绪轮盘理论</p>
+                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;" data-i18n="emotion.wheel_based_on">基于 Plutchik 情绪轮盘理论</p>
 
                 <!-- 已选情绪展示 -->
                 <div id="selected-emotions" style="display:none;margin-top:2rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">已选情绪</h3>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.selected_emotions">已选情绪</h3>
                     <div id="emotion-tags" style="display:flex;flex-wrap:wrap;gap:0.5rem;">
                         <!-- 动态生成 -->
                     </div>
@@ -497,8 +501,8 @@
 
                 <!-- 情绪温度计 -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">情绪温度计</h3>
-                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.5rem;">评估当前情绪的整体强度</p>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="emotion.emotion_thermometer">情绪温度计</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.5rem;" data-i18n="emotion.emotion_thermometer_desc">评估当前情绪的整体强度</p>
 
                     <div class="thermometer">
                         <div class="thermometer-track"></div>
@@ -508,9 +512,9 @@
                                aria-label="情绪强度">
                     </div>
                     <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--theme-text-light);margin-top:0.5rem;">
-                        <span>1 极好</span>
-                        <span>5 平静</span>
-                        <span>10 很糟糕</span>
+                        <span>1 Very Good</span>
+                        <span>5 Calm</span>
+                        <span>10 Very Bad</span>
                     </div>
                     <div style="text-align:center;margin-top:0.75rem;">
                         <span id="emotion-level-text" style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">情绪平稳</span>
@@ -519,28 +523,28 @@
 
                 <!-- 情境描述 -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;">发生了什么？</h3>
-                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
-                    <textarea id="context" class="text-area" rows="3" placeholder="今天发生了什么让你有这种感觉？"></textarea>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.what_happened">发生了什么？</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.what_happened_desc">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
+                    <textarea id="context" class="text-area" rows="3" placeholder="今天发生了什么让你有这种感觉？" data-i18n-placeholder="emotion.context_placeholder"></textarea>
                 </div>
 
                 <!-- 标签选择 -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">相关标签</h3>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="emotion.related_tags">相关标签</h3>
                     <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
-                        <button class="tag-select-btn" data-tag="工作">工作</button>
-                        <button class="tag-select-btn" data-tag="学业">学业</button>
-                        <button class="tag-select-btn" data-tag="人际关系">人际关系</button>
-                        <button class="tag-select-btn" data-tag="家庭">家庭</button>
-                        <button class="tag-select-btn" data-tag="健康">健康</button>
-                        <button class="tag-select-btn" data-tag="财务">财务</button>
-                        <button class="tag-select-btn" data-tag="自我">自我</button>
-                        <button class="tag-select-btn" data-tag="其他">其他</button>
+                        <button class="tag-select-btn" data-tag="工作" data-i18n="emotion.tag_work">工作</button>
+                        <button class="tag-select-btn" data-tag="学业" data-i18n="emotion.tag_study">学业</button>
+                        <button class="tag-select-btn" data-tag="人际关系" data-i18n="emotion.tag_relationships">人际关系</button>
+                        <button class="tag-select-btn" data-tag="家庭" data-i18n="emotion.tag_family">家庭</button>
+                        <button class="tag-select-btn" data-tag="健康" data-i18n="emotion.tag_health">健康</button>
+                        <button class="tag-select-btn" data-tag="财务" data-i18n="emotion.tag_finance">财务</button>
+                        <button class="tag-select-btn" data-tag="自我" data-i18n="emotion.tag_self">自我</button>
+                        <button class="tag-select-btn" data-tag="其他" data-i18n="emotion.tag_other">其他</button>
                     </div>
                 </div>
 
                 <!-- 保存按钮 -->
-                <button onclick="saveEmotion()" class="btn btn-primary" style="width:100%;margin-top:2rem;font-size:1rem;">
+                <button onclick="saveEmotion()" class="btn btn-primary" style="width:100%;margin-top:2rem;font-size:1rem;" data-i18n="emotion.save_record">
                     保存记录
                 </button>
             </div>
@@ -550,13 +554,13 @@
         <div class="tab-content" id="tab-analysis">
             <div id="analysis-empty" class="empty-state fade-in-up">
                 <span class="icon">📊</span>
-                <p>还没有记录，开始记录你的情绪吧</p>
+                <p data-i18n="emotion.analysis_empty">还没有记录，开始记录你的情绪吧</p>
             </div>
 
             <div id="analysis-data" style="display:none;">
                 <!-- 情绪分布 -->
                 <div class="analysis-card fade-in-up" style="animation-delay:0.1s;">
-                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">情绪分布</h3>
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;" data-i18n="emotion.distribution_title">情绪分布</h3>
                     <div id="emotion-distribution">
                         <!-- 动态生成 -->
                     </div>
@@ -564,7 +568,7 @@
 
                 <!-- 常见触发因素 -->
                 <div class="analysis-card fade-in-up" style="animation-delay:0.2s;">
-                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">常见触发因素</h3>
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;" data-i18n="emotion.triggers_title">常见触发因素</h3>
                     <div id="trigger-factors">
                         <!-- 动态生成 -->
                     </div>
@@ -572,13 +576,13 @@
 
                 <!-- 情绪趋势图 -->
                 <div class="analysis-card fade-in-up" style="animation-delay:0.3s;">
-                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;">情绪变化曲线</h3>
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;" data-i18n="emotion.trend_title">情绪变化曲线</h3>
                     <div style="height:220px;position:relative;" id="emotion-chart-wrapper">
                         <canvas id="emotion-chart"></canvas>
                     </div>
                     <div style="display:flex;justify-content:center;gap:1rem;margin-top:1rem;">
-                        <button onclick="switchTrendPeriod('week')" id="btn-week" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--color-primary-400);color:white;border:none;border-radius:var(--radius-full);">近7天</button>
-                        <button onclick="switchTrendPeriod('month')" id="btn-month" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--theme-bg);color:var(--theme-text-light);border:1px solid var(--theme-border);border-radius:var(--radius-full);">近30天</button>
+                        <button onclick="switchTrendPeriod('week')" id="btn-week" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--color-primary-400);color:white;border:none;border-radius:var(--radius-full);" data-i18n="emotion.period_week">近7天</button>
+                        <button onclick="switchTrendPeriod('month')" id="btn-month" class="btn btn-sm" style="font-size:0.85rem;padding:0.375rem 1rem;background:var(--theme-bg);color:var(--theme-text-light);border:1px solid var(--theme-border);border-radius:var(--radius-full);" data-i18n="emotion.period_month">近30天</button>
                     </div>
                 </div>
             </div>
@@ -588,7 +592,7 @@
         <div class="tab-content" id="tab-suggestions">
             <div id="suggestions-empty" class="empty-state fade-in-up">
                 <span class="icon">💡</span>
-                <p>记录情绪后，将为你生成个性化调节建议</p>
+                <p data-i18n="emotion.suggestions_empty">记录情绪后，将为你生成个性化调节建议</p>
             </div>
             <div id="suggestions-data" style="display:none;">
                 <div id="suggestions-container">
@@ -602,12 +606,12 @@
     <footer class="site-footer">
         <div class="inner">
             <div class="disclaimer-box">
-                <p>
+                <p data-i18n="footer.disclaimer">
                     🔒 <strong>数据隐私</strong>：您的情绪记录仅存储在本地设备（localStorage），不会上传至任何服务器，平台无法访问您的个人数据。<br>
                     ⚠️ <strong>非诊断工具</strong>：本平台为公益心理健康科普与情绪陪伴服务，不提供任何医学诊断或疾病诊疗。如有严重心理困扰，请及时前往正规医疗机构就诊。
                 </p>
             </div>
-            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
+            <p class="copyright" data-i18n="footer.copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
         </div>
     </footer>
 

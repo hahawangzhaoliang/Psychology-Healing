@@ -52,17 +52,20 @@
 
             <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
-                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.home">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.flow">
                     心流体验
                     <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
                 </a>
-                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
-                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
-                <a href="companion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">我的伙伴</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;" data-i18n="nav.companion">我的伙伴</a>
             </div>
+
+            <!-- 语言切换 -->
+            <div class="i18n-switcher" style="display:flex;align-items:center;margin-left:0.5rem;"></div>
 
             <!-- 移动端菜单按钮 -->
             <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="打开菜单">
@@ -75,13 +78,14 @@
         <!-- 移动端菜单 -->
         <div class="mobile-menu" id="mobileMenu">
             <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
-                <a href="index.html">首页</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html">心流体验</a>
-                <a href="emotion.html">情绪觉察</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html">关于我们</a>
-                <a href="companion.html" class="active">我的伙伴</a>
+                <a href="index.html" data-i18n="nav.home">首页</a>
+                <a href="relax.html" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" data-i18n="nav.flow">心流体验</a>
+                <a href="emotion.html" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" class="active" data-i18n="nav.companion">我的伙伴</a>
+                <div class="i18n-switcher" style="padding:0.5rem 0;"></div>
             </div>
         </div>
     </nav>
@@ -96,8 +100,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                     </svg>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">疗愈内容</h1>
-                <p class="text-gray-600 max-w-xl mx-auto">轻量心理科普，用易懂的方式了解自己，学习照顾内心的方法。</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3" data-i18n="hero.article_title">疗愈内容</h1>
+                <p class="text-gray-600 max-w-xl mx-auto" data-i18n="hero.article_subtitle">轻量心理科普，用易懂的方式了解自己，学习照顾内心的方法。</p>
             </div>
         </section>
 
@@ -106,25 +110,25 @@
             <div class="max-w-6xl mx-auto px-4 sm:px-6">
                 <!-- 分类标签 -->
                 <div class="category-tabs stagger-child mb-8" style="--stagger-index: 1" role="tablist">
-                    <button onclick="filterArticles('all')" class="category-tab active" data-category="all" role="tab" aria-selected="true">
+                    <button onclick="filterArticles('all')" class="category-tab active" data-category="all" role="tab" aria-selected="true" data-i18n="article.category_all">
                         全部
                     </button>
-                    <button onclick="filterArticles('神经科学')" class="category-tab" data-category="神经科学" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('神经科学')" class="category-tab" data-category="神经科学" role="tab" aria-selected="false" data-i18n="article.category_neuro">
                         神经科学
                     </button>
-                    <button onclick="filterArticles('临床心理')" class="category-tab" data-category="临床心理" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('临床心理')" class="category-tab" data-category="临床心理" role="tab" aria-selected="false" data-i18n="article.category_clinical">
                         临床心理
                     </button>
-                    <button onclick="filterArticles('心理科学')" class="category-tab" data-category="心理科学" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('心理科学')" class="category-tab" data-category="心理科学" role="tab" aria-selected="false" data-i18n="article.category_psych">
                         心理科学
                     </button>
-                    <button onclick="filterArticles('睡眠心理')" class="category-tab" data-category="睡眠心理" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('睡眠心理')" class="category-tab" data-category="睡眠心理" role="tab" aria-selected="false" data-i18n="article.category_sleep">
                         睡眠心理
                     </button>
-                    <button onclick="filterArticles('压力管理')" class="category-tab" data-category="压力管理" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('压力管理')" class="category-tab" data-category="压力管理" role="tab" aria-selected="false" data-i18n="article.category_stress">
                         压力管理
                     </button>
-                    <button onclick="filterArticles('积极心理')" class="category-tab" data-category="积极心理" role="tab" aria-selected="false">
+                    <button onclick="filterArticles('积极心理')" class="category-tab" data-category="积极心理" role="tab" aria-selected="false" data-i18n="article.category_positive">
                         积极心理
                     </button>
                 </div>
@@ -132,7 +136,7 @@
                 <!-- 加载状态 -->
                 <div id="loadingState" class="loading-container">
                     <div class="loading-spinner"></div>
-                    <p class="loading-text">正在加载内容...</p>
+                    <p class="loading-text" data-i18n="article.loading">正在加载内容...</p>
                 </div>
 
                 <!-- 文章卡片容器 -->
@@ -145,8 +149,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="empty-title">暂无相关内容</h3>
-                    <p class="empty-text">试试其他分类吧</p>
+                    <h3 class="empty-title" data-i18n="article.empty_title">暂无相关内容</h3>
+                    <p class="empty-text" data-i18n="article.empty_desc">试试其他分类吧</p>
                 </div>
             </div>
         </section>
@@ -168,7 +172,7 @@
             </div>
             <div id="modalContent" class="modal-content article-content"></div>
             <div class="modal-footer">
-                <button onclick="closeArticle()" class="btn-primary" data-touch-feedback>我知道了</button>
+                <button onclick="closeArticle()" class="btn-primary" data-touch-feedback" data-i18n="buttons.got_it">我知道了</button>
             </div>
         </div>
     </div>
@@ -180,9 +184,9 @@
                 <svg class="w-5 h-5 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
-                <p>本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。</p>
+                <p data-i18n="footer.disclaimer">本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。</p>
             </div>
-            <p class="footer-copyright">© 2024 心晴空间 · 公益心理疗愈平台</p>
+            <p class="footer-copyright" data-i18n="footer.copyright">© 2024 心晴空间 · 公益心理疗愈平台</p>
         </div>
     </footer>
 
