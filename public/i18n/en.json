@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "home": "Home",
+    "relax": "Healing Exercises",
+    "flow": "Flow Experience",
+    "emotion": "Emotion Awareness",
+    "knowledge": "Knowledge Map",
+    "about": "About Us",
+    "companion": "My Companion",
+    "community": "Community",
+    "charging": "Charging Station"
+  },
+  "hero": {
+    "title": "Fragmented <span class=\"highlight\">Healing</span><br>Accompanying Every Moment",
+    "subtitle": "Lightweight mental health exercises, care for yourself anytime, anywhere",
+    "article_title": "Healing Content",
+    "article_subtitle": "Bite-sized mental health science, understand yourself in an easy-to-understand way and learn how to care for your inner self.",
+    "relax_title": "Relaxation Exercises",
+    "relax_subtitle": "Scientifically proven relaxation techniques to help you relieve stress and improve sleep.",
+    "emotion_title": "Emotion Awareness",
+    "emotion_subtitle": "Understand your emotional patterns, learn to coexist peacefully with your emotions.",
+    "flow_title": "Flow Experience",
+    "flow_subtitle": "Enter a state of focus and experience the optimal flow moment.",
+    "about_title": "About Us",
+    "about_subtitle": "Learn about the mission and philosophy of XinQing Space.",
+    "cta_primary": "Start Healing",
+    "cta_secondary": "Emotion Awareness"
+  },
+  "buttons": {
+    "start": "Start",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "more": "More",
+    "back": "Back",
+    "next": "Next",
+    "prev": "Previous"
+  },
+  "labels": {
+    "search": "Search...",
+    "filter": "Filter",
+    "category": "Category",
+    "duration": "Duration",
+    "difficulty": "Difficulty",
+    "tags": "Tags",
+    "source": "Source",
+    "created_at": "Created",
+    "updated_at": "Updated"
+  },
+  "messages": {
+    "loading": "Loading, please wait...",
+    "no_data": "No data available",
+    "error": "Something went wrong, please try again later",
+    "success": "Operation successful",
+    "confirm_delete": "Are you sure you want to delete?",
+    "network_error": "Network error, please check your connection"
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "token_placeholder": "Please enter admin token",
+    "data_overview": "Data Overview",
+    "data_manage": "Data Management",
+    "media_manage": "Media Management",
+    "system_settings": "System Settings"
+  },
+  "footer": {
+    "hotline": "Mental Health Hotline",
+    "hotline_number": "400-161-9999",
+    "disclaimer": "This platform is a non-profit mental health science popularization and emotional companionship service platform. It does not provide any form of medical diagnosis or psychological treatment services."
+  }
+}

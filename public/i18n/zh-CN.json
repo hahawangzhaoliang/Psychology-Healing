@@ -1,0 +1,77 @@
+{
+  "nav": {
+    "home": "首页",
+    "relax": "疗愈练习",
+    "flow": "心流体验",
+    "emotion": "情绪觉察",
+    "knowledge": "知识图谱",
+    "about": "关于我们",
+    "companion": "我的伙伴",
+    "community": "社区",
+    "charging": "充电站"
+  },
+  "hero": {
+    "title": "碎片化疗愈，陪伴你的每一刻",
+    "subtitle": "轻量心理练习，随时随地照顾自己",
+    "article_title": "疗愈内容",
+    "article_subtitle": "轻量心理科普，用易懂的方式了解自己，学习照顾内心的方法。",
+    "relax_title": "放松练习",
+    "relax_subtitle": "科学有效的放松技巧，帮助你缓解压力、改善睡眠。",
+    "emotion_title": "情绪觉察",
+    "emotion_subtitle": "了解你的情绪模式，学会与情绪和平共处。",
+    "flow_title": "心流体验",
+    "flow_subtitle": "进入专注状态，体验最佳体验的心流时刻。",
+    "about_title": "关于我们",
+    "about_subtitle": "了解心晴空间的使命与理念。"
+  },
+  "buttons": {
+    "start": "开始",
+    "submit": "提交",
+    "cancel": "取消",
+    "close": "关闭",
+    "save": "保存",
+    "delete": "删除",
+    "confirm": "确认",
+    "loading": "加载中...",
+    "retry": "重试",
+    "more": "更多",
+    "back": "返回",
+    "next": "下一步",
+    "prev": "上一步"
+  },
+  "labels": {
+    "search": "搜索...",
+    "filter": "筛选",
+    "category": "分类",
+    "duration": "时长",
+    "difficulty": "难度",
+    "tags": "标签",
+    "source": "来源",
+    "created_at": "创建时间",
+    "updated_at": "更新时间"
+  },
+  "messages": {
+    "loading": "加载中，请稍候...",
+    "no_data": "暂无数据",
+    "error": "出错了，请稍后重试",
+    "success": "操作成功",
+    "confirm_delete": "确定要删除吗？",
+    "network_error": "网络错误，请检查网络连接"
+  },
+  "admin": {
+    "title": "管理后台",
+    "login": "登录",
+    "logout": "退出",
+    "token_placeholder": "请输入管理令牌",
+    "data_overview": "数据概览",
+    "data_manage": "数据管理",
+    "media_manage": "媒体管理",
+    "system_settings": "系统设置"
+  },
+  "footer": {
+    "hotline": "心理援助热线",
+    "hotline_number": "400-161-9999",
+    "disclaimer": "本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。"
+  }
+}
+
