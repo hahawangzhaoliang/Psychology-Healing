@@ -3,14 +3,54 @@
  * 替代本地文件系统，作为知识库主数据源
  * 所有方法均为异步（因为 Blob 读取是异步的）
  *
- * 设计原则：
- * - JSON 数据文件存于 Vercel Blob（路径：data/*.json）
- * - 前端通过 /api/admin/data/* 接口读写
- * - 管理后台支持 JSON 编辑器直接修改
- * - 图片/音频等媒体文件也存于 Blob（路径：media/images/*, media/audio/*）
+ * 缓存策略（P1 阶段：内存缓存）：
+ * - 读取时先查缓存（TTL 60秒）
+ * - 缓存未命中时读 Blob，然后写入缓存
+ * - 写入时主动失效缓存（write-through）
+ *
+ * TODO（P3 阶段）：迁移到 Upstash Redis，实现跨实例缓存共享
+ * Vercel KV 已弃用，官方推荐 Upstash Redis：
+ * https://vercel.com/marketplace?category=storage&search=redis
  */
 
 const blobStore = require('./blobStore');
+
+// ========== 简单内存缓存（带 TTL）==========
+const cache = new Map(); // key -> { value, expiry }
+
+const CACHE_TTL = 60 * 1000; // 60 秒
+
+function getFromCache(key) {
+    const item = cache.get(key);
+    if (!item) return null;
+    if (Date.now() > item.expiry) {
+        cache.delete(key);
+        return null;
+    }
+    return item.value;
+}
+
+function setCache(key, value) {
+    cache.set(key, {
+        value,
+        expiry: Date.now() + CACHE_TTL,
+    });
+}
+
+function invalidateCache(key) {
+    cache.delete(key);
+}
+
+// 可选：定期清理过期缓存（避免内存泄漏）
+setInterval(() => {
+    const now = Date.now();
+    for (const [key, item] of cache.entries()) {
+        if (now > item.expiry) {
+            cache.delete(key);
+        }
+    }
+}, 5 * 60 * 1000); // 每 5 分钟清理一次
+// ================================================
 
 // 集合名到文件名的映射
 const COLLECTION_FILE_MAP = {
@@ -28,16 +68,29 @@ for (const [key, val] of Object.entries(COLLECTION_FILE_MAP)) {
 }
 
 /**
- * 读取 JSON 数据文件（从 Blob）
+ * 读取 JSON 数据文件（从 Blob，带内存缓存）
  * @param {string} collection - 集合名（如 'exercises', 'knowledge'）
  * @returns {Promise<Array>} 数据数组
  */
 async function readData(collection) {
     const filename = COLLECTION_FILE_MAP[collection] || `${collection}.json`;
+    
+    // 1. 先查缓存
+    const cached = getFromCache(filename);
+    if (cached) {
+        console.log(`[JSONStore] readData(${collection}) 缓存命中`);
+        return cached;
+    }
+    
+    // 2. 缓存未命中，读 Blob
     console.log(`[JSONStore] readData(${collection}) -> ${filename}`);
     try {
         const data = await blobStore.readJsonFromBlob(filename);
         console.log(`[JSONStore] readData(${collection}) 成功: ${Array.isArray(data) ? data.length : 0} 条`);
+        
+        // 3. 写入缓存
+        setCache(filename, data);
+        
         return Array.isArray(data) ? data : [];
     } catch (error) {
         console.error(`[JSONStore] 读取 ${collection} 失败:`, error.message);
@@ -46,7 +99,7 @@ async function readData(collection) {
 }
 
 /**
- * 写入 JSON 数据文件（到 Blob）
+ * 写入 JSON 数据文件（到 Blob，并失效缓存）
  * @param {string} collection - 集合名
  * @param {Array} data - 数据数组
  */
@@ -54,6 +107,10 @@ async function writeData(collection, data) {
     const filename = COLLECTION_FILE_MAP[collection] || `${collection}.json`;
     try {
         await blobStore.writeJsonToBlob(filename, data);
+        
+        // Write-through: 写入后失效缓存（或更新缓存）
+        invalidateCache(filename);
+        console.log(`[JSONStore] writeData(${collection}) 已失效缓存`);
     } catch (error) {
         console.error(`[JSONStore] Blob 写入 ${collection} 失败:`, error.message);
         throw error; // 不再降级到本地文件

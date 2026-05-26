@@ -46,20 +46,19 @@ app.use(compression());
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
-// 速率限制（Vercel 环境下禁用）
-if (process.env.VERCEL !== '1') {
-    const limiter = rateLimit({
-        windowMs: 15 * 60 * 1000,
-        max: 100,
-        message: {
-            error: '请求过于频繁，请稍后再试',
-            code: 'RATE_LIMIT_EXCEEDED',
-        },
-        standardHeaders: true,
-        legacyHeaders: false,
-    });
-    app.use('/api/', limiter);
-}
+// 速率限制（所有环境启用；Vercel Serverless 下内存存储不跨实例共享，为基础防护层）
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: {
+        success: false,
+        error: '请求过于频繁，请稍后再试',
+        code: 'RATE_LIMIT_EXCEEDED',
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+app.use('/api/', limiter);
 
 // 静态文件服务（本地开发）
 if (process.env.VERCEL !== '1') {
