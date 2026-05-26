@@ -56,14 +56,7 @@ async function writeData(collection, data) {
         await blobStore.writeJsonToBlob(filename, data);
     } catch (error) {
         console.error(`[JSONStore] Blob 写入 ${collection} 失败:`, error.message);
-        // 降级到本地文件
-        try {
-            await fallbackWriteLocal(filename, data);
-            console.log(`[JSONStore] ✅ 已降级写入本地文件: ${filename}`);
-        } catch (localError) {
-            console.error(`[JSONStore] 本地写入也失败:`, localError.message);
-            throw localError;
-        }
+        throw error; // 不再降级到本地文件
     }
 }
 

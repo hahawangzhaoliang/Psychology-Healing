@@ -37,7 +37,7 @@ router.post('/visit', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error('记录访问失败:', error);
-        res.json({ success: true }); // 静默失败
+        next(error); // 传播错误到错误处理中间件
     }
 });
 

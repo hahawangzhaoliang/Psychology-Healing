@@ -107,6 +107,7 @@ app.use((err, req, res, next) => {
     console.error('Error:', err);
 
     res.status(err.status || 500).json({
+        success: false,
         error: process.env.NODE_ENV === 'production'
             ? '服务器内部错误'
             : err.message,

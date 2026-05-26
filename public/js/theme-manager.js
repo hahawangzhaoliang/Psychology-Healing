@@ -520,67 +520,613 @@ class ThemeManager {
         document.getElementById('petMood').textContent = data.mood;
     }
 
-    /* ===== 工作主题 ===== */
+    /* ===== 工作主题 - 重新设计的情绪垃圾桶 ===== */
     createWorkEffects() {
+        // 内联 CSS（避免外部文件路径问题，双击打开也能正常显示）
+        if (!document.getElementById('emotion-trash-styles')) {
+            const style = document.createElement('style');
+            style.id = 'emotion-trash-styles';
+            style.textContent = `
+/* ===== 情绪垃圾桶样式 ===== */
+.emotion-trash-trigger {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary-400, #5cb8a8), var(--color-primary-500, #4aa898));
+    box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: none;
+    outline: none;
+}
+.emotion-trash-trigger:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 24px rgba(90, 154, 138, 0.5);
+}
+.emotion-trash-trigger.active {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    transform: rotate(15deg);
+}
+.emotion-trash-trigger::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: rgba(90, 154, 138, 0.2);
+    animation: triggerBreathe 3s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes triggerBreathe {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.2); opacity: 0; }
+}
+
+.emotion-trash-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 24px;
+    width: 380px;
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    background: var(--theme-card, #ffffff);
+    border-radius: var(--radius-xl, 16px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    z-index: 101;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 1px solid var(--theme-border, #e5e7eb);
+}
+.emotion-trash-panel.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.emotion-trash-panel h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-text, #1f2937);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.emotion-trash-panel .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: var(--theme-bg, #f9fafb);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--theme-text-light, #9ca3af);
+    transition: all 0.2s ease;
+}
+.emotion-trash-panel .close-btn:hover {
+    background: var(--color-primary-50, #f0fdf4);
+    color: var(--color-primary-500, #5cb8a8);
+}
+
+.emotion-balls-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 1.5rem 0.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.25rem;
+}
+.emotion-ball-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+.emotion-ball-new {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.emotion-ball-wrapper:hover .emotion-ball-new {
+    transform: scale(1.15) translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.emotion-ball-wrapper.selected .emotion-ball-new {
+    transform: scale(0.9);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    opacity: 0.6;
+}
+.emotion-ball-new .ball-emoji {
+    pointer-events: none;
+}
+.emotion-ball-wrapper .ball-label {
+    font-size: 11px;
+    color: var(--theme-text-light, #9ca3af);
+    white-space: nowrap;
+    line-height: 1;
+}
+
+.trash-zone {
+    text-align: center;
+    padding: 1.5rem;
+    border: 2px dashed var(--theme-border, #e5e7eb);
+    border-radius: var(--radius-lg, 12px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: var(--theme-bg, #f9fafb);
+}
+.trash-zone:hover, .trash-zone.drag-over {
+    border-color: var(--color-primary-400, #5cb8a8);
+    background: var(--color-primary-50, #f0fdf4);
+    transform: scale(1.02);
+}
+.trash-zone.processing {
+    border-color: #ef4444;
+    background: #fef2f2;
+    animation: trashShake 0.5s ease-in-out;
+}
+@keyframes trashShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+.trash-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+.trash-zone:hover .trash-icon {
+    transform: scale(1.1);
+}
+.trash-zone-text {
+    font-size: 0.85rem;
+    color: var(--theme-text-light, #9ca3af);
+}
+.trash-zone-text strong {
+    color: var(--color-primary-500, #5cb8a8);
+}
+
+.release-success {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: var(--theme-card, #ffffff);
+    border-radius: var(--radius-xl, 16px);
+    padding: 2rem 3rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.release-success.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+.release-success .success-emoji {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    animation: successBounce 0.6s ease-in-out;
+}
+@keyframes successBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.release-success .success-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-text, #1f2937);
+    margin-bottom: 0.5rem;
+}
+.release-success .success-subtext {
+    font-size: 0.85rem;
+    color: var(--theme-text-light, #9ca3af);
+    line-height: 1.6;
+}
+
+.release-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    animation: particleFly 1s ease-out forwards;
+}
+@keyframes particleFly {
+    0% { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--tx, 50px), var(--ty, -100px)) scale(0); }
+}
+            `;
+            document.head.appendChild(style);
+        }
+
+        // 创建 DOM 容器
         const container = document.createElement('div');
         container.id = 'theme-effects';
         container.innerHTML = `
-            <style>
-                .emotion-balls {
-                    position:fixed; bottom:20px; left:20px;
-                    display:flex; gap:12px; z-index:10;
-                }
-                .emotion-ball {
-                    width:50px; height:50px; border-radius:50%; cursor:grab;
-                    transition:all 0.3s ease; display:flex; align-items:center;
-                    justify-content:center; font-size:24px;
-                    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-                }
-                .emotion-ball:hover{transform:scale(1.1);}
-                .emotion-ball:active{cursor:grabbing;}
-                .emotion-ball.anxious{background:linear-gradient(135deg,#FFB6C1,#FF69B4);}
-                .emotion-ball.sad    {background:linear-gradient(135deg,#87CEEB,#4682B4);}
-                .emotion-ball.angry  {background:linear-gradient(135deg,#FFA07A,#FF6347);}
-                .emotion-ball.tired  {background:linear-gradient(135deg,#DDA0DD,#9370DB);}
-                .trash-bin {
-                    position:fixed; bottom:16px; right:16px;
-                    width:56px; height:70px; z-index:10; cursor:pointer; transition:all 0.3s ease;
-                }
-                .trash-bin:hover{transform:scale(1.08);}
-                .trash-bin.active{transform:scale(1.12);}
-                .trash-body {
-                    width:48px; height:55px;
-                    background:linear-gradient(135deg,#C8D4E0,#A8B8C8);
-                    border-radius:4px 4px 8px 8px; margin:0 auto; position:relative;
-                }
-                .trash-lid {
-                    width:56px; height:12px;
-                    background:linear-gradient(135deg,#B8C8D8,#98A8B8);
-                    border-radius:4px; margin:0 auto 4px; transition:all 0.3s ease;
-                }
-                .trash-bin.active .trash-lid{transform:rotate(-30deg);transform-origin:left center;}
-                .trash-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:14px;}
-                .work-tip {
-                    position:fixed; bottom:95px; left:12px;
-                    font-size:11px; color:#4a6080;
-                    background:rgba(255,255,255,0.9); padding:5px 10px;
-                    border-radius:10px; box-shadow:0 2px 8px rgba(60,100,160,0.1);
-                }
-            </style>
-            <div class="emotion-balls">
-                <div class="emotion-ball anxious" draggable="true" data-emotion="anxious">😰</div>
-                <div class="emotion-ball sad"     draggable="true" data-emotion="sad">😢</div>
-                <div class="emotion-ball angry"   draggable="true" data-emotion="angry">😡</div>
-                <div class="emotion-ball tired"   draggable="true" data-emotion="tired">😴</div>
+            <!-- 触发器按钮 -->
+            <button class="emotion-trash-trigger" id="emotion-trash-trigger" aria-label="情绪垃圾桶">
+                🗑️
+            </button>
+
+            <!-- 展开面板 -->
+            <div class="emotion-trash-panel" id="emotion-trash-panel">
+                <button class="close-btn" id="close-trash-panel">✕</button>
+                <h3>🗑️ 释放负面情绪</h3>
+                <p style="font-size:0.85rem;color:var(--theme-text-light, #9ca3af);margin-bottom:1rem;">
+                    点击选择让你困扰的情绪，然后点击垃圾桶释放它
+                </p>
+
+                <!-- 情绪球网格 -->
+                <div class="emotion-balls-grid" id="emotion-balls-grid">
+                    <!-- 动态生成 -->
+                </div>
+
+                <!-- 垃圾桶区域 -->
+                <div class="trash-zone" id="trash-zone">
+                    <span class="trash-icon">🗑️</span>
+                    <p class="trash-zone-text">
+                        <strong>点击释放</strong> 选中的情绪<br>
+                        或拖拽情绪球到此区域
+                    </p>
+                </div>
             </div>
-            <div class="work-tip">拖动情绪球 → 垃圾桶，释放压力</div>
-            <div class="trash-bin" id="trash-bin">
-                <div class="trash-lid"></div>
-                <div class="trash-body"><div class="trash-label">🗑️</div></div>
+
+            <!-- 成功提示 -->
+            <div class="release-success" id="release-success">
+                <span class="success-emoji" id="success-emoji">✨</span>
+                <p class="success-text" id="success-text">已释放</p>
+                <p class="success-subtext" id="success-subtext">你可以继续释放其他情绪</p>
             </div>
         `;
         document.body.appendChild(container);
-        this.setupDragAndDrop();
+
+        // 初始化情绪球
+        this.initEmotionBalls();
+
+        // 绑定事件
+        this.setupTrashInteractions();
+    }
+
+    /* ===== 初始化情绪球 ===== */
+    initEmotionBalls() {
+        const grid = document.getElementById('emotion-balls-grid');
+        if (!grid) return;
+
+        // 扩展的情绪列表
+        const emotions = [
+            { key: 'anxious',   emoji: '😰', label: '焦虑',  colors: ['#FFB6C1', '#FF69B4'] },
+            { key: 'sad',       emoji: '😢', label: '难过',  colors: ['#87CEEB', '#4682B4'] },
+            { key: 'angry',     emoji: '😡', label: '愤怒',  colors: ['#FFA07A', '#FF6347'] },
+            { key: 'tired',     emoji: '😴', label: '疲惫',  colors: ['#DDA0DD', '#9370DB'] },
+            { key: 'frustrated', emoji: '😤', label: '挫败',  colors: ['#FF7F50', '#FF4500'] },
+            { key: 'lonely',    emoji: '🙁', label: '孤独',  colors: ['#B0C4DE', '#6A5ACD'] },
+            { key: 'fearful',   emoji: '😨', label: '恐惧',  colors: ['#FFD700', '#FFA500'] },
+            { key: 'overwhelmed', emoji: '😵', label: '不堪重负', colors: ['#98FB98', '#2E8B57'] },
+        ];
+
+        grid.innerHTML = emotions.map(emotion => `
+            <div class="emotion-ball-wrapper" 
+                 data-emotion="${emotion.key}"
+                 title="${emotion.label}">
+                <div class="emotion-ball-new" 
+                     style="background: linear-gradient(135deg, ${emotion.colors[0]}, ${emotion.colors[1]});">
+                    <span>${emotion.emoji}</span>
+                </div>
+                <div class="ball-label">${emotion.label}</div>
+            </div>
+        `).join('');
+
+        // 添加点击事件
+        grid.querySelectorAll('.emotion-ball-wrapper').forEach(wrapper => {
+            wrapper.addEventListener('click', () => {
+                // 取消其他球的选中状态
+                grid.querySelectorAll('.emotion-ball-wrapper').forEach(b => b.classList.remove('selected'));
+                // 选中当前球
+                wrapper.classList.add('selected');
+                // 更新垃圾桶区域提示
+                const trashZone = document.getElementById('trash-zone');
+                if (trashZone) {
+                    const label = wrapper.querySelector('.ball-label').textContent;
+                    trashZone.querySelector('.trash-zone-text').innerHTML = 
+                        `点击释放 <strong>${label}</strong> 情绪`;
+                }
+            });
+        });
+    }
+
+    /* ===== 设置垃圾桶交互 ===== */
+    setupTrashInteractions() {
+        const trigger = document.getElementById('emotion-trash-trigger');
+        const panel = document.getElementById('emotion-trash-panel');
+        const closeBtn = document.getElementById('close-trash-panel');
+        const trashZone = document.getElementById('trash-zone');
+        const successModal = document.getElementById('release-success');
+
+        if (!trigger || !panel) return;
+
+        // 触发器点击 - 展开/收起面板
+        trigger.addEventListener('click', () => {
+            const isActive = panel.classList.contains('active');
+            if (isActive) {
+                panel.classList.remove('active');
+                trigger.classList.remove('active');
+            } else {
+                panel.classList.add('active');
+                trigger.classList.add('active');
+            }
+        });
+
+        // 关闭按钮
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                panel.classList.remove('active');
+                trigger.classList.remove('active');
+            });
+        }
+
+        // 点击面板外部关闭
+        document.addEventListener('click', (e) => {
+            if (panel.classList.contains('active') && 
+                !panel.contains(e.target) && 
+                !trigger.contains(e.target)) {
+                panel.classList.remove('active');
+                trigger.classList.remove('active');
+            }
+        });
+
+        // 垃圾桶区域点击 - 释放选中的情绪
+        if (trashZone) {
+            trashZone.addEventListener('click', () => {
+                const selectedWrapper = panel.querySelector('.emotion-ball-wrapper.selected');
+                if (selectedWrapper) {
+                    const emotion = selectedWrapper.dataset.emotion;
+                    this.releaseEmotion(emotion, selectedWrapper);
+                } else {
+                    this.showToast('请先选择一种情绪', 'warning');
+                }
+            });
+
+            // 拖拽支持
+            trashZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                trashZone.classList.add('drag-over');
+            });
+
+            trashZone.addEventListener('dragleave', () => {
+                trashZone.classList.remove('drag-over');
+            });
+
+            trashZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                trashZone.classList.remove('drag-over');
+                const emotion = e.dataTransfer.getData('emotion');
+                if (emotion) {
+                    const wrapper = panel.querySelector(`.emotion-ball-wrapper[data-emotion="${emotion}"]`);
+                    if (wrapper) {
+                        this.releaseEmotion(emotion, wrapper);
+                    }
+                }
+            });
+        }
+
+        // 支持情绪球拖拽
+        panel.querySelectorAll('.emotion-ball-wrapper').forEach(wrapper => {
+            wrapper.setAttribute('draggable', 'true');
+            wrapper.addEventListener('dragstart', (e) => {
+                e.dataTransfer.setData('emotion', wrapper.dataset.emotion);
+                wrapper.style.opacity = '0.5';
+            });
+            wrapper.addEventListener('dragend', () => {
+                wrapper.style.opacity = '1';
+            });
+        });
+    }
+
+    /* ===== 释放情绪 ===== */
+    releaseEmotion(emotionKey, ballElement) {
+        const trashZone = document.getElementById('trash-zone');
+        const successModal = document.getElementById('release-success');
+        const successEmoji = document.getElementById('success-emoji');
+        const successText = document.getElementById('success-text');
+        const successSubtext = document.getElementById('success-subtext');
+
+        if (!trashZone || !successModal) return;
+
+        // 垃圾桶处理动画
+        trashZone.classList.add('processing');
+        setTimeout(() => {
+            trashZone.classList.remove('processing');
+        }, 500);
+
+        // 情绪球消失动画
+        if (ballElement) {
+            const ball = ballElement.querySelector('.emotion-ball-new');
+            if (ball) {
+                ball.style.transform = 'scale(0)';
+                ball.style.opacity = '0';
+                setTimeout(() => {
+                    ball.style.transform = 'scale(1)';
+                    ball.style.opacity = '0.6';
+                    ballElement.classList.remove('selected');
+                }, 1200);
+            }
+        }
+
+        // 创建粒子效果
+        this.createReleaseParticles(trashZone);
+
+        // 显示成功提示
+        setTimeout(() => {
+            const encouragement = this.getEnhancedEncouragement(emotionKey);
+            if (successEmoji) successEmoji.textContent = encouragement.emoji;
+            if (successText) successText.textContent = encouragement.text;
+            if (successSubtext) successSubtext.textContent = encouragement.subtext;
+
+            successModal.classList.add('active');
+
+            // 2秒后自动关闭
+            setTimeout(() => {
+                successModal.classList.remove('active');
+            }, 2000);
+        }, 600);
+    }
+
+    /* ===== 创建释放粒子效果 ===== */
+    createReleaseParticles(targetElement) {
+        const rect = targetElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const emojis = ['✨', '💫', '🌟', '💖', '🕊️', '🌈'];
+
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'release-particle';
+            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            const angle = (Math.PI * 2 * i) / 12;
+            const distance = 50 + Math.random() * 100;
+            const tx = Math.cos(angle) * distance;
+            const ty = Math.sin(angle) * distance;
+
+            particle.style.cssText = `
+                left: ${centerX}px;
+                top: ${centerY}px;
+                font-size: ${16 + Math.random() * 12}px;
+                --tx: ${tx}px;
+                --ty: ${ty}px;
+            `;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 1000);
+        }
+    }
+
+    /* ===== 增强的鼓励信息 ===== */
+    getEnhancedEncouragement(emotionKey) {
+        const encouragements = {
+            anxious: {
+                emoji: '🕊️',
+                text: '深呼吸，焦虑会过去的',
+                subtext: '试着关注当下，一次只做一件事'
+            },
+            sad: {
+                emoji: '🌈',
+                text: '允许自己难过，明天会更好',
+                subtext: '每一种情绪都有它存在的意义'
+            },
+            angry: {
+                emoji: '🧘',
+                text: '愤怒是正常的，让我们冷静一下',
+                subtext: '喝口水，数到十，给自己一点空间'
+            },
+            tired: {
+                emoji: '😊',
+                text: '休息一下，照顾好自己',
+                subtext: '你已經做得很好了，值得好好休息'
+            },
+            frustrated: {
+                emoji: '💪',
+                text: '挫败是成长的一部分',
+                subtext: '每次尝试都让你离成功更近一步'
+            },
+            lonely: {
+                emoji: '🤗',
+                text: '你并不孤单',
+                subtext: '世界上总有人在默默关心着你'
+            },
+            fearful: {
+                emoji: '🦁',
+                text: '勇敢不是不害怕，而是带着恐惧前行',
+                subtext: '你已经比昨天的自己更勇敢了'
+            },
+            overwhelmed: {
+                emoji: '🌊',
+                text: '不堪重负时，学会说"不"',
+                subtext: '优先级排序，一次只处理一件事'
+            }
+        };
+
+        return encouragements[emotionKey] || {
+            emoji: '✨',
+            text: '你做得很好！',
+            subtext: '继续加油，每一步都是进步'
+        };
+    }
+
+    /* ===== Toast 提示 ===== */
+    showToast(message, type = 'info') {
+        const colors = {
+            success: 'var(--color-primary-400, #5cb8a8)',
+            warning: '#F59E0B',
+            error: '#EF4444',
+            info: 'var(--color-primary-500, #4aa898)'
+        };
+
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: ${colors[type] || colors.info};
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.95rem;
+            z-index: 9999;
+            box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.15));
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: none;
+            white-space: nowrap;
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateX(-50%) translateY(0)';
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(-50%) translateY(20px)';
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 2500);
     }
 
     /* ===== 娱乐主题 ===== */
@@ -608,61 +1154,6 @@ class ThemeManager {
     }
 
     /* ===== 拖拽交互 ===== */
-    setupDragAndDrop() {
-        const balls = document.querySelectorAll('.emotion-ball');
-        const trashBin = document.getElementById('trash-bin');
-
-        balls.forEach(ball => {
-            ball.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('emotion', ball.dataset.emotion);
-                ball.style.opacity = '0.5';
-            });
-            ball.addEventListener('dragend', () => { ball.style.opacity = '1'; });
-        });
-
-        if (trashBin) {
-            trashBin.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                trashBin.classList.add('active');
-            });
-            trashBin.addEventListener('dragleave', () => {
-                trashBin.classList.remove('active');
-            });
-            trashBin.addEventListener('drop', (e) => {
-                e.preventDefault();
-                const emotion = e.dataTransfer.getData('emotion');
-                trashBin.classList.remove('active');
-                const ball = document.querySelector(`[data-emotion="${emotion}"]`);
-                if (ball) {
-                    ball.style.transform = 'scale(0)';
-                    ball.style.opacity = '0';
-                    setTimeout(() => { ball.style.transform = 'scale(1)'; ball.style.opacity = '1'; }, 1200);
-                }
-                this.showEncouragement(emotion);
-            });
-        }
-    }
-
-    showEncouragement(emotion) {
-        const msgs = {
-            anxious: '深呼吸，焦虑会过去的 💪',
-            sad:     '允许自己难过，明天会更好 🌈',
-            angry:   '愤怒是正常的，让我们冷静一下 🧘',
-            tired:   '休息一下，照顾好自己 😊'
-        };
-        const toast = document.createElement('div');
-        Object.assign(toast.style, {
-            position: 'fixed', top: '50%', left: '50%',
-            transform: 'translate(-50%,-50%)',
-            background: 'white', padding: '20px 30px',
-            borderRadius: '15px', boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-            zIndex: '1000', fontSize: '18px'
-        });
-        toast.textContent = msgs[emotion] || '你做得很好！';
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2000);
-    }
-
     /* ===== 粒子动画 ===== */
     startParticles() {
         const canvas = document.getElementById('particle-canvas');
@@ -860,3 +1351,5 @@ class ThemeManager {
 
 // 全局实例
 window.themeManager = new ThemeManager();
+
+

@@ -72,9 +72,9 @@ async function readJsonFromBlob(filename) {
         }
     }
     
-    // 所有重试都失败，降级到本地文件
-    console.log(`[BlobStore] ❌ Blob 读取全部失败（3 次重试），降级到本地文件`);
-    return fallbackToLocalFile(filename);
+    // 所有重试都失败，抛出错误（不再降级到本地文件）
+    console.log(`[BlobStore] ❌ Blob 读取全部失败（3 次重试）`);
+    throw new Error(`Blob 读取失败（3次重试）: ${filename}`);
 }
 
 /**

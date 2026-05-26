@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
 
 // ─── GET /api/knowledge/exercises ──────────────────────────
 
-router.get('/exercises', parsePagination(), async (req, res) => {
+router.get('/exercises', parsePagination(), async (req, res, next) => {
     try {
         const { category, difficulty, tag } = req.query;
         let items = await jsonStore.readData('exercises');
@@ -90,8 +90,7 @@ router.get('/exercises', parsePagination(), async (req, res) => {
         const { data, total, limit, offset } = slicePage(items, req.pagination);
         res.json({ exercises: data, total, limit, offset });
     } catch (error) {
-        console.error('获取练习列表失败:', error);
-        res.json({ exercises: [], total: 0 });
+        next(error);
     }
 });
 
@@ -112,7 +111,7 @@ router.get('/exercises/:id', async (req, res) => {
 
 // ─── GET /api/knowledge/psychology ─────────────────────────
 
-router.get('/psychology', parsePagination(), async (req, res) => {
+router.get('/psychology', parsePagination(), async (req, res, next) => {
     try {
         const { category, tag } = req.query;
         let items = await jsonStore.readData('knowledge');
@@ -120,14 +119,13 @@ router.get('/psychology', parsePagination(), async (req, res) => {
         const { data, total, limit, offset } = slicePage(items, req.pagination);
         res.json({ knowledge: data, total, limit, offset });
     } catch (error) {
-        console.error('获取心理知识失败:', error);
-        res.json({ knowledge: [], total: 0 });
+        next(error);
     }
 });
 
 // ─── GET /api/knowledge/emotion-regulation ───────────────
 
-router.get('/emotion-regulation', async (req, res) => {
+router.get('/emotion-regulation', async (req, res, next) => {
     try {
         let regulations = await jsonStore.readData('regulation');
         if (req.query.emotion) {
@@ -135,15 +133,14 @@ router.get('/emotion-regulation', async (req, res) => {
         }
         res.json({ regulations });
     } catch (error) {
-        console.error('获取情绪调节方案失败:', error);
-        res.json({ regulations: [] });
+        next(error);
     }
 });
 
 // ─── GET /api/knowledge/daily-tips & /tips ────────────────
 
 function buildTipsHandler() {
-    return async (req, res) => {
+    return async (req, res, next) => {
         try {
             const { category, random, limit: rawLimit = '5' } = req.query;
             const limit = Math.min(50, Math.max(1, parseInt(rawLimit, 10) || 5));
@@ -152,8 +149,7 @@ function buildTipsHandler() {
             if (random === 'true') tips = tips.sort(() => Math.random() - 0.5);
             res.json({ tips: tips.slice(0, limit) });
         } catch (error) {
-            console.error('获取每日提示失败:', error);
-            res.json({ tips: [] });
+            next(error);
         }
     };
 }
@@ -163,7 +159,7 @@ router.get('/tips',       buildTipsHandler());
 
 // ─── GET /api/knowledge/quick-exercises ────────────────────
 
-router.get('/quick-exercises', async (req, res) => {
+router.get('/quick-exercises', async (req, res, next) => {
     try {
         const { random, limit: rawLimit = '5' } = req.query;
         const limit = Math.min(50, Math.max(1, parseInt(rawLimit, 10) || 5));
@@ -171,8 +167,7 @@ router.get('/quick-exercises', async (req, res) => {
         if (random === 'true') exercises = exercises.sort(() => Math.random() - 0.5);
         res.json({ exercises: exercises.slice(0, limit) });
     } catch (error) {
-        console.error('获取快速练习失败:', error);
-        res.json({ exercises: [] });
+        next(error);
     }
 });
 
@@ -181,8 +176,8 @@ router.get('/quick-exercises', async (req, res) => {
 router.get('/graph', async (req, res) => {
     try {
         const graphData = await jsonStore.readData('graph');
-        const graph = Array.isArray(graphData) ? graphData[0] : graphData;
-        res.json({ nodes: graph?.nodes || [], edges: graph?.edges || [] });
+        const { nodes = [], edges = [] } = graphData || {};
+        res.json({ nodes, edges });
     } catch (error) {
         console.error('获取知识图谱失败:', error);
         res.json({ nodes: [], edges: [] });

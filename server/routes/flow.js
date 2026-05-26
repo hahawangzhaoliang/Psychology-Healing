@@ -54,6 +54,7 @@ router.get('/activities', async (req, res) => {
         
         if (!data) {
             return res.status(404).json({
+                success: false,
                 error: '活动数据未找到',
                 code: 'ACTIVITIES_NOT_FOUND'
             });
@@ -121,6 +122,7 @@ router.get('/activities', async (req, res) => {
     } catch (error) {
         console.error('获取活动列表失败:', error);
         res.status(500).json({
+            success: false,
             error: '获取活动列表失败',
             code: 'FETCH_ACTIVITIES_ERROR'
         });
@@ -137,6 +139,7 @@ router.get('/activities/:id', async (req, res) => {
         
         if (!data) {
             return res.status(404).json({
+                success: false,
                 error: '活动数据未找到',
                 code: 'ACTIVITIES_NOT_FOUND'
             });
@@ -175,6 +178,7 @@ router.get('/activities/:id', async (req, res) => {
     } catch (error) {
         console.error('获取活动详情失败:', error);
         res.status(500).json({
+            success: false,
             error: '获取活动详情失败',
             code: 'FETCH_ACTIVITY_ERROR'
         });
