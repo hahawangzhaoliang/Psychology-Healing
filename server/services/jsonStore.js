@@ -22,13 +22,13 @@ const blobStore = require('./blobStore');
 // 初始化 Upstash Redis 客户端（REST API）
 let redisClient = null;
 try {
-    const redisUrl  = process.env.UPSTASH_REDIS_REST_URL;
-    const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+    const redisUrl  = process.env.KV_REST_API_URL;
+    const redisToken = process.env.KV_REST_API_TOKEN;
     if (redisUrl && redisToken) {
         redisClient = new Redis({ url: redisUrl, token: redisToken });
         console.log('[JSONStore] Upstash Redis 缓存层已启用');
     } else {
-        console.warn('[JSONStore] 未找到 Upstash Redis 凭证，缓存层已禁用');
+        console.warn('[JSONStore] 未找到 KV_REST_API_URL / KV_REST_API_TOKEN，缓存层已禁用');
     }
 } catch (err) {
     console.error('[JSONStore] Upstash Redis 初始化失败:', err.message);
