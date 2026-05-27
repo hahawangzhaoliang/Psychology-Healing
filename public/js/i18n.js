@@ -41,8 +41,8 @@
         // 英文语言包缓存（中文不需要，存在 data-original 中）
         enTranslations: null,
 
-        // 语言包基础路径
-        basePath: '/i18n',
+        // 语言包基础路径（相对路径，兼容 file:// 和 http://）
+        basePath: 'i18n',
 
         /**
          * 初始化 i18n
@@ -116,6 +116,12 @@
                     el.setAttribute('data-original-placeholder', el.placeholder || '');
                 }
             });
+            // 🔴 修复：保存 data-i18n-title 的原始值
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                if (!el.getAttribute('data-original-title')) {
+                    el.setAttribute('data-original-title', el.title || '');
+                }
+            });
         },
 
         /**
@@ -137,26 +143,25 @@
         /**
          * 获取翻译文本
          * @param {string} key - 点分隔的键，如 'nav.home'
-         * @param {Object} [params] - 可选的参数替换，如 { count: 5 }
+         * @param {string} [zhDefault] - 中文默认值（locale 为 zh-CN 时直接返回此值）
          * @returns {string}
          */
-        t(key, params = {}) {
+        t(key, zhDefault = '') {
             if (this.currentLocale === 'zh-CN') {
-                // 中文：从 data-original 获取（由 applyTranslations 处理）
+                // 中文：直接返回传入的中文默认值
+                if (typeof zhDefault === 'string' && zhDefault) return zhDefault;
                 return key;
             }
-            if (!this.enTranslations) return key;
+            if (!this.enTranslations) {
+                if (typeof zhDefault === 'string' && zhDefault) return zhDefault;
+                return key;
+            }
             const keys = key.split('.');
             let result = keys.reduce((obj, k) => (obj || {})[k], this.enTranslations);
             if (result === undefined) {
                 console.warn(`[i18n] 缺失翻译: ${key}`);
+                if (typeof zhDefault === 'string' && zhDefault) return zhDefault;
                 return key;
-            }
-            // 参数替换：{count} -> 5
-            if (typeof result === 'string' && params) {
-                Object.entries(params).forEach(([k, v]) => {
-                    result = result.replace(new RegExp(`\\{${k}\\}`, 'g'), v);
-                });
             }
             return result;
         },
