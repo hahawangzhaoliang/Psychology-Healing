@@ -47,7 +47,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+                <span style="font-weight:600;color:var(--theme-text);" data-i18n="brand.name">心晴空间</span>
             </a>
 
             <!-- 桌面导航 -->
@@ -193,6 +193,13 @@
     <script src="js/neuroaesthetics.js"></script>
     <script src="js/companion-widget.js"></script>
     <script>
+        function _t(key, zhDefault) {
+            if (window.I18N && window.I18N.currentLocale === 'en' && window.I18N.translations && window.I18N.translations[key]) {
+                return window.I18N.translations[key];
+            }
+            return zhDefault || (window.I18N && window.I18N.t ? window.I18N.t(key) : key);
+        }
+
         let allKnowledge = [];
         let currentFilter = 'all';
 
@@ -301,7 +308,7 @@
                         <h3 class="article-card-title">${article.title}</h3>
                         <p class="article-card-excerpt">${(article.content || '').substring(0, 100)}...</p>
                         <button onclick='showArticle(${JSON.stringify(article).replace(/'/g, "\\'")})' class="article-read-more" data-touch-feedback>
-                            阅读全文
+                            ${_t('article.read_more', '阅读全文')}
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                         </button>
                     </div>
@@ -338,7 +345,7 @@
                 html += `<div style="background:var(--color-primary-50);border-radius:var(--radius-lg);padding:1.25rem;margin:1.5rem 0">
                     <h3 style="display:flex;align-items:center;gap:0.5rem;font-size:1rem;font-weight:700;color:var(--color-primary-600);margin-bottom:0.75rem">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                        核心要点
+                        ${_t('article.key_points', '核心要点')}
                     </h3>
                     <ul style="list-style:none;padding:0;margin:0">${article.keyPoints.map(p => `<li style="position:relative;padding-left:1.5rem;margin-bottom:0.5rem"><span style="position:absolute;left:0;color:var(--color-primary-500);font-weight:700">✓</span>${p}</li>`).join('')}</ul>
                 </div>`;
@@ -346,7 +353,7 @@
             if (article.tags && article.tags.length > 0) {
                 html += `<div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem">${article.tags.map(t => `<span style="display:inline-block;padding:0.25rem 0.625rem;background:var(--color-gray-100);border-radius:9999px;font-size:0.75rem;color:var(--color-gray-600)">${t}</span>`).join('')}</div>`;
             }
-            if (article.source) html += `<p style="margin-top:1.5rem;font-size:0.75rem;color:var(--color-gray-400);font-style:italic">来源：${article.source}</p>`;
+            if (article.source) html += `<p style="margin-top:1.5rem;font-size:0.75rem;color:var(--color-gray-400);font-style:italic">${_t('article.source_prefix', '来源：')}${article.source}</p>`;
             
             document.getElementById('modalContent').innerHTML = html;
             modal.classList.remove('hidden');

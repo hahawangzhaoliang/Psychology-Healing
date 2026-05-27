@@ -632,6 +632,13 @@
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
     <script>
+        /* ========== i18n 翻译辅助函数 ========== */
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            return I18N.t(key) || zhDefault || key;
+        }
+
         /* ========== 状态管理 ========== */
         let emotionWheel = null;
         let selectedEmotions = [];
@@ -641,16 +648,16 @@
 
         /* ========== 情绪温度计配置 ========== */
         const emotionLevels = {
-            1:  { emoji: '😊', text: '心情极好', color: '#10B981' },
-            2:  { emoji: '😊', text: '心情很好', color: '#34D399' },
-            3:  { emoji: '🙂', text: '心情不错', color: '#6EE7B7' },
-            4:  { emoji: '🙂', text: '比较平静', color: '#A7F3D0' },
-            5:  { emoji: '😐', text: '情绪平稳', color: '#FBBF24' },
-            6:  { emoji: '😐', text: '有点烦躁', color: '#F59E0B' },
-            7:  { emoji: '😕', text: '心情低落', color: '#F59E0B' },
-            8:  { emoji: '😕', text: '比较难过', color: '#EF4444' },
-            9:  { emoji: '😢', text: '心情糟糕', color: '#DC2626' },
-            10: { emoji: '😢', text: '情绪很差', color: '#B91C1C' },
+            1:  { emoji: '😊', text: _t('emotion.level_extremely_good', '心情极好'), color: '#10B981' },
+            2:  { emoji: '😊', text: _t('emotion.level_very_good', '心情很好'), color: '#34D399' },
+            3:  { emoji: '🙂', text: _t('emotion.level_pretty_good', '心情不错'), color: '#6EE7B7' },
+            4:  { emoji: '🙂', text: _t('emotion.level_calm', '比较平静'), color: '#A7F3D0' },
+            5:  { emoji: '😐', text: _t('emotion.level_stable', '情绪平稳'), color: '#FBBF24' },
+            6:  { emoji: '😐', text: _t('emotion.level_restless', '有点烦躁'), color: '#F59E0B' },
+            7:  { emoji: '😕', text: _t('emotion.level_low', '心情低落'), color: '#F59E0B' },
+            8:  { emoji: '😕', text: _t('emotion.level_sad', '比较难过'), color: '#EF4444' },
+            9:  { emoji: '😢', text: _t('emotion.level_terrible', '心情糟糕'), color: '#DC2626' },
+            10: { emoji: '😢', text: _t('emotion.level_very_bad', '情绪很差'), color: '#B91C1C' },
         };
 
         /* ========== 初始化情绪轮盘 ========== */
@@ -685,7 +692,7 @@
             selection.emotions.forEach((emotion, i) => {
                 html += `
                     <div class="emotion-tag" style="background:${emotion.color}20; border:2px solid ${emotion.color}; color:${emotion.color}; animation-delay:${i * 80}ms;">
-                        ${emotion.name} · ${emotion.intensity}
+                        ${_t('emotion.' + emotion.key + '_name', emotion.name)} · ${_t('emotion.intensity_' + emotion.intensity, emotion.intensity === 'mild' ? '温和' : '强烈')}
                     </div>
                 `;
             });
@@ -693,7 +700,7 @@
             if (selection.combination) {
                 html += `
                     <div class="emotion-tag selected" style="background:${selection.combination.color}; border-color:${selection.combination.color}; animation-delay:${selection.emotions.length * 80}ms;">
-                        ${selection.combination.name}
+                        ${_t('emotion.combo.' + selection.combination.key + '_name', selection.combination.name)}
                     </div>
                 `;
             }
@@ -710,7 +717,7 @@
             const pct = ((value - 1) / 9) * 100;
             thumb.style.left = `${pct}%`;
             thumb.textContent = level.emoji;
-            text.textContent = level.text;
+            text.textContent = _t('emotion.level_' + value, level.text);
             text.style.color = level.color;
 
             selectedIntensity = parseInt(value);
@@ -772,7 +779,7 @@
         /* ========== 保存情绪记录 ========== */
         async function saveEmotion() {
             if (selectedEmotions.length === 0) {
-                showToast('请先在轮盘上选择至少一个情绪', 'warning');
+                showToast(_t('emotion.toast_select_first', '请先在轮盘上选择至少一个情绪'), 'warning');
                 return;
             }
 
@@ -798,7 +805,7 @@
                 records.push(record);
                 localStorage.setItem('emotionRecords', JSON.stringify(records));
 
-                showToast('记录保存成功 🌟', 'success');
+                showToast(_t('emotion.toast_saved', '记录保存成功') + ' 🌟', 'success');
 
                 /* 重置表单 */
                 selectedEmotions = [];
@@ -812,7 +819,7 @@
                 document.querySelectorAll('.tag-select-btn').forEach(b => b.classList.remove('selected'));
             } catch (error) {
                 console.error('保存失败:', error);
-                showToast('保存失败，请重试', 'error');
+                showToast(_t('emotion.toast_save_failed', '保存失败，请重试'), 'error');
             }
         }
 
@@ -873,7 +880,7 @@
             const trigEl = document.getElementById('trigger-factors');
             const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
             if (sortedTags.length === 0) {
-                trigEl.innerHTML = '<p style="color:var(--theme-text-light);font-size:0.9rem;">暂无数据</p>';
+                trigEl.innerHTML = '<p style="color:var(--theme-text-light);font-size:0.9rem;">' + _t('emotion.no_data', '暂无数据') + '</p>';
             } else {
                 trigEl.innerHTML = sortedTags.map(([tag, count], i) => `
                     <div style="display:flex;align-items:center;gap:0.5rem;animation-delay:${i * 60}ms;" class="fade-in-up">
@@ -1181,7 +1188,7 @@
                             grid: { color: 'rgba(0,0,0,0.05)' },
                             title: {
                                 display: true,
-                                text: '情绪强度 (1=极好, 10=很糟糕)',
+                                text: _t('emotion.chart_yaxis', '情绪强度 (1=极好, 10=很糟糕)'),
                                 font: { size: 11 },
                                 color: '#9CA3AF',
                             }
@@ -1221,7 +1228,7 @@
             ctx.fillStyle = '#9CA3AF';
             ctx.font = '14px Nunito Sans, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillText('记录更多情绪后可查看趋势图 📊', (canvas.width || 400) / 2, (canvas.height || 200) / 2);
+            ctx.fillText(_t('emotion.chart_empty', '记录更多情绪后可查看趋势图') + ' 📊', (canvas.width || 400) / 2, (canvas.height || 200) / 2);
         }
 
         /* ========== 移动端菜单 ========== */

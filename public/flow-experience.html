@@ -1639,22 +1639,22 @@
                             
                             <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">前提条件：</h4>
                             <ol style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li><strong>明确的目标</strong> - 知道要做什么，做到什么程度</li>
-                                <li><strong>即时反馈</strong> - 能清楚知道自己做得如何</li>
-                                <li><strong>挑战与技能平衡</strong> - 任务难度略高于当前能力</li>
-                                <li><strong>消除干扰</strong> - 关闭手机通知，创造安静环境</li>
+                                <li data-i18n-html="flow.prereq_1"><strong>明确的目标</strong> - 知道要做什么，做到什么程度</li>
+                                <li data-i18n-html="flow.prereq_2"><strong>即时反馈</strong> - 能清楚知道自己做得如何</li>
+                                <li data-i18n-html="flow.prereq_3"><strong>挑战与技能平衡</strong> - 任务难度略高于当前能力</li>
+                                <li data-i18n-html="flow.prereq_4"><strong>消除干扰</strong> - 关闭手机通知，创造安静环境</li>
                             </ol>
                             
                             <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">实用技巧：</h4>
                             <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li>设定25-90分钟的专注时间块</li>
-                                <li>选择一个你真正感兴趣的活动</li>
-                                <li>提前准备好所有需要的工具</li>
-                                <li>从简单的部分开始，逐步增加难度</li>
+                                <li data-i18n="flow.tip_1">设定25-90分钟的专注时间块</li>
+                                <li data-i18n="flow.tip_2">选择一个你真正感兴趣的活动</li>
+                                <li data-i18n="flow.tip_3">提前准备好所有需要的工具</li>
+                                <li data-i18n="flow.tip_4">从简单的部分开始，逐步增加难度</li>
                             </ul>
                         </div>
                         
-                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))">
+                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))" data-i18n="flow.expand_read">
                             展开阅读 →
                         </button>
                     </div>
@@ -2398,10 +2398,12 @@
             document.getElementById('preparation-section').classList.remove('hidden');
             
             // 如果指定了活动，更新摘要
-            if (activityId && activities.find(a => a.id === activityId)) {
-                const activity = activities.find(a => a.id === activityId);
-                document.getElementById('summary-activity-container').style.display = 'block';
-                document.getElementById('summary-activity').textContent = `${activity.icon} ${activity.name}`;
+            if (activityId) {
+                const activity = getActivityById(activityId);
+                if (activity) {
+                    document.getElementById('summary-activity-container').style.display = 'block';
+                    document.getElementById('summary-activity').textContent = `${activity.icon} ${activity.name}`;
+                }
             }
         }
 
@@ -2422,7 +2424,7 @@
             if (step === 2) {
                 currentGoal = document.getElementById('goal-input').value;
                 if (!currentGoal) {
-                    showToast('请先设定一个目标', 'warning');
+                    showToast(_t('flow.toast_set_goal', '请先设定一个目标'), 'warning');
                     return;
                 }
             }
@@ -2439,7 +2441,8 @@
             
             // 更新摘要
             if (step === 4) {
-                document.getElementById('summary-duration').textContent = `${currentDuration}分钟`;
+                const unit = _t('flow.unit_minutes', '分钟');
+                document.getElementById('summary-duration').textContent = `${currentDuration}${unit}`;
                 document.getElementById('summary-goal').textContent = currentGoal;
             }
         }
@@ -2673,66 +2676,92 @@
         /* ========== 记录页面 ========== */
         function loadRecords() {
             const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
-            
+
+            // 迁移旧记录：如果有 activity 字段但没有 activityId，尝试查找对应的 activityId
+            let needsSave = false;
+            records.forEach(r => {
+                if (r.activity && !r.activityId) {
+                    const found = activities.find(a => a.name === r.activity);
+                    if (found) {
+                        r.activityId = found.id;
+                        r.activityName = found.name;
+                        needsSave = true;
+                    }
+                }
+            });
+            if (needsSave) {
+                localStorage.setItem('flow-records', JSON.stringify(records));
+            }
+
             // 统计
             const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
             const totalMinutes = Math.round(totalDuration / 60);
-            const avgQuality = records.length > 0 ? 
+            const avgQuality = records.length > 0 ?
                 (records.reduce((sum, r) => sum + (r.scores.focus || 0), 0) / records.length).toFixed(1) : 0;
-            
+
             document.getElementById('records-stats').innerHTML = `
                 <div class="stat-card">
-                    <div class="stat-label">总心流时长</div>
-                    <div class="stat-value">${(totalMinutes / 60).toFixed(1)}<span class="stat-unit">小时</span></div>
+                    <div class="stat-label">${_t('flow.stat_total_duration', '总心流时长')}</div>
+                    <div class="stat-value">${(totalMinutes / 60).toFixed(1)}<span class="stat-unit">${_t('flow.unit_hours', '小时')}</span></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">完成次数</div>
-                    <div class="stat-value">${records.length}<span class="stat-unit">次</span></div>
+                    <div class="stat-label">${_t('flow.stat_sessions', '完成次数')}</div>
+                    <div class="stat-value">${records.length}<span class="stat-unit">${_t('flow.unit_sessions', '次')}</span></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">平均质量</div>
-                    <div class="stat-value">${avgQuality}<span class="stat-unit">/ 5</span></div>
+                    <div class="stat-label">${_t('flow.stat_avg_quality', '平均质量')}</div>
+                    <div class="stat-value">${avgQuality}<span class="stat-unit">${_t('flow.unit_score', '/ 5')}</span></div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">最长单次</div>
-                    <div class="stat-value">${Math.round(Math.max(...records.map(r => r.duration)) / 60)}<span class="stat-unit">分钟</span></div>
+                    <div class="stat-label">${_t('flow.stat_longest', '最长单次')}</div>
+                    <div class="stat-value">${Math.round(Math.max(...records.map(r => r.duration)) / 60)}<span class="stat-unit">${_t('flow.unit_minutes', '分钟')}</span></div>
                 </div>
             `;
-            
-            // 活动排行
+
+            // 活动排行（使用 activityId 作为 key）
             const activityCounts = {};
             records.forEach(r => {
-                activityCounts[r.activity] = (activityCounts[r.activity] || 0) + 1;
+                const key = r.activityId || r.activity || 'unknown';
+                activityCounts[key] = (activityCounts[key] || 0) + 1;
             });
-            
+
             const sortedActivities = Object.entries(activityCounts)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 5);
-            
-            document.getElementById('records-ranking').innerHTML = sortedActivities.map(([name, count], idx) => `
+
+            document.getElementById('records-ranking').innerHTML = sortedActivities.map(([activityId, count], idx) => {
+                const activity = getActivityById(activityId) || { icon: '📌', name: activityId };
+                return `
                 <div class="ranking-item">
                     <div class="ranking-rank">#${idx + 1}</div>
-                    <div class="ranking-icon">${activities.find(a => a.name === name)?.icon || '📌'}</div>
+                    <div class="ranking-icon">${activity.icon}</div>
                     <div class="ranking-info">
-                        <div class="ranking-name">${name}</div>
-                        <div class="ranking-meta">完成 ${count} 次</div>
+                        <div class="ranking-name">${activity.name}</div>
+                        <div class="ranking-meta">${_t('flow.completed_times', '完成')} ${count} ${_t('flow.unit_sessions', '次')}</div>
                     </div>
-                    <div class="ranking-duration">${count}次</div>
+                    <div class="ranking-duration">${count}${_t('flow.unit_sessions_short', '次')}</div>
                 </div>
-            `).join('');
-            
+                `;
+            }).join('');
+
             // 历史记录
             const recentRecords = records.slice(-10).reverse();
-            document.getElementById('records-history').innerHTML = recentRecords.map(r => `
+            const locale = (window.I18N && I18N.currentLocale) || 'zh-CN';
+            const dateLocale = locale === 'en' ? 'en-US' : 'zh-CN';
+            document.getElementById('records-history').innerHTML = recentRecords.map(r => {
+                const activity = r.activityId ? getActivityById(r.activityId) : null;
+                const activityName = activity ? activity.name : (r.activityName || r.activity || _t('flow.unknown_activity', '未知活动'));
+                return `
                 <div style="padding: 1rem; background: var(--color-primary-50); border-radius: var(--radius-lg); margin-bottom: 0.75rem;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <div style="font-weight: 600; color: var(--theme-text);">${r.activity}</div>
-                        <div style="font-size: 0.875rem; color: var(--theme-text-light);">${Math.round(r.duration / 60)}分钟</div>
+                        <div style="font-weight: 600; color: var(--theme-text);">${activityName}</div>
+                        <div style="font-size: 0.875rem; color: var(--theme-text-light);">${Math.round(r.duration / 60)} ${_t('flow.unit_minutes', '分钟')}</div>
                     </div>
-                    <div style="font-size: 0.875rem; color: var(--theme-text-light);">目标：${r.goal}</div>
-                    <div style="font-size: 0.75rem; color: var(--theme-text-light); margin-top: 0.5rem;">${new Date(r.date).toLocaleDateString('zh-CN')}</div>
+                    <div style="font-size: 0.875rem; color: var(--theme-text-light);">${_t('flow.goal_label', '目标')}：${r.goal}</div>
+                    <div style="font-size: 0.75rem; color: var(--theme-text-light); margin-top: 0.5rem;">${new Date(r.date).toLocaleDateString(dateLocale)}</div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         /* ========== 快速开始功能 ========== */
@@ -2740,33 +2769,34 @@
             // 智能推荐：根据用户历史记录推荐活动
             const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
             let recommendedActivity = 'reading'; // 默认推荐
-            
+
             if (records.length > 0) {
                 // 如果已有记录，推荐最常进行的活动
                 const activityCounts = {};
                 records.forEach(r => {
-                    activityCounts[r.activity] = (activityCounts[r.activity] || 0) + 1;
+                    const key = r.activityId || r.activity || 'unknown';
+                    activityCounts[key] = (activityCounts[key] || 0) + 1;
                 });
                 const mostFrequent = Object.entries(activityCounts)
                     .sort((a, b) => b[1] - a[1])[0];
                 if (mostFrequent) {
-                    const activity = activities.find(a => a.name === mostFrequent[0]);
+                    const activity = getActivityById(mostFrequent[0]);
                     if (activity) recommendedActivity = activity.id;
                 }
             } else {
                 // 新用户，推荐简单的活动
                 recommendedActivity = 'meditation'; // 冥想最适合新手
             }
-            
+
             // 直接跳转到专注模式
             showActivityDetail(recommendedActivity);
-            
-            showToast('已为你推荐最适合的活动！', 'success');
+
+            showToast(_t('flow.toast_recommended', '已为你推荐最适合的活动！'), 'success');
         }
         
         function showGuideAgain() {
             // 重新显示引导
-            if (confirm('重新查看引导教程吗？')) {
+            if (confirm(_t('flow.confirm_show_guide', '重新查看引导教程吗？'))) {
                 localStorage.removeItem('flowGuideCompleted');
                 location.reload();
             }
@@ -2880,7 +2910,7 @@
             stopAmbientSound(); // 先停止当前播放
             
             if (soundType === 'silence') {
-                showToast('已切换为静音模式', 'success');
+                showToast(_t('flow.toast_silence_mode', '已切换为静音模式'), 'success');
                 return;
             }
             
@@ -2939,7 +2969,7 @@
         function toggleAmbientSound() {
             if (isPlaying) {
                 stopAmbientSound();
-                showToast('已暂停环境音', 'warning');
+                showToast(_t('flow.toast_sound_paused', '已暂停环境音'), 'warning');
             } else {
                 const currentSound = selectedSound || 'rain';
                 playAmbientSound(currentSound);
@@ -2948,13 +2978,13 @@
         
         // 获取环境音名称
         function getSoundName(soundType) {
-            const names = {
-                'rain': '🌧️ 轻柔雨声',
-                'ocean': '🌊 海浪声',
-                'music': '🎵 轻音乐',
-                'silence': '🔇 静音'
+            const soundNames = {
+                'rain': _t('flow.sound_rain', '🌧️ 轻柔雨声'),
+                'ocean': _t('flow.sound_ocean', '🌊 海浪声'),
+                'music': _t('flow.sound_music', '🎵 轻音乐'),
+                'silence': _t('flow.sound_silence', '🔇 静音')
             };
-            return names[soundType] || soundType;
+            return soundNames[soundType] || soundType;
         }
         
         // 音量控制
@@ -2976,7 +3006,7 @@
                 // 展开
                 preview.style.display = 'none';
                 full.style.display = 'block';
-                btn.textContent = '收起 ↑';
+                btn.textContent = _t('flow.btn_collapse', '收起 ↑');
                 
                 // 滚动到卡片位置
                 card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -2984,7 +3014,7 @@
                 // 收起
                 preview.style.display = 'block';
                 full.style.display = 'none';
-                btn.textContent = '展开阅读 →';
+                btn.textContent = _t('flow.btn_expand', '展开阅读 →');
             }
         }
         

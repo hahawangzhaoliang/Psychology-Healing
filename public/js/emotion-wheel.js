@@ -42,11 +42,19 @@ class EmotionWheel {
         this.hovered = null;     // 当前hover的 {key, ring}  ring: 0=外(温和) 1=内(强烈)
         this.animPhase = {};     // 点击动画用
 
-        this._createCanvas();
-        this._createTooltip();
-        this._bindEvents();
-        this.draw();
-    }
+            this._createCanvas();
+            this._createTooltip();
+            this._bindEvents();
+            this.draw();
+        }
+
+        /* i18n 翻译辅助 */
+        _t(key, defaultText) {
+            if (window.I18N && I18N.currentLocale === 'en') {
+                return I18N.t(key) || defaultText;
+            }
+            return defaultText;
+        }
 
     /* ========== 初始化 ========== */
     _createCanvas() {
@@ -126,8 +134,8 @@ class EmotionWheel {
             this.draw();
 
             const em = this.emotions[hit.key];
-            const label = hit.ring === 0 ? '温和' : '强烈';
-            this.tip.textContent = `${em.emoji} ${em.name} · ${label}`;
+            const label = hit.ring === 0 ? this._t('emotion.intensity_mild', '温和') : this._t('emotion.intensity_strong', '强烈');
+            this.tip.textContent = `${em.emoji} ${this._t('emotion.' + hit.key + '_name', em.name)} · ${label}`;
             this.tip.style.left = (e.clientX + 12) + 'px';
             this.tip.style.top  = (e.clientY - 30) + 'px';
             this.tip.style.opacity = '1';
@@ -186,7 +194,7 @@ class EmotionWheel {
         const emotions = this.selected.map(s => ({
             key: s.key,
             ...this.emotions[s.key],
-            intensity: s.ring === 0 ? '温和' : '强烈',
+            intensity: s.ring === 0 ? 'mild' : 'strong',
         }));
 
         const combo = this.selected.length === 2
@@ -195,12 +203,14 @@ class EmotionWheel {
         this.options.onEmotionSelect({ emotions, combination: combo });
     }
 
-    _getCombo(k1, k2) {
-        const i1 = this.order.indexOf(k1), i2 = this.order.indexOf(k2);
-        if (Math.abs(i1-i2) !== 1 && !(i1===0&&i2===7) && !(i1===7&&i2===0)) return null;
-        const key = [k1,k2].sort().join('+');
-        return this.combinations[key] || null;
-    }
+        _getCombo(k1, k2) {
+            const i1 = this.order.indexOf(k1), i2 = this.order.indexOf(k2);
+            if (Math.abs(i1-i2) !== 1 && !(i1===0&&i2===7) && !(i1===7&&i2===0)) return null;
+            const comboKey = [k1,k2].sort().join('+');
+            const combo = this.combinations[comboKey];
+            if (combo) return Object.assign({}, combo, { key: comboKey });
+            return null;
+        }
 
     /* ========== 绘制 ========== */
     draw() {
@@ -303,7 +313,7 @@ class EmotionWheel {
             } else {
                 ctx.fillStyle = '#555';
             }
-            ctx.fillText(em.name, lx, ly);
+            ctx.fillText(this._t('emotion.' + key + '_name', em.name), lx, ly);
         });
 
         // 强度图例（只绘制一次）
@@ -312,7 +322,7 @@ class EmotionWheel {
         ctx.fillStyle = '#888';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('外圈=温和 · 内圈=强烈', cx, legendY);
+        ctx.fillText(this._t('emotion.legend', '外圈=温和 · 内圈=强烈'), cx, legendY);
 
         // ===== 中心圆 =====
         const cR = minR - 4;
@@ -338,7 +348,7 @@ class EmotionWheel {
                 ctx.fillText(combo.emoji, cx, cy - 10);
                 ctx.font = 'bold 13px "PingFang SC","Microsoft YaHei"';
                 ctx.fillStyle = '#333';
-                ctx.fillText(combo.name, cx, cy + 14);
+                ctx.fillText(this._t('emotion.combo.' + combo.key + '_name', combo.name), cx, cy + 14);
             }
         } else if (this.selected.length === 1) {
             const s = this.selected[0];
@@ -347,17 +357,17 @@ class EmotionWheel {
             ctx.fillText(em.emoji, cx, cy - 12);
             ctx.font = 'bold 14px "PingFang SC","Microsoft YaHei"';
             ctx.fillStyle = '#333';
-            ctx.fillText(em.name, cx, cy + 10);
+            ctx.fillText(this._t('emotion.' + s.key + '_name', em.name), cx, cy + 10);
             ctx.font = '11px "PingFang SC","Microsoft YaHei"';
             ctx.fillStyle = '#888';
-            ctx.fillText(s.ring === 0 ? '温和' : '强烈', cx, cy + 26);
+            ctx.fillText(s.ring === 0 ? this._t('emotion.intensity_mild', '温和') : this._t('emotion.intensity_strong', '强烈'), cx, cy + 26);
         } else {
             ctx.font = '13px "PingFang SC","Microsoft YaHei"';
             ctx.fillStyle = '#bbb';
-            ctx.fillText('点击扇区选择', cx, cy - 6);
+            ctx.fillText(this._t('emotion.click_to_select', '点击扇区选择'), cx, cy - 6);
             ctx.font = '11px "PingFang SC","Microsoft YaHei"';
             ctx.fillStyle = '#ccc';
-            ctx.fillText('可选2个相邻情绪', cx, cy + 10);
+            ctx.fillText(this._t('emotion.select_two_adjacent', '可选2个相邻情绪'), cx, cy + 10);
         }
     }
 
@@ -379,7 +389,7 @@ class EmotionWheel {
         const emotions = this.selected.map(s => ({
             key: s.key,
             ...this.emotions[s.key],
-            intensity: s.ring === 0 ? '温和' : '强烈',
+            intensity: s.ring === 0 ? 'mild' : 'strong',
         }));
         const combo = this.selected.length === 2
             ? this._getCombo(this.selected[0].key, this.selected[1].key) : null;

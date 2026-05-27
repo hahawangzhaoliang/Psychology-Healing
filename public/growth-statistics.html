@@ -75,12 +75,13 @@
             color: var(--theme-text-light);
         }
     </style>
+    <script src="js/i18n.js"></script>
 </head>
 <body>
     <div class="stats-container">
         <div class="stats-header">
-            <h1 class="hero-title">🌱 成长统计</h1>
-            <p style="color: var(--theme-text-light); margin-top: 0.5rem;">追踪你的心流之旅</p>
+            <h1 class="hero-title" data-i18n-html="growth_statistics.hero_title">🌱 成长统计</h1>
+            <p style="color: var(--theme-text-light); margin-top: 0.5rem;" data-i18n="growth_statistics.hero_subtitle">追踪你的心流之旅</p>
         </div>
         
         <div class="stats-grid" id="summary-cards">
@@ -88,17 +89,17 @@
         </div>
         
         <div class="chart-container">
-            <h2 class="chart-title">📈 心流质量趋势</h2>
+            <h2 class="chart-title" data-i18n="growth_statistics.chart_quality">📈 心流质量趋势</h2>
             <canvas id="quality-chart"></canvas>
         </div>
         
         <div class="chart-container">
-            <h2 class="chart-title">📊 活动分布</h2>
+            <h2 class="chart-title" data-i18n="growth_statistics.chart_activity">📊 活动分布</h2>
             <canvas id="activity-chart"></canvas>
         </div>
         
         <div class="records-list">
-            <h2 class="chart-title">📝 最近记录</h2>
+            <h2 class="chart-title" data-i18n="growth_statistics.section_records">📝 最近记录</h2>
             <div id="records-container">
                 <!-- 动态生成记录列表 -->
             </div>
@@ -106,6 +107,13 @@
     </div>
     
     <script>
+    // ========= i18n 辅助函数 =========
+    function _t(key, zhDefault) {
+        if (!window.I18N) return zhDefault || key;
+        if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+        return I18N.t(key) || zhDefault || key;
+    }
+
         // 加载统计数据
         function loadStatistics() {
             const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
@@ -125,8 +133,8 @@
         function showNoData() {
             document.getElementById('summary-cards').innerHTML = `
                 <div class="no-data">
-                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">暂无数据</p>
-                    <p>完成你的第一次心流体验吧！</p>
+                    <p style="font-size: 1.25rem; margin-bottom: 1rem;">${_t('growth_statistics.nodata_title', '暂无数据')}</p>
+                    <p>${_t('growth_statistics.nodata_desc', '完成你的第一次心流体验吧！')}</p>
                 </div>
             `;
         }
@@ -143,15 +151,15 @@
             document.getElementById('summary-cards').innerHTML = `
                 <div class="card stat-card">
                     <div class="stat-number">${totalSessions}</div>
-                    <p>心流次数</p>
+                    <p>${_t('growth_statistics.stat_sessions', '心流次数')}</p>
                 </div>
                 <div class="card stat-card">
-                    <div class="stat-number">${totalMinutes}h</div>
-                    <p>累计时长</p>
+                    <div class="stat-number">${totalMinutes}${_t('growth_statistics.unit_hours', 'h')}</div>
+                    <p>${_t('growth_statistics.stat_duration', '累计时长')}</p>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-number">${avgQuality}</div>
-                    <p>平均质量</p>
+                    <p>${_t('growth_statistics.stat_quality', '平均质量')}</p>
                 </div>
             `;
         }
@@ -167,7 +175,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: '专注度',
+                        label: _t('growth_statistics.chart_label_focus', '专注度'),
                         data: data,
                         borderColor: 'var(--color-primary-500)',
                         backgroundColor: 'var(--color-primary-100)',
@@ -196,7 +204,7 @@
             const activityCounts = {};
             
             records.forEach(r => {
-                const activity = r.activity || '未知';
+                const activity = r.activity || _t('growth_statistics.unknown_activity', '未知');
                 activityCounts[activity] = (activityCounts[activity] || 0) + 1;
             });
             
@@ -231,24 +239,25 @@
             const recentRecords = records.slice(-10).reverse();
             
             if (recentRecords.length === 0) {
-                container.innerHTML = '<div class="no-data">暂无记录</div>';
+                container.innerHTML = '<div class="no-data">' + _t('growth_statistics.no_records', '暂无记录') + '</div>';
                 return;
             }
             
             container.innerHTML = recentRecords.map(r => `
                 <div class="record-item">
                     <div>
-                        <div class="record-activity">${r.activity || '未知活动'}</div>
-                        <div class="record-meta">${new Date(r.date).toLocaleDateString('zh-CN')}</div>
+                        <div class="record-activity">${r.activity || _t('growth_statistics.unknown_activity', '未知活动')}</div>
+                        <div class="record-meta">${new Date(r.date).toLocaleDateString(window.I18N?.currentLocale === 'en' ? 'en-US' : 'zh-CN')}</div>
                     </div>
                     <div class="record-meta">
-                        ${Math.round((r.duration || 0) / 60)}分钟
+                        ${Math.round((r.duration || 0) / 60)} ${_t('growth_statistics.unit_minutes', '分钟')}
                     </div>
                 </div>
             `).join('');
         }
         
         // 页面加载时执行
+        document.title = _t('growth_statistics.page_title', '成长统计 - 心晴空间');
         document.addEventListener('DOMContentLoaded', loadStatistics);
     </script>
 </body>

@@ -469,17 +469,17 @@ const MATCH_SHAPE = {
 };
 
 const CAT_TYPES = [
-    { id: 1, name: '橘猫', file: '橘猫.png' },
-    { id: 2, name: '白猫', file: '白猫.png' },
-    { id: 3, name: '豹猫', file: '豹猫.png' },
-    { id: 4, name: '布偶猫', file: '布偶猫.png' },
-    { id: 5, name: '黑猫', file: '黑猫.png' },
-    { id: 6, name: '虎斑猫', file: '虎斑猫.png' },
-    { id: 7, name: '蓝猫', file: '蓝猫.png' },
-    { id: 8, name: '缅因猫', file: '缅因猫.png' },
-    { id: 9, name: '拿破仑', file: '拿破仑.png' },
-    { id: 10, name: '斯芬克斯猫', file: '斯芬克斯猫.png' },
-    { id: 11, name: '暹罗猫', file: '暹罗猫.png' },
+    { id: 1, name: _t('cat_name_1', '橘猫'), file: '橘猫.png' },
+    { id: 2, name: _t('cat_name_2', '白猫'), file: '白猫.png' },
+    { id: 3, name: _t('cat_name_3', '豹猫'), file: '豹猫.png' },
+    { id: 4, name: _t('cat_name_4', '布偶猫'), file: '布偶猫.png' },
+    { id: 5, name: _t('cat_name_5', '黑猫'), file: '黑猫.png' },
+    { id: 6, name: _t('cat_name_6', '虎斑猫'), file: '虎斑猫.png' },
+    { id: 7, name: _t('cat_name_7', '蓝猫'), file: '蓝猫.png' },
+    { id: 8, name: _t('cat_name_8', '缅因猫'), file: '缅因猫.png' },
+    { id: 9, name: _t('cat_name_9', '拿破仑'), file: '拿破仑.png' },
+    { id: 10, name: _t('cat_name_10', '斯芬克斯猫'), file: '斯芬克斯猫.png' },
+    { id: 11, name: _t('cat_name_11', '暹罗猫'), file: '暹罗猫.png' },
 ];
 
 const SPECIAL_TYPES = {
@@ -505,27 +505,27 @@ const SPECIAL_TYPES = {
 const BUFF_TYPES = {
     PURR: {
         id: 'purr',
-        name: '呼噜结界',
+        name: _t('buff_name_purr', '呼噜结界'),
         icon: '💤',
-        description: '3回合内得分翻倍，伴随呼噜声',
+        description: _t('buff_desc_purr', '3回合内得分翻倍，伴随呼噜声'),
         duration: 3,           // 持续消除次数
         scoreMultiplier: 2,
         color: '#C8A8E9',
     },
     SNACK: {
         id: 'snack',
-        name: '零食投喂',
+        name: _t('buff_name_snack', '零食投喂'),
         icon: '😋',
-        description: '点击任意格子直接消除',
+        description: _t('buff_desc_snack', '点击任意格子直接消除'),
         duration: 1,
         scoreMultiplier: 1,
         color: '#FFD93D',
     },
     CUDDLE: {
         id: 'cuddle',
-        name: '抱团取暖',
+        name: _t('buff_name_cuddle', '抱团取暖'),
         icon: '🤗',
-        description: '猫咪组队，消除额外生成道具',
+        description: _t('buff_desc_cuddle', '猫咪组队，消除额外生成道具'),
         duration: 2,
         scoreMultiplier: 1.5,
         color: '#FF6B9D',
@@ -771,34 +771,34 @@ const REQUEST_TYPES = {
  */
 const REQUEST_TEMPLATES = {
     [REQUEST_TYPES.COLLECT]: [
-        { catType: 1, dialog: '喵~ 能帮我找些小伙伴吗？', desc: '收集橘猫', targetCount: 8 },
-        { catType: 2, dialog: '我想和同伴们一起玩耍~', desc: '收集白猫', targetCount: 8 },
-        { catType: 3, dialog: '可以帮我召集一些朋友吗？', desc: '收集豹猫', targetCount: 8 },
-        { catType: 4, dialog: '喵呜~ 想要更多小伙伴！', desc: '收集布偶猫', targetCount: 8 },
-        { catType: 5, dialog: '好孤单呀，能找些朋友来吗？', desc: '收集黑猫', targetCount: 8 },
-        { catType: 6, dialog: '想要一个热闹的聚会~', desc: '收集虎斑猫', targetCount: 8 },
-        { catType: 7, dialog: '能帮我找些玩伴吗？', desc: '收集蓝猫', targetCount: 8 },
-        { catType: 8, dialog: '喵~ 想要更多猫咪朋友！', desc: '收集缅因猫', targetCount: 8 },
-        { catType: 9, dialog: '想和大家一起玩~', desc: '收集拿破仑', targetCount: 8 },
-        { catType: 10, dialog: '能帮我找些朋友吗？', desc: '收集斯芬克斯猫', targetCount: 8 },
-        { catType: 11, dialog: '想要更多小伙伴！', desc: '收集暹罗猫', targetCount: 8 },
+        { catType: 1, dialog: _t('request_dialog_collect_1', '喵~ 能帮我找些小伙伴吗？'), desc: _t('request_desc_collect_1', '收集橘猫'), targetCount: 8 },
+        { catType: 2, dialog: _t('request_dialog_collect_2', '我想和同伴们一起玩耍~'), desc: _t('request_desc_collect_2', '收集白猫'), targetCount: 8 },
+        { catType: 3, dialog: _t('request_dialog_collect_3', '可以帮我召集一些朋友吗？'), desc: _t('request_desc_collect_3', '收集豹猫'), targetCount: 8 },
+        { catType: 4, dialog: _t('request_dialog_collect_4', '喵呜~ 想要更多小伙伴！'), desc: _t('request_desc_collect_4', '收集布偶猫'), targetCount: 8 },
+        { catType: 5, dialog: _t('request_dialog_collect_5', '好孤单呀，能找些朋友来吗？'), desc: _t('request_desc_collect_5', '收集黑猫'), targetCount: 8 },
+        { catType: 6, dialog: _t('request_dialog_collect_6', '想要一个热闹的聚会~'), desc: _t('request_desc_collect_6', '收集虎斑猫'), targetCount: 8 },
+        { catType: 7, dialog: _t('request_dialog_collect_7', '能帮我找些玩伴吗？'), desc: _t('request_desc_collect_7', '收集蓝猫'), targetCount: 8 },
+        { catType: 8, dialog: _t('request_dialog_collect_8', '喵~ 想要更多猫咪朋友！'), desc: _t('request_desc_collect_8', '收集缅因猫'), targetCount: 8 },
+        { catType: 9, dialog: _t('request_dialog_collect_9', '想和大家一起玩~'), desc: _t('request_desc_collect_9', '收集拿破仑'), targetCount: 8 },
+        { catType: 10, dialog: _t('request_dialog_collect_10', '能帮我找些朋友吗？'), desc: _t('request_desc_collect_10', '收集斯芬克斯猫'), targetCount: 8 },
+        { catType: 11, dialog: _t('request_dialog_collect_11', '想要更多小伙伴！'), desc: _t('request_desc_collect_11', '收集暹罗猫'), targetCount: 8 },
     ],
     [REQUEST_TYPES.FIND_PILLOW]: [
-        { catType: 1, dialog: '我找不到我的枕头了，能帮我找找吗？', desc: '帮橘猫找枕头', targetCount: 5 },
-        { catType: 3, dialog: '我的枕头不见了喵...', desc: '帮豹猫找枕头', targetCount: 5 },
-        { catType: 5, dialog: '想要软软的枕头睡觉觉~', desc: '帮黑猫找枕头', targetCount: 5 },
-        { catType: 6, dialog: '枕头跑掉了，能帮我找回来吗？', desc: '帮虎斑猫找枕头', targetCount: 5 },
+        { catType: 1, dialog: _t('request_dialog_pillow_1', '我找不到我的枕头了，能帮我找找吗？'), desc: _t('request_desc_pillow_1', '帮橘猫找枕头'), targetCount: 5 },
+        { catType: 3, dialog: _t('request_dialog_pillow_3', '我的枕头不见了喵...'), desc: _t('request_desc_pillow_3', '帮豹猫找枕头'), targetCount: 5 },
+        { catType: 5, dialog: _t('request_dialog_pillow_5', '想要软软的枕头睡觉觉~'), desc: _t('request_desc_pillow_5', '帮黑猫找枕头'), targetCount: 5 },
+        { catType: 6, dialog: _t('request_dialog_pillow_6', '枕头跑掉了，能帮我找回来吗？'), desc: _t('request_desc_pillow_6', '帮虎斑猫找枕头'), targetCount: 5 },
     ],
     [REQUEST_TYPES.FEED_FISH]: [
-        { catType: 2, dialog: '肚子饿啦~ 想吃小鱼干！', desc: '喂白猫吃小鱼干', targetCount: 6 },
-        { catType: 4, dialog: '喵呜~ 小鱼干最棒了！', desc: '喂布偶猫吃小鱼干', targetCount: 6 },
-        { catType: 7, dialog: '有好吃的吗？想要小鱼干~', desc: '喂蓝猫吃小鱼干', targetCount: 6 },
-        { catType: 11, dialog: '饿了饿了，想吃小鱼干喵~', desc: '喂暹罗猫吃小鱼干', targetCount: 6 },
+        { catType: 2, dialog: _t('request_dialog_fish_2', '肚子饿啦~ 想吃小鱼干！'), desc: _t('request_desc_fish_2', '喂白猫吃小鱼干'), targetCount: 6 },
+        { catType: 4, dialog: _t('request_dialog_fish_4', '喵呜~ 小鱼干最棒了！'), desc: _t('request_desc_fish_4', '喂布偶猫吃小鱼干'), targetCount: 6 },
+        { catType: 7, dialog: _t('request_dialog_fish_7', '有好吃的吗？想要小鱼干~'), desc: _t('request_desc_fish_7', '喂蓝猫吃小鱼干'), targetCount: 6 },
+        { catType: 11, dialog: _t('request_dialog_fish_11', '饿了饿了，想吃小鱼干喵~'), desc: _t('request_desc_fish_11', '喂暹罗猫吃小鱼干'), targetCount: 6 },
     ],
     [REQUEST_TYPES.CUDDLE]: [
-        { catType: 1, dialog: '想和小伙伴贴贴~ 能帮我们凑一对吗？', desc: '让橘猫和小伙伴贴贴', targetCount: 4 },
-        { catType: 5, dialog: '想要抱抱~ 帮我找个朋友吧！', desc: '让黑猫和小伙伴贴贴', targetCount: 4 },
-        { catType: 4, dialog: '贴贴最温暖了，能帮我们吗？', desc: '让布偶猫和小伙伴贴贴', targetCount: 4 },
+        { catType: 1, dialog: _t('request_dialog_cuddle_1', '想和小伙伴贴贴~ 能帮我们凑一对吗？'), desc: _t('request_desc_cuddle_1', '让橘猫和小伙伴贴贴'), targetCount: 4 },
+        { catType: 5, dialog: _t('request_dialog_cuddle_5', '想要抱抱~ 帮我找个朋友吧！'), desc: _t('request_desc_cuddle_5', '让黑猫和小伙伴贴贴'), targetCount: 4 },
+        { catType: 4, dialog: _t('request_dialog_cuddle_4', '贴贴最温暖了，能帮我们吗？'), desc: _t('request_desc_cuddle_4', '让布偶猫和小伙伴贴贴'), targetCount: 4 },
     ],
 };
 
@@ -806,23 +806,23 @@ const REQUEST_TEMPLATES = {
  * 请求完成后的感谢语
  */
 const THANKS_MESSAGES = [
-    '谢谢你！你是最棒的朋友！',
-    '喵呜~ 太感谢了！',
-    '好开心！谢谢你帮我！',
-    '你真好！猫咪爱你！',
-    '哇！谢谢你！蹭蹭~',
-    '太棒了！你是猫咪的救星！',
+    _t('thanks_1', '谢谢你！你是最棒的朋友！'),
+    _t('thanks_2', '喵呜~ 太感谢了！'),
+    _t('thanks_3', '好开心！谢谢你帮我！'),
+    _t('thanks_4', '你真好！猫咪爱你！'),
+    _t('thanks_5', '哇！谢谢你！蹭蹭~'),
+    _t('thanks_6', '太棒了！你是猫咪的救星！'),
 ];
 
 /**
  * 请求完成后的动作描述
  */
 const CAT_ACTIONS = [
-    { action: '蹭屏幕', emoji: '🐱💨' },
-    { action: '舔爪子', emoji: '🐱👅' },
-    { action: '打滚', emoji: '🐱🌀' },
-    { action: '摇尾巴', emoji: '🐱〰️' },
-    { action: '眨眼睛', emoji: '🐱😉' },
+    { action: _t('action_1', '蹭屏幕'), emoji: '🐱💨' },
+    { action: _t('action_2', '舔爪子'), emoji: '🐱👅' },
+    { action: _t('action_3', '打滚'), emoji: '🐱🌀' },
+    { action: _t('action_4', '摇尾巴'), emoji: '🐱〰️' },
+    { action: _t('action_5', '眨眼睛'), emoji: '🐱😉' },
 ];
 
 // ═══════════════════════════════════════════════════
@@ -833,13 +833,13 @@ const CAT_ACTIONS = [
  * 亲密度等级配置
  */
 const AFFINITY_LEVELS = {
-    1: { name: '陌生人', minExp: 0, maxExp: 20, bonus: 1 },
-    2: { name: '认识', minExp: 20, maxExp: 50, bonus: 1.1 },
-    3: { name: '熟悉', minExp: 50, maxExp: 100, bonus: 1.2 },
-    4: { name: '友好', minExp: 100, maxExp: 200, bonus: 1.3 },
-    5: { name: '亲密', minExp: 200, maxExp: 350, bonus: 1.5 },
-    6: { name: '挚友', minExp: 350, maxExp: 500, bonus: 1.7 },
-    7: { name: '家人', minExp: 500, maxExp: Infinity, bonus: 2 },
+    1: { name: _t('affinity_1', '陌生人'), minExp: 0, maxExp: 20, bonus: 1 },
+    2: { name: _t('affinity_2', '认识'), minExp: 20, maxExp: 50, bonus: 1.1 },
+    3: { name: _t('affinity_3', '熟悉'), minExp: 50, maxExp: 100, bonus: 1.2 },
+    4: { name: _t('affinity_4', '友好'), minExp: 100, maxExp: 200, bonus: 1.3 },
+    5: { name: _t('affinity_5', '亲密'), minExp: 200, maxExp: 350, bonus: 1.5 },
+    6: { name: _t('affinity_6', '挚友'), minExp: 350, maxExp: 500, bonus: 1.7 },
+    7: { name: _t('affinity_7', '家人'), minExp: 500, maxExp: Infinity, bonus: 2 },
 };
 
 /**
@@ -1971,7 +1971,7 @@ const RelaxModeManager = {
         // 显示悠闲模式指示器
         const indicator = document.createElement('div');
         indicator.id = 'relax-mode-indicator';
-        indicator.innerHTML = '🌸 猫咪庭院 · 悠闲模式';
+        indicator.innerHTML = _t('cat_game.relax_mode_indicator', '🌸 猫咪庭院 · 悠闲模式');
         document.body.appendChild(indicator);
 
         // 添加庭院背景
@@ -2183,15 +2183,15 @@ function bindEvents() {
             if (gameState.gameMode === 'level') {
                 // 切换到悠闲模式
                 RelaxModeManager.switchMode('relax');
-                btnRelaxMode.textContent = '🎮 关卡';
+                btnRelaxMode.textContent = _t('cat_game.mode_level', '🎮 关卡');
                 btnRelaxMode.classList.add('active');
-                btnRelaxMode.title = '返回关卡模式';
+                btnRelaxMode.title = _t('cat_game.mode_level_title', '返回关卡模式');
             } else {
                 // 返回关卡模式
                 RelaxModeManager.switchMode('level');
-                btnRelaxMode.textContent = '🌸 庭院';
+                btnRelaxMode.textContent = _t('cat_game.mode_relax', '🌸 庭院');
                 btnRelaxMode.classList.remove('active');
-                btnRelaxMode.title = '切换到猫咪庭院';
+                btnRelaxMode.title = _t('cat_game.mode_relax_title', '切换到猫咪庭院');
                 // 重新加载当前关卡
                 startLevel(gameState.level);
             }
@@ -4363,10 +4363,10 @@ function updateRequestUI() {
     // 更新状态标签
     if (DOM.requestStatus) {
         if (isCompleted) {
-            DOM.requestStatus.textContent = '✓ 已完成';
+            DOM.requestStatus.textContent = _t('cat_game.request_status_completed', '✓ 已完成');
             DOM.requestStatus.classList.add('completed');
         } else {
-            DOM.requestStatus.textContent = '进行中';
+            DOM.requestStatus.textContent = _t('cat_game.request_status_in_progress', '进行中');
             DOM.requestStatus.classList.remove('completed');
         }
     }
@@ -4969,7 +4969,7 @@ function showSnackEffect() {
     // 显示"点击任意格子消除"提示
     const hint = document.createElement('div');
     hint.id = 'snack-hint';
-    hint.textContent = '😋 零食投喂模式！点击任意格子直接消除';
+    hint.textContent = _t('cat_game.snack_mode_hint', '😋 零食投喂模式！点击任意格子直接消除');
     hint.style.cssText = `
         position: fixed;
         bottom: 120px;
@@ -5019,7 +5019,7 @@ function showYummyBubble(row, col) {
     const rect = cell.getBoundingClientRect();
     const bubble = document.createElement('div');
     bubble.className = 'yummy-bubble';
-    bubble.textContent = '好吃😋';
+    bubble.textContent = _t('cat_game.snack_mode_bubble', '好吃😋');
     bubble.style.cssText = `
         position: fixed;
         left: ${rect.left + rect.width / 2}px;

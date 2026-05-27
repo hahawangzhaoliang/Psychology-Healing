@@ -7,6 +7,27 @@
     <meta name="description" content="理解你的不同角色，更好地平衡它们">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/i18n.js"></script>
+    <script>
+        // i18n 辅助函数
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            return I18N.t(key) || zhDefault || key;
+        }
+        function _tt(key, zhTemplate, vars) {
+            const template = _t(key, zhTemplate);
+            return template.replace(/\$\{(w+)\}/g, (m, v) => vars[v] != null ? vars[v] : m);
+        }
+function getName(key) {
+            const map = { child:'子女', partner:'伴侣', parent:'父母', sibling:'兄弟姐妹', student:'学生', employee:'职场人', freelancer:'自由职业者', entrepreneur:'创业者', learner:'学习者', creator:'创造者', volunteer:'志愿者', explorer:'探索者' };
+            const enMap = { child:'Child', partner:'Partner', parent:'Parent', sibling:'Sibling', student:'Student', employee:'Employee', freelancer:'Freelancer', entrepreneur:'Entrepreneur', learner:'Learner', creator:'Creator', volunteer:'Volunteer', explorer:'Explorer' };
+            if (window.I18N && window.I18N.currentLocale === 'en') return enMap[key] || map[key];
+            return map[key] || key;
+        }
+
+    </script>        }
+    </script>
     <script src="js/cache.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -34,13 +55,13 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                         </svg>
                     </div>
-                    <span class="text-xl font-bold text-gray-800 group-hover:text-primary-500 transition-colors">心晴空间</span>
+                    <span class="text-xl font-bold text-gray-800 group-hover:text-primary-500 transition-colors" data-i18n="nav.brand">心晴空间</span>/span>
                 </a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors flex items-center gap-1">
+                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors flex items-center gap-1" data-i18n="nav.home">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     返回首页
                 </a>
-                <a href="companion.html" class="text-gray-600 hover:text-primary-500 transition-colors ml-4">我的伙伴</a>
+                <a href="companion.html" class="text-gray-600 hover:text-primary-500 transition-colors ml-4" data-i18n="nav.companion">我的伙伴</a>
             </div>
         </div>
     </nav>
@@ -56,7 +77,7 @@
                             <span class="step-number">1</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label">认识角色</span>
+                        <span class="step-label" data-i18n="role.step1_label">认识角色</span>/span>
                     </div>
                     <div class="step-line" id="line-1-2"></div>
                     <div class="step-dot" id="step-2" data-step="2">
@@ -64,7 +85,7 @@
                             <span class="step-number">2</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label">探索冲突</span>
+                        <span class="step-label" data-i18n="role.step2_label">探索冲突</span>/span>
                     </div>
                     <div class="step-line" id="line-2-3"></div>
                     <div class="step-dot" id="step-3" data-step="3">
@@ -72,11 +93,11 @@
                             <span class="step-number">3</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label">找到平衡</span>
+                        <span class="step-label" data-i18n="role.step3_label">找到平衡</span>/span>
                     </div>
                 </div>
             </div>
-            <p class="step-hint">✨ 这里没有对错，只是帮助你更了解自己</p>
+            <p class="step-hint" data-i18n="role.step_hint">✨ 这里没有对错，只是帮助你更了解自己</p>/p>
         </div>
 
         <!-- 步骤1：角色识别 -->
@@ -87,8 +108,8 @@
                         <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">你在这个世界上，扮演着许多美好的角色</h2>
-                        <p class="step-subtitle">每一种身份都是你被需要、被爱的证明。轻轻点击那些属于你的角色吧 💚</p>
+                        <h2 class="step-title" data-i18n="role.step1_title">你在这个世界上，扮演着许多美好的角色</h2>/h2>
+                        <p class="step-subtitle" data-i18n="role.step1_subtitle">每一种身份都是你被需要、被爱的证明。轻轻点击那些属于你的角色吧 💚</p>/p>
                     </div>
                 </div>
                 
@@ -102,8 +123,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'child')" data-touch-feedback>
                             <div class="role-item-icon">👨‍👩‍👧</div>
                             <div class="role-item-info">
-                                <h4>子女</h4>
-                                <p>与父母的关系</p>
+                                <h4 data-i18n="role.name_child">子女</h4>
+                                <p data-i18n="role.desc_child">与父母的关系</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -112,8 +133,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'partner')" data-touch-feedback>
                             <div class="role-item-icon">💑</div>
                             <div class="role-item-info">
-                                <h4>伴侣</h4>
-                                <p>恋爱/婚姻关系</p>
+                                <h4 data-i18n="role.name_partner">伴侣</h4>
+                                <p data-i18n="role.desc_partner">恋爱/婚姻关系</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -122,8 +143,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'parent')" data-touch-feedback>
                             <div class="role-item-icon">👶</div>
                             <div class="role-item-info">
-                                <h4>父母</h4>
-                                <p>育儿责任</p>
+                                <h4 data-i18n="role.name_parent">父母</h4>
+                                <p data-i18n="role.desc_parent">育儿责任</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -132,8 +153,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'sibling')" data-touch-feedback>
                             <div class="role-item-icon">👨‍👩‍👧‍👦</div>
                             <div class="role-item-info">
-                                <h4>兄弟姐妹</h4>
-                                <p>手足关系</p>
+                                <h4 data-i18n="role.name_sibling">兄弟姐妹</h4>
+                                <p data-i18n="role.desc_sibling">手足关系</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -152,8 +173,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'student')" data-touch-feedback>
                             <div class="role-item-icon">📚</div>
                             <div class="role-item-info">
-                                <h4>学生</h4>
-                                <p>学业、同伴关系</p>
+                                <h4 data-i18n="role.name_student">学生</h4>
+                                <p data-i18n="role.desc_student">学业、同伴关系</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -162,8 +183,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'employee')" data-touch-feedback>
                             <div class="role-item-icon">💻</div>
                             <div class="role-item-info">
-                                <h4>职场人</h4>
-                                <p>工作、同事关系</p>
+                                <h4 data-i18n="role.name_employee">职场人</h4>
+                                <p data-i18n="role.desc_employee">工作、同事关系</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -172,8 +193,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'freelancer')" data-touch-feedback>
                             <div class="role-item-icon">🎨</div>
                             <div class="role-item-info">
-                                <h4>自由职业者</h4>
-                                <p>自我管理</p>
+                                <h4 data-i18n="role.name_freelancer">自由职业者</h4>
+                                <p data-i18n="role.desc_freelancer">自我管理</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -182,8 +203,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'entrepreneur')" data-touch-feedback>
                             <div class="role-item-icon">🚀</div>
                             <div class="role-item-info">
-                                <h4>创业者</h4>
-                                <p>创业压力</p>
+                                <h4 data-i18n="role.name_entrepreneur">创业者</h4>
+                                <p data-i18n="role.desc_entrepreneur">创业压力</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -202,8 +223,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'learner')" data-touch-feedback>
                             <div class="role-item-icon">📖</div>
                             <div class="role-item-info">
-                                <h4>学习者</h4>
-                                <p>终身学习</p>
+                                <h4 data-i18n="role.name_learner">学习者</h4>
+                                <p data-i18n="role.desc_learner">终身学习</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -212,8 +233,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'creator')" data-touch-feedback>
                             <div class="role-item-icon">🎭</div>
                             <div class="role-item-info">
-                                <h4>创造者</h4>
-                                <p>兴趣爱好</p>
+                                <h4 data-i18n="role.name_creator">创造者</h4>
+                                <p data-i18n="role.desc_creator">兴趣爱好</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -222,8 +243,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'volunteer')" data-touch-feedback>
                             <div class="role-item-icon">🤝</div>
                             <div class="role-item-info">
-                                <h4>志愿者</h4>
-                                <p>社会参与</p>
+                                <h4 data-i18n="role.name_volunteer">志愿者</h4>
+                                <p data-i18n="role.desc_volunteer">社会参与</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -232,8 +253,8 @@
                         <div class="role-item" onclick="toggleRole(this, 'explorer')" data-touch-feedback>
                             <div class="role-item-icon">🌟</div>
                             <div class="role-item-info">
-                                <h4>探索者</h4>
-                                <p>自我发现</p>
+                                <h4 data-i18n="role.name_explorer">探索者</h4>
+                                <p data-i18n="role.desc_explorer">自我发现</p>
                             </div>
                             <div class="role-item-check">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
@@ -257,8 +278,8 @@
                         <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">有时候，角色之间会有些小摩擦</h2>
-                        <p class="step-subtitle">别担心，这不是你的问题。现代生活本就充满多重身份的挑战 🌱</p>
+                        <h2 class="step-title" data-i18n="role.step2_title">有时候，角色之间会有些小摩擦</h2>/h2>
+                        <p class="step-subtitle" data-i18n="role.step2_subtitle">别担心，这不是你的问题。现代生活本就充满多重身份的挑战 🌱</p>/p>
                     </div>
                 </div>
                 
@@ -285,8 +306,8 @@
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title">你已经很棒了，这里有一些温柔的建议</h2>
-                        <p class="step-subtitle">平衡不是完美，而是让每个角色都有被照顾到的时刻 🕊️</p>
+                        <h2 class="step-title" data-i18n="role.step3_title">你已经很棒了，这里有一些温柔的建议</h2>/h2>
+                        <p class="step-subtitle" data-i18n="role.step3_subtitle">平衡不是完美，而是让每个角色都有被照顾到的时刻 🕊️</p>/p>
                     </div>
                 </div>
                 
@@ -430,7 +451,7 @@
 
         function nextStep(step) {
             if (step === 2 && selectedRoles.length === 0) {
-                showToast('请至少选择一个角色', 'warning');
+                showToast(_t('role.toast_select_role', '请至少选择一个角色'), 'warning');
                 return;
             }
             currentStep = step;
@@ -465,8 +486,10 @@
                     const key2 = `${role2}-${role1}`;
                     const conflict = conflicts[key1] || conflicts[key2];
                     if (conflict) {
+                        const usedKey = conflicts[key1] ? key1 : key2;
                         items.push({
                             type: 'conflict',
+                            key: usedKey,
                             roles: conflict.roles,
                             description: conflict.description,
                             suggestion: conflict.suggestion
@@ -474,7 +497,7 @@
                     } else {
                         items.push({
                             type: 'harmony',
-                            roles: [roleInfo[role1].name, roleInfo[role2].name],
+                            roles: [getName(role1), getName(role2)],
                             emoji1: roleInfo[role1].emoji,
                             emoji2: roleInfo[role2].emoji,
                             text: generateHarmonyText(role1, role2)
@@ -486,16 +509,16 @@
             if (items.length === 0) {
                 html = `<div class="conflict-empty">
                     <div class="conflict-empty-icon">✨</div>
-                    <h3 class="conflict-empty-title">你选择了 ${selectedRoles.length} 个角色</h3>
-                    <p class="conflict-empty-text">每一个角色都是你的一部分，它们共同构成了完整的你</p>
+                    <h3 class="conflict-empty-title" data-i18n="role.conflict_empty_title">你选择了 ${selectedRoles.length} 个角色</h3>/h3>
+                    <p class="conflict-empty-text" data-i18n="role.conflict_empty_text">每一个角色都是你的一部分，它们共同构成了完整的你</p>/p>
                 </div>`;
             } else {
                 items.forEach((item, i) => {
                     if (item.type === 'conflict') {
                         html += `<div class="conflict-item" style="animation-delay:${i * 0.1}s">
-                            <div class="conflict-badge">${item.roles[0]} × ${item.roles[1]}</div>
-                            <p class="conflict-desc">${item.description}</p>
-                            <p class="conflict-suggestion">💡 ${item.suggestion}</p>
+                            <div class="conflict-badge">${getName(item.roles[0])} × ${getName(item.roles[1])}</div>
+                            <p class="conflict-desc">${_t('role.' + item.key + '_desc', item.description)}</p>
+                            <p class="conflict-suggestion">💡 ${_t('role.' + item.key + '_sug', item.suggestion)}</p>
                         </div>`;
                     } else {
                         html += `<div class="harmony-item" style="animation-delay:${i * 0.1}s">
@@ -507,8 +530,8 @@
             }
 
             html += `<div class="role-map">
-                <h3 class="role-map-title">你的角色地图</h3>
-                <div class="role-map-tags">${selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${roleInfo[r].name}</span>`).join('')}</div>
+                <h3 class="role-map-title" data-i18n="role.role_map_title">你的角色地图</h3>/h3>
+                <div class="role-map-tags">${selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${getName(r)}</span>`).join('')}</div>
             </div>`;
 
             container.innerHTML = html;
@@ -522,39 +545,39 @@
         function generateHarmonyText(role1, role2) {
             const cat1 = roleInfo[role1].category;
             const cat2 = roleInfo[role2].category;
-            const name1 = roleInfo[role1].name;
-            const name2 = roleInfo[role2].name;
+            const name1 = getName(role1);
+            const name2 = getName(role2);
             const emoji1 = roleInfo[role1].emoji;
             const emoji2 = roleInfo[role2].emoji;
 
             if (cat1 === cat2) {
                 const msgs = {
                     '家庭': [
-                        `${emoji1} ${name1}和${emoji2} ${name2}——你在家庭中扮演着多重重要角色，这需要很多爱，也收获很多爱`,
-                        `家庭中的多个角色虽然忙碌，但也让你被更多的人需要和珍视`
+                        _tt('role.harmony_family_0', '${emoji1} ${name1}和${emoji2} ${name2}——你在家庭中扮演着多重重要角色，这需要很多爱，也收获很多爱', { emoji1, name1, emoji2, name2 }),
+                        _tt('role.harmony_family_1', '家庭中的多个角色虽然忙碌，但也让你被更多的人需要和珍视', {})
                     ],
                     '社会': [
-                        `${emoji1} ${name1}和${emoji2} ${name2}——你在社会中承担着多重责任，这不容易，但你做到了`,
-                        `这两个社会角色让你拥有更丰富的经验和更广阔的视野`
+                        _tt('role.harmony_social_0', '${emoji1} ${name1}和${emoji2} ${name2}——你在社会中承担着多重责任，这不容易，但你做到了', { emoji1, name1, emoji2, name2 }),
+                        _tt('role.harmony_social_1', '这两个社会角色让你拥有更丰富的经验和更广阔的视野', {})
                     ],
                     '自我': [
-                        `${emoji1} ${name1}和${emoji2} ${name2}都是你为自己选择的身份，这份自我驱动力很美丽`,
-                        `在自我成长的道路上同时走多条路径，保持这份好奇就好`
+                        _tt('role.harmony_self_0', '${emoji1} ${name1}和${emoji2} ${name2}都是你为自己选择的身份，这份自我驱动力很美丽', { emoji1, name1, emoji2, name2 }),
+                        _tt('role.harmony_self_1', '在自我成长的道路上同时走多条路径，保持这份好奇就好', {})
                     ]
                 };
-                const pool = msgs[cat1] || [`${name1}和${name2}，都是你的一部分`];
+                const pool = msgs[cat1] || [_tt('role.harmony_generic', '${name1}和${name2}，都是你的一部分', { name1, name2 })];
                 return pool[0];
             }
-            return `${emoji1} ${name1}（来自${cat1}）和${emoji2} ${name2}（来自${cat2}）共同构成了你丰富的生活——能同时扮演好它们，你真的很了不起`;
+            return _tt('role.harmony_cross', '${emoji1} ${name1}（来自${cat1}）和${emoji2} ${name2}（来自${cat2}）共同构成了你丰富的生活——能同时扮演好它们，你真的很了不起', { emoji1, name1, cat1, emoji2, name2, cat2 });
         }
 
         function generateBalanceSuggestions() {
             const container = document.getElementById('balance-suggestions');
             const suggestions = [
-                { title: '设定边界', icon: '🚧', color: '#fef3c7', items: ['下班后关闭工作通知', '周末至少半天完全属于自己', '学会说"不"，拒绝不必要的请求'] },
-                { title: '时间管理', icon: '⏰', color: '#dbeafe', items: ['使用番茄工作法提高效率', '每天留出1小时做自己喜欢的事', '为不同角色分配专属时间'] },
-                { title: '自我关怀', icon: '💝', color: '#fce7f3', items: ['每周至少一次自我奖励', '定期运动，保持身心健康', '给自己犯错和休息的空间'] },
-                { title: '寻求支持', icon: '🤝', color: '#d1fae5', items: ['和家人朋友分享你的感受', '必要时寻求专业帮助', '加入支持小组，和有相似经历的人交流'] }
+                { title: _t('role.sug_title_boundaries', '设定边界'), icon: '🚧', color: '#fef3c7', items: [_t('role.sug_item_boundaries_0', '下班后关闭工作通知'), _t('role.sug_item_boundaries_1', '周末至少半天完全属于自己'), _t('role.sug_item_boundaries_2', '学会说"不"，拒绝不必要的请求')] },
+                { title: _t('role.sug_title_timemgmt', '时间管理'), icon: '⏰', color: '#dbeafe', items: [_t('role_sug_item_timemgmt_0', '使用番茄工作法提高效率'), _t('role_sug_item_timemgmt_1', '每天留出1小时做自己喜欢的事'), _t('role_sug_item_timemgmt_2', '为不同角色分配专属时间')] },
+                { title: _t('role.sug_title_selfcare', '自我关怀'), icon: '💝', color: '#fce7f3', items: [_t('role.sug_item_selfcare_0', '每周至少一次自我奖励'), _t('role.sug_item_selfcare_1', '定期运动，保持身心健康'), _t('role.sug_item_selfcare_2', '给自己犯错和休息的空间')] },
+                { title: _t('role.sug_title_support', '寻求支持'), icon: '🤝', color: '#d1fae5', items: [_t('role.sug_item_support_0', '和家人朋友分享你的感受'), _t('role.sug_item_support_1', '必要时寻求专业帮助'), _t('role.sug_item_support_2', '加入支持小组，和有相似经历的人交流')] }
             ];
             container.innerHTML = suggestions.map((s, i) => `<div class="suggestion-card" style="--card-index:${i};background:${s.color}" data-touch-feedback>
                 <div class="suggestion-icon">${s.icon}</div>
@@ -570,7 +593,7 @@
 
         function saveAndFinish() {
             localStorage.setItem('userRoles', JSON.stringify(selectedRoles));
-            showToast('角色探索完成！🌟', 'success');
+            showToast(_t('role.toast_done', '角色探索完成！'), 'success');
             setTimeout(() => { window.location.href = 'index.html'; }, 1500);
         }
     </script>

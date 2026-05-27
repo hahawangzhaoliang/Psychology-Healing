@@ -8,18 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <script src="js/cache.js"></script>
+    <script src="js/i18n.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: { 50: '#f0faf7', 100: '#d9f2eb', 200: '#b5ddd3', 300: '#8ac4b5', 400: '#7CB8A8', 500: '#5A9A8A', 600: '#4a8a7a' },
-                        warm: { 50: '#fdfbf9', 100: '#F5E6D3', 200: '#E8D5C4', 300: '#d4c4b0' }
-                    }
-                }
-            }
-        }
+
     </script>
 </head>
 <body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
@@ -38,16 +30,16 @@
 
             <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
-                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.home">首页</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.flow">
                     心流体验
                     <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
                 </a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
-                <a href="about.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">关于我们</a>
-                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">我的伙伴</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.companion">我的伙伴</a>
             </div>
 
             <!-- 移动端菜单按钮 -->
@@ -59,18 +51,17 @@
         </div>
 
         <!-- 移动端菜单 -->
-        <div class="mobile-menu" id="mobileMenu">
+        
             <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
-                <a href="index.html">首页</a>
-                <a href="emotion.html">情绪觉察</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html">心流体验</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html" class="active">关于我们</a>
-                <a href="companion.html">我的伙伴</a>
+                <a href="index.html" data-i18n="nav.home">首页</a>
+                <a href="emotion.html" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="relax.html" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" data-i18n="nav.flow">心流体验</a>
+                <a href="knowledge-graph.html" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" class="active" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" data-i18n="nav.companion">我的伙伴</a>
             </div>
-        </div>
-    </nav>
+        
 
     <!-- 主内容 -->
     <main class="pt-16">
@@ -82,8 +73,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-3">关于我们</h1>
-                <p class="text-gray-600">了解心晴空间，查看服务条款与隐私政策</p>
+                 data-i18n="about.hero_title">关于我们
+                 data-i18n="about.hero_subtitle">了解心晴空间，查看服务条款与隐私政策
             </div>
         </section>
 
@@ -93,7 +84,7 @@
                 <div class="about-layout">
                     <!-- 侧边导航 -->
                     <aside class="about-sidebar">
-                        <nav class="about-nav" id="aboutNav">
+                        
                             <a href="#about" class="about-nav-link active" data-section="about">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                                 关于平台
@@ -114,7 +105,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                                 求助热线
                             </a>
-                        </nav>
+                        
                     </aside>
 
                     <!-- 主内容 -->
@@ -124,23 +115,23 @@
                             <div class="about-section-icon" style="background: linear-gradient(135deg, #d9f2eb 0%, #b5ddd3 100%);">
                                 <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                             </div>
-                            <h2 class="about-section-title">关于心晴空间</h2>
+                            <h2 class="about-section-title" data-i18n="about.section_about_title">关于心晴空间</h2>
                             
-                            <p class="about-text">我们相信，每个人都值得被倾听、被理解。</p>
-                            <p class="about-text">在这个快节奏的世界里，我们希望创造一个角落，让你可以停下来，和自己的情绪待一会儿。</p>
-                            <p class="about-text">心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台。我们提供情绪觉察、心理科普、放松练习等内容，帮助你在日常中照顾自己的内心。</p>
+                            <p class="about-text data-i18n="about.p0"">我们相信，每个人都值得被倾听、被理解。</p>
+                            <p class="about-text data-i18n="about.p1"">在这个快节奏的世界里，我们希望创造一个角落，让你可以停下来，和自己的情绪待一会儿。</p>
+                            <p class="about-text data-i18n="about.p2"">心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台。我们提供情绪觉察、心理科普、放松练习等内容，帮助你在日常中照顾自己的内心。</p>
 
-                            <h3 class="about-subtitle">我们的理念</h3>
+                            <h3 class="about-subtitle" data-i18n="about.subtitle_philosophy">我们的理念</h3>
                             <ul class="about-list">
-                                <li><strong>温暖陪伴</strong>：用温柔的方式，陪伴每一个需要被倾听的人</li>
-                                <li><strong>科学态度</strong>：基于心理学知识，提供有价值的科普内容</li>
-                                <li><strong>尊重边界</strong>：明确服务范围，不越界提供医疗行为</li>
-                                <li><strong>保护隐私</strong>：你的心事，只属于你自己</li>
+                                <li data-i18n="about.li_warm_companion"><strong>温暖陪伴</strong>：用温柔的方式，陪伴每一个需要被倾听的人</li>
+                                <li data-i18n="about.li_scientific"><strong>科学态度</strong>：基于心理学知识，提供有价值的科普内容</li>
+                                <li data-i18n="about.li_boundary"><strong>尊重边界</strong>：明确服务范围，不越界提供医疗行为</li>
+                                <li data-i18n="about.li_privacy"><strong>保护隐私</strong>：你的心事，只属于你自己</li>
                             </ul>
 
                             <div class="about-callout">
                                 <svg class="w-5 h-5 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                <p>心晴空间是一个情绪陪伴平台，不是医院，不是诊所。如果你正在经历严重的心理困扰，请一定寻求专业帮助——这不丢人，这是爱自己的方式。</p>
+                                <p data-i18n="about.callout_text">心晴空间是一个情绪陪伴平台，不是医院，不是诊所。如果你正在经历严重的心理困扰，请一定寻求专业帮助——这不丢人，这是爱自己的方式。</p>
                             </div>
                         </section>
 
@@ -149,52 +140,52 @@
                             <div class="about-section-icon" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
                                 <svg class="w-8 h-8 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                             </div>
-                            <h2 class="about-section-title">心理服务免责声明</h2>
+                            <h2 class="about-section-title" data-i18n="about.section_disclaimer_title">心理服务免责声明</h2>
                             
                             <div class="about-alert">
                                 <strong>重要提示：</strong>请在使用本平台前仔细阅读以下声明
                             </div>
 
-                            <h3 class="about-subtitle">一、服务性质说明</h3>
-                            <p class="about-text">心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台，所提供的情绪陪伴、心理科普、自我成长引导等服务，均属于大众心理健康科普与成长教育服务范畴，<strong>不属于医疗行为</strong>。</p>
+                            <h3 class="about-subtitle" data-i18n="about.section1_title">一、服务性质说明</h3>
+                            <p class="about-text data-i18n="about.p3"">心晴空间是一个公益性质的心理健康科普与情绪陪伴服务平台，所提供的情绪陪伴、心理科普、自我成长引导等服务，均属于大众心理健康科普与成长教育服务范畴，<strong>不属于医疗行为</strong>。</p>
 
-                            <h3 class="about-subtitle">二、明确不提供的服务</h3>
-                            <p class="about-text">本平台<strong>不提供</strong>以下服务：</p>
+                            <h3 class="about-subtitle" data-i18n="about.section2_title">二、明确不提供的服务</h3>
+                            <p class="about-text data-i18n="about.p4"">本平台<strong>不提供</strong>以下服务：</p>
                             <ul class="about-list">
-                                <li>任何形式的医学诊断、心理疾病诊断、精神疾病诊断</li>
-                                <li>心理治疗、精神科治疗、临床心理干预</li>
-                                <li>康复指导、病症干预、危机干预</li>
-                                <li>处方药物建议或治疗方案制定</li>
+                                <li data-i18n="about.li_no_diagnosis">任何形式的医学诊断、心理疾病诊断、精神疾病诊断</li>
+                                <li data-i18n="about.li_no_therapy">心理治疗、精神科治疗、临床心理干预</li>
+                                <li data-i18n="about.li_no_rehab">康复指导、病症干预、危机干预</li>
+                                <li data-i18n="about.li_no_prescription">处方药物建议或治疗方案制定</li>
                             </ul>
 
-                            <h3 class="about-subtitle">三、服务边界</h3>
-                            <p class="about-text">本平台<strong>不承接、不介入</strong>以下需要专业医疗机构处理的情况：</p>
+                            <h3 class="about-subtitle" data-i18n="about.section3_title">三、服务边界</h3>
+                            <p class="about-text data-i18n="about.p5"">本平台<strong>不承接、不介入</strong>以下需要专业医疗机构处理的情况：</p>
                             <ul class="about-list">
-                                <li>重度抑郁、重度焦虑、双相情感障碍等严重心理问题</li>
-                                <li>精神分裂症、器质性精神障碍、严重人格障碍</li>
-                                <li>存在自伤、自杀风险、急性心理危机</li>
-                                <li>重度心理创伤、成瘾行为、重症精神类问题</li>
+                                <li data-i18n="about.li_boundary_severe">重度抑郁、重度焦虑、双相情感障碍等严重心理问题</li>
+                                <li data-i18n="about.li_boundary_schizophrenia">精神分裂症、器质性精神障碍、严重人格障碍</li>
+                                <li data-i18n="about.li_boundary_selfharm">存在自伤、自杀风险、急性心理危机</li>
+                                <li data-i18n="about.li_boundary_trauma">重度心理创伤、成瘾行为、重症精神类问题</li>
                             </ul>
-                            <p class="about-text">如遇上述情况，我们将明确引导至正规医院精神心理科接受专业诊疗，不提供任何替代医疗的服务。</p>
+                            <p class="about-text data-i18n="about.p6"">如遇上述情况，我们将明确引导至正规医院精神心理科接受专业诊疗，不提供任何替代医疗的服务。</p>
 
-                            <h3 class="about-subtitle">四、测评工具说明</h3>
-                            <p class="about-text">本平台提供的情绪觉察量表（如焦虑自评、抑郁自评等）均为标准化心理测评工具的简化版本，<strong>测评结果仅供参考，不能作为医学诊断依据</strong>。情绪状态会受到多种因素影响，如有持续困扰，建议寻求专业帮助。</p>
+                            <h3 class="about-subtitle" data-i18n="about.section4_title">四、测评工具说明</h3>
+                            <p class="about-text data-i18n="about.p7"">本平台提供的情绪觉察量表（如焦虑自评、抑郁自评等）均为标准化心理测评工具的简化版本，<strong>测评结果仅供参考，不能作为医学诊断依据</strong>。情绪状态会受到多种因素影响，如有持续困扰，建议寻求专业帮助。</p>
 
-                            <h3 class="about-subtitle">五、用户责任</h3>
-                            <p class="about-text">使用本平台服务时，您确认：</p>
+                            <h3 class="about-subtitle" data-i18n="about.section5_title">五、用户责任</h3>
+                            <p class="about-text data-i18n="about.p8"">使用本平台服务时，您确认：</p>
                             <ul class="about-list">
-                                <li>已了解本平台的服务边界和限制</li>
-                                <li>不会将本平台作为医疗诊断或治疗的替代</li>
-                                <li>如遇紧急情况或严重心理困扰，会及时寻求专业医疗帮助</li>
-                                <li>对自身行为和决策负责</li>
+                                <li data-i18n="about.li_resp_understood">已了解本平台的服务边界和限制</li>
+                                <li data-i18n="about.li_resp_not_replace">不会将本平台作为医疗诊断或治疗的替代</li>
+                                <li data-i18n="about.li_resp_seek_help">如遇紧急情况或严重心理困扰，会及时寻求专业医疗帮助</li>
+                                <li data-i18n="about.li_resp_responsible">对自身行为和决策负责</li>
                             </ul>
 
-                            <h3 class="about-subtitle">六、责任限制</h3>
-                            <p class="about-text">在法律允许的最大范围内，本平台对以下情况不承担责任：</p>
+                            <h3 class="about-subtitle" data-i18n="about.section6_title">六、责任限制</h3>
+                            <p class="about-text data-i18n="about.p9"">在法律允许的最大范围内，本平台对以下情况不承担责任：</p>
                             <ul class="about-list">
-                                <li>用户未按提示寻求专业医疗帮助导致的任何后果</li>
-                                <li>用户对测评结果的误解或不当使用</li>
-                                <li>因不可抗力导致的服务中断或数据丢失</li>
+                                <li data-i18n="about.li_limit_noseek">用户未按提示寻求专业医疗帮助导致的任何后果</li>
+                                <li data-i18n="about.li_limit_misunderstand">用户对测评结果的误解或不当使用</li>
+                                <li data-i18n="about.li_limit_force_majeure">因不可抗力导致的服务中断或数据丢失</li>
                             </ul>
 
                             <div class="about-note">
@@ -207,42 +198,42 @@
                             <div class="about-section-icon" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
                                 <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                             </div>
-                            <h2 class="about-section-title">使用须知</h2>
+                            <h2 class="about-section-title" data-i18n="about.section_terms_title">使用须知</h2>
 
-                            <h3 class="about-subtitle">一、服务内容</h3>
-                            <p class="about-text">心晴空间提供以下服务：</p>
+                            <h3 class="about-subtitle" data-i18n="about.terms1_title">一、服务内容</h3>
+                            <p class="about-text data-i18n="about.p10"">心晴空间提供以下服务：</p>
                             <ul class="about-list">
-                                <li><strong>情绪觉察</strong>：提供焦虑、抑郁等情绪状态的自评量表</li>
-                                <li><strong>疗愈内容</strong>：心理健康科普文章、自我成长内容</li>
-                                <li><strong>放松练习</strong>：呼吸训练、冥想引导、身体扫描等放松技巧</li>
-                                <li><strong>求助导航</strong>：专业心理援助热线和机构信息</li>
+                                <li data-i18n="about.li_svc_emotion"><strong>情绪觉察</strong>：提供焦虑、抑郁等情绪状态的自评量表</li>
+                                <li data-i18n="about.li_svc_content"><strong>疗愈内容</strong>：心理健康科普文章、自我成长内容</li>
+                                <li data-i18n="about.li_svc_relax"><strong>放松练习</strong>：呼吸训练、冥想引导、身体扫描等放松技巧</li>
+                                <li data-i18n="about.li_svc_hotline"><strong>求助导航</strong>：专业心理援助热线和机构信息</li>
                             </ul>
 
-                            <h3 class="about-subtitle">二、适用人群</h3>
-                            <p class="about-text">本平台适合：</p>
+                            <h3 class="about-subtitle" data-i18n="about.terms2_title">二、适用人群</h3>
+                            <p class="about-text data-i18n="about.p11"">本平台适合：</p>
                             <ul class="about-list">
-                                <li>希望了解自身情绪状态的健康人群</li>
-                                <li>有轻度情绪困扰，寻求自我调节方法的人群</li>
-                                <li>对心理健康知识感兴趣的人群</li>
+                                <li data-i18n="about.li_audience_healthy">希望了解自身情绪状态的健康人群</li>
+                                <li data-i18n="about.li_audience_mild">有轻度情绪困扰，寻求自我调节方法的人群</li>
+                                <li data-i18n="about.li_audience_interested">对心理健康知识感兴趣的人群</li>
                             </ul>
-                            <p class="about-text">本平台<strong>不适合</strong>有严重心理问题或精神疾病的人群作为主要支持来源。</p>
+                            <p class="about-text data-i18n="about.p12"">本平台<strong>不适合</strong>有严重心理问题或精神疾病的人群作为主要支持来源。</p>
 
-                            <h3 class="about-subtitle">三、使用规范</h3>
+                            <h3 class="about-subtitle" data-i18n="about.terms3_title">三、使用规范</h3>
                             <ul class="about-list">
-                                <li>如实填写测评信息，以获得更准确的参考结果</li>
-                                <li>不将测评结果作为自我诊断的唯一依据</li>
-                                <li>遇到严重困扰时，及时寻求专业帮助</li>
-                                <li>尊重其他用户，不发布不当内容</li>
+                                <li data-i18n="about.li_norm_honest">如实填写测评信息，以获得更准确的参考结果</li>
+                                <li data-i18n="about.li_norm_not_diagnosis">不将测评结果作为自我诊断的唯一依据</li>
+                                <li data-i18n="about.li_norm_seek_help">遇到严重困扰时，及时寻求专业帮助</li>
+                                <li data-i18n="about.li_norm_respect">尊重其他用户，不发布不当内容</li>
                             </ul>
 
-                            <h3 class="about-subtitle">四、知识产权</h3>
-                            <p class="about-text">本平台的所有内容（包括但不限于文字、图片、音频、视频、软件等）均受知识产权法保护。未经授权，不得复制、传播或用于商业目的。</p>
+                            <h3 class="about-subtitle" data-i18n="about.terms4_title">四、知识产权</h3>
+                            <p class="about-text data-i18n="about.p13"">本平台的所有内容（包括但不限于文字、图片、音频、视频、软件等）均受知识产权法保护。未经授权，不得复制、传播或用于商业目的。</p>
 
-                            <h3 class="about-subtitle">五、服务变更</h3>
-                            <p class="about-text">本平台保留随时修改、暂停或终止部分或全部服务的权利，恕不另行通知。</p>
+                            <h3 class="about-subtitle" data-i18n="about.terms5_title">五、服务变更</h3>
+                            <p class="about-text data-i18n="about.p14"">本平台保留随时修改、暂停或终止部分或全部服务的权利，恕不另行通知。</p>
 
-                            <h3 class="about-subtitle">六、年龄限制</h3>
-                            <p class="about-text">本平台主要面向成年人。未成年人使用本平台，应在监护人陪同和指导下进行。</p>
+                            <h3 class="about-subtitle" data-i18n="about.terms6_title">六、年龄限制</h3>
+                            <p class="about-text data-i18n="about.p15"">本平台主要面向成年人。未成年人使用本平台，应在监护人陪同和指导下进行。</p>
                         </section>
 
                         <!-- 隐私政策 -->
@@ -250,56 +241,56 @@
                             <div class="about-section-icon" style="background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%);">
                                 <svg class="w-8 h-8 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                             </div>
-                            <h2 class="about-section-title">隐私政策</h2>
+                            <h2 class="about-section-title" data-i18n="about.section_privacy_title">隐私政策</h2>
 
-                            <p class="about-text">我们深知，来到这里的人，可能正在经历一些不容易的事情。保护你的隐私，是我们最基本的承诺。</p>
+                            <p class="about-text data-i18n="about.p16"">我们深知，来到这里的人，可能正在经历一些不容易的事情。保护你的隐私，是我们最基本的承诺。</p>
 
-                            <h3 class="about-subtitle">一、信息收集</h3>
-                            <p class="about-text">我们可能收集以下信息：</p>
+                            <h3 class="about-subtitle" data-i18n="about.privacy1_title">一、信息收集</h3>
+                            <p class="about-text data-i18n="about.p17"">我们可能收集以下信息：</p>
                             <ul class="about-list">
-                                <li><strong>使用数据</strong>：访问页面、使用功能等匿名统计数据</li>
-                                <li><strong>测评数据</strong>：你在情绪觉察中的答案和结果</li>
-                                <li><strong>设备信息</strong>：浏览器类型、设备类型等技术信息</li>
+                                <li data-i18n="about.li_collect_usage"><strong>使用数据</strong>：访问页面、使用功能等匿名统计数据</li>
+                                <li data-i18n="about.li_collect_assessment"><strong>测评数据</strong>：你在情绪觉察中的答案和结果</li>
+                                <li data-i18n="about.li_collect_device"><strong>设备信息</strong>：浏览器类型、设备类型等技术信息</li>
                             </ul>
 
-                            <h3 class="about-subtitle">二、信息使用</h3>
+                            <h3 class="about-subtitle" data-i18n="about.privacy2_title">二、信息使用</h3>
                             <ul class="about-list">
-                                <li>提供和改进服务</li>
-                                <li>生成匿名统计报告</li>
-                                <li>保障平台安全</li>
+                                <li data-i18n="about.li_use_improve">提供和改进服务</li>
+                                <li data-i18n="about.li_use_report">生成匿名统计报告</li>
+                                <li data-i18n="about.li_use_security">保障平台安全</li>
                             </ul>
 
-                            <h3 class="about-subtitle">三、信息保护</h3>
+                            <h3 class="about-subtitle" data-i18n="about.privacy3_title">三、信息保护</h3>
                             <ul class="about-list">
-                                <li>使用加密技术传输和存储敏感数据</li>
-                                <li>限制员工访问用户数据的权限</li>
-                                <li>定期审查和更新安全措施</li>
+                                <li data-i18n="about.li_protect_encrypt">使用加密技术传输和存储敏感数据</li>
+                                <li data-i18n="about.li_protect_access">限制员工访问用户数据的权限</li>
+                                <li data-i18n="about.li_protect_review">定期审查和更新安全措施</li>
                             </ul>
 
-                            <h3 class="about-subtitle">四、信息分享</h3>
-                            <p class="about-text">我们<strong>不会</strong>向第三方出售你的个人信息。我们仅在以下情况下分享信息：</p>
+                            <h3 class="about-subtitle" data-i18n="about.privacy4_title">四、信息分享</h3>
+                            <p class="about-text data-i18n="about.p18"">我们<strong>不会</strong>向第三方出售你的个人信息。我们仅在以下情况下分享信息：</p>
                             <ul class="about-list">
-                                <li>获得你的明确同意</li>
-                                <li>法律法规要求</li>
-                                <li>保护用户或公众的安全（如涉及自伤、伤害他人等紧急情况）</li>
+                                <li data-i18n="about.li_share_consent">获得你的明确同意</li>
+                                <li data-i18n="about.li_share_legal">法律法规要求</li>
+                                <li data-i18n="about.li_share_safety">保护用户或公众的安全（如涉及自伤、伤害他人等紧急情况）</li>
                             </ul>
 
-                            <h3 class="about-subtitle">五、你的权利</h3>
+                            <h3 class="about-subtitle" data-i18n="about.privacy5_title">五、你的权利</h3>
                             <ul class="about-list">
-                                <li>访问我们持有的关于你的信息</li>
-                                <li>要求更正不准确的信息</li>
-                                <li>要求删除你的信息</li>
-                                <li>撤回对信息处理的同意</li>
+                                <li data-i18n="about.li_rights_access">访问我们持有的关于你的信息</li>
+                                <li data-i18n="about.li_rights_correct">要求更正不准确的信息</li>
+                                <li data-i18n="about.li_rights_delete">要求删除你的信息</li>
+                                <li data-i18n="about.li_rights_withdraw">撤回对信息处理的同意</li>
                             </ul>
 
-                            <h3 class="about-subtitle">六、Cookie使用</h3>
-                            <p class="about-text">本平台使用Cookie来改善用户体验、分析使用情况。你可以通过浏览器设置管理Cookie，但这可能影响部分功能的使用。</p>
+                            <h3 class="about-subtitle" data-i18n="about.privacy6_title">六、Cookie使用</h3>
+                            <p class="about-text data-i18n="about.p19"">本平台使用Cookie来改善用户体验、分析使用情况。你可以通过浏览器设置管理Cookie，但这可能影响部分功能的使用。</p>
 
-                            <h3 class="about-subtitle">七、未成年人保护</h3>
-                            <p class="about-text">我们不会故意收集未成年人的个人信息。如发现我们在未经监护人同意的情况下收集了未成年人的信息，我们将尽快删除。</p>
+                            <h3 class="about-subtitle" data-i18n="about.privacy7_title">七、未成年人保护</h3>
+                            <p class="about-text data-i18n="about.p20"">我们不会故意收集未成年人的个人信息。如发现我们在未经监护人同意的情况下收集了未成年人的信息，我们将尽快删除。</p>
 
-                            <h3 class="about-subtitle">八、政策更新</h3>
-                            <p class="about-text">我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，请定期查阅。</p>
+                            <h3 class="about-subtitle" data-i18n="about.privacy8_title">八、政策更新</h3>
+                            <p class="about-text data-i18n="about.p21"">我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，请定期查阅。</p>
                         </section>
 
                         <!-- 求助热线 -->
@@ -307,35 +298,35 @@
                             <div class="about-section-icon" style="background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);">
                                 <svg class="w-8 h-8 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
                             </div>
-                            <h2 class="about-section-title">求助热线</h2>
+                            <h2 class="about-section-title" data-i18n="about.section_hotline_title">求助热线</h2>
 
-                            <p class="about-text">如果你正在经历艰难的时刻，请知道——求助是勇敢的选择。以下是一些可以提供专业帮助的热线：</p>
+                            <p class="about-text data-i18n="about.p22"">如果你正在经历艰难的时刻，请知道——求助是勇敢的选择。以下是一些可以提供专业帮助的热线：</p>
 
                             <div class="hotline-grid">
                                 <a href="tel:4001619995" class="hotline-card" data-touch-feedback>
                                     <div class="hotline-info">
-                                        <p class="hotline-name">全国心理援助热线</p>
-                                        <p class="hotline-time">24小时免费服务</p>
+                                        <p class="hotline-name data-i18n="about.p23"">全国心理援助热线</p>
+                                        <p class="hotline-time data-i18n="about.p24"">24小时免费服务</p>
                                     </div>
                                     <div class="hotline-number">400-161-9995</div>
                                 </a>
                                 <a href="tel:01082951332" class="hotline-card" data-touch-feedback>
                                     <div class="hotline-info">
-                                        <p class="hotline-name">北京危机干预热线</p>
-                                        <p class="hotline-time">24小时服务</p>
+                                        <p class="hotline-name data-i18n="about.p25"">北京危机干预热线</p>
+                                        <p class="hotline-time data-i18n="about.p26"">24小时服务</p>
                                     </div>
                                     <div class="hotline-number">010-82951332</div>
                                 </a>
                                 <a href="tel:4008211215" class="hotline-card" data-touch-feedback>
                                     <div class="hotline-info">
-                                        <p class="hotline-name">生命热线</p>
-                                        <p class="hotline-time">每天10:00-22:00</p>
+                                        <p class="hotline-name data-i18n="about.p27"">生命热线</p>
+                                        <p class="hotline-time data-i18n="about.p28"">每天10:00-22:00</p>
                                     </div>
                                     <div class="hotline-number">400-821-1215</div>
                                 </a>
                                 <a href="tel:12355" class="hotline-card" data-touch-feedback>
                                     <div class="hotline-info">
-                                        <p class="hotline-name">青少年心理咨询热线</p>
+                                        <p class="hotline-name data-i18n="about.p29"">青少年心理咨询热线</p>
                                         <p class="hotline-time">12355</p>
                                     </div>
                                     <div class="hotline-number">12355</div>
@@ -344,28 +335,28 @@
 
                             <div class="hotline-encourage">
                                 <span class="hotline-heart">❤️</span>
-                                <p>你不需要一个人扛着，有人愿意帮你。</p>
+                                <p data-i18n="about.hotline_encourage">你不需要一个人扛着，有人愿意帮你。</p>
                             </div>
 
-                            <h3 class="about-subtitle">何时应该寻求专业帮助？</h3>
+                            <h3 class="about-subtitle data-i18n="about.h0"">何时应该寻求专业帮助？</h3>
                             <ul class="about-sign-list">
-                                <li>
+                                <li data-i18n="about.li_help0">
                                     <span class="about-sign-icon">●</span>
                                     情绪低落或焦虑持续两周以上，影响日常生活
                                 </li>
-                                <li>
+                                <li data-i18n="about.li_help1">
                                     <span class="about-sign-icon" style="color: #ef4444;">●</span>
                                     出现自伤、自杀的念头或行为
                                 </li>
-                                <li>
+                                <li data-i18n="about.li_help2">
                                     <span class="about-sign-icon">●</span>
                                     严重的睡眠问题、食欲改变
                                 </li>
-                                <li>
+                                <li data-i18n="about.li_help3">
                                     <span class="about-sign-icon">●</span>
                                     无法控制的情绪波动
                                 </li>
-                                <li>
+                                <li data-i18n="about.li_help4">
                                     <span class="about-sign-icon">●</span>
                                     经历创伤事件后持续困扰
                                 </li>
@@ -390,7 +381,7 @@
                         </div>
                         <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
                     </div>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);line-height:1.6;">
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);line-height:1.6;" data-i18n="about.footer_desc">
                         公益心理疗愈平台<br>碎片化疗愈，陪伴你的每一刻
                     </p>
                 </div>
@@ -398,39 +389,35 @@
                 <div>
                     <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">核心功能</h4>
                     <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
-                        <li><a href="relax.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">疗愈练习</a></li>
-                        <li><a href="flow-experience.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">心流体验</a></li>
-                        <li><a href="emotion.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">情绪觉察</a></li>
-                        <li><a href="knowledge-graph.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">知识图谱</a></li>
+                        <li><a href="relax.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="nav.relax">疗愈练习</a></li>
+                        <li><a href="flow-experience.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="nav.flow">心流体验</a></li>
+                        <li><a href="emotion.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="nav.emotion">情绪觉察</a></li>
+                        <li><a href="knowledge-graph.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="nav.knowledge">知识图谱</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">关于我们</h4>
                     <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;font-size:0.875rem;color:var(--theme-text-light);">
-                        <li><a href="about.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">平台介绍</a></li>
-                        <li><a href="about.html#disclaimer" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">免责声明</a></li>
-                        <li><a href="about.html#privacy" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'">隐私政策</a></li>
+                        <li><a href="about.html" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="about.footer_link_about">平台介绍</a></li>
+                        <li><a href="about.html#disclaimer" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="about.footer_link_disclaimer">免责声明</a></li>
+                        <li><a href="about.html#privacy" style="color:inherit;text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='inherit'" data-i18n="about.footer_link_privacy">隐私政策</a></li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 style="font-weight:500;color:var(--theme-text);margin-bottom:1rem;">求助热线</h4>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">全国心理援助热线</p>
-                    <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">400-161-9995</p>
-                    <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;">24小时免费服务</p>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;" data-i18n="about.footer_hotline_title">全国心理援助热线</p>
+                    <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);" data-i18n="about.footer_hotline_number">400-161-9995</p>
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;" data-i18n="about.footer_hotline_desc">24小时免费服务</p>
                 </div>
             </div>
 
             <div style="border-top:1px solid var(--theme-border);padding-top:2rem;margin-top:2rem;">
                 <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
-                    <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
-                        本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。如有严重心理困扰，请及时寻求专业帮助。
-                    </p>
+                    <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;" data-i18n="about.footer_disclaimer">本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断或心理治疗服务。如有严重心理困扰，请及时寻求专业帮助。</p>
                 </div>
-                <p style="text-align:center;font-size:0.875rem;color:var(--theme-text-light);">
-                    © 2026 心晴空间 · 公益心理疗愈平台 · 碎片化疗愈，陪伴你的每一刻
-                </p>
+                <p style="text-align:center;font-size:0.875rem;color:var(--theme-text-light);" data-i18n="about.footer_copyright">© 2026 心晴空间 · 公益心理疗愈平台 · 碎片化疗愈，陪伴你的每一刻</p>
             </div>
         </div>
     </footer>

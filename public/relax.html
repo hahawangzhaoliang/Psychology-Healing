@@ -423,8 +423,8 @@
                     <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_body_scan_title">身体扫描</h3>
                     <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_body_scan_desc">从头到脚放松身体，释放紧张与疲惫</p>
                     <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_10min">
-                </div>
-            </div>
+                        约10分钟
+                    </span>
 
             <!-- 正念冥想 -->
             <div class="practice-card" onclick="startMindfulness()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startMindfulness()">
@@ -437,8 +437,8 @@
                     <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_mindfulness_title">正念冥想</h3>
                     <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_mindfulness_desc">专注于当下，让思绪慢慢安静下来</p>
                     <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_8min">
-                </div>
-            </div>
+                        约8分钟
+                    </span>
 
             <!-- 五感放松 -->
             <div class="practice-card" onclick="startFiveSenses()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startFiveSenses()">
@@ -452,8 +452,8 @@
                     <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_five_senses_title">五感放松</h3>
                     <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_five_senses_desc">通过五感回到当下，缓解焦虑</p>
                     <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_3min">
-                </div>
-            </div>
+                        约3分钟
+                    </span>
 
             <!-- 猫咪消消乐 -->
             <div class="practice-card" onclick="location.href='cat-game.html'" role="button" tabindex="0" onkeydown="if(event.key==='Enter')location.href='cat-game.html'">
@@ -463,9 +463,9 @@
                 <div style="flex:1;">
                     <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_cat_game_title">猫咪消消乐</h3>
                     <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_cat_game_desc">和可爱的猫咪一起玩消除游戏，轻松解压</p>
-                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_5min">
-                </div>
-            </div>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_5min_2">
+                        约5分钟
+                    </span>
         </div>
     </section>
 
@@ -504,9 +504,9 @@
 
         <!-- 练习要点 -->
         <div style="margin-top:1rem;padding:1rem;background:var(--color-warm-50);border-radius:var(--radius-lg);">
-            <p style="font-size:0.875rem;color:var(--theme-text);line-height:1.7;">
-                <strong style="color:#92400E;">练习要点：</strong>
-                将一只手放在胸口，另一只手放在腹部。缓慢吸气，感受腹部像气球一样鼓起；屏息2-3秒；缓慢呼气，感受腹部收缩。
+            <p style="font-size:0.875rem;color:var(--theme-text);line-height:1.7;" data-i18n="relax.practice_tips">
+                <strong style="color:#92400E;" data-i18n="relax.practice_tips_label">练习要点：</strong>
+                <span data-i18n="relax.practice_tips_text">将一只手放在胸口，另一只手放在腹部。缓慢吸气，感受腹部像气球一样鼓起；屏息2-3秒；缓慢呼气，感受腹部收缩。</span>
             </p>
         </div>
     </section>
@@ -644,7 +644,7 @@
             这个练习可以帮助你从焦虑的思绪中回到当下。慢慢来，不着急。
         </p>
 
-        <button onclick="exitExercise()" class="btn btn-secondary">返回</button>
+        <button onclick="exitExercise()" class="btn btn-secondary" data-i18n="relax.exit">返回</button>
     </section>
 
     <!-- ===== 更多疗愈练习 ===== -->
@@ -699,6 +699,13 @@
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
     <script>
+        /* ========== i18n 翻译辅助函数 ========== */
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            return I18N.t(key) || zhDefault || key;
+        }
+
         /* ========== 工具函数 ========== */
         function hideAllExercises() {
             document.getElementById('practiceList').classList.add('hidden');
@@ -737,10 +744,10 @@
         function resetBreathCircle() {
             const core = document.getElementById('breathCore');
             core.classList.remove('inhale', 'hold', 'exhale');
-            document.getElementById('breathingPhase').textContent = '准备开始';
+            document.getElementById('breathingPhase').textContent = _t('relax.breath_ready', '准备开始');
             document.getElementById('breathingCount').textContent = '';
-            document.getElementById('startBreathingBtn').textContent = '开始练习';
-            document.getElementById('breathingInstruction').textContent = '点击开始按钮，跟随引导进行呼吸练习';
+            document.getElementById('startBreathingBtn').textContent = _t('relax.start_practice', '开始练习');
+            document.getElementById('breathingInstruction').textContent = _t('relax.breath_instruction_default', '点击开始按钮，跟随引导进行呼吸练习');
         }
 
         function toggleBreathing() {
@@ -756,9 +763,9 @@
             document.getElementById('startBreathingBtn').textContent = '暂停';
 
             const phases = [
-                { name: '吸气', duration: 4, cls: 'inhale', guide: '慢慢吸气，感受空气进入身体...' },
-                { name: '屏息', duration: 7, cls: 'hold',   guide: '保持住，让身体吸收氧气...' },
-                { name: '呼气', duration: 8, cls: 'exhale', guide: '慢慢呼气，释放紧张...' },
+                { name: _t('relax.phase_inhale', '吸气'), duration: 4, cls: 'inhale', guide: _t('relax.guide_inhale', '慢慢吸气，感受空气进入身体...') },
+                { name: _t('relax.phase_hold', '屏息'), duration: 7, cls: 'hold',   guide: _t('relax.guide_hold', '保持住，让身体吸收氧气...') },
+                { name: _t('relax.phase_exhale', '呼气'), duration: 8, cls: 'exhale', guide: _t('relax.guide_exhale', '慢慢呼气，释放紧张...') },
             ];
 
             let phaseIndex = 0;
@@ -807,7 +814,7 @@
                 clearInterval(breathingInterval);
                 breathingInterval = null;
             }
-            document.getElementById('startBreathingBtn').textContent = '开始练习';
+            document.getElementById('startBreathingBtn').textContent = _t('relax.start_practice', '开始练习');
             resetBreathCircle();
         }
 
@@ -816,16 +823,16 @@
         let scanRunning = false;
         let scanStep = 0;
         const scanSteps = [
-            { part: '头顶', instruction: '把注意力放在头顶，感受这里的温度和触感。有没有紧张？让它慢慢放松。' },
-            { part: '额头', instruction: '感受你的额头。有没有皱着眉头？让它舒展开来，放松。' },
-            { part: '眼睛', instruction: '感受眼睛周围。让眼眶放松，眼球自然休息。' },
-            { part: '脸颊和下巴', instruction: '注意你的脸颊和下巴。有没有咬紧牙关？让嘴巴微微张开，放松。' },
-            { part: '肩膀', instruction: '感受你的肩膀。我们常常在这里积累紧张。让肩膀下沉，放松。' },
-            { part: '手臂和双手', instruction: '从上臂到前臂，一直到手指。感受它们的存在，让它们完全放松。' },
-            { part: '胸部', instruction: '感受你的胸部。随着呼吸，感受它轻轻起伏。' },
-            { part: '腹部', instruction: '把注意力放在腹部。让呼吸自然地来到这里，感受腹部的起伏。' },
-            { part: '双腿', instruction: '从大腿到小腿，一直到脚趾。感受双腿的存在，让它们完全放松。' },
-            { part: '全身', instruction: '现在感受整个身体。从头到脚，完全放松。享受这份宁静。' },
+            { part: _t('relax.scan_part_head', '头顶'), instruction: _t('relax.scan_instr_head', '把注意力放在头顶，感受这里的温度和触感。有没有紧张？让它慢慢放松。') },
+            { part: _t('relax.scan_part_forehead', '额头'), instruction: _t('relax.scan_instr_forehead', '感受你的额头。有没有皱着眉头？让它舒展开来，放松。') },
+            { part: _t('relax.scan_part_eyes', '眼睛'), instruction: _t('relax.scan_instr_eyes', '感受眼睛周围。让眼眶放松，眼球自然休息。') },
+            { part: _t('relax.scan_part_face', '脸颊和下巴'), instruction: _t('relax.scan_instr_face', '注意你的脸颊和下巴。有没有咬紧牙关？让嘴巴微微张开，放松。') },
+            { part: _t('relax.scan_part_shoulders', '肩膀'), instruction: _t('relax.scan_instr_shoulders', '感受你的肩膀。我们常常在这里积累紧张。让肩膀下沉，放松。') },
+            { part: _t('relax.scan_part_arms', '手臂和双手'), instruction: _t('relax.scan_instr_arms', '从上臂到前臂，一直到手指。感受它们的存在，让它们完全放松。') },
+            { part: _t('relax.scan_part_chest', '胸部'), instruction: _t('relax.scan_instr_chest', '感受你的胸部。随着呼吸，感受它轻轻起伏。') },
+            { part: _t('relax.scan_part_abdomen', '腹部'), instruction: _t('relax.scan_instr_abdomen', '把注意力放在腹部。让呼吸自然地来到这里，感受腹部的起伏。') },
+            { part: _t('relax.scan_part_legs', '双腿'), instruction: _t('relax.scan_instr_legs', '从大腿到小腿，一直到脚趾。感受双腿的存在，让它们完全放松。') },
+            { part: _t('relax.scan_part_whole', '全身'), instruction: _t('relax.scan_instr_whole', '现在感受整个身体。从头到脚，完全放松。享受这份宁静。') },
         ];
 
         function startBodyScan() {
@@ -840,7 +847,7 @@
 
         function runBodyScan() {
             scanRunning = true;
-            document.getElementById('startScanBtn').textContent = '暂停';
+            document.getElementById('startScanBtn').textContent = _t('relax.pause', '暂停');
 
             let secondsInStep = 0;
             const stepDuration = 10;
@@ -892,7 +899,7 @@
                 clearInterval(scanInterval);
                 scanInterval = null;
             }
-            document.getElementById('startScanBtn').textContent = '开始练习';
+            document.getElementById('startScanBtn').textContent = _t('relax.start_practice', '开始练习');
         }
 
         /* ========== 正念冥想 ========== */
@@ -912,17 +919,17 @@
 
         function runMindfulness() {
             mindfulnessRunning = true;
-            document.getElementById('startMindfulnessBtn').textContent = '暂停';
+            document.getElementById('startMindfulnessBtn').textContent = _t('relax.pause', '暂停');
 
             const instructions = [
-                '闭上眼睛，把注意力放在呼吸上。',
-                '感受空气进入鼻腔，充满胸腔。',
-                '不需要改变呼吸，只是观察它。',
-                '如果思绪飘走了，没关系，温柔地带回呼吸。',
-                '每一次呼吸，都让自己更加放松。',
-                '此刻，只有你和你的呼吸。',
-                '让身体完全放松，让思绪慢慢安静。',
-                '你做得很好，继续专注于呼吸。',
+                _t('relax.mf_instr_1', '闭上眼睛，把注意力放在呼吸上。'),
+                _t('relax.mf_instr_2', '感受空气进入鼻腔，充满胸腔。'),
+                _t('relax.mf_instr_3', '不需要改变呼吸，只是观察它。'),
+                _t('relax.mf_instr_4', '如果思绪飘走了，没关系，温柔地带回呼吸。'),
+                _t('relax.mf_instr_5', '每一次呼吸，都让自己更加放松。'),
+                _t('relax.mf_instr_6', '此刻，只有你和你的呼吸。'),
+                _t('relax.mf_instr_7', '让身体完全放松，让思绪慢慢安静。'),
+                _t('relax.mf_instr_8', '你做得很好，继续专注于呼吸。'),
             ];
 
             let instructionIndex = 0;
@@ -965,7 +972,7 @@
                 clearInterval(mindfulnessInterval);
                 mindfulnessInterval = null;
             }
-            document.getElementById('startMindfulnessBtn').textContent = '开始练习';
+            document.getElementById('startMindfulnessBtn').textContent = _t('relax.start_practice', '开始练习');
         }
 
         /* ========== 五感放松 ========== */
@@ -1010,8 +1017,8 @@
                 // 显示重试按钮
                 loading.innerHTML = `
                     <div style="text-align:center;padding:1rem;">
-                        <p style="color:var(--theme-text-light);margin-bottom:0.5rem;" data-i18n="relax.retry_desc">加载失败，请稍后重试</p>
-                        <button class="btn btn-outline btn-sm" onclick="loadExercises()" data-i18n="buttons.retry">🔄 重试</button>
+                        <p style="color:var(--theme-text-light);margin-bottom:0.5rem;">${_t('relax.retry_desc', '加载失败，请稍后重试')}</p>
+                        <button class="btn btn-outline btn-sm" onclick="loadExercises()">${_t('buttons.retry', '🔄 重试')}</button>
                     </div>
                 `;
             }
@@ -1048,7 +1055,7 @@
                     `;
                 }).join('');
             } else {
-                loading.innerHTML = '<p style="color:var(--theme-text-light);" data-i18n="relax.no_more">暂无更多练习内容</p>';
+                loading.innerHTML = '<p style="color:var(--theme-text-light);">' + _t('relax.no_more', '暂无更多练习内容') + '</p>';
                 list.classList.add('hidden');
             }
         }

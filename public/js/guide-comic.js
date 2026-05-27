@@ -51,7 +51,46 @@ const GuideComic = {
             comic: 'step5'
         }
     ],
-    
+
+        // 引导步骤数据（英文版）
+        stepsEn: [
+            {
+                id: 1,
+                title: 'Welcome to Flow Experience Room',
+                icon: '🎯',
+                text: 'Flow is a state of complete immersion where you lose track of time. Here, you will experience this wonderful feeling through exploring activities that interest you.',
+                comic: 'step1'
+            },
+            {
+                id: 2,
+                title: 'Choose Your Area of Interest',
+                icon: '🔍',
+                text: 'Browse different interest areas (writing, drawing, coding, music, etc.) and find the direction that makes your eyes light up. Don\'t worry about choosing the "right" area — what matters is your curiosity.',
+                comic: 'step2'
+            },
+            {
+                id: 3,
+                title: 'Set a Specific Goal',
+                icon: '🎯',
+                text: 'Set a clear, achievable small goal for this experience. For example: "write 100 words", "draw a simple pattern", "complete a small feature". The goal should be slightly challenging but not anxiety-inducing.',
+                comic: 'step3'
+            },
+            {
+                id: 4,
+                title: 'Start Focused Experience',
+                icon: '⏱️',
+                text: 'Click the "Start Experience" button, choose an ambient sound (optional), then fully immerse yourself in your activity. After 15-60 minutes, you\'ll feel the joy of flow. Remember to record your feelings after the experience!',
+                comic: 'step4'
+            },
+            {
+                id: 5,
+                title: 'Review and Grow',
+                icon: '📝',
+                text: 'After each experience, spend 2 minutes recording your feelings. As you accumulate records, you\'ll find it easier to enter flow state and better understand where your passion lies. Start your flow journey now!',
+                comic: 'step5'
+            }
+        ],
+
     // 漫画SVG生成函数
     comicSVGs: {
         step1: () => `
@@ -77,7 +116,7 @@ const GuideComic = {
                 
                 <!-- 思考气泡 -->
                 <path d="M 140 40 Q 160 30, 170 50 Q 175 70, 155 75 Q 140 80, 135 65 Z" fill="white" stroke="#ccc" stroke-width="1.5"/>
-                <text x="148" y="62" font-size="14" fill="#5cb8a8">心流!</text>
+                <text x="148" y="62" font-size="14" fill="#5cb8a8">${_t('guide.step1_flow', 'Flow!')}</text>
                 
                 <defs>
                     <linearGradient id="step1Gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -126,12 +165,12 @@ const GuideComic = {
                 <rect x="40" y="30" width="120" height="140" rx="15" fill="white" stroke="#5cb8a8" stroke-width="2"/>
                 
                 <!-- 标题 -->
-                <text x="100" y="60" font-size="14" font-weight="bold" text-anchor="middle" fill="#2d5a5a">我的目标</text>
+                <text x="100" y="60" font-size="14" font-weight="bold" text-anchor="middle" fill="#2d5a5a">${_t('guide.step3_goal', 'My Goal')}</text>
                 
                 <!-- 目标内容 -->
-                <text x="60" y="85" font-size="11" fill="#374151">☐ 写出100字</text>
-                <text x="60" y="105" font-size="11" fill="#374151">☐ 画一个图案</text>
-                <text x="60" y="125" font-size="11" fill="#374151">☐ 完成小功能</text>
+                <text x="60" y="85" font-size="11" fill="#374151">${_t('guide.step3_example1', '☐ Write 100 words')}</text>
+                <text x="60" y="105" font-size="11" fill="#374151">${_t('guide.step3_example2', '☐ Draw a pattern')}</text>
+                <text x="60" y="125" font-size="11" fill="#374151">${_t('guide.step3_example3', '☐ Complete a small feature')}</text>
                 
                 <!-- 进度条 -->
                 <rect x="60" y="140" width="80" height="8" rx="4" fill="#e5e7eb"/>
@@ -183,9 +222,9 @@ const GuideComic = {
                 <line x1="65" y1="120" x2="135" y2="120" stroke="var(--color-gray-300)" stroke-width="1"/>
                 
                 <!-- 文字 -->
-                <text x="70" y="75" font-size="10" fill="var(--theme-text-light)">今天进入了心流状态...</text>
-                <text x="70" y="95" font-size="10" fill="var(--theme-text-light)">感觉时间过得很快...</text>
-                <text x="70" y="115" font-size="10" fill="var(--theme-text-light)">下次想尝试...</text>
+                <text x="70" y="75" font-size="10" fill="var(--theme-text-light)">${_t('guide.step5_diary1', 'Entered flow state today...')}</text>
+                <text x="70" y="95" font-size="10" fill="var(--theme-text-light)">${_t('guide.step5_diary2', 'Time flew by...')}</text>
+                <text x="70" y="115" font-size="10" fill="var(--theme-text-light)">${_t('guide.step5_diary3', 'Want to try next...')}</text>
                 
                 <!-- 星星评分 -->
                 <text x="70" y="145" font-size="14" fill="var(--color-warm-500)">★ ★ ★ ★ ☆</text>
@@ -238,13 +277,13 @@ const GuideComic = {
                     
                     <div class="guide-actions">
                         <button class="guide-btn guide-btn-skip" id="guideSkipBtn" onclick="GuideComic.skip()">
-                            跳过引导
+                            ${_t('guide.skip', 'Skip Guide')}
                         </button>
                         <button class="guide-btn guide-btn-prev guide-btn-hidden" id="guidePrevBtn" onclick="GuideComic.prevStep()">
-                            ← 上一步
+                            ${_t('guide.prev', '← Previous')}
                         </button>
                         <button class="guide-btn guide-btn-next" id="guideNextBtn" onclick="GuideComic.nextStep()">
-                            下一步 →
+                            ${_t('guide.next', 'Next Step →')}
                         </button>
                     </div>
                     
@@ -298,7 +337,7 @@ const GuideComic = {
         }
         
         this.currentStep = stepIndex;
-        const step = this.steps[stepIndex];
+        const step = this.getSteps()[stepIndex];
         
         // 更新插画
         const illustration = document.getElementById('guideIllustration');
@@ -320,7 +359,12 @@ const GuideComic = {
         // 更新进度条
         this.updateProgress();
     },
-    
+
+    // 获取当前语言的步骤数据
+    getSteps() {
+        return window.I18N && window.I18N.currentLocale === 'en' && this.stepsEn ? this.stepsEn : this.steps;
+    },
+
     // 更新步骤指示器
     updateStepDots() {
         const dots = document.querySelectorAll('.guide-step-dot');
@@ -351,11 +395,11 @@ const GuideComic = {
         
         // 下一步/开始体验按钮
         if (this.currentStep === this.totalSteps - 1) {
-            nextBtn.textContent = '开始体验 🚀';
+            nextBtn.textContent = _t('guide.start', 'Start Experience 🚀');
             nextBtn.className = 'guide-btn guide-btn-start';
             nextBtn.onclick = () => this.complete();
         } else {
-            nextBtn.textContent = '下一步 →';
+            nextBtn.textContent = _t('guide.next', 'Next Step →');
             nextBtn.className = 'guide-btn guide-btn-next';
             nextBtn.onclick = () => this.nextStep();
         }
@@ -391,7 +435,7 @@ const GuideComic = {
     
     // 跳过引导
     skip() {
-        if (confirm('确定要跳过引导吗？你可以稍后在设置中重新查看引导。')) {
+        if (confirm(_t('guide.skip_confirm', 'Are you sure to skip the guide? You can revisit it later in settings.'))) {
             this.hideGuide();
         }
     },
@@ -421,7 +465,7 @@ const GuideComic = {
             animation: slideDown 0.5s var(--ease-standard);
             font-weight: 600;
         `;
-        message.textContent = '🎉 引导完成！开始你的心流之旅吧！';
+        message.textContent = _t('guide.complete', '🎉 Guide complete! Start your flow journey!');
         
         document.body.appendChild(message);
         

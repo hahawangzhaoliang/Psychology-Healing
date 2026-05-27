@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>微光社区 — 心晴空间</title>
+    <title data-i18n="community.page_title">微光社区 — 心晴空间</title>
     <meta name="description" content="匿名树洞、主题打卡、鼓励卡片，在这里分享温暖，接收温暖。">
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -609,21 +609,21 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                 </div>
-                <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+                <span style="font-weight:600;color:var(--theme-text);" data-i18n="brand.name">心晴空间</span>
             </a>
 
             <!-- 桌面导航 -->
             <div class="desktop-nav">
-                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">首页</a>
-                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">疗愈练习</a>
+                <a href="index.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.home">首页</a>
+                <a href="relax.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.relax">疗愈练习</a>
                 <a href="flow-experience.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;display:flex;align-items:center;gap:0.35rem;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">
-                    心流体验
+                    <span data-i18n="nav.flow">心流体验</span>
                     <span style="background:linear-gradient(135deg,#F97316,#EA580C);color:white;padding:0.15rem 0.4rem;border-radius:var(--radius-full);font-size:0.6rem;font-weight:700;letter-spacing:0.05em;">NEW</span>
                 </a>
-                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">情绪觉察</a>
-                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">知识图谱</a>
-                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'">关于我们</a>
-                <a href="companion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;">我的伙伴</a>
+                <a href="emotion.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" style="color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;" onmouseover="this.style.color='var(--color-primary-500)'" onmouseout="this.style.color='var(--theme-text-light)'" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" style="color:var(--color-primary-500);font-weight:500;text-decoration:none;" data-i18n="nav.companion">我的伙伴</a>
             </div>
 
             <!-- 移动端菜单按钮 -->
@@ -637,13 +637,13 @@
         <!-- 移动端菜单 -->
         <div class="mobile-menu" id="mobileMenu">
             <div style="padding:0.75rem 1rem;display:flex;flex-direction:column;gap:0.25rem;">
-                <a href="index.html">首页</a>
-                <a href="relax.html">疗愈练习</a>
-                <a href="flow-experience.html">心流体验</a>
-                <a href="emotion.html">情绪觉察</a>
-                <a href="knowledge-graph.html">知识图谱</a>
-                <a href="about.html">关于我们</a>
-                <a href="companion.html" class="active">我的伙伴</a>
+                <a href="index.html" data-i18n="nav.home">首页</a>
+                <a href="relax.html" data-i18n="nav.relax">疗愈练习</a>
+                <a href="flow-experience.html" data-i18n="nav.flow">心流体验</a>
+                <a href="emotion.html" data-i18n="nav.emotion">情绪觉察</a>
+                <a href="knowledge-graph.html" data-i18n="nav.knowledge">知识图谱</a>
+                <a href="about.html" data-i18n="nav.about">关于我们</a>
+                <a href="companion.html" class="active" data-i18n="nav.companion">我的伙伴</a>
             </div>
         </div>
     </nav>
@@ -651,13 +651,13 @@
     <!-- ===== 页面头部 ===== -->
     <section class="page-hero">
         <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1;">
-            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up">✨ 微光社区</h1>
-            <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);" class="fade-in-up" style="animation-delay:0.1s;">在这里，每一份分享都是温暖的光</p>
+            <h1 style="font-size:clamp(1.8rem,5vw,2.5rem);font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" class="fade-in-up" data-i18n="community.hero_title">✨ 微光社区</h1>
+            <p style="font-size:clamp(0.95rem,2vw,1.15rem);color:var(--theme-text-light);" class="fade-in-up" style="animation-delay:0.1s;" data-i18n="community.hero_subtitle">在这里，每一份分享都是温暖的光</p>
 
             <!-- 标签页 -->
             <div class="tab-bar fade-in-up" style="animation-delay:0.2s;margin-top:1.5rem;">
-                <button class="tab-btn active" onclick="switchTab('treehole')" data-tab="treehole">🌳 匿名树洞</button>
-                <button class="tab-btn" onclick="switchTab('checkin')" data-tab="checkin">📅 主题打卡</button>
+                <button class="tab-btn active" onclick="switchTab('treehole')" data-tab="treehole" data-i18n="community.tab_treehole">🌳 匿名树洞</button>
+                <button class="tab-btn" onclick="switchTab('checkin')" data-tab="checkin" data-i18n="community.tab_checkin">📅 主题打卡</button>
             </div>
         </div>
     </section>
@@ -669,40 +669,38 @@
             <!-- 隐私声明条 -->
             <div style="display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1rem;background:rgba(90,154,138,0.08);border-radius:var(--radius-lg);margin-bottom:1rem;font-size:0.8rem;color:var(--color-primary-600);" class="fade-in-up">
                 <svg style="width:14px;height:14px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                匿名树洞 · 所有帖子均完全匿名，不可追溯，友善互动，禁止评判
-            </div>
-
+                <span data-i18n="community.privacy_notice">匿名树洞 · 所有帖子均完全匿名，不可追溯，友善互动，禁止评判</span>
             <!-- 话题筛选 -->
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;" id="topic-filters" class="fade-in-up">
-                <button class="topic-filter active" onclick="filterPosts('all')" data-topic="all">全部</button>
-                <button class="topic-filter" onclick="filterPosts('joy')" data-topic="joy">😊 开心</button>
-                <button class="topic-filter" onclick="filterPosts('calm')" data-topic="calm">😌 平静</button>
-                <button class="topic-filter" onclick="filterPosts('anxious')" data-topic="anxious">😰 焦虑</button>
-                <button class="topic-filter" onclick="filterPosts('sad')" data-topic="sad">😢 难过</button>
-                <button class="topic-filter" onclick="filterPosts('grateful')" data-topic="grateful">🙏 感恩</button>
+                <button class="topic-filter active" onclick="filterPosts('all')" data-topic="all" data-i18n="community.filter_all">全部</button>
+                <button class="topic-filter" onclick="filterPosts('joy')" data-topic="joy" data-i18n="community.filter_joy">😊 开心</button>
+                <button class="topic-filter" onclick="filterPosts('calm')" data-topic="calm" data-i18n="community.filter_calm">😌 平静</button>
+                <button class="topic-filter" onclick="filterPosts('anxious')" data-topic="anxious" data-i18n="community.filter_anxious">😰 焦虑</button>
+                <button class="topic-filter" onclick="filterPosts('sad')" data-topic="sad" data-i18n="community.filter_sad">😢 难过</button>
+                <button class="topic-filter" onclick="filterPosts('grateful')" data-topic="grateful" data-i18n="community.filter_grateful">🙏 感恩</button>
             </div>
 
             <!-- 发布区域 -->
             <div class="post-compose fade-in-up" style="animation-delay:0.15s;">
                 <div class="compose-header">
                     <div class="avatar" id="compose-avatar" style="background:linear-gradient(135deg,#C084FC,#F472B6);">🌟</div>
-                    <textarea id="post-content" class="compose-textarea" rows="3" placeholder="分享你的心情，这里只有温暖和理解..."></textarea>
+                    <textarea id="post-content" class="compose-textarea" rows="3" data-i18n-placeholder="community.post_placeholder" placeholder="分享你的心情，这里只有温暖和理解..."></textarea>
                 </div>
                 <div class="compose-footer">
                     <div class="mood-tags">
-                        <button class="mood-tag" style="background:#FEF3C7;color:#92400E;" onclick="addMood(this, 'joy')" data-mood="joy">😊 开心</button>
-                        <button class="mood-tag" style="background:#DBEAFE;color:#1E40AF;" onclick="addMood(this, 'calm')" data-mood="calm">😌 平静</button>
-                        <button class="mood-tag" style="background:#E9D5FF;color:#6B21A8;" onclick="addMood(this, 'anxious')" data-mood="anxious">😰 焦虑</button>
-                        <button class="mood-tag" style="background:#E0E7FF;color:#3730A3;" onclick="addMood(this, 'sad')" data-mood="sad">😢 难过</button>
-                        <button class="mood-tag" style="background:#FEE2E2;color:#991B1B;" onclick="addMood(this, 'grateful')" data-mood="grateful">🙏 感恩</button>
+                        <button class="mood-tag" style="background:#FEF3C7;color:#92400E;" onclick="addMood(this, 'joy')" data-mood="joy" data-i18n="community.mood_joy">😊 开心</button>
+                        <button class="mood-tag" style="background:#DBEAFE;color:#1E40AF;" onclick="addMood(this, 'calm')" data-mood="calm" data-i18n="community.mood_calm">😌 平静</button>
+                        <button class="mood-tag" style="background:#E9D5FF;color:#6B21A8;" onclick="addMood(this, 'anxious')" data-mood="anxious" data-i18n="community.mood_anxious">😰 焦虑</button>
+                        <button class="mood-tag" style="background:#E0E7FF;color:#3730A3;" onclick="addMood(this, 'sad')" data-mood="sad" data-i18n="community.mood_sad">😢 难过</button>
+                        <button class="mood-tag" style="background:#FEE2E2;color:#991B1B;" onclick="addMood(this, 'grateful')" data-mood="grateful" data-i18n="community.mood_grateful">🙏 感恩</button>
                     </div>
-                    <button onclick="submitPost()" class="btn btn-primary" style="font-size:0.9rem;">发布</button>
+                    <button onclick="submitPost()" class="btn btn-primary" style="font-size:0.9rem;" data-i18n="community.btn_post">发布</button>
                 </div>
             </div>
 
             <!-- 匿名身份切换 -->
             <div style="display:flex;align-items:center;justify-content:flex-end;gap:0.5rem;margin-bottom:1rem;" class="fade-in-up">
-                <span style="font-size:0.75rem;color:var(--theme-text-light);">你的匿名身份：</span>
+                <span style="font-size:0.75rem;color:var(--theme-text-light);" data-i18n="community.anon_label">你的匿名身份：</span>
                 <button onclick="changeAnonymousId()" style="background:var(--theme-bg);border:1px solid var(--theme-border);border-radius:var(--radius-full);padding:0.25rem 0.75rem;font-size:0.8rem;cursor:pointer;color:var(--theme-text);display:inline-flex;align-items:center;gap:0.375rem;">
                     <span id="anon-emoji">🌟</span>
                     <span id="anon-name">微光旅人</span>
@@ -722,21 +720,20 @@
             <div class="checkin-hero fade-in-up" style="animation-delay:0.1s;">
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.5rem;">
                     <div>
-                        <p style="font-size:0.8rem;opacity:0.85;margin-bottom:0.25rem;">今日主题</p>
-                        <h2 style="font-size:1.35rem;font-weight:700;margin:0;" id="checkin-theme-name">每日三件小确幸</h2>
+                        <p style="font-size:0.8rem;opacity:0.85;margin-bottom:0.25rem;" data-i18n="community.checkin_theme_label">今日主题</p>
+                        <h2 style="font-size:1.35rem;font-weight:700;margin:0;" id="checkin-theme-name" data-i18n="community.checkin_theme_name">每日三件小确幸</h2>
                     </div>
                     <div class="streak-badge">
-                        <span>🔥</span>
-                        <span id="streak-count">0</span>天
+                        <span id="streak-count">0</span><span data-i18n="community.checkin_streak_suffix">天</span>
                     </div>
                 </div>
-                <p style="font-size:0.875rem;opacity:0.9;margin-bottom:1rem;" id="checkin-theme-desc">记录今天让你感到幸福的三件小事，培养感恩的习惯</p>
-                <button onclick="startCheckin()" class="checkin-btn" id="checkin-btn">开始今日打卡</button>
+                <p style="font-size:0.875rem;opacity:0.9;margin-bottom:1rem;" id="checkin-theme-desc" data-i18n="community.checkin_theme_desc">记录今天让你感到幸福的三件小事，培养感恩的习惯</p>
+                <button onclick="startCheckin()" class="checkin-btn" id="checkin-btn" data-i18n="community.checkin_btn_start">开始今日打卡</button>
             </div>
 
             <!-- 主题选择器 -->
             <div class="card fade-in-up" style="animation-delay:0.15s;margin-bottom:1.5rem;">
-                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">📌 选择打卡主题</h3>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="community.checkin_select_theme">📌 选择打卡主题</h3>
                 <div class="theme-selector" id="theme-selector">
                     <!-- 动态生成 -->
                 </div>
@@ -744,7 +741,7 @@
 
             <!-- 打卡日历 -->
             <div class="card fade-in-up" style="animation-delay:0.2s;margin-bottom:1.5rem;">
-                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">📅 打卡日历</h3>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="community.checkin_calendar">📅 打卡日历</h3>
                 <div class="calendar-grid" id="checkin-calendar">
                     <!-- 动态生成 -->
                 </div>
@@ -752,7 +749,7 @@
 
             <!-- 打卡记录 -->
             <div class="card fade-in-up" style="animation-delay:0.3s;">
-                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;">💝 我的打卡记录</h3>
+                <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="community.checkin_my_records">💝 我的打卡记录</h3>
                 <div id="checkin-records">
                     <!-- 动态生成 -->
                 </div>
@@ -764,27 +761,27 @@
     <div class="modal-overlay" id="encourageModal">
         <div class="modal-card">
             <span class="modal-emoji">💝</span>
-            <h3>发送鼓励</h3>
-            <p>选择一张鼓励卡片</p>
+            <h3 data-i18n="community.encourage_title">发送鼓励</h3>
+            <p data-i18n="community.encourage_desc">选择一张鼓励卡片</p>
             <div class="encourage-grid">
                 <button class="encourage-option" onclick="sendEncourage('hug')">
                     <span class="icon">🤗</span>
-                    <span class="label">温暖拥抱</span>
+                    <span class="label" data-i18n="community.encourage_hug">温暖拥抱</span>
                 </button>
                 <button class="encourage-option" onclick="sendEncourage('star')">
                     <span class="icon">⭐</span>
-                    <span class="label">为你点赞</span>
+                    <span class="label" data-i18n="community.encourage_star">为你点赞</span>
                 </button>
                 <button class="encourage-option" onclick="sendEncourage('heart')">
                     <span class="icon">❤️</span>
-                    <span class="label">送你爱心</span>
+                    <span class="label" data-i18n="community.encourage_heart">送你爱心</span>
                 </button>
                 <button class="encourage-option" onclick="sendEncourage('flower')">
                     <span class="icon">🌸</span>
-                    <span class="label">美好祝福</span>
+                    <span class="label" data-i18n="community.encourage_flower">美好祝福</span>
                 </button>
             </div>
-            <button onclick="closeEncourageModal()" class="cancel-btn">取消</button>
+            <button onclick="closeEncourageModal()" class="cancel-btn" data-i18n="buttons.cancel">取消</button>
         </div>
     </div>
 
@@ -792,13 +789,13 @@
     <div class="modal-overlay checkin-modal" id="checkinModal">
         <div class="modal-card">
             <span class="modal-emoji" id="checkin-modal-emoji">📝</span>
-            <h3 id="checkin-modal-title">今日三件小确幸</h3>
-            <p id="checkin-modal-desc">记录今天让你感到幸福的事</p>
-            <input type="text" id="checkin-input-1" class="checkin-input" placeholder="1. ...">
-            <input type="text" id="checkin-input-2" class="checkin-input" placeholder="2. ...">
-            <input type="text" id="checkin-input-3" class="checkin-input" placeholder="3. ...">
-            <button onclick="submitCheckin()" class="checkin-submit">完成打卡</button>
-            <button onclick="closeCheckinModal()" class="cancel-btn" style="margin-top:0.5rem;">取消</button>
+            <h3 id="checkin-modal-title" data-i18n="community.checkin_modal_title">今日三件小确幸</h3>
+            <p id="checkin-modal-desc" data-i18n="community.checkin_modal_desc">记录今天让你感到幸福的事</p>
+            <input type="text" id="checkin-input-1" class="checkin-input" data-i18n-placeholder="community.checkin_input_1" placeholder="1. ...">
+            <input type="text" id="checkin-input-2" class="checkin-input" data-i18n-placeholder="community.checkin_input_2" placeholder="2. ...">
+            <input type="text" id="checkin-input-3" class="checkin-input" data-i18n-placeholder="community.checkin_input_3" placeholder="3. ...">
+            <button onclick="submitCheckin()" class="checkin-submit" data-i18n="community.checkin_submit">完成打卡</button>
+            <button onclick="closeCheckinModal()" class="cancel-btn" style="margin-top:0.5rem;" data-i18n="buttons.cancel">取消</button>
         </div>
     </div>
 
@@ -806,12 +803,12 @@
     <footer class="site-footer">
         <div class="inner">
             <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
-                <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;">
+                <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;" data-i18n="community.footer_privacy">
                     🔒 <strong>隐私保护</strong>：社区所有内容均为匿名发布，平台不记录任何可识别个人信息，请放心分享。<br>
                     ⚠️ <strong>非诊断工具</strong>：本平台不能替代专业心理咨询。如需帮助，请联系专业心理咨询师或拨打心理援助热线。
                 </p>
             </div>
-            <p class="copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
+            <p class="copyright" data-i18n="community.footer_copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
         </div>
     </footer>
 
@@ -821,6 +818,13 @@
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
     <script>
+        /* ========== i18n 辅助函数 ========== */
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === 'zh-CN') return zhDefault || key;
+            return I18N.t(key) || zhDefault || key;
+        }
+
         /* ========== 状态 ========== */
         let currentTab = 'treehole';
         let currentPostId = null;
@@ -829,18 +833,18 @@
 
         /* ========== 匿名身份系统 ========== */
         const ANON_IDENTITIES = [
-            { emoji: '🌟', name: '微光旅人' },
-            { emoji: '🌙', name: '深夜旅人' },
-            { emoji: '🍃', name: '清风过客' },
-            { emoji: '🌈', name: '彩虹拾光者' },
-            { emoji: '🕊️', name: '自由飞鸟' },
-            { emoji: '🌸', name: '春日使者' },
-            { emoji: '🦋', name: '蝴蝶旅人' },
-            { emoji: '🌊', name: '海岸漫游者' },
-            { emoji: '🍀', name: '幸运旅人' },
-            { emoji: '⛰️', name: '山间行者' },
-            { emoji: '🌻', name: '向阳旅人' },
-            { emoji: '❄️', name: '雪夜归人' },
+            { emoji: '🌟', nameKey: 'community.anon_identity_0', nameZh: '微光旅人' },
+            { emoji: '🌙', nameKey: 'community.anon_identity_1', nameZh: '深夜旅人' },
+            { emoji: '🍃', nameKey: 'community.anon_identity_2', nameZh: '清风过客' },
+            { emoji: '🌈', nameKey: 'community.anon_identity_3', nameZh: '彩虹拾光者' },
+            { emoji: '🕊️', nameKey: 'community.anon_identity_4', nameZh: '自由飞鸟' },
+            { emoji: '🌸', nameKey: 'community.anon_identity_5', nameZh: '春日使者' },
+            { emoji: '🦋', nameKey: 'community.anon_identity_6', nameZh: '蝴蝶旅人' },
+            { emoji: '🌊', nameKey: 'community.anon_identity_7', nameZh: '海岸漫游者' },
+            { emoji: '🍀', nameKey: 'community.anon_identity_8', nameZh: '幸运旅人' },
+            { emoji: '⛰️', nameKey: 'community.anon_identity_9', nameZh: '山间行者' },
+            { emoji: '🌻', nameKey: 'community.anon_identity_10', nameZh: '向阳旅人' },
+            { emoji: '❄️', nameKey: 'community.anon_identity_11', nameZh: '雪夜归人' },
         ];
 
         function getCurrentAnonIdentity() {
@@ -859,14 +863,14 @@
             localStorage.setItem('anonIdentity', nextIdx.toString());
             const next = ANON_IDENTITIES[nextIdx];
             document.getElementById('anon-emoji').textContent = next.emoji;
-            document.getElementById('anon-name').textContent = next.name;
+            document.getElementById('anon-name').textContent = _t(next.nameKey, next.nameZh);
             document.getElementById('compose-avatar').textContent = next.emoji;
         }
 
         function initAnonIdentity() {
             const identity = getCurrentAnonIdentity();
             document.getElementById('anon-emoji').textContent = identity.emoji;
-            document.getElementById('anon-name').textContent = identity.name;
+            document.getElementById('anon-name').textContent = _t(identity.nameKey, identity.nameZh);
             document.getElementById('compose-avatar').textContent = identity.emoji;
         }
 
@@ -880,19 +884,19 @@
         ];
 
         const moodConfig = {
-            joy:      { emoji: '😊', tag: '😊 开心',   bg: '#FEF3C7', color: '#92400E' },
-            calm:     { emoji: '😌', tag: '😌 平静',   bg: '#DBEAFE', color: '#1E40AF' },
-            anxious:  { emoji: '😰', tag: '😰 焦虑',   bg: '#E9D5FF', color: '#6B21A8' },
-            sad:      { emoji: '😢', tag: '😢 难过',   bg: '#E0E7FF', color: '#3730A3' },
-            grateful: { emoji: '🙏', tag: '🙏 感恩',   bg: '#FEE2E2', color: '#991B1B' },
+            joy:      { emoji: '😊', tagKey: 'community.mood_tag_joy',      tagZh: '😊 开心',   bg: '#FEF3C7', color: '#92400E' },
+            calm:     { emoji: '😌', tagKey: 'community.mood_tag_calm',     tagZh: '😌 平静',   bg: '#DBEAFE', color: '#1E40AF' },
+            anxious:  { emoji: '😰', tagKey: 'community.mood_tag_anxious',  tagZh: '😰 焦虑',   bg: '#E9D5FF', color: '#6B21A8' },
+            sad:      { emoji: '😢', tagKey: 'community.mood_tag_sad',      tagZh: '😢 难过',   bg: '#E0E7FF', color: '#3730A3' },
+            grateful: { emoji: '🙏', tagKey: 'community.mood_tag_grateful', tagZh: '🙏 感恩',   bg: '#FEE2E2', color: '#991B1B' },
         };
 
         /* ========== 打卡主题配置 ========== */
         const CHECKIN_THEMES = [
-            { id: 'happiness', emoji: '✨', name: '每日三件小确幸', desc: '记录今天让你感到幸福的三件小事', inputLabels: ['第一件小确幸', '第二件小确幸', '第三件小确幸'] },
-            { id: 'gratitude', emoji: '🙏', name: '感恩日记', desc: '写下今天你想感谢的人和事', inputLabels: ['想感谢的人', '感谢的原因', '想对TA说的话'] },
-            { id: 'progress', emoji: '🌱', name: '今日进步', desc: '记录今天你做到的一件事', inputLabels: ['做到了什么', '过程中克服的困难', '给自己的鼓励'] },
-            { id: 'emotion', emoji: '🌡️', name: '情绪温度计', desc: '今天你的心情几分？（1-10分）', inputLabels: ['今天的心情分数（1-10）', '最高兴的瞬间', '最想改善的事'] },
+            { id: 'happiness', emoji: '✨', nameKey: 'community.theme_happiness_name', nameZh: '每日三件小确幸', descKey: 'community.theme_happiness_desc', descZh: '记录今天让你感到幸福的三件小事', inputLabelKeys: ['community.theme_happiness_label_1', 'community.theme_happiness_label_2', 'community.theme_happiness_label_3'], inputLabelsZh: ['第一件小确幸', '第二件小确幸', '第三件小确幸'] },
+            { id: 'gratitude', emoji: '🙏', nameKey: 'community.theme_gratitude_name', nameZh: '感恩日记', descKey: 'community.theme_gratitude_desc', descZh: '写下今天你想感谢的人和事', inputLabelKeys: ['community.theme_gratitude_label_1', 'community.theme_gratitude_label_2', 'community.theme_gratitude_label_3'], inputLabelsZh: ['想感谢的人', '感谢的原因', '想对TA说的话'] },
+            { id: 'progress', emoji: '🌱', nameKey: 'community.theme_progress_name', nameZh: '今日进步', descKey: 'community.theme_progress_desc', descZh: '记录今天你做到的一件事', inputLabelKeys: ['community.theme_progress_label_1', 'community.theme_progress_label_2', 'community.theme_progress_label_3'], inputLabelsZh: ['做到了什么', '过程中克服的困难', '给自己的鼓励'] },
+            { id: 'emotion', emoji: '🌡️', nameKey: 'community.theme_emotion_name', nameZh: '情绪温度计', descKey: 'community.theme_emotion_desc', descZh: '今天你的心情几分？（1-10分）', inputLabelKeys: ['community.theme_emotion_label_1', 'community.theme_emotion_label_2', 'community.theme_emotion_label_3'], inputLabelsZh: ['今天的心情分数（1-10）', '最高兴的瞬间', '最想改善的事'] },
         ];
 
         /* ========== 标签页切换 ========== */
@@ -925,19 +929,19 @@
                 b.style.background = c.bg || '';
                 b.style.color = c.color || '';
                 if (m) {
-                    const labels = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
-                    b.innerHTML = c.emoji ? `${c.emoji} ${labels[m] || ''}` : b.innerText;
+                    b.innerHTML = c.emoji ? `${c.emoji} ${_t(c.tagKey, c.tagZh)}` : b.innerText;
                 }
             });
 
             /* 高亮选中按钮 */
             btn.style.background = config.bg;
             btn.style.color = 'white';
-            btn.innerHTML = config.emoji + ' 已选';
+            btn.innerHTML = config.emoji + _t('community.mood_selected', ' 已选');
 
             /* 前缀文本（不重复添加） */
+            const tagPrefix = _t(config.tagKey, config.tagZh);
             if (!textarea.value.startsWith(config.emoji)) {
-                textarea.value = config.tag + ' ' + textarea.value;
+                textarea.value = tagPrefix + ' ' + textarea.value;
             }
         }
 
@@ -954,7 +958,7 @@
         function submitPost() {
             const content = document.getElementById('post-content').value.trim();
             if (!content) {
-                showToast('请输入内容', 'warning');
+                showToast(_t('community.toast_post_empty', '请输入内容'), 'warning');
                 return;
             }
 
@@ -981,13 +985,12 @@
                 b.style.background = c.bg || '';
                 b.style.color = c.color || '';
                 if (m) {
-                    const labels = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
-                    b.innerHTML = `${c.emoji} ${labels[m] || ''}`;
+                    b.innerHTML = c.emoji ? `${c.emoji} ${_t(c.tagKey, c.tagZh)}` : b.innerText;
                 }
             });
 
             loadPosts();
-            showToast('发布成功，感谢你的分享 💝', 'success');
+            showToast(_t('community.toast_post_success', '发布成功，感谢你的分享 💝'), 'success');
         }
 
         /* ========== 加载帖子 ========== */
@@ -1008,12 +1011,24 @@
 
             const container = document.getElementById('posts-container');
 
+            const topicLabels = {
+                all:      _t('community.filter_all', '全部'),
+                joy:      _t('community.filter_joy', '开心'),
+                calm:     _t('community.filter_calm', '平静'),
+                anxious:  _t('community.filter_anxious', '焦虑'),
+                sad:      _t('community.filter_sad', '难过'),
+                grateful: _t('community.filter_grateful', '感恩'),
+            };
+
             if (filtered.length === 0) {
-                const topicNames = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
+                const template = _t('community.empty_no_topic', '暂时没有「{topic}」话题的帖子');
+                const emptyMsg = currentTopic === 'all'
+                    ? _t('community.empty_no_posts', '还没有帖子，成为第一个分享的人吧')
+                    : template.replace('{topic}', topicLabels[currentTopic] || currentTopic);
                 container.innerHTML = `
                     <div style="text-align:center;padding:3rem 1rem;color:var(--theme-text-light);">
                         <div style="font-size:3rem;opacity:0.6;margin-bottom:1rem;">🌳</div>
-                        <p>${currentTopic === 'all' ? '还没有帖子，成为第一个分享的人吧' : `暂时没有「${topicNames[currentTopic] || currentTopic}」话题的帖子`}</p>
+                        <p>${emptyMsg}</p>
                     </div>
                 `;
                 return;
@@ -1021,7 +1036,6 @@
 
             container.innerHTML = filtered.map((post, i) => {
                 const mood = moodConfig[post.mood] || moodConfig.calm;
-                const topicNames = { joy: '开心', calm: '平静', anxious: '焦虑', sad: '难过', grateful: '感恩' };
                 const isUserPost = posts.some(p => p.id === post.id);
                 const identity = isUserPost ? currentIdentity : ANON_IDENTITIES[post.id % ANON_IDENTITIES.length];
                 return `
@@ -1029,10 +1043,10 @@
                         <div class="post-header">
                             <div class="avatar" style="background:linear-gradient(135deg,${mood.bg},${mood.color}30);font-size:1.1rem;">${identity.emoji}</div>
                             <div class="post-meta">
-                                <div class="post-author">${identity.name}</div>
+                                <div class="post-author">${_t(identity.nameKey, identity.nameZh)}</div>
                                 <div class="post-time">${getTimeAgo(post.timestamp)}</div>
                             </div>
-                            <span class="post-topic-tag" style="background:${mood.bg}20;color:${mood.color};">${topicNames[post.mood] || post.mood}</span>
+                            <span class="post-topic-tag" style="background:${mood.bg}20;color:${mood.color};">${topicLabels[post.mood] || post.mood}</span>
                         </div>
                         <p class="post-content">${escapeHtml(post.content)}</p>
                         <div class="post-actions">
@@ -1090,10 +1104,10 @@
             setTimeout(() => floater.remove(), 1500);
 
             const messages = {
-                hug:    '你发送了一个温暖的拥抱 🤗',
-                star:   '你为TA点亮了一颗星 ⭐',
-                heart:  '你送出了一颗爱心 ❤️',
-                flower: '你送上了美好的祝福 🌸',
+                hug:    _t('community.encourage_msg_hug', '你发送了一个温暖的拥抱 🤗'),
+                star:   _t('community.encourage_msg_star', '你为TA点亮了一颗星 ⭐'),
+                heart:  _t('community.encourage_msg_heart', '你送出了一颗爱心 ❤️'),
+                flower: _t('community.encourage_msg_flower', '你送上了美好的祝福 🌸'),
             };
 
             closeEncourageModal();
@@ -1107,13 +1121,14 @@
         function startCheckin() {
             const modal = document.getElementById('checkinModal');
             document.getElementById('checkin-modal-emoji').textContent = currentCheckinTheme.emoji;
-            document.getElementById('checkin-modal-title').textContent = currentCheckinTheme.name;
-            document.getElementById('checkin-modal-desc').textContent = currentCheckinTheme.desc;
+            document.getElementById('checkin-modal-title').textContent = _t(currentCheckinTheme.nameKey, currentCheckinTheme.nameZh);
+            document.getElementById('checkin-modal-desc').textContent = _t(currentCheckinTheme.descKey, currentCheckinTheme.descZh);
             // 设置输入框占位符
-            const labels = currentCheckinTheme.inputLabels;
-            document.getElementById('checkin-input-1').placeholder = labels[0] + '...';
-            document.getElementById('checkin-input-2').placeholder = labels[1] + '...';
-            document.getElementById('checkin-input-3').placeholder = labels[2] + '...';
+            const labelKeys = currentCheckinTheme.inputLabelKeys;
+            const labelZh = currentCheckinTheme.inputLabelsZh;
+            document.getElementById('checkin-input-1').placeholder = _t(labelKeys[0], labelZh[0]) + '...';
+            document.getElementById('checkin-input-2').placeholder = _t(labelKeys[1], labelZh[1]) + '...';
+            document.getElementById('checkin-input-3').placeholder = _t(labelKeys[2], labelZh[2]) + '...';
             modal.classList.add('active');
         }
 
@@ -1130,14 +1145,15 @@
             const h3 = document.getElementById('checkin-input-3').value.trim();
 
             if (!h1 || !h2 || !h3) {
-                showToast(`请填写${currentCheckinTheme.name}的三个内容`, 'warning');
+                const themeName = _t(currentCheckinTheme.nameKey, currentCheckinTheme.nameZh);
+                showToast(_t('community.toast_checkin_empty', '请填写{theme}的三个内容').replace('{theme}', themeName), 'warning');
                 return;
             }
 
             const checkin = {
                 date: new Date().toISOString().split('T')[0],
                 themeId: currentCheckinTheme.id,
-                themeName: currentCheckinTheme.name,
+                themeName: _t(currentCheckinTheme.nameKey, currentCheckinTheme.nameZh),
                 items: [h1, h2, h3],
                 timestamp: new Date().toISOString(),
             };
@@ -1147,7 +1163,8 @@
             const today = new Date().toISOString().split('T')[0];
             const alreadyCheckedIn = checkins.some(c => c.date === today && c.themeId === currentCheckinTheme.id);
             if (alreadyCheckedIn) {
-                showToast(`今天已经完成过「${currentCheckinTheme.name}」打卡了！明天再来吧 😊`, 'info');
+                const themeName = _t(currentCheckinTheme.nameKey, currentCheckinTheme.nameZh);
+                showToast(_t('community.toast_checkin_duplicate', '今天已经完成过「{theme}」打卡了！明天再来吧 😊').replace('{theme}', themeName), 'info');
                 closeCheckinModal();
                 return;
             }
@@ -1156,7 +1173,7 @@
             localStorage.setItem('checkins', JSON.stringify(checkins));
 
             closeCheckinModal();
-            showToast('打卡成功，感谢记录今天的美好 💝', 'success');
+            showToast(_t('community.toast_checkin_success', '打卡成功，感谢记录今天的美好 💝'), 'success');
             loadCheckinData();
         }
 
@@ -1166,8 +1183,8 @@
                 <div class="theme-option ${theme.id === currentCheckinTheme.id ? 'active' : ''}"
                      onclick="selectCheckinTheme('${theme.id}')" data-theme-id="${theme.id}">
                     <span class="theme-emoji">${theme.emoji}</span>
-                    <span class="theme-name">${theme.name}</span>
-                    <span class="theme-desc">${theme.desc.substring(0, 15)}...</span>
+                    <span class="theme-name">${_t(theme.nameKey, theme.nameZh)}</span>
+                    <span class="theme-desc">${_t(theme.descKey, theme.descZh).substring(0, 15)}...</span>
                 </div>
             `).join('');
         }
@@ -1178,8 +1195,8 @@
             currentCheckinTheme = theme;
 
             // 更新卡片显示
-            document.getElementById('checkin-theme-name').textContent = theme.name;
-            document.getElementById('checkin-theme-desc').textContent = theme.desc;
+            document.getElementById('checkin-theme-name').textContent = _t(theme.nameKey, theme.nameZh);
+            document.getElementById('checkin-theme-desc').textContent = _t(theme.descKey, theme.descZh);
 
             // 更新按钮样式
             document.querySelectorAll('.theme-option').forEach(el => {
@@ -1190,7 +1207,9 @@
             const today = new Date().toISOString().split('T')[0];
             const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
             const alreadyDone = checkins.some(c => c.date === today && c.themeId === themeId);
-            document.getElementById('checkin-btn').textContent = alreadyDone ? '✓ 今日已打卡' : '开始今日打卡';
+            document.getElementById('checkin-btn').textContent = alreadyDone
+                ? _t('community.toast_checkin_already_done', '✓ 今日已打卡')
+                : _t('community.checkin_btn_start', '开始今日打卡');
             document.getElementById('checkin-btn').style.background = alreadyDone ? '#10B981' : 'white';
         }
 
@@ -1232,7 +1251,15 @@
             calendar.innerHTML = '';
             const today = new Date().toISOString().split('T')[0];
             const dates = checkins.map(c => c.date);
-            const weekDays = ['日','一','二','三','四','五','六'];
+            const weekDays = [
+                _t('community.weekday_0', '日'),
+                _t('community.weekday_1', '一'),
+                _t('community.weekday_2', '二'),
+                _t('community.weekday_3', '三'),
+                _t('community.weekday_4', '四'),
+                _t('community.weekday_5', '五'),
+                _t('community.weekday_6', '六'),
+            ];
 
             /* 星期标题 */
             weekDays.forEach(d => {
@@ -1258,18 +1285,20 @@
             const container = document.getElementById('checkin-records');
 
             if (checkins.length === 0) {
-                container.innerHTML = `<p style="color:var(--theme-text-light);text-align:center;padding:2rem;">还没有打卡记录，开始你的第一次打卡吧！</p>`;
+                container.innerHTML = `<p style="color:var(--theme-text-light);text-align:center;padding:2rem;">${_t('community.checkin_no_records', '还没有打卡记录，开始你的第一次打卡吧！')}</p>`;
                 return;
             }
 
             container.innerHTML = checkins.slice(-10).reverse().map(checkin => {
                 const date = new Date(checkin.date);
-                const dateStr = `${date.getMonth() + 1}月${date.getDate()}日`;
-                const theme = CHECKIN_THEMES.find(t => t.id === checkin.themeId) || { emoji: '📝', name: checkin.themeName || '打卡' };
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const dateStr = _t('community.month_format', '{month}/{n}').replace('{month}', month).replace('{n}', day);
+                const theme = CHECKIN_THEMES.find(t => t.id === checkin.themeId) || { emoji: '📝', nameKey: 'community.theme_fallback', nameZh: '打卡' };
                 const itemIcons = ['✨', '💫', '🌟'];
                 return `
                     <div class="checkin-record">
-                        <div class="checkin-record-date">${theme.emoji} ${checkin.themeName || '打卡'} · ${dateStr}</div>
+                        <div class="checkin-record-date">${theme.emoji} ${_t(theme.nameKey, theme.nameZh)} · ${dateStr}</div>
                         <ul>
                             ${checkin.items.map((item, i) => `<li>${itemIcons[i] || '•'} ${escapeHtml(item)}</li>`).join('')}
                         </ul>
@@ -1281,10 +1310,10 @@
         /* ========== 工具函数 ========== */
         function getTimeAgo(timestamp) {
             const diff = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
-            if (diff < 60) return '刚刚';
-            if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
-            if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
-            return `${Math.floor(diff / 86400)}天前`;
+            if (diff < 60) return _t('community.time_just_now', '刚刚');
+            if (diff < 3600) return _t('community.time_minutes_ago', '{n} 分钟前').replace('{n}', Math.floor(diff / 60));
+            if (diff < 86400) return _t('community.time_hours_ago', '{n} 小时前').replace('{n}', Math.floor(diff / 3600));
+            return _t('community.time_days_ago', '{n} 天前').replace('{n}', Math.floor(diff / 86400));
         }
 
         function escapeHtml(text) {
@@ -1294,7 +1323,7 @@
         }
 
         function toggleReplies(postId) {
-            showToast('回复功能开发中...', 'info');
+            showToast(_t('community.toast_reply_coming', '回复功能开发中...'), 'info');
         }
 
         function showToast(message, type = 'info') {

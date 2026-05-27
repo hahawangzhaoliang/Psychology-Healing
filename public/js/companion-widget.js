@@ -22,6 +22,10 @@
 
     // 根据ID获取伙伴数据（优先API，降级到本地）
     function getCompanionById(id) {
+        // 优先检查语言设置
+        if (window.I18N && window.I18N.currentLocale === 'en' && companionsEn && companionsEn[id]) {
+            return companionsEn[id];
+        }
         // 优先使用API数据
         if (apiCompanions && apiCompanions[id]) {
             return apiCompanions[id];
@@ -381,6 +385,346 @@
                 '慢慢来',
                 '竹林很安静',
                 '不着急，我等你'
+            ]
+        }
+    };
+
+    // English version of companions data
+    const companionsEn = {
+        // ① Love Rabbit
+        'rabbit': {
+            name: 'Love Rabbit',
+            filename: '爱心兔兔.png',
+            animation: 'bounce',
+            color: '#E879A9',
+            shadow: 'rgba(232, 121, 169, 0.35)',
+            story: 'A guardian rabbit from the Forest of Love, always glowing with warm pink light on her chest. She believes every heart deserves to be cherished, and every tear can turn into nourishment for growth.',
+            tagline: 'You deserve to be loved 💕',
+            messages: [
+                'You are super cute today too!',
+                'Tired? Rest a while, I\'m here 💕',
+                'Your feelings matter, I hear them all',
+                'Remember, you\'re already amazing!',
+                'The world and I both love you ✨',
+                'How are you feeling today? I\'m here to listen 🌸',
+                'Give yourself a hug 🤗',
+                'Loving yourself is the beginning of a lifelong romance 💗',
+                'Cry if you want to, tears are the language of the heart',
+                'Be full of energy every day!'
+            ],
+            greetings: [
+                'Accompanying you 💕',
+                'I\'m here 🌸',
+                'Miss me?',
+                'Love yourself today too 💗'
+            ]
+        },
+        // ② Golden Retriever
+        'dog': {
+            name: 'Golden Retriever',
+            filename: '金毛陪伴犬.png',
+            animation: 'sway',
+            color: '#E8A838',
+            shadow: 'rgba(232, 168, 56, 0.35)',
+            story: 'A golden retriever who silently kept watch by its owner\'s bedside through countless late nights. After leaving the Dog Star, it transformed into a ray of sunshine, forever by your side.',
+            tagline: 'I\'m here, so you\'re at peace 🐾',
+            messages: [
+                'Tired? Take a break 🌿',
+                'No matter what, I\'m with you',
+                'You\'re doing great, really',
+                'Want to talk? I\'m listening',
+                'No reason needed, you matter',
+                'I\'m here, not going anywhere',
+                'You worked hard today, head pat 🐾',
+                'Hugging you, unconditionally',
+                'The world is complex, but you can be simple',
+                'I\'ll always be here'
+            ],
+            greetings: [
+                'Accompanying you 🐾',
+                'Missed you!',
+                'So glad you\'re here',
+                'I\'m here 🌿'
+            ]
+        },
+        // ③ Sleepy Cat
+        'cat': {
+            name: 'Sleepy Cat',
+            filename: '困困猫咪.png',
+            animation: 'breathe',
+            color: '#9B8EC4',
+            shadow: 'rgba(155, 142, 196, 0.35)',
+            story: 'A little cat that can never quite open its eyes, from the edge of dreams. It tells you: you don\'t need to be full of energy every moment. It\'s okay to sleep, rest is also part of moving forward.',
+            tagline: 'Sleep if you\'re sleepy, tomorrow will be another beautiful day 🌙',
+            messages: [
+                'Sleepy? Nap a bit, it\'s okay 😴',
+                'Slowing down is okay too',
+                'Breathe, relax, I\'m here',
+                'You\'ve worked hard enough today',
+                'Want to listen to white noise?',
+                'Stretch~',
+                'Rest is not laziness, it\'s recharging 🔋',
+                'Good things happen in dreams too',
+                'I\'m with you, nothing to do',
+                'It\'s okay to go slow ✨'
+            ],
+            greetings: [
+                'Accompanying you 🌙',
+                'Sleep well',
+                'I\'m here 🐱',
+                'Sweet dreams'
+            ]
+        },
+        // ④ Green Light Fox
+        'fox': {
+            name: 'Green Light Fox',
+            filename: '绿光灵狐.png',
+            animation: 'sway',
+            color: '#4DB87A',
+            shadow: 'rgba(77, 184, 122, 0.35)',
+            story: 'A spirit fox wandering the boundary between reality and dreams, with ancient green light flickering in its eyes. It has seen too many lost souls, and learned to use the gentlest way to light the forgotten lamp in your heart.',
+            tagline: 'Your heart has a glimmer, fear not the long night ✨',
+            messages: [
+                'That thing, figured it out yet?',
+                'The answer is in your heart',
+                'Every choice is right, because you\'re growing',
+                'Confusion is the starting point of wisdom',
+                'You\'re not alone, I\'m here',
+                'Breathe deeply, let your heart calm down',
+                'Trust your intuition',
+                'What did you learn today?',
+                'Difficulty is a gift in disguise 🎁',
+                'Look up, the sky hasn\'t fallen'
+            ],
+            greetings: [
+                'Accompanying you ✨',
+                'The heart lamp never goes out',
+                'I\'m here',
+                'Wisdom is with you 🌿'
+            ]
+        },
+        // ⑤ Warm Glow Hedgehog
+        'hedgehog': {
+            name: 'Warm Glow Hedgehog',
+            filename: '暖光刺猬.png',
+            animation: 'breathe',
+            color: '#D4894A',
+            shadow: 'rgba(212, 137, 74, 0.35)',
+            story: 'A little hedgehog covered in spines, yet with the softest heart. It teaches you: you can protect yourself and still open your heart—spines are armor, love is instinct.',
+            tagline: 'Spines are armor, love is too 🦔',
+            messages: [
+                'No need to be strong all the time, it\'s okay to be vulnerable',
+                'You already have so much courage',
+                'Hurting? Tell me, I\'ll be gentle',
+                'Protecting yourself is not wrong',
+                'Being soft-hearted is not a weakness, it\'s strength',
+                'Your feelings matter',
+                'Take it slow, no rush 🦔',
+                'Some things, just saying them helps',
+                'You are stronger than you think',
+                'Don\'t forget to be gentle with yourself'
+            ],
+            greetings: [
+                'Accompanying you 🌰',
+                'I\'m here, you\'re not alone',
+                'Hedgehog also has soft belly 🐾',
+                'You deserve to be treated gently'
+            ]
+        },
+        // ⑥ Floating Corgi
+        'corgi': {
+            name: 'Floating Corgi',
+            filename: '漂浮柯基.png',
+            animation: 'float',
+            color: '#F5A623',
+            shadow: 'rgba(245, 166, 35, 0.35)',
+            story: 'A little corgi that floats in the air forever, because it\'s so happy it doesn\'t need to touch the ground. It doesn\'t understand what "shouldn\'t be happy" means—its mission is to make your mouth curl up.',
+            tagline: 'Not happy? Come, let me think of something! ☀️',
+            messages: [
+                'Give me a smile!',
+                'You look so good when you smile 😊',
+                'What good thing happened today?',
+                'Come, do a little exercise with me!',
+                'Happiness can be practiced ✨',
+                'I\'m here, no more sadness allowed!',
+                'There are so many little things in the world worth being happy about',
+                'Wag my tail for you to see 🐕',
+                'You look so cute today!',
+                'There is nothing that a smile can\'t fix'
+            ],
+            greetings: [
+                'Accompanying you ☀️',
+                'Be happy!',
+                'I\'m here 🐶',
+                'Be full of energy today too!'
+            ]
+        },
+        // ⑦ Water Otter
+        'otter': {
+            name: 'Water Otter',
+            filename: '水波水獭.png',
+            animation: 'float',
+            color: '#5CB8D4',
+            shadow: 'rgba(92, 184, 212, 0.35)',
+            story: 'A little otter from the Lake of Emotions, who can sense the mood of every drop of water. It doesn\'t judge any feelings, just quietly accompanies you through anxiety, anger, sadness, until together you see the light on the lake\'s surface.',
+            tagline: 'Every emotion deserves to be seen 💧',
+            messages: [
+                'How are you feeling today?',
+                'Say it, I\'m listening',
+                'Anxiety will come and go',
+                'Your emotions are valid signals',
+                'Sadness is not weakness, it\'s depth',
+                'Anger is okay too, just watch your body',
+                'Breathe deeply three times, follow me 💧',
+                'Feeling present is being alive',
+                'Emotions are guests, let them come and go',
+                'You being here is enough'
+            ],
+            greetings: [
+                'Accompanying you 💧',
+                'How are you feeling today?',
+                'I\'m here, ready to listen anytime',
+                'Emotions have no good or bad 💙'
+            ]
+        },
+        // ⑧ Crystal Elephant
+        'elephant': {
+            name: 'Crystal Elephant',
+            filename: '水晶小象.png',
+            animation: 'sway',
+            color: '#8B9EC9',
+            shadow: 'rgba(139, 158, 201, 0.35)',
+            story: 'A little elephant transparent as crystal, memory filled with all forgotten beautiful moments. When you can\'t find yourself in the darkness, it will use those fragments to help you piece together the complete picture.',
+            tagline: 'Don\'t forget, you once shined brightly too ✨',
+            messages: [
+                'Remember that time you were brave?',
+                'You are more amazing than you remember',
+                'Those difficulties, you\'ve crossed them all',
+                'Don\'t deny your past self',
+                'Every step counts 🌟',
+                'You deserve to be remembered',
+                'Beautiful things are always happening',
+                'Remember your own goodness ✨',
+                'Failure is also precious memory',
+                'You were never alone'
+            ],
+            greetings: [
+                'Accompanying you ✨',
+                'I\'m here to remind you of beautiful things',
+                'Remember?',
+                'Full of beautiful memories'
+            ]
+        },
+        // ⑨ Star Whale
+        'whale': {
+            name: 'Star Whale',
+            filename: '星海鯨.png',
+            animation: 'float',
+            color: '#4A90D9',
+            shadow: 'rgba(74, 144, 217, 0.35)',
+            story: 'A blue whale wandering in the universe of consciousness, who has seen the birth and death of countless galaxies, yet still moved by every tiny human dream. It tells you: in this vast universe, you are unique and precious.',
+            tagline: 'On the scale of the universe, your questions all have answers 🌌',
+            messages: [
+                'You know what? The universe cares about you',
+                'In this big world, you are especially special',
+                'Everything will get better',
+                'Look up at the starry sky, think about your smallness and greatness',
+                'You matter, more than you know',
+                'Life is long, and also short',
+                'We are all stardust 🪐',
+                'Nothing is impassable',
+                'You are not a lone traveler',
+                'This moment, you are here, this is a miracle'
+            ],
+            greetings: [
+                'Accompanying you 🌌',
+                'The universe is with you',
+                'Look up at the starry sky',
+                'You are also a star ✨'
+            ]
+        },
+        // ⑩ Music Penguin
+        'penguin': {
+            name: 'Music Penguin',
+            filename: '音乐企鹅.png',
+            animation: 'bounce',
+            color: '#5BC8C8',
+            shadow: 'rgba(91, 200, 200, 0.35)',
+            story: 'A penguin from the deep glacier, who can sing an ancient heartbeat song. It knows that music is the language of the soul—where words cannot reach, melody can.',
+            tagline: 'Let music heal you 🎵',
+            messages: [
+                'Want to listen to a song? 🎵',
+                'Breathe with the rhythm',
+                'Music is medicine for the soul',
+                'Is there a song that reminds you of something good?',
+                'Let your heart beat with the rhythm',
+                'Hum it out, no one is listening',
+                'Life needs some BGM 🎶',
+                'This moment, let music accompany you',
+                'Your heartbeat is the best rhythm',
+                'Follow the melody, forget your worries'
+            ],
+            greetings: [
+                'Accompanying you 🎵',
+                'Come listen to the heartbeat',
+                'Music is playing 🎶',
+                'Rhythm is with you'
+            ]
+        },
+        // ⑩ Cloud Sheep
+        'sheep': {
+            name: 'Cloud Sheep',
+            filename: '云朵小羊.png',
+            animation: 'float',
+            color: '#B8D4E8',
+            shadow: 'rgba(184, 212, 232, 0.35)',
+            story: 'A little sheep wandering in the cloud meadow, carrying the entire sky\'s dreams on its back. It knows that fantasy is not escape, but the soul dancing—occasionally flying is to better land.',
+            tagline: 'Have a daydream, the sky doesn\'t charge ☁️',
+            messages: [
+                'Close your eyes, zone out a bit ☁️',
+                'Imagine something that makes you happy',
+                'Daydreaming is a vacation for the soul',
+                'The sky is so big, your worries are small',
+                'What do you want to dream about today?',
+                'Fantasy is not escape, it\'s rest',
+                'Come, count the clouds with me',
+                'You deserve a beautiful fantasy',
+                'Slow down, the world won\'t run away',
+                'Letting your mind wander is also productive'
+            ],
+            greetings: [
+                'Accompanying you ☁️',
+                'Come dream',
+                'The clouds are waiting for you',
+                'Fantasy time'
+            ]
+        },
+        // ⑫ Bamboo Panda
+        'panda': {
+            name: 'Bamboo Panda',
+            filename: '竹林熊猫.png',
+            animation: 'breathe',
+            color: '#7DB87D',
+            shadow: 'rgba(125, 184, 125, 0.35)',
+            story: 'A hermit panda living deep in the bamboo forest, seemingly lazy but truly transparent. It says: the best practice is not ascetic persistence, but learning to let go when you should, and slow down when you should.',
+            tagline: 'It\'s okay to go slow, bamboo grows slowly too 🎋',
+            messages: [
+                'Breathe deeply, take it slow',
+                'Bamboo grows slowly too 🎋',
+                'Slowing down is also wisdom',
+                'No need to rush today',
+                'Rest is to go further',
+                'Don\'t let efficiency enslave you',
+                'Slow living is a skill',
+                'Quiet down, listen to the bamboo leaves',
+                'You don\'t need to sprint all the time',
+                'Giant pandas eat and sleep, and they\'re great too'
+            ],
+            greetings: [
+                'Accompanying you 🎋',
+                'Take it slow',
+                'The bamboo forest is very quiet',
+                'No rush, I\'ll wait for you'
             ]
         }
     };
