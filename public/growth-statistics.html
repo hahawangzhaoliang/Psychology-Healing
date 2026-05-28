@@ -78,6 +78,9 @@
     <script src="js/i18n.js"></script>
 </head>
 <body>
+    <!-- ===== 导航栏（由 header.js 渲染） ===== -->
+    <div id="app-header"></div>
+
     <div class="stats-container">
         <div class="stats-header">
             <h1 class="hero-title" data-i18n-html="growth_statistics.hero_title">🌱 成长统计</h1>
@@ -259,6 +262,12 @@
         // 页面加载时执行
         document.title = _t('growth_statistics.page_title', '成长统计 - 心晴空间');
         document.addEventListener('DOMContentLoaded', loadStatistics);
+    </script>
+
+    <!-- 通用导航栏组件 -->
+    <script src="js/components/header.js"></script>
+    <script>
+      renderHeader({ currentPage: 'growth-statistics' });
     </script>
 </body>
 </html>

@@ -504,6 +504,14 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
+/* 导航栏 Logo */
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
 .navbar-inner {
     max-width: 72rem;
     margin: 0 auto;

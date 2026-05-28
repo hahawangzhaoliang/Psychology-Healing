@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title id="cat-game-title">喵趣消消乐</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
     <script src="js/i18n.js"></script>
     <script>
         // i18n 辅助函数
@@ -48,6 +49,9 @@
     </style>
 </head>
 <body>
+    <!-- ===== 导航栏（由 header.js 渲染） ===== -->
+    <div id="app-header"></div>
+
     <!-- 游戏容器 -->
     <div id="game-container">
         <!-- 返回按钮 -->
@@ -180,5 +184,11 @@
         </div>
 
     <script src="js/game.js"></script>
+
+    <!-- 通用导航栏组件 -->
+    <script src="js/components/header.js"></script>
+    <script>
+      renderHeader({ currentPage: 'cat-game' });
+    </script>
 </body>
 </html>

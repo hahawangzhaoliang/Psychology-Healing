@@ -45,26 +45,8 @@ function getName(key) {
 </head>
 <body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
 
-    <!-- 导航栏 -->
-    <nav class="navbar" id="mainNav">
-        <div class="max-w-6xl mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <a href="index.html" class="flex items-center gap-2 group">
-                    <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-400 to-primary-500 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                        </svg>
-                    </div>
-                    <span class="text-xl font-bold text-gray-800 group-hover:text-primary-500 transition-colors" data-i18n="nav.brand">心晴空间</span>/span>
-                </a>
-                <a href="index.html" class="text-gray-600 hover:text-primary-500 transition-colors flex items-center gap-1" data-i18n="nav.home">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    返回首页
-                </a>
-                <a href="companion.html" class="text-gray-600 hover:text-primary-500 transition-colors ml-4" data-i18n="nav.companion">我的伙伴</a>
-            </div>
-        </div>
-    </nav>
+    <!-- ===== 导航栏（由 header.js 渲染） ===== -->
+    <div id="app-header"></div>
 
     <!-- 主要内容 -->
     <main class="max-w-4xl mx-auto px-4 pt-24 pb-10">
@@ -939,5 +921,11 @@ function getName(key) {
             .step-content, .conflict-item, .suggestion-card { opacity: 1; transform: none; }
         }
     </style>
-</body>
+
+    <!-- 通用导航栏组件 -->
+    <script src="js/components/header.js"></script>
+    <script>
+      renderHeader({ currentPage: 'role' });
+    </script>
+  </body>
 </html>
