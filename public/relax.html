@@ -664,7 +664,7 @@
         function _t(key, zhDefault) {
             if (!window.I18N) return zhDefault || key;
             if (I18N.currentLocale === "zh-CN") return zhDefault || key;
-            return I18N.t(key) || zhDefault || key;
+            return I18N.t(key, zhDefault);
         }
 
         /* ========== 工具函数 ========== */
@@ -942,6 +942,20 @@
         }
 
         /* ========== 更多练习加载 ========== */
+        /**
+         * 读取当前语言（不依赖 I18N 初始化时机）
+         */
+        function getCurentLocale() {
+            // 优先用 I18N 实例（已初始化时）
+            if (window.I18N && I18N.currentLocale) return I18N.currentLocale;
+            // 回退：直接读 localStorage（i18n.js 写入的 key）
+            try {
+                return (localStorage.getItem('xinqing_locale') || 'zh-CN').replace(/"/g, '');
+            } catch {
+                return 'zh-CN';
+            }
+        }
+
         async function loadExercises() {
             const loading = document.getElementById('exercisesLoading');
             const list   = document.getElementById('exercisesList');
@@ -956,25 +970,22 @@
             list.style.display = 'none';
 
             try {
-                // 优先从 API 读取（Vercel Blob 存储）
-                const data = await Cache.cachedFetch('/api/knowledge/exercises?limit=100');
-                // API 返回格式: { exercises: [...], total, limit, offset }
-                const exercises = data && Array.isArray(data.exercises) ? data.exercises : [];
-                renderExercises(exercises, loading, list);
+                // 根据当前语言选择数据源（用相对路径，兼容 file:// 协议）
+                const locale  = getCurentLocale();
+                const dataUrl = locale === 'en'
+                    ? 'data/exercises-en.json'
+                    : 'data/exercises.json';
+
+                // 直接用 fetch，不走 Cache.cachedFetch（避免缓存/ sessionStorage 问题）
+                const resp = await fetch(dataUrl, { cache: 'no-cache' });
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const exercises = await resp.json();
+
+                const data = Array.isArray(exercises) ? exercises : (exercises && exercises.exercises) || [];
+                console.log('✅ [更多练习] 从', dataUrl, '加载成功，共', data.length, '条');
+                renderExercises(data, loading, list);
             } catch (error) {
-                console.warn('[更多练习] API 加载失败，尝试本地降级:', error.message);
-
-                // API 失败时降级到本地 JSON
-                try {
-                    const localData = await Cache.cachedFetch('/data/exercises.json');
-                    const exercises = Array.isArray(localData) ? localData : (localData && localData.exercises) || [];
-                    console.log('✅ [更多练习] 从本地 JSON 加载成功，共', exercises.length, '条');
-                    renderExercises(exercises, loading, list);
-                    return;
-                } catch (localError) {
-                    console.error('[更多练习] 本地 JSON 也加载失败:', localError);
-                }
-
+                console.warn('[更多练习] 加载失败:', error.message);
                 // 显示重试按钮
                 loading.innerHTML = `
                     <div style="text-align:center;padding:1rem;">
@@ -991,15 +1002,20 @@
                 list.classList.remove('hidden');
                 list.style.display = 'grid';
 
-                const categoryColors = {
-                    '正念冥想': { bg: 'var(--color-calm-100)', color: '#1E40AF' },
-                    '呼吸练习': { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
-                    '身体放松': { bg: 'var(--color-warm-100)', color: '#92400E' },
-                    '情绪调节': { bg: '#FCE7F3', color: '#9D174D' },
+                // 支持中英文 category 名称
+                const categoryColorMap = {
+                    '正念冥想':           { bg: 'var(--color-calm-100)',   color: '#1E40AF' },
+                    'Mindfulness Meditation': { bg: 'var(--color-calm-100)',   color: '#1E40AF' },
+                    '呼吸练习':           { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
+                    'Breathing Exercise':  { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' },
+                    '身体放松':           { bg: 'var(--color-warm-100)',   color: '#92400E' },
+                    'Body Relaxation':     { bg: 'var(--color-warm-100)',   color: '#92400E' },
+                    '情绪调节':           { bg: '#FCE7F3',                  color: '#9D174D' },
+                    'Emotional Regulation': { bg: '#FCE7F3',                  color: '#9D174D' },
                 };
 
                 list.innerHTML = exercises.map(ex => {
-                    const c = categoryColors[ex.category] || { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' };
+                    const c = categoryColorMap[ex.category] || { bg: 'var(--color-primary-100)', color: 'var(--color-primary-500)' };
                     return `
                         <div class="practice-card" onclick='showExerciseDetail(${JSON.stringify(ex).replace(/'/g, "\\'")})'>
                             <div class="practice-icon" style="background:${c.bg};">
@@ -1058,9 +1074,45 @@
         });
 
         /* ========== 初始化 ========== */
-        document.addEventListener('DOMContentLoaded', () => {
+        let _exercisesLoaded = false;
+
+        async function tryLoadExercises() {
+            if (_exercisesLoaded) return;
+            // 等待 I18N 初始化完成（最多等 5 秒）
+            if (!window.I18N || !I18N.currentLocale) {
+                await new Promise(resolve => {
+                    const onReady = () => {
+                        document.removeEventListener('i18n:ready', onReady);
+                        resolve();
+                    };
+                    // 双重检查：可能在添加监听前就已经初始化完成
+                    if (window.I18N && I18N.currentLocale) {
+                        resolve();
+                        return;
+                    }
+                    document.addEventListener('i18n:ready', onReady, { once: true });
+                    // 超时降级
+                    setTimeout(resolve, 5000);
+                });
+            }
+            _exercisesLoaded = true;
             loadExercises();
-        });
+
+            // 监听语言切换，重新加载对应语言的练习数据
+            document.addEventListener('localeChanged', (e) => {
+                console.log('[更多练习] 语言切换为', e.detail.locale, '，重新加载数据');
+                // 切换语言时允许重新加载
+                _exercisesLoaded = false;
+                tryLoadExercises();
+            });
+        }
+
+        // 启动初始化（不依赖 DOMContentLoaded 时机）
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', tryLoadExercises, { once: true });
+        } else {
+            tryLoadExercises();
+        }
     </script>
 
     <!-- 通用导航栏组件 -->

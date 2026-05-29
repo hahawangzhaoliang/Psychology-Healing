@@ -150,7 +150,7 @@
     function _t(key, zhDefault) {
         if (!window.I18N) return zhDefault || key;
         if (I18N.currentLocale === "zh-CN") return zhDefault || key;
-        return I18N.t(key) || zhDefault || key;
+        return I18N.t(key, zhDefault);
     }
     </script>
 </head>
@@ -322,8 +322,8 @@
                              class="w-full h-full object-contain companion-${c.animation}"
                              onerror="this.parentElement.innerHTML='<span class=\\'text-5xl\\'>${c.emoji}</span>'">
                     </div>
-                    <h3 class="font-semibold text-gray-800 text-center mb-1">${_t(`companion.name_${c.id}`, c.name)}</h3>
-                    <p class="text-xs text-gray-500 text-center">${_t(`companion.personality_${c.id}`, c.personality)}</p>
+                    <h3 class="font-semibold text-gray-800 text-center mb-1" data-i18n="companion.name_${c.id}">${_t(`companion.name_${c.id}`, c.name)}</h3>
+                    <p class="text-xs text-gray-500 text-center" data-i18n="companion.personality_${c.id}">${_t(`companion.personality_${c.id}`, c.personality)}</p>
                 </div>
             `).join('');
         }
