@@ -78,12 +78,8 @@
     <nav class="navbar" id="navbar">
       <div class="navbar-inner">
         <a href="index.html" class="nav-logo">
-          <div style="width:32px;height:32px;border-radius:var(--radius-md);background:linear-gradient(135deg,var(--color-primary-400),var(--color-primary-500));display:flex;align-items:center;justify-content:center;">
-            <svg style="width:20px;height:20px;color:white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-            </svg>
-          </div>
-          <span style="font-weight:600;color:var(--theme-text);">心晴空间</span>
+          <img src="assets/images/icons/favicon.png" alt="心晴空间" style="width:32px;height:32px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;">
+          <span style="font-weight:600;color:var(--theme-text);" data-i18n="footer.brand">心晴空间</span>
         </a>
 
         <div class="desktop-nav">
@@ -116,6 +112,17 @@
 
     // ---- 导航栏滚动效果 ----
     bindNavbarScroll();
+
+    // ---- 动态注入 Favicon（公共化，无需逐页手动添加）----
+    // 仅当页面未设置 favicon 时才注入，避免覆盖 cat-game 等有特殊 favicon 的页面
+    let faviconLink = document.querySelector('link[rel="icon"]');
+    if (!faviconLink) {
+      faviconLink = document.createElement('link');
+      faviconLink.rel = 'icon';
+      faviconLink.href = 'assets/images/icons/favicon.png';
+      faviconLink.type = 'image/png';
+      document.head.appendChild(faviconLink);
+    }
   }
 
   // ========== 工具函数 ==========
