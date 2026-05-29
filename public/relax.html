@@ -645,15 +645,7 @@
         </div>
     </div>
 
-    <!-- ===== 页脚 ===== -->
-    <footer class="site-footer">
-        <div class="inner">
-            <div class="disclaimer-box">
-                <p data-i18n="footer.disclaimer">本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。</p>
-            </div>
-            <p class="copyright" data-i18n="footer.copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
@@ -1120,6 +1112,11 @@
     <script src="js/components/header.js"></script>
     <script>
       renderHeader({ currentPage: 'relax' });
+    </script>
+    <!-- 通用页脚组件 -->
+    <script src="js/components/footer.js"></script>
+    <script>
+      renderFooter();
     </script>
   </body>
 </html>

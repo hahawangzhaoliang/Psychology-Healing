@@ -129,18 +129,7 @@
         </div>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6">
-            <div class="footer-disclaimer">
-                <svg class="w-5 h-5 text-primary-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <p data-i18n="footer.disclaimer">本平台为公益性质的心理健康科普与情绪陪伴服务平台，不提供任何形式的医学诊断、心理疾病诊断或精神疾病诊断服务。如有严重心理困扰，请及时前往正规医疗机构就诊。</p>
-            </div>
-            <p class="footer-copyright" data-i18n="footer.copyright">© 2024 心晴空间 · 公益心理疗愈平台</p>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
     <script src="js/neuroaesthetics.js"></script>
     <script src="js/companion-widget.js"></script>
@@ -369,6 +358,11 @@
     <script src="js/components/header.js"></script>
     <script>
       renderHeader({ currentPage: 'article' });
+    </script>
+    <!-- 通用页脚组件 -->
+    <script src="js/components/footer.js"></script>
+    <script>
+      renderFooter();
     </script>
   </body>
 </html>

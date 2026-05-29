@@ -555,18 +555,7 @@
         </div>
     </main>
 
-    <!-- ===== 页脚 ===== -->
-    <footer class="site-footer">
-        <div class="inner">
-            <div class="disclaimer-box">
-                <p data-i18n="footer.disclaimer">
-                    🔒 <strong>数据隐私</strong>：您的情绪记录仅存储在本地设备（localStorage），不会上传至任何服务器，平台无法访问您的个人数据。<br>
-                    ⚠️ <strong>非诊断工具</strong>：本平台为公益心理健康科普与情绪陪伴服务，不提供任何医学诊断或疾病诊疗。如有严重心理困扰，请及时前往正规医疗机构就诊。
-                </p>
-            </div>
-            <p class="copyright" data-i18n="footer.copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
     <!-- Chart.js 趋势图 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -1238,6 +1227,11 @@
     <script src="js/components/header.js"></script>
     <script>
       renderHeader({ currentPage: 'emotion' });
+    </script>
+    <!-- 通用页脚组件 -->
+    <script src="js/components/footer.js"></script>
+    <script>
+      renderFooter();
     </script>
   </body>
 </html>

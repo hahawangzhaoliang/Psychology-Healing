@@ -545,17 +545,7 @@
         </div>
     </section>
 
-    <!-- ===== 页脚 ===== -->
-    <footer class="site-footer">
-        <div class="inner">
-            <div style="background:var(--color-warm-50);border-radius:var(--radius-lg);padding:1rem;margin-bottom:1.5rem;">
-                <p style="font-size:0.75rem;color:var(--theme-text-light);line-height:1.6;text-align:center;" data-i18n="charging_station.footer_disclaimer">
-                    ⚠️ <strong>非诊断工具</strong>：本平台内容仅供心理科普与情绪陪伴使用，不能替代专业心理咨询或医学诊断。如需帮助，请联系专业心理咨询师。
-                </p>
-            </div>
-            <p class="copyright" data-i18n="charging_station.footer_copyright">© 2026 心晴空间 · 公益心理疗愈平台</p>
-        </div>
-    </footer>
+    <div id="app-footer"></div>
 
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
@@ -995,6 +985,11 @@
     <script src="js/components/header.js"></script>
     <script>
       renderHeader({ currentPage: 'charging-station' });
+    </script>
+    <!-- 通用页脚组件 -->
+    <script src="js/components/footer.js"></script>
+    <script>
+      renderFooter();
     </script>
   </body>
 </html>

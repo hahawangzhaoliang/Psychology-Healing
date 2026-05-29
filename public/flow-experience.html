@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心流体验室 — 发现你的热爱，获得心流体验</title>
-
-    <meta name="description" content="心流体验室帮助你发现并投入自己热爱的活动，在15-60分钟的深度投入中获得心流体验与成长。">
+    <title data-i18n="flow.page_title">心流体验室 — 发现你的热爱，获得心流体验</title>
+    
+    <meta name="description" data-i18n-content="flow.page_description" content="心流体验室帮助你发现并投入自己热爱的活动，在15-60分钟的深度投入中获得心流体验与成长。">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1324,43 +1324,43 @@
     <div class="modal-overlay" id="activity-modal">
         <div class="modal-panel" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--theme-text);" id="modal-activity-name">活动名称</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--theme-text);" id="modal-activity-name" data-i18n="flow.modal_activity_name">Activity Name</h3>
                 <button class="modal-close" onclick="closeActivityModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="margin-bottom: 1.5rem;">
-                    <p style="font-size: 1rem; color: var(--theme-text); line-height: 1.6;" id="modal-activity-description">活动描述</p>
+                    <p style="font-size: 1rem; color: var(--theme-text); line-height: 1.6;" id="modal-activity-description" data-i18n="flow.modal_description">Activity description</p>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">🎯 适合时长</h4>
-                    <p id="modal-activity-duration" style="color: var(--theme-text-light);">15-60分钟</p>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_duration">🎯 Suitable Duration</h4>
+                    <p id="modal-activity-duration" style="color: var(--theme-text-light);" data-i18n="flow.modal_duration_value">15-60 minutes</p>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">💪 活动益处</h4>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_benefits">💪 Activity Benefits</h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="modal-activity-benefits">
                         <!-- 动态生成 -->
                     </div>
                 </div>
                 
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">💡 实用技巧</h4>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_tips">💡 Practical Tips</h4>
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="modal-activity-tips">
                         <!-- 动态生成 -->
                     </div>
                 </div>
                 
                 <div id="modal-scientific-section">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;">📚 科学依据</h4>
-                    <p style="font-size: 0.875rem; color: var(--theme-text-light); line-height: 1.6; background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg);" id="modal-activity-scientific">
-                        心流理论支持
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_science">📚 Scientific Basis</h4>
+                    <p style="font-size: 0.875rem; color: var(--theme-text-light); line-height: 1.6; background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg);" id="modal-activity-scientific" data-i18n="flow.modal_science_text">
+                        Flow theory support
                     </p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="closeActivityModal()">关闭</button>
-                <button class="btn btn-primary" style="flex: 1;" id="modal-start-btn">开始体验</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeActivityModal()" data-i18n="flow.btn_close">Close</button>
+                <button class="btn btn-primary" style="flex: 1;" id="modal-start-btn" data-i18n="flow.btn_start_experience">Start Experience</button>
             </div>
         </div>
     </div>
@@ -1371,7 +1371,7 @@
     <!-- 页面英雄区 -->
     <div class="page-hero">
         <div class="page-hero-inner">
-            <h1 class="page-hero-title" data-i18n="flow.hero_title">
+            <h1 class="page-hero-title" data-i18n-html="flow.hero_title">
                 发现你的<span class="highlight">心流</span>体验
             </h1>
             <p class="page-hero-subtitle" data-i18n="flow.hero_subtitle">
@@ -1394,15 +1394,15 @@
             <div class="tab-nav">
                 <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback" data-i18n="flow.tab_overview">
                     <span>📊</span>
-                    <span>概览</span>
+                    <span data-i18n="flow.tab_overview">Overview</span>
                 </a>
                 <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback" data-i18n="flow.tab_discover">
                     <span>🔍</span>
-                    <span>发现</span>
+                    <span data-i18n="flow.tab_discover">Discover</span>
                 </a>
                 <a href="#records" class="page-tab" data-tab="records" data-touch-feedback" data-i18n="flow.tab_records">
                     <span>📝</span>
-                    <span>记录</span>
+                    <span data-i18n="flow.tab_records">Records</span>
                 </a>
             </div>
         </div>
@@ -1507,7 +1507,7 @@
             <!-- 心流知识卡片 -->
             <div id="flow-education-section" style="margin-top: 3rem;">
                 <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">
-                    📚 心流知识
+                    📚 <span data-i18n="flow.flow_knowledge">Flow Knowledge</span>
                 </h2>
                 
                 <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
@@ -1575,12 +1575,12 @@
                         <div class="education-full" style="display: none; font-size: 0.95rem; color: var(--theme-text); line-height: 1.8;">
                             <svg viewBox="0 0 280 200" style="width: 100%; height: auto; margin-bottom: 1rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 1rem;">
                                 <rect x="40" y="40" width="200" height="120" fill="white" stroke="#f59e0b" stroke-width="2" rx="8"/>
-                                <text x="140" y="65" font-size="12" fill="#374151" text-anchor="middle" font-weight="bold">挑战-技能平衡模型</text>
+                                <text x="140" y="65" font-size="12" fill="#374151" text-anchor="middle" font-weight="bold" data-i18n="flow.challenge_skill_model">挑战-技能平衡模型</text>
                                 
                                 <!-- 坐标轴 -->
                                 <line x1="60" y1="140" x2="220" y2="140" stroke="#9ca3af" stroke-width="2"/>
                                 <line x1="60" y1="140" x2="60" y2="60" stroke="#9ca3af" stroke-width="2"/>
-                                <text x="140" y="160" font-size="10" fill="#6b7280" text-anchor="middle">技能水平</text>
+                                <text x="140" y="160" font-size="10" fill="#6b7280" text-anchor="middle" data-i18n="flow.skill_level_label">技能水平</text>
                                 <text x="40" y="100" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 40 100)">挑战难度</text>
                                 
                                 <!-- 心流区域 -->
