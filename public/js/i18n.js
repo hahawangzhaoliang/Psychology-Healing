@@ -195,6 +195,16 @@
                 }
             });
 
+            // 处理 <title> 翻译
+            const titleEl = document.querySelector('title[data-i18n]');
+            if (titleEl) {
+                const key = titleEl.getAttribute('data-i18n');
+                const text = this.t(key);
+                if (text && text !== key) {
+                    document.title = text;
+                }
+            }
+
             // 遍历所有带 data-i18n-placeholder 的输入框
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.getAttribute('data-i18n-placeholder');
@@ -221,6 +231,13 @@
          * 恢复原始中文文本
          */
         restoreOriginals() {
+            // 恢复 <title>
+            const titleEl = document.querySelector('title[data-i18n]');
+            if (titleEl) {
+                const original = titleEl.getAttribute('data-original');
+                if (original) document.title = original;
+            }
+
             // 恢复 data-i18n 元素
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const original = el.getAttribute('data-original');

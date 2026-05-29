@@ -1,5 +1,5 @@
 {
-  "nav": {
+    "nav": {
     "home": "Home",
     "relax": "Healing Exercises",
     "flow": "Flow Experience",
@@ -77,10 +77,22 @@
     "system_settings": "System Settings"
   },
   "footer": {
-    "hotline": "Mental Health Hotline",
-    "hotline_number": "400-161-9999",
+    "brand": "XinQing Space",
+    "brand_desc": "Non-profit mental healing platform<br>Fragmented healing, accompanying every moment of yours",
+    "features_title": "Core Features",
+    "link_healing": "Healing Exercises",
+    "link_flow": "Flow Experience",
+    "link_emotion": "Emotion Awareness",
+    "link_knowledge": "Knowledge Map",
+    "about_title": "About Us",
+    "link_about": "Platform Introduction",
+    "link_disclaimer": "Disclaimer",
+    "link_privacy": "Privacy Policy",
+    "hotline_title": "Help Hotline",
+    "hotline_label": "National Psychological Aid Hotline",
+    "hotline_note": "24-hour free service",
     "disclaimer": "This platform is a non-profit mental health science popularization and emotional companionship service platform. It does not provide any form of medical diagnosis or psychological treatment services.",
-    "copyright": "© 2026 XinQing Space · Non-profit Mental Healing Platform"
+    "copyright": "© 2026 XinQing Space · Non-profit Mental Healing Platform · Fragmented healing, accompanying every moment of yours"
   },
   "relax": {
     "page_title": "Relaxation Exercises",
@@ -691,6 +703,7 @@
     "footer_link_privacy": "Privacy Policy",
     "h0": "When to Seek Professional Help?",
     "hero_subtitle": "Learn about XinQing Space, view terms and privacy policy",
+    "page_title": "About Us — XinQing Space",
     "hero_title": "About Us",
     "hotline_encourage": "You don't need to carry it alone. Someone is willing to help you.",
     "li_audience_healthy": "Healthy people who want to understand their emotions",
@@ -789,6 +802,20 @@
     "section5_title": "V. User Responsibilities",
     "section6_title": "VI. Limitation of Liability",
     "section_about_title": "About XinQing Space",
+    "nav_about": "About",
+    "nav_disclaimer": "Disclaimer",
+    "nav_terms": "Terms",
+    "nav_privacy": "Privacy",
+    "nav_hotline": "Hotline",
+    "footer_features_title": "Core Features",
+    "footer_link_about": "About Us",
+    "footer_link_disclaimer": "Disclaimer",
+    "footer_link_privacy": "Privacy Policy",
+    "footer_hotline_title": "Help Hotline",
+    "footer_hotline_number": "400-161-9995",
+    "footer_hotline_desc": "24-hour free service",
+    "footer_disclaimer": "This platform is a non-profit mental health science and emotional companionship service platform. It does not provide any form of medical diagnosis or psychological treatment services. If you have serious psychological distress, please seek professional help in time.",
+    "footer_copyright": "© 2026 XinQing Space · Non-profit Mental Healing Platform · Fragmented healing, accompanying every moment of yours",
     "section_disclaimer_title": "Psychological Service Disclaimer",
     "section_hotline_title": "Help Hotlines",
     "section_privacy_title": "Privacy Policy",
