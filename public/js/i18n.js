@@ -258,11 +258,16 @@
          * 智能设置元素文本（保留子元素如 <span>、<svg> 等）
          */
         setElementText(el, text) {
-            // 如果元素只有文本节点，直接替换
             const childNodes = Array.from(el.childNodes);
             const textNodes = childNodes.filter(n => n.nodeType === Node.TEXT_NODE);
+            const hasMeaningfulChildren = childNodes.some(n =>
+                n.nodeType === Node.ELEMENT_NODE && n.tagName.toLowerCase() !== 'br'
+            );
 
-            if (textNodes.length === 1 && childNodes.length === 1) {
+            if (!hasMeaningfulChildren) {
+                // 只有文本和 <br>：直接清空并设置纯文本
+                el.textContent = text;
+            } else if (textNodes.length === 1 && childNodes.length === 1) {
                 // 只有文本，直接替换
                 textNodes[0].textContent = text;
             } else if (textNodes.length > 0) {

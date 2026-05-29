@@ -293,21 +293,29 @@ class EmotionWheel {
             });
 
             // 扇区外侧标签（情绪名称）
-            const labelR = maxR + 22;
+            const labelR = maxR + 14;
             const labelA = (i - 0.5) * Math.PI/4;   // 扇区中间角度
             const lx = cx + labelR * Math.cos(labelA);
             const ly = cy + labelR * Math.sin(labelA);
 
-            ctx.font = 'bold 13px "PingFang SC","Microsoft YaHei",sans-serif';
-            ctx.textAlign = 'center';
+            ctx.font = 'bold 12px "PingFang SC","Microsoft YaHei",sans-serif';
             ctx.textBaseline = 'middle';
+
+            // 根据标签水平位置调整对齐，避免文本被画布截断
+            if (lx < cx - 5) {
+                ctx.textAlign = 'left';
+            } else if (lx > cx + 5) {
+                ctx.textAlign = 'right';
+            } else {
+                ctx.textAlign = 'center';
+            }
 
             // 如果选中或 hover，改变颜色
             const isHovered = this.hovered && this.hovered.key === key;
             const isSelected = this.selected.some(s => s.key === key);
             if (isSelected) {
                 ctx.fillStyle = '#FFD700';
-                ctx.font = 'bold 14px "PingFang SC","Microsoft YaHei",sans-serif';
+                ctx.font = 'bold 13px "PingFang SC","Microsoft YaHei",sans-serif';
             } else if (isHovered) {
                 ctx.fillStyle = em.color;
             } else {
