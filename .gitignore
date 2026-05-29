@@ -48,6 +48,7 @@ coverage/
 docs/
 deliverables/
 prototype/
+scripts/test/
 
 # 工具文件夹
 .dumate/
@@ -60,4 +61,4 @@ public/assets/audio/
 *.ogg
 *.m4a
 
-nul
+ 

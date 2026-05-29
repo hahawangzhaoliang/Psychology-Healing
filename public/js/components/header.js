@@ -109,6 +109,10 @@
     if (window.I18N && typeof window.I18N.renderSwitcher === 'function') {
       window.I18N.renderSwitcher();
     }
+    // ---- 关键：渲染完成后，如果当前是英文模式，立即应用翻译 ----
+    if (window.I18N && window.I18N.currentLocale === 'en' && typeof window.I18N.applyTranslations === 'function') {
+      window.I18N.applyTranslations();
+    }
 
     // ---- 导航栏滚动效果 ----
     bindNavbarScroll();
