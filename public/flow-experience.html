@@ -1581,11 +1581,11 @@
                                 <line x1="60" y1="140" x2="220" y2="140" stroke="#9ca3af" stroke-width="2"/>
                                 <line x1="60" y1="140" x2="60" y2="60" stroke="#9ca3af" stroke-width="2"/>
                                 <text x="140" y="160" font-size="10" fill="#6b7280" text-anchor="middle" data-i18n="flow.skill_level_label">技能水平</text>
-                                <text x="40" y="100" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 40 100)">挑战难度</text>
+                                <text x="40" y="100" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 40 100)" data-i18n="flow.challenge_level_label">挑战难度</text>
                                 
                                 <!-- 心流区域 -->
                                 <circle cx="140" cy="100" r="25" fill="#f59e0b" opacity="0.3"/>
-                                <text x="140" y="105" font-size="11" fill="#92400e" text-anchor="middle" font-weight="bold">心流</text>
+                                <text x="140" y="105" font-size="11" fill="#92400e" text-anchor="middle" font-weight="bold" data-i18n="flow.flow_region">心流</text>
                             </svg>
                             
                             <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">前提条件：</h4>
@@ -2282,7 +2282,7 @@
                     </div>
                     <div class="activity-meta">
                         <div class="activity-duration">⏱️ ${activity.duration}</div>
-                        <button class="btn btn-primary btn-sm" onclick="showActivityDetail('${activity.id}')" data-touch-feedback>查看详情</button>
+                        <button class="btn btn-primary btn-sm" onclick="showActivityDetail('${activity.id}')" data-touch-feedback data-i18n="flow.view_detail">查看详情</button>
                     </div>
                 `;
                 card.onclick = () => showActivityDetail(activity.id);

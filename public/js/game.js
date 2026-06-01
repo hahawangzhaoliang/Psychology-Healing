@@ -1760,7 +1760,7 @@ const RelaxModeManager = {
             animation-delay: ${cat.animationDelay}s;
         `;
         catEl.innerHTML = `
-            <div class="cat-sprite" style="background-image: url(${catInfo.asset})"></div>
+            <div class="cat-sprite" style="background-image: url(assets/images/cats/${catInfo.file})"></div>
             <div class="cat-name">${cat.name}</div>
             <div class="cat-behavior-indicator"></div>
         `;
@@ -2769,6 +2769,7 @@ async function processMatches() {
             // 显示得分飘字（在第一个消除的格子上）
             if (allCells.length > 0) {
                 const firstPos = allCells[0];
+                const topShape = getTopShape(groups);
                 const popupType = gameState.combo >= 3 ? 'combo' :
                                   (topShape === MATCH_SHAPE.LINE5 || topShape === MATCH_SHAPE.CROSS) ? 'special' : 'normal';
                 showScorePopup(firstPos.row, firstPos.col, totalScore, popupType);

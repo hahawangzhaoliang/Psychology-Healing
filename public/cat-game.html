@@ -49,8 +49,8 @@
     </style>
 </head>
 <body>
-    <!-- ===== 导航栏（由 header.js 渲染） ===== -->
-    <div id="app-header"></div>
+    <!-- 猫咪消消乐不需要顶部导航栏 -->
+    <div id="app-header" style="display:none;"></div>
 
     <!-- 游戏容器 -->
     <div id="game-container">
@@ -185,10 +185,6 @@
 
     <script src="js/game.js"></script>
 
-    <!-- 通用导航栏组件 -->
-    <script src="js/components/header.js"></script>
-    <script>
-      renderHeader({ currentPage: 'cat-game' });
-    </script>
+    <!-- 猫咪消消乐不需要顶部导航栏 -->
 </body>
 </html>
