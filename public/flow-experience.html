@@ -1324,43 +1324,43 @@
     <div class="modal-overlay" id="activity-modal">
         <div class="modal-panel" onclick="event.stopPropagation()">
             <div class="modal-header">
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--theme-text);" id="modal-activity-name" data-i18n="flow.modal_activity_name">Activity Name</h3>
+                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--theme-text);" id="modal-activity-name" data-i18n="flow.modal_activity_name">活动名称</h3>
                 <button class="modal-close" onclick="closeActivityModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="margin-bottom: 1.5rem;">
-                    <p style="font-size: 1rem; color: var(--theme-text); line-height: 1.6;" id="modal-activity-description" data-i18n="flow.modal_description">Activity description</p>
+                    <p style="font-size: 1rem; color: var(--theme-text); line-height: 1.6;" id="modal-activity-description" data-i18n="flow.modal_description">活动描述</p>
                 </div>
-                
+
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_duration">🎯 Suitable Duration</h4>
-                    <p id="modal-activity-duration" style="color: var(--theme-text-light);" data-i18n="flow.modal_duration_value">15-60 minutes</p>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_duration">🎯 适合时长</h4>
+                    <p id="modal-activity-duration" style="color: var(--theme-text-light);" data-i18n="flow.modal_duration_value">15-60 分钟</p>
                 </div>
-                
+
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_benefits">💪 Activity Benefits</h4>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_benefits">💪 活动益处</h4>
                     <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="modal-activity-benefits">
                         <!-- 动态生成 -->
                     </div>
                 </div>
-                
+
                 <div style="margin-bottom: 1.5rem;">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_tips">💡 Practical Tips</h4>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_tips">💡 实用技巧</h4>
                     <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="modal-activity-tips">
                         <!-- 动态生成 -->
                     </div>
                 </div>
-                
+
                 <div id="modal-scientific-section">
-                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_science">📚 Scientific Basis</h4>
+                    <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.modal_science">📚 科学依据</h4>
                     <p style="font-size: 0.875rem; color: var(--theme-text-light); line-height: 1.6; background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg);" id="modal-activity-scientific" data-i18n="flow.modal_science_text">
-                        Flow theory support
+                        心流理论支持
                     </p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="closeActivityModal()" data-i18n="flow.btn_close">Close</button>
-                <button class="btn btn-primary" style="flex: 1;" id="modal-start-btn" data-i18n="flow.btn_start_experience">Start Experience</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeActivityModal()" data-i18n="flow.btn_close">关闭</button>
+                <button class="btn btn-primary" style="flex: 1;" id="modal-start-btn" data-i18n="flow.btn_start_experience">开始体验</button>
             </div>
         </div>
     </div>
@@ -1392,17 +1392,17 @@
             
             <!-- Tab导航 -->
             <div class="tab-nav">
-                <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback" data-i18n="flow.tab_overview">
+                <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback>
                     <span>📊</span>
-                    <span data-i18n="flow.tab_overview">Overview</span>
+                    <span data-i18n="flow.tab_overview">概览</span>
                 </a>
-                <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback" data-i18n="flow.tab_discover">
+                <a href="#discover" class="page-tab" data-tab="discover" data-touch-feedback>
                     <span>🔍</span>
-                    <span data-i18n="flow.tab_discover">Discover</span>
+                    <span data-i18n="flow.tab_discover">发现</span>
                 </a>
-                <a href="#records" class="page-tab" data-tab="records" data-touch-feedback" data-i18n="flow.tab_records">
+                <a href="#records" class="page-tab" data-tab="records" data-touch-feedback>
                     <span>📝</span>
-                    <span data-i18n="flow.tab_records">Records</span>
+                    <span data-i18n="flow.tab_records">记录</span>
                 </a>
             </div>
         </div>
@@ -1492,11 +1492,11 @@
             
             <!-- 筛选按钮 -->
             <div class="activity-filters" data-stagger="fade-in-up">
-                <button class="btn filter-btn active" onclick="filterActivities('all')" data-touch-feedback" data-i18n="flow.filter_all">全部</button>
-                <button class="btn filter-btn" onclick="filterActivities('creative')" data-touch-feedback" data-i18n="flow.filter_creative">创造性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('learning')" data-touch-feedback" data-i18n="flow.filter_learning">学习性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('physical')" data-touch-feedback" data-i18n="flow.filter_physical">运动性活动</button>
-                <button class="btn filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback" data-i18n="flow.filter_contemplative">专注性活动</button>
+                <button class="btn filter-btn active" onclick="filterActivities('all')" data-touch-feedback data-i18n="flow.filter_all">全部</button>
+                <button class="btn filter-btn" onclick="filterActivities('creative')" data-touch-feedback data-i18n="flow.filter_creative">创造性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('learning')" data-touch-feedback data-i18n="flow.filter_learning">学习性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('physical')" data-touch-feedback data-i18n="flow.filter_physical">运动性活动</button>
+                <button class="btn filter-btn" onclick="filterActivities('contemplative')" data-touch-feedback data-i18n="flow.filter_contemplative">专注性活动</button>
             </div>
 
             <!-- 活动网格 -->
@@ -2175,7 +2175,11 @@
 
         /* ========== 获取当前语言的活动数组 ========== */
         function getActivities() {
-            if (window.I18N && I18N.currentLocale === 'en') {
+            // 多种方式判断当前是否为英文模式，避免 en.json 加载失败导致误判
+            const isEn = (window.I18N && I18N.currentLocale === 'en') ||
+                         document.documentElement.lang === 'en' ||
+                         localStorage.getItem('xinqing_locale') === 'en';
+            if (isEn && typeof activitiesEn !== 'undefined') {
                 return activitiesEn;
             }
             return activities;
@@ -2298,11 +2302,20 @@
 
         /* ========== 活动详情弹窗 ========== */
         function showActivityDetail(activityId) {
-            const activity = getActivityById(activityId);
+            let activity = getActivityById(activityId);
             if (!activity) return;
-            
+
+            // 双重保险：英文模式下强制使用 activitiesEn 数据
+            const isEn = (window.I18N && I18N.currentLocale === 'en') ||
+                         document.documentElement.lang === 'en' ||
+                         localStorage.getItem('xinqing_locale') === 'en';
+            if (isEn && typeof activitiesEn !== 'undefined') {
+                const enActivity = activitiesEn.find(a => a.id === activityId);
+                if (enActivity) activity = enActivity;
+            }
+
             currentActivity = activity;
-            
+
             document.getElementById('modal-activity-name').textContent = `${activity.icon} ${activity.name}`;
             document.getElementById('modal-activity-description').textContent = activity.description;
             document.getElementById('modal-activity-duration').textContent = activity.duration;

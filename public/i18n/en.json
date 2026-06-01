@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "practice": "Psychological Practice",
     "relax": "Healing Exercises",
     "flow": "Flow Experience",
     "emotion": "Emotion Awareness",
@@ -446,7 +447,17 @@
     "btn_expand": "Expand →",
     "confirm_show_guide": "Show the guide tutorial again?",
     "unknown_activity": "Unknown Activity",
-    "completed_times": "Completed"
+    "completed_times": "Completed",
+    "modal_activity_name": "Activity Name",
+    "modal_description": "Activity description",
+    "modal_duration": "🎯 Suitable Duration",
+    "modal_duration_value": "15-60 minutes",
+    "modal_benefits": "💪 Activity Benefits",
+    "modal_tips": "💡 Practical Tips",
+    "modal_science": "📚 Scientific Basis",
+    "modal_science_text": "Flow theory support",
+    "btn_close": "Close",
+    "btn_start_experience": "Start Experience"
   },
   "guide": {
     "step1_flow": "Flow!",
@@ -1338,5 +1349,43 @@
     "hotline": "National Psychological Aid Hotline: 400-161-9995",
     "hotline_note": "24-hour free service",
     "accept": "I understand, continue using"
+  }
+,
+
+  "settings": {
+    "page_title": "Settings \u2014 XinQing Space",
+    "hero_title": "Personalize Your <span class=\"highlight\">XinQing</span> Experience",
+    "hero_subtitle": "Adjust theme, language, and notification preferences to make XinQing Space more yours",
+    "section_appearance": "Appearance",
+    "section_notifications": "Notifications",
+    "section_privacy": "Privacy",
+    "section_danger": "Danger Zone",
+    "section_about": "About",
+    "theme_label": "Theme Mode",
+    "theme_desc": "Choose your favorite color theme",
+    "language_label": "Interface Language",
+    "language_desc": "Switch display language",
+    "animations_label": "Animation Effects",
+    "animations_desc": "Turn off to reduce visual load for motion-sensitive users",
+    "daily_reminder_label": "Daily Reminder",
+    "daily_reminder_desc": "Fixed time daily reminder for healing exercises",
+    "reminder_time_label": "Reminder Time",
+    "weekly_report_label": "Weekly Report",
+    "weekly_report_desc": "Push your healing weekly report every Monday",
+    "data_sync_label": "Data Sync",
+    "data_sync_desc": "Sync your exercise records to the cloud",
+    "anonymous_label": "Anonymous Mode",
+    "anonymous_desc": "Appear as anonymous in the community",
+    "export_data_label": "Export Personal Data",
+    "export_data_desc": "Export all your exercise records and emotion diaries as a JSON file",
+    "export_btn": "Export Data",
+    "delete_account_label": "Delete Account",
+    "delete_account_desc": "Permanently delete your account and all data. This operation cannot be undone.",
+    "delete_btn": "Delete Account",
+    "version_label": "Version",
+    "version_value": "v2.0.0",
+    "feedback_label": "Feedback",
+    "feedback_btn": "Submit Feedback",
+    "footer": "XinQing Space \u00a9 2024 \u2014 Warming every heart with technology"
   }
 }

@@ -15,6 +15,7 @@ data/*.json
 logs/
 *.log
 npm-debug.log*
+nul
 
 # IDE
 .idea/

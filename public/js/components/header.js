@@ -18,12 +18,14 @@
   // ========== 导航配置 ==========
   const NAV_ITEMS = [
     { key: 'nav.home',       href: 'index.html',           label: '首页' },
-    { key: 'nav.relax',      href: 'relax.html',           label: '疗愈练习' },
-    { key: 'nav.emotion',    href: 'emotion.html',         label: '情绪觉察' },
     {
-      key: 'nav.flow',
-      href: 'flow-experience.html',
-      label: '心流体验'
+      key: 'nav.practice',
+      label: '心理练习',
+      children: [
+        { key: 'nav.relax',   href: 'relax.html',           label: '疗愈练习' },
+        { key: 'nav.emotion', href: 'emotion.html',         label: '情绪觉察' },
+        { key: 'nav.flow',    href: 'flow-experience.html', label: '心流体验' },
+      ]
     },
     { key: 'nav.knowledge',  href: 'knowledge-graph.html', label: '知识图谱' },
     { key: 'nav.about',      href: 'about.html',           label: '关于我们' },
@@ -44,25 +46,80 @@
       return;
     }
 
-    // ---- 桌面导航链接 ----
-    const desktopLinks = NAV_ITEMS.map(function (item) {
+    // ---- 生成单个导航链接 HTML（支持子菜单） ----
+    function renderNavLink(item, isMobile) {
+      // 有子菜单
+      if (item.children && item.children.length > 0) {
+        // 判断是否有子页面是当前页面
+        const hasActiveChild = item.children.some(function (child) {
+          return isCurrentPage(child.href, opts.currentPage);
+        });
+        const isParentActive = hasActiveChild;
+
+        if (isMobile) {
+          // 移动端：直接渲染为普通链接 + 子链接
+          let html = '<div class="mobile-nav-group">';
+          html += '<div class="mobile-nav-parent" data-i18n="' + item.key + '">' + item.label + '</div>';
+          html += '<div class="mobile-nav-children">';
+          html += item.children.map(function (child) {
+            const childActive = isCurrentPage(child.href, opts.currentPage);
+            let cls = '';
+            if (childActive) cls = ' class="active"';
+            return '<a href="' + child.href + '"' + cls + ' data-i18n="' + child.key + '">' + child.label + '</a>';
+          }).join('');
+          html += '</div></div>';
+          return html;
+        } else {
+          // 桌面端：下拉菜单
+          let cls = 'nav-dropdown-trigger';
+          if (isParentActive) cls += ' active-parent';
+          let html = '<div class="' + cls + '">';
+          html += '<button class="nav-dropdown-btn" aria-haspopup="true" aria-expanded="false">';
+          html += '<span data-i18n="' + item.key + '">' + item.label + '</span>';
+          html += '<svg class="nav-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5l3 3 3-3"/></svg>';
+          html += '</button>';
+          html += '<div class="nav-dropdown-menu">';
+          html += item.children.map(function (child) {
+            const childActive = isCurrentPage(child.href, opts.currentPage);
+            let childCls = 'nav-dropdown-item';
+            if (childActive) childCls += ' active';
+            return '<a href="' + child.href + '" class="' + childCls + '" data-i18n="' + child.key + '">' + child.label + '</a>';
+          }).join('');
+          html += '</div></div>';
+          return html;
+        }
+      }
+
+      // 普通链接（无子菜单）
       const isActive = isCurrentPage(item.href, opts.currentPage);
       let style = 'color:var(--theme-text-light);text-decoration:none;transition:color 0.2s;';
       if (isActive) {
         style = 'color:var(--color-primary-500);font-weight:500;text-decoration:none;';
       }
-      return '<a href="' + item.href + '" style="' + style + '" ' +
-        'onmouseover="this.style.color=\'var(--color-primary-500)\'" ' +
-        'onmouseout="this.style.color=\'' + (isActive ? 'var(--color-primary-500)' : 'var(--theme-text-light)') + '\'" ' +
-        'data-i18n="' + item.key + '">' + item.label + '</a>';
+      const href = item.href || '#';
+      const label = item.label || '';
+      const key = item.key || '';
+
+      if (isMobile) {
+        let cls = '';
+        if (isActive) cls = ' class="active"';
+        return '<a href="' + href + '"' + cls + ' data-i18n="' + key + '">' + label + '</a>';
+      } else {
+        return '<a href="' + href + '" style="' + style + '" ' +
+          'onmouseover="this.style.color=\'var(--color-primary-500)\'" ' +
+          'onmouseout="this.style.color=\'' + (isActive ? 'var(--color-primary-500)' : 'var(--theme-text-light)') + '\'" ' +
+          'data-i18n="' + key + '">' + label + '</a>';
+      }
+    }
+
+    // ---- 桌面导航链接 ----
+    const desktopLinks = NAV_ITEMS.map(function (item) {
+      return renderNavLink(item, false);
     }).join('');
 
     // ---- 移动端菜单链接 ----
     const mobileLinks = NAV_ITEMS.map(function (item) {
-      const isActive = isCurrentPage(item.href, opts.currentPage);
-      let cls = '';
-      if (isActive) cls = ' class="active"';
-      return '<a href="' + item.href + '"' + cls + ' data-i18n="' + item.key + '">' + item.label + '</a>';
+      return renderNavLink(item, true);
     }).join('');
 
     // ---- 语言切换器容器 ----
@@ -117,6 +174,9 @@
     // ---- 导航栏滚动效果 ----
     bindNavbarScroll();
 
+    // ---- 下拉菜单交互 ----
+    bindDropdowns();
+
     // ---- 动态注入 Favicon（公共化，无需逐页手动添加）----
     // 仅当页面未设置 favicon 时才注入，避免覆盖 cat-game 等有特殊 favicon 的页面
     let faviconLink = document.querySelector('link[rel="icon"]');
@@ -127,6 +187,76 @@
       faviconLink.type = 'image/png';
       document.head.appendChild(faviconLink);
     }
+  }
+
+  // ========== 下拉菜单交互 ==========
+  function bindDropdowns() {
+    // 桌面端：鼠标悬停 + 点击
+    const triggers = document.querySelectorAll('.nav-dropdown-trigger');
+    triggers.forEach(function (trigger) {
+      const btn = trigger.querySelector('.nav-dropdown-btn');
+      const menu = trigger.querySelector('.nav-dropdown-menu');
+      if (!btn || !menu) return;
+
+      let timeoutId = null;
+
+      function openMenu() {
+        clearTimeout(timeoutId);
+        // 关闭其他打开的菜单
+        document.querySelectorAll('.nav-dropdown-trigger.open').forEach(function (t) {
+          if (t !== trigger) t.classList.remove('open');
+        });
+        trigger.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeMenu() {
+        timeoutId = setTimeout(function () {
+          trigger.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }, 150);
+      }
+
+      trigger.addEventListener('mouseenter', openMenu);
+      trigger.addEventListener('mouseleave', closeMenu);
+
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (trigger.classList.contains('open')) {
+          closeMenu();
+          clearTimeout(timeoutId);
+          trigger.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          openMenu();
+        }
+      });
+
+      // 菜单内鼠标操作
+      menu.addEventListener('mouseenter', function () { clearTimeout(timeoutId); });
+      menu.addEventListener('mouseleave', closeMenu);
+    });
+
+    // 点击页面其他地方关闭菜单
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav-dropdown-trigger')) {
+        document.querySelectorAll('.nav-dropdown-trigger.open').forEach(function (t) {
+          t.classList.remove('open');
+          const b = t.querySelector('.nav-dropdown-btn');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+    // 移动端：点击父级展开/收起子菜单
+    document.querySelectorAll('.mobile-nav-parent').forEach(function (parent) {
+      parent.addEventListener('click', function () {
+        const group = parent.parentElement;
+        if (group) {
+          group.classList.toggle('open');
+        }
+      });
+    });
   }
 
   // ========== 工具函数 ==========
