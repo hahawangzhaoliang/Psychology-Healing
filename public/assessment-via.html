@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="via.page_title">性格优势测评</title>
+    <meta name="description" data-i18n-content="via.page_description" content="48 道题目，发现你的性格优势，找到更容易进入心流状态的方式。">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <style>
+        /* ===== 仅保留设计系统未覆盖的样式 ===== */
+
+        /* 量表选项（设计系统无对应组件） */
+        .scale-options { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .scale-option {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid var(--theme-border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--theme-card);
+        }
+        .scale-option:hover { border-color: var(--color-primary-300); background: var(--color-primary-50); }
+        .scale-option.selected {
+            border-color: var(--color-primary-400);
+            background: var(--color-primary-50);
+            box-shadow: 0 0 0 3px rgba(92,184,168,0.15);
+        }
+        .option-radio {
+            width: 20px; height: 20px; border-radius: 50%;
+            border: 2px solid var(--color-gray-300);
+            flex-shrink: 0; transition: all 0.2s;
+        }
+        .scale-option.selected .option-radio {
+            border-color: var(--color-primary-400);
+            background: radial-gradient(circle, var(--color-primary-400) 40%, transparent 42%);
+        }
+        .option-label { font-size: 0.92rem; color: var(--theme-text); line-height: 1.5; }
+
+        /* 阶段切换 */
+        .step { display: none; }
+        .step.active { display: block; animation: fadeInUp 0.4s var(--ease-standard) both; }
+
+        /* Hero 区域（设计系统无此组件） */
+        .hero {
+            padding: 6rem 1rem 3rem;
+            text-align: center;
+            background: linear-gradient(180deg, var(--color-primary-50), transparent);
+        }
+        .hero-inner { max-width: 640px; margin: 0 auto; }
+        .hero-icon { font-size: 3rem; line-height: 1; }
+        .hero-title {
+            font-size: clamp(1.6rem, 4vw, 2.4rem);
+            font-weight: 800;
+            color: var(--theme-text);
+            margin-bottom: 0.5rem;
+            line-height: 1.25;
+        }
+        .hero-title .highlight { color: var(--color-primary-500); }
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--theme-text-light);
+            line-height: 1.6;
+        }
+
+        /* 结果页排名条 */
+        .rank-bar-track {
+            width: 100%; height: 5px;
+            background: var(--color-gray-100);
+            border-radius: 50px; overflow: hidden;
+        }
+        .rank-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary-400), var(--color-primary-500));
+            border-radius: 50px;
+            transition: width 0.8s var(--ease-standard);
+        }
+    </style>
+</head>
+<body class="bg-warm-50">
+
+    <!-- 导航栏 -->
+    <div id="app-header"></div>
+
+    <!-- 英雄区：用设计系统 .hero 类 -->
+    <section class="hero">
+        <div class="hero-inner container-narrow">
+            <div class="hero-icon" style="margin-bottom: 1rem;">🌟</div>
+            <h1 class="hero-title" data-i18n-html="via.hero_title">
+                发现你的<span class="highlight">性格优势</span>
+            </h1>
+            <p class="hero-subtitle" data-i18n="via.hero_subtitle">
+                48 题 · 科学测评 · 个性化建议
+            </p>
+        </div>
+    </section>
+
+    <!-- 主内容：用设计系统 .container-narrow -->
+    <div class="container-narrow" style="padding: 0 1rem 3rem; margin-top: -1.5rem; position: relative; z-index: 2;">
+
+        <!-- 阶段 1：介绍 -->
+        <div class="card step active" id="step-intro">
+            <div style="text-align: center; max-width: 520px; margin: 0 auto; padding: 0.5rem 0;">
+
+                <h2 style="font-size: 1.2rem; font-weight: 700; color: var(--theme-text); margin-bottom: 0.85rem;" data-i18n="via.intro_title">
+                    你有哪些性格优势？
+                </h2>
+
+                <p style="font-size: 0.9rem; color: var(--theme-text-light); line-height: 1.7; margin-bottom: 1.25rem; text-align: left;" data-i18n="via.intro_desc">
+                    性格优势是你自然而然表现出的积极特质——比如好奇心、毅力、善良。了解自己的优势，能帮你更容易进入心流状态，也更容易应对压力。
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem; text-align: left;">
+                    <div style="display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.65rem 0.85rem; background: var(--color-primary-50); border-radius: var(--radius-md); font-size: 0.83rem; color: var(--theme-text-light); line-height: 1.5;">
+                        <span style="flex-shrink: 0;">🔬</span>
+                        <span data-i18n="via.feature_science_desc">科学验证的测评框架</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.65rem 0.85rem; background: var(--color-primary-50); border-radius: var(--radius-md); font-size: 0.83rem; color: var(--theme-text-light); line-height: 1.5;">
+                        <span style="flex-shrink: 0;">⏱️</span>
+                        <span data-i18n="via.feature_time_desc">约 8 分钟 · 48 道题</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.65rem 0.85rem; background: var(--color-primary-50); border-radius: var(--radius-md); font-size: 0.83rem; color: var(--theme-text-light); line-height: 1.5;">
+                        <span style="flex-shrink: 0;">🎯</span>
+                        <span data-i18n="via.feature_output_desc">前 5 大优势 + 运用建议</span>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; align-items: flex-start; padding: 0.65rem 0.85rem; background: var(--color-primary-50); border-radius: var(--radius-md); font-size: 0.83rem; color: var(--theme-text-light); line-height: 1.5;">
+                        <span style="flex-shrink: 0;">🔒</span>
+                        <span data-i18n="via.feature_privacy_desc">数据仅保存在你的浏览器</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg" onclick="ViaAssessment.startQuiz()" style="min-width: 180px;" data-i18n="via.intro_start">
+                    开始测评
+                </button>
+            </div>
+        </div>
+
+        <!-- 阶段 2：答题 -->
+        <div class="card step" id="step-question">
+            <!-- 进度条：复用设计系统 .progress-bar -->
+            <div style="margin-bottom: 1.5rem;">
+                <div class="progress-bar" style="margin-bottom: 0.4rem;">
+                    <div class="progress-bar-fill" id="progress-fill"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--theme-text-light);">
+                    <span data-i18n-html="via.quiz_progress">第 <span id="current-q">1</span> / <span id="total-q">48</span> 题</span>
+                    <span id="progress-pct">0%</span>
+                </div>
+            </div>
+
+            <div id="question-text" style="font-size: 1.05rem; font-weight: 600; color: var(--theme-text); line-height: 1.6; margin-bottom: 1.25rem; min-height: 3rem;"></div>
+
+            <div class="scale-options" id="scale-options"></div>
+
+            <div style="display: flex; justify-content: space-between; gap: 0.75rem;">
+                <button class="btn btn-secondary" onclick="ViaAssessment.prevQuestion()" data-i18n="via.btn_prev">上一题</button>
+                <button class="btn btn-primary" id="btn-next" onclick="ViaAssessment.nextQuestion()" data-i18n="via.btn_next">下一题</button>
+            </div>
+        </div>
+
+        <!-- 阶段 3：结果 -->
+        <div class="card step" id="step-result" style="padding: 2rem 1.5rem;">
+
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🌟</div>
+                <h2 style="font-size: 1.35rem; font-weight: 800; color: var(--theme-text); margin-bottom: 0.35rem;" data-i18n="via.result_title">你的核心优势</h2>
+                <p style="font-size: 0.88rem; color: var(--theme-text-light);" data-i18n="via.result_subtitle">以下是你的前 5 大性格优势</p>
+            </div>
+
+            <!-- 签名优势卡片 -->
+            <div id="signature-strengths" style="display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1.5rem;"></div>
+
+            <!-- 完整排名（可折叠）-->
+            <div style="margin-bottom: 1.25rem;">
+                <button class="btn btn-secondary" style="width: 100%;" onclick="ViaAssessment.toggleFullRanking()" data-i18n="via.btn_toggle_ranking">
+                    查看完整排名
+                </button>
+            </div>
+            <div id="full-ranking" style="display: none;"></div>
+
+            <!-- 操作按钮 -->
+            <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="ViaAssessment.restart()" data-i18n="via.btn_restart">重新测评</button>
+                <button class="btn btn-secondary" onclick="location.href='flow-experience.html'" data-i18n="via.btn_to_flow">去心流体验</button>
+            </div>
+        </div>
+
+    </div><!-- /.container-narrow -->
+
+    <!-- Scripts：只引用外部 JS，不重复实现 -->
+    <script src="js/i18n.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/assessment-via.js"></script>
+    <script>
+        /* ============================================================
+           测评控制器：只负责 UI 交互，不重复实现测评逻辑
+           所有数据和计分都通过 VIAInventory 公开 API 完成
+           API: startAssessment(), generateReport(answers)
+           API: calculateScores(answers), getInterpretation(id)
+        ============================================================ */
+        if (typeof renderHeader === 'function') {
+            renderHeader({ currentPage: 'via', showLangSwitcher: true });
+        }
+
+        const ViaAssessment = (() => {
+            'use strict';
+
+            // 状态：只存 UI 状态，不存测评数据
+            let state = {
+                currentIndex: 0,
+                answers: [],   // [score, score, ...] 按题目顺序
+                total: 0,
+                items: [],     // 当前测评题目列表
+            };
+
+            // 语言判断（与 i18n.js 保持一致）
+            function _isEn() {
+                if (window.I18N && I18N.currentLocale === 'en') return true;
+                if (document.documentElement.lang === 'en') return true;
+                if (localStorage.getItem('xinqing_locale') === 'en') return true;
+                return false;
+            }
+
+            // 翻译辅助
+            function _t(key, zhDefault) {
+                if (!window.I18N) return zhDefault || key;
+                if (I18N.currentLocale === 'zh-CN') return zhDefault || key;
+                return I18N.t(key) || zhDefault || key;
+            }
+
+            // ===== 阶段切换 =====
+            function _showStep(stepId) {
+                ['step-intro', 'step-question', 'step-result'].forEach(id => {
+                    document.getElementById(id).classList.toggle('active', id === stepId);
+                });
+            }
+
+            // ===== 开始测评 =====
+            function startQuiz() {
+                const data = VIAInventory.startAssessment();
+                state.items = data.items;
+                state.total = data.totalItems;
+                state.currentIndex = 0;
+                state.answers = new Array(state.total).fill(null);
+                document.getElementById('total-q').textContent = state.total;
+                _showStep('step-question');
+                _renderQuestion();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ===== 渲染当前题目 =====
+            function _renderQuestion() {
+                const item = state.items[state.currentIndex];
+                const qText = _isEn() ? item.textEn : item.text;
+                document.getElementById('question-text').textContent = qText;
+                document.getElementById('current-q').textContent = state.currentIndex + 1;
+
+                // 进度条（复用设计系统 .progress-bar-fill）
+                const pct = Math.round(((state.currentIndex + 1) / state.total) * 100);
+                document.getElementById('progress-fill').style.width = pct + '%';
+                document.getElementById('progress-pct').textContent = pct + '%';
+
+                // 5 点量表
+                const labels = [
+                    { value: 1, key: 'via.scale_1', zh: '非常不像我' },
+                    { value: 2, key: 'via.scale_2', zh: '不太像我' },
+                    { value: 3, key: 'via.scale_3', zh: '中等像我' },
+                    { value: 4, key: 'via.scale_4', zh: '比较像我' },
+                    { value: 5, key: 'via.scale_5', zh: '非常像我' },
+                ];
+                document.getElementById('scale-options').innerHTML = labels.map(l => {
+                    const selected = state.answers[state.currentIndex] === l.value;
+                    return `<div class="scale-option${selected ? ' selected' : ''}"
+                                 onclick="ViaAssessment.selectOption(${l.value}, this)">
+                                <div class="option-radio"></div>
+                                <span class="option-label">${_t(l.key, l.zh)}</span>
+                            </div>`;
+                }).join('');
+
+                // 更新按钮文字
+                const isLast = state.currentIndex === state.total - 1;
+                document.getElementById('btn-next').textContent =
+                    _t(isLast ? 'via.btn_finish' : 'via.btn_next', isLast ? '查看结果' : '下一题');
+            }
+
+            // ===== 选择选项 =====
+            function selectOption(value, el) {
+                state.answers[state.currentIndex] = value;
+                el.parentNode.querySelectorAll('.scale-option').forEach(o => o.classList.remove('selected'));
+                el.classList.add('selected');
+            }
+
+            // ===== 下一题 =====
+            function nextQuestion() {
+                if (state.answers[state.currentIndex] === null) return; // 未作答
+                if (state.currentIndex < state.total - 1) {
+                    state.currentIndex++;
+                    _renderQuestion();
+                } else {
+                    _showResults();
+                }
+            }
+
+            // ===== 上一题 =====
+            function prevQuestion() {
+                if (state.currentIndex > 0) {
+                    state.currentIndex--;
+                    _renderQuestion();
+                }
+            }
+
+            // ===== 显示结果 =====
+            function _showResults() {
+                const report = VIAInventory.generateReport(state.answers);
+                _renderSignatureStrengths(report.signatureStrengths);
+                _showStep('step-result');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ===== 渲染前 5 大优势卡片 =====
+            function _renderSignatureStrengths(strengths) {
+                const container = document.getElementById('signature-strengths');
+                const rankColors = ['#F59E0B', '#94A3B8', '#92400E', '#5CB8A8', '#22D3EE'];
+                container.innerHTML = strengths.map((s, i) => `
+                    <div class="card" style="display: flex; gap: 0.85rem; align-items: flex-start; padding: 1rem 1.25rem;">
+                        <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px;
+                                      background: ${rankColors[i]}; color: white;
+                                      display: flex; align-items: center; justify-content: center;
+                                      font-weight: 800; font-size: 0.9rem;">
+                            ${i + 1}
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-size: 0.98rem; font-weight: 700; color: var(--theme-text); margin-bottom: 0.2rem;">
+                                ${s.name}
+                            </div>
+                            <div style="font-size: 0.78rem; color: var(--color-primary-500); font-weight: 500; margin-bottom: 0.35rem;">
+                                ${s.virtueName}
+                            </div>
+                            <div class="rank-bar-track"><div class="rank-bar-fill" style="width: ${s.percentage.toFixed(0)}%;"></div></div>
+                            <div style="font-size: 0.82rem; color: var(--theme-text-light); margin-top: 0.45rem; line-height: 1.6;">
+                                ${s.interpretation ? s.interpretation.summary : ''}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // ===== 切换完整排名显示 =====
+            function toggleFullRanking() {
+                const el = document.getElementById('full-ranking');
+                if (el.style.display === 'none') {
+                    el.style.display = 'block';
+                    const result = VIAInventory.calculateScores(state.answers);
+                    el.innerHTML = result.scores.map((s, i) => `
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0.75rem; border-radius: var(--radius-sm); margin-bottom: 0.3rem; font-size: 0.85rem;">
+                            <span style="color: var(--theme-text-light); width: 2rem;">${i + 1}</span>
+                            <span style="flex: 1; color: var(--theme-text);">${s.cn || s.en || s.id}</span>
+                            <span style="color: var(--theme-text-light); font-weight: 600;">${s.averageScore.toFixed(1)}</span>
+                        </div>
+                    `).join('');
+                } else {
+                    el.style.display = 'none';
+                }
+            }
+
+            // ===== 重新测评 =====
+            function restart() {
+                state = { currentIndex: 0, answers: [], total: 0, items: [] };
+                _showStep('step-intro');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+
+            // ===== 公开 API =====
+            return { startQuiz, nextQuestion, prevQuestion, selectOption, toggleFullRanking, restart };
+        })();
+    </script>
+
+</body>
+</html>

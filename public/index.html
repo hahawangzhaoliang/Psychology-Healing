@@ -33,34 +33,34 @@
                 var(--color-primary-100) 100%
             );
             background-size: 200% 200%;
-            animation: gradientShift 12s ease-in-out infinite;
+            animation: gradientShift 20s ease-in-out infinite;
             padding-top: 64px; /* 导航栏高度 */
         }
 
-        /* 装饰性浮动气泡 */
+        /* 装饰性浮动气泡 — 节奏放缓，更助放松 */
         .hero::before,
         .hero::after {
             content: '';
             position: absolute;
             border-radius: 50%;
-            opacity: 0.12;
+            opacity: 0.10;
             pointer-events: none;
         }
         .hero::before {
-            width: 400px;
-            height: 400px;
+            width: 500px;
+            height: 500px;
             background: radial-gradient(circle, var(--color-primary-300), transparent 70%);
-            top: -100px;
-            right: -80px;
-            animation: float 8s ease-in-out infinite;
+            top: -120px;
+            right: -100px;
+            animation: float 12s ease-in-out infinite;
         }
         .hero::after {
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             background: radial-gradient(circle, var(--color-warm-200), transparent 70%);
-            bottom: -60px;
-            left: -60px;
-            animation: float 10s ease-in-out infinite reverse;
+            bottom: -80px;
+            left: -80px;
+            animation: float 15s ease-in-out infinite reverse;
         }
 
         .hero-inner {
@@ -86,12 +86,26 @@
             letter-spacing: -0.02em;
             color: var(--theme-text);
             margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s var(--ease-standard) both;
         }
         .hero-title .highlight {
             background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+        }
+        .hero-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--color-primary-100);
+            border-radius: var(--radius-full);
+            z-index: -1;
+            opacity: 0.5;
         }
 
         .hero-subtitle {
@@ -100,6 +114,7 @@
             line-height: 1.8;
             max-width: 40rem;
             margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.8s 0.15s var(--ease-standard) both;
         }
 
         /* Hero CTA 按钮 */
@@ -108,64 +123,125 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s 0.3s var(--ease-standard) both;
+        }
+        .hero-cta .btn-lg {
+            padding: 0.875rem 2rem;
+            font-size: 1.05rem;
+            box-shadow: var(--shadow-md);
+            transition: all var(--duration-normal) var(--ease-spring);
+        }
+        .hero-cta .btn-lg:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+        .hero-cta .btn-lg:active {
+            transform: translateY(-1px) scale(0.98);
+        }
+        @media (max-width: 640px) {
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-cta .btn-lg {
+                width: 100%;
+                max-width: 280px;
+            }
         }
 
         /* ---------- 功能卡片网格 ---------- */
         .features-grid {
             max-width: 72rem;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
+            padding: 5rem 1.5rem 4rem;
         }
 
         @media (min-width: 640px) {
             .features-grid {
-                padding: 5rem 2rem;
+                padding: 6rem 2rem 5rem;
             }
         }
 
         .section-label {
             text-align: center;
-            margin-bottom: 3rem;
+            margin-bottom: 3.5rem;
         }
         .section-label h2 {
             font-size: clamp(1.5rem, 4vw, 2.25rem);
             font-weight: 700;
             color: var(--theme-text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
         }
         .section-label p {
             color: var(--theme-text-light);
             font-size: 1.05rem;
+            line-height: 1.7;
         }
 
         /* ---------- 功能卡片图标容器 ---------- */
         .feature-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 1rem;
+            width: 64px;
+            height: 64px;
+            border-radius: 1.25rem;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
             transition: background var(--duration-normal) var(--ease-standard),
-                        transform var(--duration-normal) var(--ease-spring);
+                        transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            box-shadow: var(--shadow-xs);
         }
         a:hover .feature-icon,
         a:focus .feature-icon {
-            transform: scale(1.08) rotate(-3deg);
+            transform: scale(1.05) rotate(-2deg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ---------- 功能卡片（覆盖 card 默认） ---------- */
+        .features-grid > div > a.card {
+            padding: 1.75rem;
+            border-left: 4px solid transparent;
+            transition: all var(--duration-normal) var(--ease-spring);
+        }
+        .features-grid > div > a.card:hover {
+            border-left-color: var(--color-primary-400);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .features-grid > div > a.card h3 {
+            transition: color var(--duration-fast) var(--ease-standard);
+        }
+        .features-grid > div > a.card:hover h3 {
+            color: var(--color-primary-500);
         }
 
         /* ---------- 新功能推荐网格 ---------- */
         .new-features-grid {
             max-width: 72rem;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
+            padding: 5rem 1.5rem 4rem;
             background: linear-gradient(180deg, var(--color-primary-50), var(--theme-bg));
+            position: relative;
+        }
+        /* 顶部装饰线 */
+        .new-features-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
+            border-radius: var(--radius-full);
+            opacity: 0.6;
         }
 
         @media (min-width: 640px) {
             .new-features-grid {
-                padding: 5rem 2rem;
+                padding: 6rem 2rem 5rem;
             }
         }
 
@@ -173,7 +249,7 @@
         .new-feature-card {
             background: var(--theme-card);
             border-radius: var(--radius-xl);
-            padding: 2rem;
+            padding: 2.25rem 1.75rem;
             text-align: center;
             box-shadow: var(--shadow-sm);
             transition: transform var(--duration-normal) var(--ease-spring),
@@ -181,29 +257,52 @@
             text-decoration: none;
             color: inherit;
             display: block;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--theme-border);
+        }
+        .new-feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
+            opacity: 0;
+            transition: opacity var(--duration-normal) var(--ease-standard);
         }
         .new-feature-card:hover {
             transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-200);
+        }
+        .new-feature-card:hover::before {
+            opacity: 1;
         }
         .new-feature-card:active {
             transform: translateY(-2px) scale(0.98);
         }
         .new-feature-card .emoji {
-            font-size: 3rem;
+            font-size: 3.25rem;
             display: block;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+        .new-feature-card:hover .emoji {
+            transform: scale(1.12) rotate(-3deg);
         }
         .new-feature-card h3 {
-            font-size: 1.15rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--theme-text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.625rem;
         }
         .new-feature-card p {
-            font-size: 0.9rem;
+            font-size: 0.925rem;
             color: var(--theme-text-light);
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.65;
         }
         .new-feature-card .tags {
             display: flex;
@@ -222,60 +321,132 @@
         .science-grid {
             max-width: 72rem;
             margin: 0 auto;
-            padding: 4rem 1.5rem;
+            padding: 5rem 1.5rem 4rem;
+            position: relative;
+        }
+        /* 左侧装饰竖线 */
+        .science-grid::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(180deg, transparent, var(--color-primary-200));
+            opacity: 0.6;
         }
 
         @media (min-width: 640px) {
             .science-grid {
-                padding: 5rem 2rem;
+                padding: 6rem 2rem 5rem;
             }
         }
 
         .science-card {
             background: var(--theme-card);
             border-radius: var(--radius-xl);
-            padding: 2rem 1.5rem;
+            padding: 2.25rem 1.75rem;
             text-align: center;
             box-shadow: var(--shadow-xs);
-            transition: box-shadow var(--duration-normal) var(--ease-standard);
+            transition: transform var(--duration-normal) var(--ease-spring),
+                        box-shadow var(--duration-normal) var(--ease-standard);
+            border: 1px solid var(--theme-border);
+            position: relative;
+            overflow: hidden;
+        }
+        .science-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
+            opacity: 0;
+            transition: opacity var(--duration-normal) var(--ease-standard);
         }
         .science-card:hover {
-            box-shadow: var(--shadow-md);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary-200);
+        }
+        .science-card:hover::before {
+            opacity: 1;
         }
         .science-card .icon {
-            font-size: 2.5rem;
+            font-size: 2.75rem;
             display: block;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem;
+            transition: transform var(--duration-normal) var(--ease-spring);
+        }
+        .science-card:hover .icon {
+            transform: scale(1.1) rotate(-3deg);
         }
         .science-card h3 {
             font-weight: 700;
             color: var(--theme-text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.625rem;
+            font-size: 1.1rem;
         }
         .science-card .ref {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--theme-text-light);
+            line-height: 1.6;
         }
 
         /* ---------- 快速开始区域 ---------- */
         .quick-start {
             max-width: 48rem;
             margin: 0 auto;
-            padding: 4rem 1.5rem 5rem;
+            padding: 5rem 1.5rem 6rem;
             text-align: center;
+            position: relative;
+        }
+        /* 顶部装饰 */
+        .quick-start::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
+            border-radius: var(--radius-full);
+            opacity: 0.5;
         }
 
         @media (min-width: 640px) {
             .quick-start {
-                padding: 5rem 2rem 6rem;
+                padding: 6rem 2rem 7rem;
             }
         }
 
         /* ---------- 求助横幅 ---------- */
         .help-banner {
-            background: linear-gradient(135deg, var(--color-primary-50), var(--color-primary-100));
-            padding: 3rem 1.5rem;
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-calm-100));
+            padding: 4rem 1.5rem;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        /* 装饰性背景圆 */
+        .help-banner::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color-primary-200), transparent 70%);
+            opacity: 0.15;
+            top: -100px;
+            right: -80px;
+            pointer-events: none;
+        }
+        .help-banner p {
+            position: relative;
+            z-index: 1;
         }
 
         /* ---------- 免责声明模态框 ---------- */

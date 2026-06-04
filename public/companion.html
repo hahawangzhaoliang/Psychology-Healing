@@ -24,35 +24,46 @@
         }
     </script>
     <style>
-        /* 动物动效样式 */
+        /* 动物动效样式 — 节奏放缓，更助放松 */
         .companion-float {
-            animation: companionFloat 3s ease-in-out infinite;
+            animation: companionFloat 5s ease-in-out infinite;
         }
         .companion-bounce {
-            animation: companionBounce 1.5s ease-in-out infinite;
+            animation: companionBounce 2s ease-in-out infinite;
         }
         .companion-sway {
-            animation: companionSway 2.5s ease-in-out infinite;
+            animation: companionSway 4s ease-in-out infinite;
         }
         .companion-breathe {
-            animation: companionBreathe 4s ease-in-out infinite;
+            animation: companionBreathe 12s ease-in-out infinite;
         }
         
         @keyframes companionFloat {
             0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(3deg); }
+            50% { transform: translateY(-10px) rotate(3deg); }
         }
         @keyframes companionBounce {
             0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.05); }
+            50% { transform: translateY(-6px) scale(1.04); }
         }
         @keyframes companionSway {
-            0%, 100% { transform: translateX(0) rotate(-5deg); }
-            50% { transform: translateX(10px) rotate(5deg); }
+            0%, 100% { transform: translateX(0) rotate(-3deg); }
+            50% { transform: translateX(6px) rotate(3deg); }
         }
         @keyframes companionBreathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            /* 12s 完整呼吸周期 — 呼气长于吸气，激活副交感神经 */
+            /* 0-35%: 吸气 4.2s */
+            0%   { transform: scale(1);    opacity: 0.92; }
+            35%  { transform: scale(1.12); opacity: 1;    }
+
+            /* 35-50%: 屏息 1.8s */
+            50%  { transform: scale(1.12); opacity: 1;    }
+
+            /* 50-85%: 呼气 4.2s（更长，更放松）*/
+            85%  { transform: scale(1);    opacity: 0.92; }
+
+            /* 85-100%: 屏息 1.8s */
+            100% { transform: scale(1);    opacity: 0.92; }
         }
         
         /* 选择卡片样式 */

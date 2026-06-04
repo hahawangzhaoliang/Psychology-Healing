@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>情绪觉察 — 心晴空间</title>
 
-    <meta name="description" content="基于Plutchik情绪轮盘，可视化探索和理解你的情绪">
+    <meta name="description" content="通过情绪轮盘，可视化探索和理解你的情绪">
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
@@ -27,68 +27,73 @@
             color: var(--theme-text);
         }
 
-        /* ---------- 页面头部区域 ---------- */
+        /* ---------- 页面头部区域（优化） ---------- */
         .page-hero {
             background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-warm-50) 50%, var(--color-primary-50) 100%);
-            padding-top: 100px;
-            padding-bottom: 5rem;
+            padding-top: 120px;
+            padding-bottom: 6rem;
             text-align: center;
             position: relative;
             overflow: hidden;
         }
-        /* 装饰性流体形状 - 双层 */
+        /* 装饰性流体形状 - 三层（增强视觉深度） */
         .page-hero::before {
             content: '';
             position: absolute;
-            width: 450px;
-            height: 450px;
+            width: 500px;
+            height: 500px;
             border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
             background: radial-gradient(circle, var(--color-primary-300), transparent 70%);
-            opacity: 0.07;
-            top: -120px;
-            right: -120px;
-            animation: float 14s ease-in-out infinite;
+            opacity: 0.06;
+            top: -150px;
+            right: -150px;
+            animation: float 16s ease-in-out infinite;
             pointer-events: none;
         }
         .page-hero::after {
             content: '';
             position: absolute;
-            width: 300px;
-            height: 300px;
+            width: 350px;
+            height: 350px;
             border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
             background: radial-gradient(circle, var(--color-warm-300), transparent 70%);
-            opacity: 0.08;
-            bottom: -80px;
-            left: -60px;
-            animation: float 11s ease-in-out infinite reverse;
+            opacity: 0.07;
+            bottom: -100px;
+            left: -80px;
+            animation: float 13s ease-in-out infinite reverse;
             pointer-events: none;
         }
 
         .page-title {
             font-family: 'Playfair Display', var(--font-serif);
-            font-size: clamp(2rem, 5.5vw, 3.2rem);
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
             font-weight: 700;
             color: var(--theme-text);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             letter-spacing: -0.02em;
+            line-height: 1.2;
         }
         .page-subtitle {
-            font-size: clamp(0.95rem, 2vw, 1.15rem);
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
             color: var(--theme-text-light);
-            line-height: 1.7;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        /* ---------- 标签页切换 ---------- */
+        /* ---------- 标签页切换（优化） ---------- */
         .tab-bar {
             display: inline-flex;
             background: var(--theme-card);
             border-radius: var(--radius-full);
-            padding: 6px;
-            box-shadow: var(--shadow-sm);
-            gap: 4px;
+            padding: 8px;
+            box-shadow: var(--shadow-md);
+            gap: 6px;
+            border: 1px solid var(--theme-border);
+            position: relative;
         }
         .tab-btn {
-            padding: 0.625rem 1.75rem;
+            padding: 0.75rem 2rem;
             border-radius: var(--radius-full);
             font-size: 0.95rem;
             font-weight: 500;
@@ -99,72 +104,102 @@
             transition: all var(--duration-normal) var(--ease-spring);
             white-space: nowrap;
             position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--color-primary-50);
+            border-radius: var(--radius-full);
+            opacity: 0;
+            transition: opacity var(--duration-fast) var(--ease-standard);
+            z-index: -1;
+        }
+        .tab-btn:hover::before {
+            opacity: 1;
         }
         .tab-btn:hover {
             color: var(--color-primary-600);
-            background: var(--color-primary-50);
+            transform: translateY(-1px);
         }
         .tab-btn.active {
-            background: var(--color-primary-500);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             color: white;
-            box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
+            box-shadow: 0 6px 20px rgba(90, 154, 138, 0.4);
             font-weight: 600;
         }
+        .tab-btn.active::before {
+            display: none;
+        }
 
-        /* ---------- 情绪轮盘容器 ---------- */
+        /* ---------- 情绪轮盘容器（优化） ---------- */
         .wheel-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 3rem 1rem;
             position: relative;
         }
         .wheel-container {
             position: relative;
             display: inline-block;
+            transition: transform var(--duration-normal) var(--ease-spring);
         }
-        /* 外圈光晕 */
+        .wheel-container:hover {
+            transform: scale(1.02);
+        }
+        /* 外圈光晕（增强） */
         .wheel-glow {
             position: absolute;
-            inset: -20px;
+            inset: -30px;
             border-radius: 50%;
             background: radial-gradient(circle, var(--color-primary-100), transparent 70%);
-            opacity: 0.5;
+            opacity: 0.6;
             pointer-events: none;
             animation: breatheGlow 6s var(--ease-breathe) infinite;
+            filter: blur(20px);
         }
 
-        /* ---------- 情绪温度计 ---------- */
+        /* ---------- 情绪温度计（优化） ---------- */
         .thermometer {
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
             position: relative;
+            padding: 1rem 0;
         }
         .thermometer-track {
             width: 100%;
-            height: 8px;
+            height: 12px;
             border-radius: var(--radius-full);
             background: linear-gradient(90deg, #10B981, #FBBF24, #EF4444);
             position: relative;
-            margin: 1.5rem 0;
+            margin: 2rem 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
         }
         .thermometer-thumb {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
             background: var(--theme-card);
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 3px 16px rgba(0,0,0,0.18), 0 0 0 3px var(--color-primary-100);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             position: absolute;
             top: 50%;
             transform: translate(-50%, -50%);
-            transition: left var(--duration-fast) var(--ease-standard);
+            transition: left var(--duration-fast) var(--ease-spring),
+                        box-shadow var(--duration-fast) var(--ease-standard);
             cursor: pointer;
             z-index: 2;
             user-select: none;
+        }
+        .thermometer-thumb:hover {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.22), 0 0 0 5px var(--color-primary-200);
+            transform: translate(-50%, -50%) scale(1.1);
         }
         .thermometer-input {
             position: absolute;
@@ -174,6 +209,22 @@
             opacity: 0;
             cursor: pointer;
             z-index: 3;
+        }
+        /* 温度计刻度标签 */
+        .thermometer-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            margin-top: 0.75rem;
+            padding: 0 0.25rem;
+        }
+        .thermometer-labels span {
+            transition: color var(--duration-fast) var(--ease-standard);
+        }
+        .thermometer-labels span.active {
+            color: var(--color-primary-500);
+            font-weight: 600;
         }
 
         /* ---------- 情绪标签 ---------- */
@@ -256,19 +307,27 @@
             border-color: var(--color-primary-300);
             color: var(--color-primary-500);
             background: var(--color-primary-50);
+            transform: translateY(-1px);
         }
         .tag-select-btn.selected {
-            background: var(--color-primary-400);
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
             color: white;
             border-color: var(--color-primary-400);
-            box-shadow: 0 2px 8px rgba(90, 154, 138, 0.3);
+            box-shadow: 0 4px 12px rgba(90, 154, 138, 0.35);
+            font-weight: 500;
+        }
+        .tag-select-btn.selected:hover {
+            background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+            border-color: var(--color-primary-500);
+            transform: translateY(-1px);
         }
 
-        /* ---------- 情绪分布条 ---------- */
+        /* ---------- 情绪分布条（优化） ---------- */
         .emotion-bar-row {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
         .emotion-bar-label {
             font-size: 0.85rem;
@@ -276,25 +335,36 @@
             min-width: 3.5rem;
             text-align: right;
             flex-shrink: 0;
+            font-weight: 500;
         }
         .emotion-bar-track {
             flex: 1;
-            height: 10px;
+            height: 12px;
             border-radius: var(--radius-full);
-            background: var(--color-primary-100);
+            background: var(--color-primary-50);
             overflow: hidden;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
         }
         .emotion-bar-fill {
             height: 100%;
             border-radius: var(--radius-full);
             background: linear-gradient(90deg, var(--color-primary-300), var(--color-primary-500));
-            transition: width 0.8s var(--ease-standard);
+            transition: width 1s var(--ease-standard);
             width: 0%;
+            position: relative;
+        }
+        .emotion-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+            border-radius: var(--radius-full);
         }
         .emotion-bar-pct {
             font-size: 0.8rem;
             color: var(--theme-text-light);
             min-width: 2.5rem;
+            font-weight: 500;
         }
 
         /* ---------- 分析卡片 ---------- */
@@ -319,13 +389,13 @@
             }
         }
 
-        /* ---------- 建议卡片 ---------- */
+        /* ---------- 建议卡片（优化） ---------- */
         .suggestion-card {
             background: var(--theme-card);
             border-radius: var(--radius-lg);
             padding: 1.75rem;
             border-left: 5px solid var(--color-primary-400);
-            box-shadow: var(--shadow-xs);
+            box-shadow: var(--shadow-sm);
             transition: all var(--duration-normal) var(--ease-spring);
             cursor: pointer;
             position: relative;
@@ -344,26 +414,105 @@
             pointer-events: none;
         }
         .suggestion-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
             border-left-color: var(--color-primary-500);
         }
         .suggestion-card:hover::before {
             opacity: 1;
         }
+        .suggestion-card:active {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
 
-        /* ---------- 空状态 ---------- */
+        /* ---------- 空状态（优化） ---------- */
         .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 4rem 1.5rem;
             color: var(--theme-text-light);
         }
         .empty-state .icon {
-            font-size: 3rem;
+            font-size: 4rem;
             display: block;
-            margin-bottom: 1rem;
-            opacity: 0.6;
+            margin-bottom: 1.25rem;
+            opacity: 0.7;
+            animation: float 4s ease-in-out infinite;
         }
+        .empty-state p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ---------- 响应式优化 ---------- */
+        @media (max-width: 640px) {
+            .page-hero {
+                padding-top: 100px;
+                padding-bottom: 4rem;
+            }
+            .page-title {
+                font-size: clamp(1.75rem, 8vw, 2.5rem);
+            }
+            .tab-bar {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+            }
+            .form-card {
+                padding: 1.5rem 1.25rem;
+            }
+            .analysis-card {
+                padding: 1.5rem 1.25rem;
+            }
+            .wheel-container:hover {
+                transform: none;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+            .page-title {
+                font-size: clamp(2rem, 5vw, 3rem);
+            }
+        }
+
+        /* ---------- 按钮微交互优化 ---------- */
+        .btn-primary {
+            transition: all var(--duration-normal) var(--ease-spring);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity var(--duration-fast) var(--ease-standard);
+        }
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            transition: all var(--duration-normal) var(--ease-spring);
+        }
+        .btn-secondary:active {
+            transform: scale(0.98);
+        }
+
 
         /* ---------- 隐藏内容面板 ---------- */
         .tab-content {
@@ -374,12 +523,12 @@
             animation: fadeInUp 0.4s var(--ease-standard) both;
         }
 
-        /* ---------- 页脚覆盖 ---------- */
+        /* ---------- 页脚覆盖（优化） ---------- */
         .site-footer {
             background: var(--theme-card);
             border-top: 1px solid var(--theme-border);
-            padding: 2rem 1rem;
-            margin-top: 3rem;
+            padding: 2.5rem 1.5rem;
+            margin-top: 4rem;
         }
         .site-footer .inner {
             max-width: 72rem;
@@ -388,19 +537,79 @@
         .site-footer .disclaimer-box {
             background: var(--color-warm-50);
             border-radius: var(--radius-lg);
-            padding: 1rem;
+            padding: 1.25rem;
             margin-bottom: 1.5rem;
+            border-left: 4px solid var(--color-primary-300);
         }
         .site-footer .disclaimer-box p {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--theme-text-light);
-            line-height: 1.6;
+            line-height: 1.7;
             text-align: center;
         }
         .site-footer .copyright {
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--theme-text-light);
+        }
+
+        /* ---------- 滚动条美化 ---------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--color-gray-100);
+            border-radius: var(--radius-full);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-primary-300);
+            border-radius: var(--radius-full);
+            transition: background var(--duration-fast) var(--ease-standard);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary-400);
+        }
+
+        /* ---------- 加载动画 ---------- */
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--color-primary-100);
+            border-top-color: var(--color-primary-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---------- 成功提示动画 ---------- */
+        .success-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--color-success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1000;
+            animation: slideInRight 0.4s var(--ease-spring) both;
+        }
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
     </style>
 </head>
@@ -413,7 +622,7 @@
         <div style="max-width:48rem;margin:0 auto;padding:0 1.5rem;">
             <h1 class="page-title fade-in-up" style="animation-delay:0.1s;" data-i18n="emotion.page_title">探索你的情绪世界</h1>
             <p class="page-subtitle fade-in-up" style="animation-delay:0.2s;" data-i18n="emotion.page_subtitle">
-                基于 Plutchik 情绪轮盘理论，可视化探索和理解你的情绪
+                可视化探索和理解你的情绪
             </p>
         </div>
     </section>
@@ -421,7 +630,7 @@
     <!-- ===== 主内容 ===== -->
     <main style="max-width:64rem;margin:0 auto;padding:2rem 1.5rem;">
         <!-- 标签页切换 -->
-        <div style="display:flex;justify-content:center;margin-bottom:2rem;" class="fade-in-up" style="animation-delay:0.15s;">
+        <div style="display:flex;justify-content:center;margin-bottom:2rem;" class="fade-in-up" data-delay="0.15s">
             <div class="tab-bar" role="tablist">
                 <button class="tab-btn active" data-tab="record" role="tab" aria-selected="true" data-i18n="emotion.tab_record">📝 记录情绪</button>
                 <button class="tab-btn" data-tab="analysis" role="tab" aria-selected="false" data-i18n="emotion.tab_analysis">📊 情绪分析</button>
@@ -442,7 +651,7 @@
                         <!-- Canvas 由 emotion-wheel.js 插入 -->
                     </div>
                 </div>
-                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;" data-i18n="emotion.wheel_based_on">基于 Plutchik 情绪轮盘理论</p>
+                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;" data-i18n="emotion.wheel_based_on">情绪轮盘帮助你直观了解自己的情绪</p>
 
                 <!-- 已选情绪展示 -->
                 <div id="selected-emotions" style="display:none;margin-top:2rem;">
@@ -451,6 +660,9 @@
                         <!-- 动态生成 -->
                     </div>
                 </div>
+
+                <!-- 二级情绪细化面板 -->
+                <div id="sub-emotion-panel" style="display:none;margin-top:2rem;"></div>
 
                 <!-- 情绪温度计 -->
                 <div style="margin-top:2.5rem;">
@@ -483,8 +695,8 @@
 
                 <!-- 标签选择 -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:1rem;" data-i18n="emotion.related_tags">相关标签</h3>
-                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.related_tags">相关标签</h3>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="tag-buttons">
                         <button class="tag-select-btn" data-tag="工作" data-i18n="emotion.tag_work">工作</button>
                         <button class="tag-select-btn" data-tag="学业" data-i18n="emotion.tag_study">学业</button>
                         <button class="tag-select-btn" data-tag="人际关系" data-i18n="emotion.tag_relationships">人际关系</button>
@@ -494,6 +706,13 @@
                         <button class="tag-select-btn" data-tag="自我" data-i18n="emotion.tag_self">自我</button>
                         <button class="tag-select-btn" data-tag="其他" data-i18n="emotion.tag_other">其他</button>
                     </div>
+                    <!-- 自定义标签输入 -->
+                    <div style="margin-top:0.75rem;display:flex;gap:0.5rem;align-items:center;">
+                        <input type="text" id="custom-tag-input" class="text-area" style="flex:1;min-height:auto;padding:0.5rem 0.75rem;font-size:0.85rem;" placeholder="添加自定义标签…" data-i18n-placeholder="emotion.custom_tag_placeholder">
+                        <button onclick="addCustomTag()" class="btn btn-secondary" style="padding:0.5rem 1rem;font-size:0.85rem;white-space:nowrap;" data-i18n="emotion.custom_tag_add">添加</button>
+                    </div>
+                    <!-- 自定义标签展示 -->
+                    <div id="custom-tags" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;"></div>
                 </div>
 
                 <!-- 保存按钮 -->
@@ -581,12 +800,61 @@
             return I18N.t(key, zhDefault) || zhDefault || key;
         }
 
-        /* ========== 状态管理 ========== */
-        let emotionWheel = null;
-        let selectedEmotions = [];
-        let selectedIntensity = 5;
-        let selectedTags = [];
-        let emotionChart = null;
+        /* ========== 情绪细化词汇表（二级情绪）========== */
+        const SUB_EMOTION_MAP = {
+            joy:       [{en:'happy',zh:'快乐'}, {en:'excited',zh:'兴奋'}, {en:'content',zh:'满足'}, {en:'proud',zh:'自豪'}, {en:'grateful',zh:'感恩'}, {en:'relieved',zh:'释然'}],
+            trust:      [{en:'acceptance',zh:'接纳'}, {en:'friendship',zh:'友爱'}, {en:'loyalty',zh:'忠诚'}, {en:'faith',zh:'信念'}, {en:'openness',zh:'开放'}, {en:'vulnerability',zh:'脆弱'}],
+            fear:       [{en:'anxiety',zh:'焦虑'}, {en:'worry',zh:'担忧'}, {en:'nervousness',zh:'紧张'}, {en:'panic',zh:'恐慌'}, {en:'dread',zh:'畏惧'}, {en:'fright',zh:'惊恐'}],
+            surprise:   [{en:'amazement',zh:'惊奇'}, {en:'astonishment',zh:'惊讶'}, {en:'confusion',zh:'困惑'}, {en:'curiosity',zh:'好奇'}, {en:'shock',zh:'震惊'}, {en:'disbelief',zh:'难以置信'}],
+            sadness:    [{en:'grief',zh:'悲伤'}, {en:'disappointment',zh:'失望'}, {en:'loneliness',zh:'孤独'}, {en:'hopelessness',zh:'无助'}, {en:'melancholy',zh:'忧郁'}, {en:'heartbreak',zh:'心碎'}],
+            disgust:    [{en:'dislike',zh:'不喜欢'}, {en:'revulsion',zh:'反感'}, {en:'judgment',zh:'评判'}, {en:'aversion',zh:'厌恶'}, {en:'loathing',zh:'憎恶'}, {en:'contempt',zh:'轻蔑'}],
+            anger:      [{en:'frustration',zh:'挫败'}, {en:'irritation',zh:'烦躁'}, {en:'rage',zh:'暴怒'}, {en:'jealousy',zh:'嫉妒'}, {en:'resentment',zh:'怨恨'}, {en:'fury',zh:'狂怒'}],
+            anticipation: [{en:'hope',zh:'希望'}, {en:'expectation',zh:'期待'}, {en:'tension',zh:'紧张'}, {en:'readiness',zh:'准备就绪'}, {en:'longing',zh:'渴望'}, {en:'apprehension',zh:'忧虑'}],
+        };
+
+        /* ========== 渲染二级情绪选择面板 ========== */
+        function renderSubEmotionPanel() {
+            const container = document.getElementById('sub-emotion-panel');
+            if (!container) return;
+
+            if (selectedEmotions.length === 0) {
+                container.style.display = 'none';
+                return;
+            }
+
+            container.style.display = 'block';
+            let html = '<h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.sub_emotion_title">细化你的情绪</h3>';
+            html += '<p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.sub_emotion_desc">选择最贴近你感受的词汇（可选，可多选）</p>';
+
+            selectedEmotions.forEach((em, idx) => {
+                const subs = SUB_EMOTION_MAP[em.key] || [];
+                if (subs.length === 0) return;
+
+                html += `<div style="margin-bottom:1rem;">
+                    <p style="font-size:0.9rem;font-weight:500;color:${em.color};margin-bottom:0.5rem;">${em.emoji || ''} ${em.name}</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.4rem;">`;
+                subs.forEach(sub => {
+                    const subKey = `${em.key}_${sub.en}`;
+                    const isSelected = selectedSubEmotions.includes(subKey);
+                    html += `<button onclick="toggleSubEmotion('${em.key}','${sub.en}','${sub.zh}')"
+                        style="padding:0.375rem 0.75rem;border-radius:var(--radius-full);font-size:0.8rem;cursor:pointer;transition:all 0.2s;border:1.5px solid ${isSelected ? em.color : 'var(--theme-border)'};background:${isSelected ? em.color + '18' : 'var(--theme-card)'};color:${isSelected ? em.color : 'var(--theme-text-light)'};"
+                        data-i18n="emotion.sub_${em.key}_${sub.en}">${sub.zh}</button>`;
+                });
+                html += '</div></div>';
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleSubEmotion(key, en, zh) {
+            const subKey = `${key}_${en}`;
+            if (selectedSubEmotions.includes(subKey)) {
+                selectedSubEmotions = selectedSubEmotions.filter(s => s !== subKey);
+            } else {
+                selectedSubEmotions.push(subKey);
+            }
+            renderSubEmotionPanel();
+        }
 
         /* ========== 情绪温度计配置 ========== */
         function getEmotionLevel(value) {
@@ -628,6 +896,7 @@
 
             if (selection.emotions.length === 0) {
                 container.style.display = 'none';
+                renderSubEmotionPanel();
                 return;
             }
 
@@ -651,6 +920,9 @@
             }
 
             tagsContainer.innerHTML = html;
+
+            // 渲染二级情绪面板
+            renderSubEmotionPanel();
         }
 
         /* ========== 温度计交互 ========== */
@@ -706,19 +978,59 @@
         }
 
         /* ========== 标签选择 ========== */
+        let selectedTags = []; // 当前选中的标签
+        let customTags = [];   // 用户自定义标签
+
         function initTagButtons() {
-            document.querySelectorAll('.tag-select-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tag = btn.dataset.tag;
-                    if (selectedTags.includes(tag)) {
-                        selectedTags = selectedTags.filter(t => t !== tag);
-                        btn.classList.remove('selected');
-                    } else {
-                        selectedTags.push(tag);
-                        btn.classList.add('selected');
-                    }
-                });
+            const container = document.getElementById('tag-buttons');
+            if (!container) return;
+            // 使用事件委托，避免 i18n 重渲染后事件丢失
+            container.addEventListener('click', (e) => {
+                const btn = e.target.closest('.tag-select-btn');
+                if (!btn) return;
+                const tag = btn.dataset.tag;
+                if (!tag) return;
+                if (selectedTags.includes(tag)) {
+                    selectedTags = selectedTags.filter(t => t !== tag);
+                    btn.classList.remove('selected');
+                } else {
+                    selectedTags.push(tag);
+                    btn.classList.add('selected');
+                }
             });
+        }
+
+        function addCustomTag() {
+            const input = document.getElementById('custom-tag-input');
+            const tag = input.value.trim();
+            if (!tag) return;
+            if (selectedTags.includes(tag) || customTags.includes(tag)) {
+                showToast(_t('emotion.toast_tag_exists', '标签已存在'), 'warning');
+                return;
+            }
+            customTags.push(tag);
+            selectedTags.push(tag);
+            input.value = '';
+
+            // 渲染自定义标签
+            renderCustomTags();
+            showToast(_t('emotion.toast_tag_added', '标签已添加: ') + tag, 'success');
+        }
+
+        function removeCustomTag(tag) {
+            customTags = customTags.filter(t => t !== tag);
+            selectedTags = selectedTags.filter(t => t !== tag);
+            renderCustomTags();
+        }
+
+        function renderCustomTags() {
+            const container = document.getElementById('custom-tags');
+            container.innerHTML = customTags.map(tag => `
+                <span style="display:inline-flex;align-items:center;gap:0.25rem;padding:0.375rem 0.75rem;background:var(--color-primary-50);color:var(--color-primary-600);border-radius:var(--radius-full);font-size:0.8rem;">
+                    ${tag}
+                    <span onclick="removeCustomTag('${tag}')" style="cursor:pointer;margin-left:0.25rem;font-weight:bold;">×</span>
+                </span>
+            `).join('');
         }
 
         /* ========== 保存情绪记录 ========== */
@@ -737,11 +1049,12 @@
                     level: e.intensity === '强烈' ? 1 : 0,
                     levelName: e.intensity,
                     color: e.color,
+                    subEmotion: e.subEmotion || null,   // 二级情绪细化
                 })),
                 combination: emotionWheel ? emotionWheel.getSelection().combination : null,
                 intensity: selectedIntensity,
                 context: context,
-                tags: [...selectedTags],
+                tags: [...selectedTags, ...customTags],
                 timestamp: new Date().toISOString(),
             };
 
@@ -756,12 +1069,16 @@
                 selectedEmotions = [];
                 selectedIntensity = 5;
                 selectedTags = [];
+                customTags = [];
+                selectedSubEmotions = [];
                 document.getElementById('context').value = '';
                 updateThermometer(5);
                 if (emotionWheel) emotionWheel.reset();
                 const container = document.getElementById('selected-emotions');
                 container.style.display = 'none';
-                document.querySelectorAll('.tag-select-btn').forEach(b => b.classList.remove('selected'));
+                document.querySelectorAll('#tag-buttons .tag-select-btn').forEach(b => b.classList.remove('selected'));
+                renderCustomTags();
+                renderSubEmotionPanel();  // 清空二级情绪面板
             } catch (error) {
                 console.error('保存失败:', error);
                 showToast(_t('emotion.toast_save_failed', '保存失败，请重试'), 'error');
@@ -783,7 +1100,7 @@
             emptyEl.style.display = 'none';
             dataEl.style.display = 'block';
 
-            /* 统计情绪分布 */
+            /* 统计情绪分布（聚合所有记录） */
             const emotionCounts = {};
             const tagCounts = {};
 
@@ -821,7 +1138,7 @@
                 });
             });
 
-            /* 渲染触发因素 */
+            /* 渲染触发因素（聚合所有记录） */
             const trigEl = document.getElementById('trigger-factors');
             const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
             if (sortedTags.length === 0) {
@@ -838,25 +1155,22 @@
         }
 
         /* ========== 加载调节建议 + 内容推荐 ========== */
-        function loadSuggestions() {
-            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
-            const emptyEl = document.getElementById('suggestions-empty');
-            const dataEl = document.getElementById('suggestions-data');
+        
+        // 情绪→内容映射（定义在函数外）
+        const emotionContentMap = {
+                joy: 'joy',
+                sadness: 'sadness',
+                anger: 'anger',
+                fear: 'fear',
+                surprise: 'anxiety',
+                disgust: 'anger',
+                anticipation: 'anxiety',
+                trust: 'calm',
+            };
 
-            if (records.length === 0) {
-                emptyEl.style.display = 'block';
-                dataEl.style.display = 'none';
-                return;
-            }
 
-            emptyEl.style.display = 'none';
-            dataEl.style.display = 'block';
-
-            const recentEmotions = records.length > 0 ? records[records.length - 1].emotions : [];
-            const primaryEmotion = recentEmotions.length > 0 ? recentEmotions[0].key : 'fear';
-
-            // 基础练习推荐
-            const practiceSuggestions = {
+        // 基础练习推荐（定义在函数外，避免每次调用重建）
+        const practiceSuggestions = {
                 joy: [
                     { title: '感恩练习', desc: '记录3件让你感恩的事，延续积极情绪', action: 'relax.html' },
                     { title: '分享快乐', desc: '和朋友分享你的喜悦，增强幸福感', action: 'community.html' },
@@ -899,17 +1213,34 @@
                 ],
             };
 
-            // 情绪关键词映射 → 论文/音乐/故事推荐
-            const emotionContentMap = {
-                joy: 'joy',
-                sadness: 'sadness',
-                anger: 'anger',
-                fear: 'fear',
-                surprise: 'anxiety',
-                disgust: 'anger',
-                anticipation: 'anxiety',
-                trust: 'calm',
-            };
+        function loadSuggestions() {
+            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+            const emptyEl = document.getElementById('suggestions-empty');
+            const dataEl = document.getElementById('suggestions-data');
+
+            if (records.length === 0) {
+                emptyEl.style.display = 'block';
+                dataEl.style.display = 'none';
+                return;
+            }
+
+            emptyEl.style.display = 'none';
+            dataEl.style.display = 'block';
+
+            // 聚合最近5条记录的情绪频率
+            const recent = records.slice(-5);
+            const emotionCounts = {};
+            recent.forEach(record => {
+                (record.emotions || []).forEach(em => {
+                    emotionCounts[em.key] = (emotionCounts[em.key] || 0) + 1;
+                });
+            });
+            const topKey = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1])[0];
+            const primaryEmotion = topKey ? topKey[0] : 'fear';
+
+
+
+
 
             const mappedEmotion = emotionContentMap[primaryEmotion] || 'anxiety';
 

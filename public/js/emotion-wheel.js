@@ -103,7 +103,7 @@ class EmotionWheel {
         const cx = this.options.size / 2;
         const cy = this.options.size / 2;
         const maxR = cx - 36;           // 外圈留边距
-        const minR = maxR * 0.32;       // 中心死区（缩小，增大可点击区）
+        const minR = maxR * 0.32;       // 中心死区
 
         const dx = x - cx, dy = y - cy;
         const dist = Math.sqrt(dx*dx + dy*dy);
@@ -112,7 +112,11 @@ class EmotionWheel {
         let angle = Math.atan2(dy, dx);
         if (angle < 0) angle += Math.PI * 2;
 
-        const sector = Math.floor((angle + Math.PI/8) / (Math.PI/4)) % 8;
+        // 与 draw() 扇区严格对齐：
+        //   draw(): startA = (i-1)*PI/4, endA = i*PI/4
+        //   sector i 覆盖角度 [(i-1)*PI/4, i*PI/4)
+        //   所以 idx = floor(angle / (PI/4)) + 1 (mod 8)
+        const sector = (Math.floor(angle / (Math.PI / 4)) + 1) % 8;
         const key = this.order[sector];
 
         // 2层：外圈=温和(ring=0)  内圈=强烈(ring=1)
@@ -120,7 +124,6 @@ class EmotionWheel {
 
         return { key, ring };
     }
-
     /* ========== Hover ========== */
     _onHover(e) {
         const rect = this.canvas.getBoundingClientRect();

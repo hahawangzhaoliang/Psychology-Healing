@@ -288,7 +288,16 @@
     "toast_save_failed": "Save failed, please retry",
     "no_data": "No records yet, start recording your emotions",
     "chart_empty": "Record more emotions to view trend chart",
-    "chart_yaxis": "Emotion Intensity (1=Very Good, 10=Very Bad)"
+    "chart_yaxis": "Emotion Intensity (1=Very Good, 10=Very Bad)",
+    "sub_emotion_title": "Refine your emotion",
+    "sub_emotion_desc": "Select the words that best match how you feel (optional, multi-select)",
+    "custom_tag_placeholder": "Add a custom tag...",
+    "custom_tag_add": "Add",
+    "toast_tag_exists": "Tag already exists",
+    "toast_tag_added": "Tag added: ",
+    "intensity_1": "Very mild",
+    "intensity_10": "Very intense",
+    "chart_intensity_label": "Emotion intensity"
   },
   "flow": {
     "hero_title": "Discover Your <span class=\"highlight\">Flow</span> Experience",
@@ -432,11 +441,9 @@
     "toast_assessment_saved": "Assessment saved!",
     "toast_assessment_skipped": "Assessment skipped",
     "unit_minutes": "min",
-    "unit_sessions": "sessions",
     "unit_score": "/ 5",
     "stat_total_duration": "Total Flow Duration",
     "stat_total_sessions": "Completed Sessions",
-    "stat_avg_quality": "Average Quality",
     "unit_sessions_short": "times",
     "goal_label": "Goal",
     "toast_recommended": "Recommended the most suitable activity for you!",
@@ -457,7 +464,10 @@
     "modal_science": "📚 Scientific Basis",
     "modal_science_text": "Flow theory support",
     "btn_close": "Close",
-    "btn_start_experience": "Start Experience"
+    "btn_start_experience": "Start Experience",
+    "via_card_title": "Discover Your Character Strengths",
+    "via_card_desc": "Based on Peterson & Seligman (2004) VIA framework. 48-question scientific assessment to find your core strengths and enter flow more easily.",
+    "via_card_btn": "Take Assessment →"
   },
   "guide": {
     "step1_flow": "Flow!",
@@ -1349,11 +1359,9 @@
     "hotline": "National Psychological Aid Hotline: 400-161-9995",
     "hotline_note": "24-hour free service",
     "accept": "I understand, continue using"
-  }
-,
-
+  },
   "settings": {
-    "page_title": "Settings \u2014 XinQing Space",
+    "page_title": "Settings — XinQing Space",
     "hero_title": "Personalize Your <span class=\"highlight\">XinQing</span> Experience",
     "hero_subtitle": "Adjust theme, language, and notification preferences to make XinQing Space more yours",
     "section_appearance": "Appearance",
@@ -1386,6 +1394,33 @@
     "version_value": "v2.0.0",
     "feedback_label": "Feedback",
     "feedback_btn": "Submit Feedback",
-    "footer": "XinQing Space \u00a9 2024 \u2014 Warming every heart with technology"
+    "footer": "XinQing Space © 2024 — Warming every heart with technology"
+  },
+  "via": {
+    "page_title": "Character Strengths Assessment",
+    "page_description": "24 questions to discover your character strengths and find your path to flow.",
+    "hero_title": "Discover Your <span class=\"highlight\">Strengths</span>",
+    "hero_subtitle": "24 character strengths · Scientific assessment · Personalized tips",
+    "intro_title": "What are your character strengths?",
+    "intro_desc": "Strengths are positive traits that come naturally to you — curiosity, perseverance, kindness. Knowing your strengths helps you find flow and handle stress.",
+    "feature_science_desc": "Validated framework, 50+ countries",
+    "feature_time_desc": "~6 min · 24 questions",
+    "feature_output_desc": "Your top 5 strengths + apply tips",
+    "feature_privacy_desc": "Data stays in your browser only",
+    "intro_start": "Start Assessment",
+    "quiz_progress": "Question <span id=\"current-q\">1</span> / <span id=\"total-q\">24</span>",
+    "btn_prev": "Previous",
+    "btn_next": "Next",
+    "btn_finish": "View Results",
+    "result_title": "Your Signature Strengths",
+    "result_subtitle": "Your top 5 character strengths",
+    "btn_toggle_ranking": "View Full Ranking",
+    "btn_restart": "Retake",
+    "btn_to_flow": "Go to Flow Experience",
+    "scale_1": "Very much unlike me",
+    "scale_2": "Mostly unlike me",
+    "scale_3": "Somewhat like me",
+    "scale_4": "Mostly like me",
+    "scale_5": "Very much like me"
   }
 }

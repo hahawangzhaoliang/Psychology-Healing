@@ -878,21 +878,21 @@
                 line-height: 1.4;
             }
 
-            /* 动画类 */
+            /* 动画类 — 节奏放缓，更助放松 */
             .companion-float {
-                animation: companionFloatAnim 3s ease-in-out infinite;
+                animation: companionFloatAnim 5s ease-in-out infinite;
             }
             .companion-bounce {
-                animation: companionBounceAnim 1.2s ease-in-out infinite;
+                animation: companionBounceAnim 2s ease-in-out infinite;
             }
             .companion-sway {
-                animation: companionSwayAnim 2.5s ease-in-out infinite;
+                animation: companionSwayAnim 4s ease-in-out infinite;
             }
             .companion-sway img {
-                animation: companionSwayImg 2.5s ease-in-out infinite;
+                animation: companionSwayImg 4s ease-in-out infinite;
             }
             .companion-breathe {
-                animation: companionBreatheAnim 5s ease-in-out infinite;
+                animation: companionBreatheAnim 12s ease-in-out infinite;
             }
 
             @keyframes companionFloatAnim {
@@ -908,8 +908,19 @@
                 50% { transform: translateX(6px) rotate(4deg); }
             }
             @keyframes companionBreatheAnim {
-                0%, 100% { transform: scale(1); opacity: 0.95; }
-                50% { transform: scale(1.1); opacity: 1; }
+                /* 12s 完整呼吸周期 */
+                /* 0-35%: 吸气 4.2s → 放大+变深 */
+                0%   { transform: scale(1);    opacity: 0.92; }
+                35%  { transform: scale(1.12); opacity: 1;    }
+
+                /* 35-50%: 屏息 1.8s → 保持 */
+                50%  { transform: scale(1.12); opacity: 1;    }
+
+                /* 50-85%: 呼气 4.2s → 缩小+变浅（呼气更长更放松）*/
+                85%  { transform: scale(1);    opacity: 0.92; }
+
+                /* 85-100%: 屏息 1.8s → 保持 */
+                100% { transform: scale(1);    opacity: 0.92; }
             }
 
             /* 点击特效 */
