@@ -141,17 +141,24 @@
         clinical:   '#5B8DB8',
         motivation: '#D4A373'
     };
-    const categoryNames = {
-        positive:   _t('knowledge_graph.cat_positive', '积极心理学'),
-        cognitive:  _t('knowledge_graph.cat_cognitive', '认知心理学'),
-        clinical:   _t('knowledge_graph.cat_clinical', '临床治疗'),
-        motivation: _t('knowledge_graph.cat_motivation', '动机与改变')
-    };
-    const diffNames = {
-        beginner:     _t('knowledge_graph.diff_beginner', '入门'),
-        intermediate: _t('knowledge_graph.diff_intermediate', '进阶'),
-        advanced:     _t('knowledge_graph.diff_advanced', '深入')
-    };
+    // 分类/难度名称改为函数式，确保语言切换后取值正确
+    function getCategoryName(cat) {
+        const map = {
+            positive:   _t('knowledge_graph.cat_positive', '积极心理学'),
+            cognitive:  _t('knowledge_graph.cat_cognitive', '认知心理学'),
+            clinical:   _t('knowledge_graph.cat_clinical', '临床治疗'),
+            motivation: _t('knowledge_graph.cat_motivation', '动机与改变')
+        };
+        return map[cat] || cat;
+    }
+    function getDiffName(diff) {
+        const map = {
+            beginner:     _t('knowledge_graph.diff_beginner', '入门'),
+            intermediate: _t('knowledge_graph.diff_intermediate', '进阶'),
+            advanced:     _t('knowledge_graph.diff_advanced', '深入')
+        };
+        return map[diff] || diff;
+    }
     const diffColors = {
         beginner:     '#10B981',
         intermediate: '#F59E0B',
@@ -164,18 +171,22 @@
         const errorEl = document.getElementById('errorState');
 
         try {
+            // 根据当前语言选择数据文件
+            const isEn = window.I18N && I18N.currentLocale === 'en';
+            const graphDataFile = isEn ? '/data/graph-en.json' : '/data/graph.json';
+
             // 优先从 API 加载（Blob 存储）
             let data = null;
             try {
                 const json = await Cache.cachedFetch('/api/knowledge/graph');
                 data = { nodes: json.nodes || [], edges: json.edges || [] };
             } catch (apiErr) {
-                console.log('API 加载失败，尝试本地降级', apiErr);
+                console.log('API load failed, trying local fallback', apiErr);
             }
 
             // API 失败则降级到本地 JSON
             if (!data || !data.nodes.length) {
-                data = await Cache.cachedFetch('/data/graph.json');
+                data = await Cache.cachedFetch(graphDataFile);
             }
 
             if (!data || !data.nodes.length) {
@@ -323,7 +334,7 @@
     // ========== Tooltip ==========
     function showTooltip(e, d) {
         const t = document.getElementById('tooltip');
-        t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.8">${categoryNames[d.category] || d.category} · ${diffNames[d.difficulty] || d.difficulty}</span><br/><span style="font-size:.8rem;opacity:.7">${d.author} (${d.year})</span>`;
+        t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.8">${getCategoryName(d.category)} · ${getDiffName(d.difficulty)}</span><br/><span style="font-size:.8rem;opacity:.7">${d.author} (${d.year})</span>`;
         t.style.display = 'block';
         t.style.left = (e.clientX + 12) + 'px';
         t.style.top = (e.clientY - 12) + 'px';
@@ -338,7 +349,7 @@
         const sheet = document.getElementById('detailSheet');
         const header = document.getElementById('detailHeader');
 
-        document.getElementById('detailCategory').textContent = (categoryNames[d.category] || d.category) + ' · ' + (diffNames[d.difficulty] || d.difficulty);
+        document.getElementById('detailCategory').textContent = getCategoryName(d.category) + ' · ' + getDiffName(d.difficulty);
         document.getElementById('detailTitle').textContent = d.label;
         document.getElementById('detailMeta').textContent = d.author + ' (' + d.year + ')';
         header.style.background = 'linear-gradient(135deg,' + (colorMap[d.category] || '#5A9A8A') + ' 0%,' + adjustColor(colorMap[d.category] || '#5A9A8A', -30) + ')';
@@ -403,8 +414,8 @@
             card.style.borderColor = (colorMap[t.category] || '#5A9A8A') + '30';
             card.innerHTML = `
                 <div class="card-header" style="background:linear-gradient(135deg,${colorMap[t.category] || '#5A9A8A'} 0%,${adjustColor(colorMap[t.category] || '#5A9A8A', -30)});">
-                    <div class="card-category-badge">${categoryNames[t.category] || t.category}</div>
-                    <div class="card-difficulty"><span style="width:8px;height:8px;border-radius:50%;background:${diffColors[t.difficulty] || '#ccc'};display:inline-block;"></span> ${diffNames[t.difficulty] || t.difficulty}</div>
+                    <div class="card-category-badge">${getCategoryName(t.category)}</div>
+                    <div class="card-difficulty"><span style="width:8px;height:8px;border-radius:50%;background:${diffColors[t.difficulty] || '#ccc'};display:inline-block;"></span> ${getDiffName(t.difficulty)}</div>
                     <div class="card-title">${t.label}</div>
                     <div class="card-author">${t.author} (${t.year})</div>
                 </div>
@@ -413,7 +424,7 @@
                     <div class="card-tags">
                         <span class="card-tag">${_t('knowledge_graph.tag_selftest', '📋 自测')}</span>
                         <span class="card-tag">${_t('knowledge_graph.tag_practice', '🎯 练习')}</span>
-                        <span class="card-tag">${t.links ? t.links.length : 0} ${_t('knowledge_graph.tag_resources', '个资源')}</span>
+                        <span class="card-tag">${_t('knowledge_graph.tag_resources', '{n} 个资源').replace('{n}', t.links ? t.links.length : 0)}</span>
                     </div>
                 </div>`;
             card.onclick = () => openDetail(t);
