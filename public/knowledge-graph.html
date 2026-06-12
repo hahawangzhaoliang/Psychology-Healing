@@ -861,7 +861,6 @@
         }
 
         document.getElementById('detailBody').innerHTML = html;
-        if (window.lucide) 
         overlay.classList.add('active');
         sheet.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -908,7 +907,6 @@
             card.onclick = () => openDetail(t);
             grid.appendChild(card);
         });
-        if (window.lucide) 
     }
 
     // ========== 路径渲染 ==========
@@ -936,7 +934,6 @@
             stageEl.innerHTML = `<div class="path-stage-header"><div class="path-stage-icon">${stage.icon}</div><div><div class="path-stage-title">${stage.title}</div><div class="path-stage-desc">${stage.desc}</div></div></div><div class="path-cards">${cardsHtml}</div>`;
             container.appendChild(stageEl);
         });
-        if (window.lucide) 
     }
 
     function openDetailById(id) {
@@ -1020,20 +1017,9 @@
     <script>
       renderFooter();
     </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.lucide) 
-      });
-    </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide)
-});
-        document.addEventListener('localeChanged', () => {
-            if (window.lucide)
-});
-    </script>
+
+
 
 <!-- 内联 SVG 精灵 -->
 <!--
