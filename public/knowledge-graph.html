@@ -673,10 +673,13 @@
             loadingEl.style.display = 'none';
             document.getElementById('graphView').style.display = 'block';
 
-            // 初始化视图
-            initGraph();
-            renderCards();
-            renderPath();
+            // 等待浏览器重排后再初始化（否则 wrapper 尺寸为 0）
+            requestAnimationFrame(() => {
+                // 初始化视图
+                initGraph();
+                renderCards();
+                renderPath();
+            });
         } catch (err) {
             console.error('数据加载失败:', err);
             loadingEl.style.display = 'none';
