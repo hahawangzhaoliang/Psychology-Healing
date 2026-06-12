@@ -233,7 +233,7 @@ const AudioManager = {
         this._createOsc('sine', 659.26, t + 0.1, t + 0.3, 0.35);
     },
 
-    /** 🎉 胜利旋律：C-E-G-C 琶音 */
+    /** <svg class="icon icon--md"><use href="#icon-confetti"></use></svg> 胜利旋律：C-E-G-C 琶音 */
     _playWin(t) {
         const melody = [261.63, 329.63, 392.00, 523.25, 659.26, 783.99];
         melody.forEach((freq, i) => {
@@ -1204,7 +1204,7 @@ const CatInteractionManager = {
             btn.innerHTML = `
                 <span class="interaction-emoji">${interaction.emoji}</span>
                 <span class="interaction-name">${interaction.name}</span>
-                ${interaction.cost ? `<span class="interaction-cost">-${interaction.cost}🍪</span>` : ''}
+                ${interaction.cost ? `<span class="interaction-cost">-${interaction.cost}<svg class="icon icon--md"><use href="#icon-cookie"></use></svg></span>` : ''}
             `;
 
             btn.addEventListener('click', () => this.handleInteraction(interaction, catType));
@@ -2023,17 +2023,41 @@ const DOM = {};
 //  初始化
 // ═══════════════════════════════════════════════════
 function init() {
-    // ★ 清理所有可能残留的遮罩（防止刷新后遮罩残留导致无法操作）
-    cleanupAllOverlays();
-
-    cacheDOM();
-    applySettings();
-    bindEvents();
-    // 初始化家园系统
-    HomeSystem.init();
-    startLevel(1);
-    // 显示新手引导（首次）
-    TutorialManager.show();
+    console.log('🐱 init() 开始执行');
+    try {
+        console.log('🐱 cleanupAllOverlays()');
+        cleanupAllOverlays();
+        
+        console.log('🐱 cacheDOM()');
+        cacheDOM();
+        console.log('🐱 DOM.board =', DOM.board);
+        
+        console.log('🐱 applySettings()');
+        applySettings();
+        
+        console.log('🐱 bindEvents()');
+        bindEvents();
+        
+        // 初始化家园系统
+        console.log('🐱 HomeSystem.init()');
+        HomeSystem.init();
+        
+        console.log('🐱 startLevel(1)');
+        startLevel(1);
+        
+        // 显示新手引导（首次）
+        console.log('🐱 TutorialManager.show()');
+        TutorialManager.show();
+        
+        console.log('🐱 init() 执行完成');
+    } catch (e) {
+        console.error('游戏初始化失败:', e);
+        // 在页面上显示错误信息
+        const board = document.getElementById('game-board');
+        if (board) {
+            board.innerHTML = '<div style="color:red;padding:20px;text-align:center;">游戏初始化失败: ' + e.message + '<br>请查看控制台(F12)获取详细信息</div>';
+        }
+    }
 }
 
 /**
@@ -2099,11 +2123,11 @@ function applySettings() {
 
 function updateSettingsUI() {
     if (DOM.btnMute) {
-        DOM.btnMute.textContent = AudioManager.muted ? '🔇' : '🔊';
+        DOM.btnMute.innerHTML = AudioManager.muted ? '<svg class="icon icon--md"><use href="#icon-speaker-x"></use></svg>' : '<svg class="icon icon--md"><use href="#icon-speaker"></use></svg>';
         DOM.btnMute.classList.toggle('muted', AudioManager.muted);
     }
     if (DOM.btnVibrate) {
-        DOM.btnVibrate.textContent = VibrationManager.enabled ? '📳' : '📴';
+        DOM.btnVibrate.innerHTML = VibrationManager.enabled ? '<svg class="icon icon--md"><use href="#icon-vibrate"></use></svg>' : '<svg class="icon icon--md"><use href="#icon-prohibit"></use></svg>';
         DOM.btnVibrate.classList.toggle('disabled-state', !VibrationManager.enabled);
     }
 }
@@ -3456,7 +3480,7 @@ function createGiftEffect(row, col) {
     // 彩带和零食飞出
     setTimeout(() => {
         giftBox.remove();
-        const treats = ['🐟', '🍪', '🥛', '🍗', '🎀'];
+        const treats = ['🐟', '<svg class="icon icon--md"><use href="#icon-cookie"></use></svg>', '🥛', '🍗', '🎀'];
         for (let i = 0; i < 10; i++) {
             const treat = document.createElement('div');
             treat.textContent = treats[Math.floor(Math.random() * treats.length)];
@@ -3943,7 +3967,7 @@ function showAffinityLevelUp(catType, newLevel, unlockedStory) {
     levelUpModal.id = 'affinity-levelup-modal';
     levelUpModal.innerHTML = `
         <div class="levelup-content">
-            <div class="levelup-header">💖 亲密度升级！</div>
+            <div class="levelup-header"><svg class="icon icon--md"><use href="#icon-heart"></use></svg> 亲密度升级！</div>
             <div class="levelup-cat">
                 <img src="assets/images/cats/${catInfo.file}" alt="${catInfo.name}" onerror="this.style.display='none'">
                 <div class="levelup-ring"></div>
@@ -4117,7 +4141,7 @@ function showAffinityPanel() {
     panel.innerHTML = `
         <div class="affinity-panel-content">
             <div class="affinity-panel-header">
-                <h2>💖 猫咪亲密度</h2>
+                <h2><svg class="icon icon--md"><use href="#icon-heart"></use></svg> 猫咪亲密度</h2>
                 <button class="close-btn" onclick="closeAffinityPanel()">✕</button>
             </div>
             <div class="affinity-cats-list">
@@ -4681,7 +4705,7 @@ function showItemHint(itemType) {
     overlay.className = 'item-hint-overlay';
     overlay.innerHTML = `
         <div class="item-hint-bubble">
-            <div style="font-size:18px;margin-bottom:6px;">💡 提示</div>
+            <div style="font-size:18px;margin-bottom:6px;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 提示</div>
             <div>${hintText}</div>
             <div style="margin-top:10px;font-size:12px;opacity:0.8;">点击任意处关闭</div>
         </div>
@@ -4824,7 +4848,7 @@ function useHint() {
                     playSound('hint');
                     showHint(row, col, row, col + 1);
                     updateUI();
-                    showItemFeedback('💡 提示已显示！');
+                    showItemFeedback('<svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 提示已显示！');
                     return;
                 }
             }
@@ -4836,7 +4860,7 @@ function useHint() {
                     playSound('hint');
                     showHint(row, col, row + 1, col);
                     updateUI();
-                    showItemFeedback('💡 提示已显示！');
+                    showItemFeedback('<svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 提示已显示！');
                     return;
                 }
             }
@@ -4896,10 +4920,10 @@ function showPurrEffect() {
     const purrLayer = document.createElement('div');
     purrLayer.id = 'purr-effect-layer';
     purrLayer.innerHTML = `
-        <div class="sleeping-cat cat-left">🐱</div>
-        <div class="sleeping-cat cat-right">🐱</div>
-        <div class="sleeping-cat cat-top">🐱</div>
-        <div class="sleeping-cat cat-bottom">🐱</div>
+        <div class="sleeping-cat cat-left"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
+        <div class="sleeping-cat cat-right"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
+        <div class="sleeping-cat cat-top"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
+        <div class="sleeping-cat cat-bottom"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
     `;
     purrLayer.style.cssText = `
         position: fixed;
@@ -5069,9 +5093,9 @@ function showCuddleAnimation() {
     // 贴贴动画内容
     cuddleLayer.innerHTML = `
         <div class="cuddle-scene">
-            <div class="cuddle-cat left">🐱</div>
-            <div class="cuddle-heart">💖</div>
-            <div class="cuddle-cat right">🐱</div>
+            <div class="cuddle-cat left"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
+            <div class="cuddle-heart"><svg class="icon icon--md"><use href="#icon-heart"></use></svg></div>
+            <div class="cuddle-cat right"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
         </div>
     `;
 
@@ -5142,7 +5166,7 @@ function showHomeScreen() {
     homeScreen.innerHTML = `
         <div class="home-overlay">
             <div class="home-header">
-                <h2>🏠 猫咪家园</h2>
+                <h2><svg class="icon icon--md"><use href="#icon-house"></use></svg> 猫咪家园</h2>
                 <div class="home-level-info">
                     <span class="home-level">Lv.${HomeSystem.homeLevel}</span>
                     <div class="home-exp-bar">
@@ -5150,13 +5174,13 @@ function showHomeScreen() {
                     </div>
                     <span class="home-comfort">舒适度: ${HomeSystem.getComfortLevel()}</span>
                 </div>
-                <button class="home-close-btn" onclick="closeHomeScreen()">✕</button>
+        <button class="home-close-btn" onclick="closeHomeScreen()"><svg class="icon icon--md"><use href="#icon-x"></use></svg></button>
             </div>
             <div class="home-content">
                 <div class="home-sidebar">
-                    <button class="home-tab-btn active" data-tab="scene" onclick="switchHomeTab('scene')">🏠<br>场景</button>
-                    <button class="home-tab-btn" data-tab="shop" onclick="switchHomeTab('shop')">🛒<br>商店</button>
-                    <button class="home-tab-btn" data-tab="themes" onclick="switchHomeTab('themes')">🎨<br>主题</button>
+                    <button class="home-tab-btn active" data-tab="scene" onclick="switchHomeTab('scene')"><svg class="icon icon--md"><use href="#icon-house"></use></svg><br>场景</button>
+                    <button class="home-tab-btn" data-tab="shop" onclick="switchHomeTab('shop')"><svg class="icon icon--md"><use href="#icon-shop"></use></svg><br>商店</button>
+                    <button class="home-tab-btn" data-tab="themes" onclick="switchHomeTab('themes')"><svg class="icon icon--md"><use href="#icon-palette"></use></svg><br>主题</button>
                 </div>
                 <div class="home-main">
                     <div id="home-tab-scene" class="home-tab-content active">
@@ -5234,7 +5258,7 @@ function renderHomeScene() {
     return `
         <div class="home-scene">
             <div class="scene-preview">
-                <div class="scene-cat">🐱</div>
+                <div class="scene-cat"><svg class="icon icon--md"><use href="#icon-cat"></use></svg></div>
                 <div class="scene-decorations">
                     ${purchasedItems.slice(0, 5).map((item, i) => `
                         <div class="scene-decoration-item" style="${Object.entries(positions[i] || positions[0]).map(([k, v]) => `${k}:${v}`).join(';')}; animation-delay: ${i * 0.3}s">
@@ -5259,24 +5283,24 @@ function renderHomeShop() {
     const unpurchasedItems = HomeSystem.getUnpurchasedItems();
     const currentCookies = gameState.cookies;
 
-    if (unpurchasedItems.length === 0) {
+        if (unpurchasedItems.length === 0) {
+            return `
+                <div class="shop-header">
+                    <h3>装饰商店</h3>
+                    <span class="shop-cookies"><svg class="icon icon--md"><use href="#icon-cookie"></use></svg> ${currentCookies}</span>
+                </div>
+                <div class="shop-empty">
+                    <div class="shop-empty-icon"><svg class="icon icon--md"><use href="#icon-confetti"></use></svg></div>
+                    <div class="shop-empty-text">太棒了！<br>你已经购买了所有装饰！</div>
+                </div>
+            `;
+        }
+
         return `
             <div class="shop-header">
                 <h3>装饰商店</h3>
-                <span class="shop-cookies">🍪 ${currentCookies}</span>
+                <span class="shop-cookies"><svg class="icon icon--md"><use href="#icon-cookie"></use></svg> ${currentCookies}</span>
             </div>
-            <div class="shop-empty">
-                <div class="shop-empty-icon">🎉</div>
-                <div class="shop-empty-text">太棒了！<br>你已经购买了所有装饰！</div>
-            </div>
-        `;
-    }
-
-    return `
-        <div class="shop-header">
-            <h3>装饰商店</h3>
-            <span class="shop-cookies">🍪 ${currentCookies}</span>
-        </div>
         <div class="shop-grid">
             ${unpurchasedItems.map(item => {
                 const canAfford = currentCookies >= item.cost;
@@ -5288,8 +5312,11 @@ function renderHomeShop() {
                         <button class="shop-item-cost ${canAfford ? 'can-buy' : 'cannot-buy'}" 
                                 onclick="buyHomeItem('${item.id}')"
                                 ${!canAfford ? 'disabled' : ''}>
-                            🍪 ${item.cost}
-                        </button>
+                            <button class="shop-item-cost ${canAfford ? 'can-buy' : 'cannot-buy'}" 
+                                            onclick="buyHomeItem('${item.id}')"
+                                            ${!canAfford ? 'disabled' : ''}>
+                                        <svg class="icon icon--md"><use href="#icon-cookie"></use></svg> ${item.cost}
+                                    </button>
                     </div>
                 `;
             }).join('')}

@@ -79,6 +79,479 @@
     <script src="js/i18n.js"></script>
 </head>
 <body>
+<!-- 内联 SVG 图标定义 -->
+<!--
+  心晴空间 — 疗愈风格自定义 SVG 图标集
+  设计理念：柔和、手绘感、有机形态、温暖疗愈
+  使用方式：<svg class="icon icon--lg"><use href="#icon-home"></use></svg>
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+
+  <!-- ========== 首页 / 心晴空间 Logo ========== -->
+  <symbol id="icon-home" viewBox="0 0 48 48">
+    <!-- 小房子 + 心形窗户 -->
+    <path d="M24 6 L6 22 L10 22 L10 40 L38 40 L38 22 L42 22 Z"
+          fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- 门 -->
+    <path d="M19 40 L19 30 Q24 27 29 30 L29 40"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 屋顶小装饰（叶子） -->
+    <path d="M24 6 Q20 2 16 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 情绪觉察 ========== -->
+  <symbol id="icon-emotion" viewBox="0 0 48 48">
+    <!-- 脸 -->
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 眼睛：弯弯的笑眼 -->
+    <path d="M16 20 Q18 16 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M28 20 Q30 16 32 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 嘴巴：微笑弧线 -->
+    <path d="M17 29 Q24 36 31 29" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 脸颊红晕（用两个小弧表示） -->
+    <path d="M13 25 Q12 28 14 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M34 25 Q35 28 33 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 心流体验 ========== -->
+  <symbol id="icon-flow" viewBox="0 0 48 48">
+    <!-- 水波纹扩散，表示心流状态 -->
+    <circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="24" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <!-- 中心小点 -->
+    <circle cx="24" cy="24" r="2" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 知识图谱 ========== -->
+  <symbol id="icon-knowledge" viewBox="0 0 48 48">
+    <!-- 节点连接图，表示知识网络 -->
+    <!-- 中心节点 -->
+    <circle cx="24" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 左下节点 -->
+    <circle cx="14" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 右下节点 -->
+    <circle cx="34" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 连接线（柔和曲线） -->
+    <path d="M22 22 Q20 28 16 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M26 22 Q28 28 32 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M20 18 Q24 15 28 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <!-- 小装饰：中心节点内的小点 -->
+    <circle cx="24" cy="18" r="1.5" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 社区 ========== -->
+  <symbol id="icon-community" viewBox="0 0 48 48">
+    <!-- 两个人物，手拉手 -->
+    <!-- 左边人物 -->
+    <circle cx="17" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M10 46 Q10 30 17 28 Q24 30 24 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 右边人物 -->
+    <circle cx="31" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M24 46 Q24 30 31 28 Q38 30 38 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 手拉手（弧线） -->
+    <path d="M22 22 Q24 26 26 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 猫咪（消消乐） ========== -->
+  <symbol id="icon-cat" viewBox="0 0 48 48">
+    <!-- 猫头 -->
+    <path d="M14 20 Q10 8 20 12 Q24 6 28 12 Q38 8 34 20"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 猫脸 -->
+    <circle cx="24" cy="26" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 眼睛 -->
+    <ellipse cx="20" cy="24" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="28" cy="24" rx="2" ry="2.5" fill="currentColor"/>
+    <!-- 鼻子 -->
+    <path d="M24 27 L22.5 29 L25.5 29 Z" fill="currentColor"/>
+    <!-- 嘴巴 -->
+    <path d="M22.5 29 Q24 32 25.5 29" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- 胡须 -->
+    <path d="M15 26 Q12 25 13 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M15 28 Q12 29 13 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M33 26 Q36 25 35 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M33 28 Q36 29 35 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 设置 ========== -->
+  <symbol id="icon-settings" viewBox="0 0 48 48">
+    <!-- 齿轮，但用柔和线条 -->
+    <circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 齿轮齿（圆角矩形） -->
+    <rect x="22" y="4" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="22" y="36" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="4" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="36" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 斜角齿 -->
+    <rect x="37.5" y="7.5" width="4" height="8" rx="2" transform="rotate(45 39.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="6.5" y="32.5" width="4" height="8" rx="2" transform="rotate(45 8.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="37.5" y="32.5" width="4" height="8" rx="2" transform="rotate(-45 39.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="6.5" y="7.5" width="4" height="8" rx="2" transform="rotate(-45 8.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 中心小圆 -->
+    <circle cx="24" cy="24" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  </symbol>
+
+  <!-- ========== 爱心（疗愈核心图标） ========== -->
+  <symbol id="icon-heart" viewBox="0 0 48 48">
+    <!-- 手绘风格爱心 -->
+    <path d="M24 42 Q10 32 10 20 Q10 10 18 10 Q22 10 24 14 Q26 10 30 10 Q38 10 38 20 Q38 32 24 42 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 叶子 / 自然疗愈 ========== -->
+  <symbol id="icon-leaf" viewBox="0 0 48 48">
+    <!-- 一片叶子 -->
+    <path d="M24 6 Q38 14 38 28 Q38 42 24 42 Q10 42 10 28 Q10 14 24 6 Z"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <!-- 叶脉 -->
+    <path d="M24 8 Q24 20 24 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <!-- 侧脉 -->
+    <path d="M24 16 Q32 12 34 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 24 Q34 20 36 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 16 Q16 12 14 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 24 Q16 20 14 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 星星 ========== -->
+  <symbol id="icon-star" viewBox="0 0 48 48">
+    <!-- 五角星，柔和线条 -->
+    <path d="M24 4 L29 18 L44 18 L32 27 L36 42 L24 33 L12 42 L16 27 L4 18 L19 18 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 太阳（光明/希望） ========== -->
+  <symbol id="icon-sun" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 光芒（柔和短线） -->
+    <line x1="24" y1="6" x2="24" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="24" y1="36" x2="24" y2="42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="6" y1="24" x2="12" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="36" y1="24" x2="42" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="11" y1="11" x2="15.5" y2="15.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="32.5" y1="32.5" x2="37" y2="37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="37" y1="11" x2="32.5" y2="15.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15.5" y1="32.5" x2="11" y2="37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 月亮（夜间疗愈） ========== -->
+  <symbol id="icon-moon" viewBox="0 0 48 48">
+    <!-- 弯月 -->
+    <path d="M32 10 Q24 10 20 20 Q16 30 22 38 Q30 44 36 40 Q40 36 40 28 Q40 18 32 10 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 内部小弧 -->
+    <path d="M28 16 Q26 24 30 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  </symbol>
+
+  <!-- ========== 云朵（轻松/呼吸） ========== -->
+  <symbol id="icon-cloud" viewBox="0 0 48 48">
+    <path d="M14 34 Q8 32 8 26 Q8 20 14 20 Q14 12 22 12 Q28 6 36 10 Q42 10 42 18 Q48 18 42 24 Q44 32 38 34 Z"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 树（成长） ========== -->
+  <symbol id="icon-tree" viewBox="0 0 48 48">
+    <!-- 树冠（云朵状） -->
+    <circle cx="24" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 第二层树冠 -->
+    <circle cx="18" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <circle cx="30" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <!-- 树干 -->
+    <path d="M21 28 L21 42 L27 42 L27 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 花朵（绽放） ========== -->
+  <symbol id="icon-flower" viewBox="0 0 48 48">
+    <!-- 五片花瓣 -->
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(0 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(72 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(144 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(216 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(288 24 24)"/>
+    <!-- 花心 -->
+    <circle cx="24" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor" opacity="0.5"/>
+    <!-- 茎 -->
+    <path d="M24 28 Q22 36 24 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 水波 / 呼吸练习 ========== -->
+  <symbol id="icon-breathe" viewBox="0 0 48 48">
+    <!-- 呼吸波纹 -->
+    <ellipse cx="24" cy="24" rx="6" ry="12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+    <ellipse cx="24" cy="24" rx="11" ry="17" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.35"/>
+    <ellipse cx="24" cy="24" rx="16" ry="21" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+    <!-- 中心小圆 -->
+    <circle cx="24" cy="24" r="3" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 日记 / 情绪记录 ========== -->
+  <symbol id="icon-journal" viewBox="0 0 48 48">
+    <!-- 笔记本 -->
+    <rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 书脊 -->
+    <line x1="16" y1="6" x2="16" y2="42" stroke="currentColor" stroke-width="2"/>
+    <!-- 文字线 -->
+    <line x1="20" y1="16" x2="36" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="22" x2="34" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="28" x2="36" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="34" x2="30" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 播放（音频/冥想引导） ========== -->
+  <symbol id="icon-play" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 播放三角形 -->
+    <path d="M19 14 L19 34 L36 24 Z" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 暂停 ========== -->
+  <symbol id="icon-pause" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <rect x="17" y="14" width="4" height="20" rx="1.5" fill="currentColor" opacity="0.8"/>
+    <rect x="27" y="14" width="4" height="20" rx="1.5" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 饼干（猫咪消消乐道具） ========== -->
+  <symbol id="icon-cookie" viewBox="0 0 48 48">
+    <!-- 圆形饼干 -->
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 饼干纹理（巧克力豆） -->
+    <circle cx="18" cy="18" r="2.5" fill="currentColor" opacity="0.5"/>
+    <circle cx="30" cy="20" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="22" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
+    <circle cx="32" cy="32" r="1.8" fill="currentColor" opacity="0.5"/>
+    <!-- 表面纹理 -->
+    <path d="M16 24 Q20 22 24 24 Q28 26 32 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+  </symbol>
+
+  <!-- ========== 炸弹（道具） ========== -->
+  <symbol id="icon-bomb" viewBox="0 0 48 48">
+    <circle cx="24" cy="28" r="13" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 引线 -->
+    <path d="M32 18 Q36 14 34 10 Q32 8 34 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 小火苗 -->
+    <path d="M34 6 Q33 4 34 2 Q36 3 35 6" fill="currentColor" opacity="0.7"/>
+    <!-- 表情 -->
+    <circle cx="20" cy="26" r="1.8" fill="currentColor"/>
+    <circle cx="28" cy="26" r="1.8" fill="currentColor"/>
+    <path d="M21 32 Q24 35 27 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 刷新 ========== -->
+  <symbol id="icon-refresh" viewBox="0 0 48 48">
+    <path d="M14 14 A16 16 0 1 1 20 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 14 L10 20 L20 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M34 34 A16 16 0 1 1 28 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M34 34 L38 28 L28 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 灯泡 / 提示 ========== -->
+  <symbol id="icon-lightbulb" viewBox="0 0 48 48">
+    <!-- 灯泡 -->
+    <path d="M18 14 Q16 8 24 6 Q32 8 30 14 Q34 18 34 24 Q34 32 24 34 Q14 32 14 24 Q14 18 18 14 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 灯座 -->
+    <rect x="20" y="34" width="8" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="19" y="38" width="10" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 光线 -->
+    <line x1="12" y1="10" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+    <line x1="36" y1="10" x2="40" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 撒花 / 庆祝 ========== -->
+  <symbol id="icon-confetti" viewBox="0 0 48 48">
+    <!-- 彩带碎片 -->
+    <rect x="12" y="8" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-20 15 9.5)"/>
+    <rect x="28" y="6" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(25 31 7.5)"/>
+    <rect x="18" y="36" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-15 21 37.5)"/>
+    <rect x="32" y="32" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(20 35 33.5)"/>
+    <!-- 圆形碎片 -->
+    <circle cx="10" cy="24" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="38" cy="22" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="24" cy="42" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 中心星星 -->
+    <path d="M24 14 L26 20 L32 20 L27 24 L29 30 L24 26 L19 30 L21 24 L16 20 L22 20 Z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 静音 ========== -->
+  <symbol id="icon-speaker-x" viewBox="0 0 48 48">
+    <!-- 喇叭 -->
+    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 禁止斜线 -->
+    <line x1="34" y1="10" x2="42" y2="38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 声音 ========== -->
+  <symbol id="icon-speaker" viewBox="0 0 48 48">
+    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 声波 -->
+    <path d="M34 16 Q38 24 34 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M38 12 Q44 24 38 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 禁止/关闭震动 ========== -->
+  <symbol id="icon-prohibit" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 返回首页 ========== -->
+  <symbol id="icon-house" viewBox="0 0 48 48">
+    <!-- 简洁房子 -->
+    <path d="M6 22 L24 6 L42 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M12 20 L12 38 L36 38 L36 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <rect x="19" y="28" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+
+  <!-- ========== 商店 ========== -->
+  <symbol id="icon-shop" viewBox="0 0 48 48">
+    <!-- 商店 -->
+    <path d="M8 18 L8 40 L40 40 L40 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 屋顶 -->
+    <path d="M4 18 L24 6 L44 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- 门 -->
+    <rect x="20" y="28" width="8" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 橱窗 -->
+    <rect x="10" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <rect x="30" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 调色板（主题切换） ========== -->
+  <symbol id="icon-palette" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 颜色点 -->
+    <circle cx="18" cy="18" r="3" fill="#5cb8a8" opacity="0.7"/>
+    <circle cx="30" cy="16" r="2.5" fill="#f4a261" opacity="0.7"/>
+    <circle cx="32" cy="28" r="2.8" fill="#ef4444" opacity="0.5"/>
+    <circle cx="20" cy="32" r="2.2" fill="#10b981" opacity="0.6"/>
+    <circle cx="16" cy="26" r="1.8" fill="#6b9a9a" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 箭头循环（重新开始） ========== -->
+  <symbol id="icon-arrows-clockwise" viewBox="0 0 48 48">
+    <path d="M14 8 A17 17 0 1 1 14 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 8 L8 14 L20 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 震动 ========== -->
+  <symbol id="icon-vibrate" viewBox="0 0 48 48">
+    <!-- 手机 -->
+    <rect x="15" y="6" width="18" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 震动弧线 -->
+    <path d="M10 16 Q6 24 10 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M38 16 Q42 24 38 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 屏幕内容 -->
+    <rect x="18" y="12" width="12" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 关闭 ========== -->
+  <symbol id="icon-x" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <line x1="16" y1="16" x2="32" y2="32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="32" y1="16" x2="16" y2="32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 汉堡菜单 ========== -->
+  <symbol id="icon-menu" viewBox="0 0 48 48">
+    <line x1="10" y1="14" x2="38" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <line x1="10" y1="24" x2="38" y2="24" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <line x1="10" y1="34" x2="38" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 搜索 ========== -->
+  <symbol id="icon-search" viewBox="0 0 48 48">
+    <circle cx="20" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="30" y1="30" x2="42" y2="42" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 用户 ========== -->
+  <symbol id="icon-user" viewBox="0 0 48 48">
+    <circle cx="24" cy="16" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M8 42 Q8 30 24 28 Q40 30 40 42" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 锁（专注模式） ========== -->
+  <symbol id="icon-lock" viewBox="0 0 48 48">
+    <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 锁扣 -->
+    <path d="M18 22 L18 14 Q18 8 24 8 Q30 8 30 14 L30 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 锁孔 -->
+    <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
+    <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 解锁（退出专注） ========== -->
+  <symbol id="icon-unlock" viewBox="0 0 48 48">
+    <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 打开的锁扣 -->
+    <path d="M18 22 L18 14 Q18 8 24 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 锁孔 -->
+    <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
+    <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 向下箭头 ========== -->
+  <symbol id="icon-chevron-down" viewBox="0 0 48 48">
+    <path d="M12 18 L24 32 L36 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 向右箭头 ========== -->
+  <symbol id="icon-chevron-right" viewBox="0 0 48 48">
+    <path d="M18 12 L32 24 L18 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 关闭圈（猫咪请求完成） ========== -->
+  <symbol id="icon-circle-check" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M16 24 L22 30 L34 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 饼干（简版，用于标签） ========== -->
+  <symbol id="icon-cookie-simple" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <circle cx="19" cy="20" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="29" cy="22" r="1.8" fill="currentColor" opacity="0.5"/>
+    <circle cx="23" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 派对（庆祝） ========== -->
+  <symbol id="icon-party" viewBox="0 0 48 48">
+    <!-- 派对帽子 -->
+    <path d="M24 6 L14 28 L34 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 帽子花纹 -->
+    <circle cx="24" cy="16" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="19" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
+    <circle cx="29" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
+    <!-- 底部装饰带 -->
+    <path d="M14 28 Q24 32 34 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 小星星 -->
+    <path d="M10 18 L12 22 L8 22 Z" fill="currentColor" opacity="0.5"/>
+    <path d="M36 16 L39 20 L34 18 Z" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 地球/全球 ========== -->
+  <symbol id="icon-globe" viewBox="0 0 48 48">
+    <!-- 地球圆圈 -->
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 经线（椭圆弧线，手绘感） -->
+    <path d="M24 6 Q32 24 24 42" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <path d="M24 6 Q16 24 24 42" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <!-- 纬线 -->
+    <path d="M10 18 Q24 14 38 18" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <path d="M10 30 Q24 34 38 30" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <!-- 小陆块（右下） -->
+    <path d="M28 20 Q34 18 36 24 Q34 28 28 26 Z" fill="currentColor" opacity="0.25"/>
+    <!-- 小陆块（左下） -->
+    <path d="M14 28 Q18 26 20 32 Q16 34 14 30 Z" fill="currentColor" opacity="0.2"/>
+  </symbol>
+
+</svg>
+
+
     <!-- ===== 导航栏（由 header.js 渲染） ===== -->
     <div id="app-header"></div>
 
@@ -270,5 +743,462 @@
     <script>
       renderHeader({ currentPage: 'growth-statistics' });
     </script>
+
+<!-- 内联 SVG 精灵 -->
+<!--
+  心晴空间 — 疗愈风格自定义 SVG 图标集
+  设计理念：柔和、手绘感、有机形态、温暖疗愈
+  使用方式：<svg class="icon icon--lg"><use href="#icon-home"></use></svg>
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+
+  <!-- ========== 首页 / 心晴空间 Logo ========== -->
+  <symbol id="icon-home" viewBox="0 0 48 48">
+    <!-- 小房子 + 心形窗户 -->
+    <path d="M24 6 L6 22 L10 22 L10 40 L38 40 L38 22 L42 22 Z"
+          fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- 门 -->
+    <path d="M19 40 L19 30 Q24 27 29 30 L29 40"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 屋顶小装饰（叶子） -->
+    <path d="M24 6 Q20 2 16 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 情绪觉察 ========== -->
+  <symbol id="icon-emotion" viewBox="0 0 48 48">
+    <!-- 脸 -->
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 眼睛：弯弯的笑眼 -->
+    <path d="M16 20 Q18 16 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M28 20 Q30 16 32 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 嘴巴：微笑弧线 -->
+    <path d="M17 29 Q24 36 31 29" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 脸颊红晕（用两个小弧表示） -->
+    <path d="M13 25 Q12 28 14 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+    <path d="M34 25 Q35 28 33 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 心流体验 ========== -->
+  <symbol id="icon-flow" viewBox="0 0 48 48">
+    <!-- 水波纹扩散，表示心流状态 -->
+    <circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="24" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <!-- 中心小点 -->
+    <circle cx="24" cy="24" r="2" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 知识图谱 ========== -->
+  <symbol id="icon-knowledge" viewBox="0 0 48 48">
+    <!-- 节点连接图，表示知识网络 -->
+    <!-- 中心节点 -->
+    <circle cx="24" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 左下节点 -->
+    <circle cx="14" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 右下节点 -->
+    <circle cx="34" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 连接线（柔和曲线） -->
+    <path d="M22 22 Q20 28 16 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M26 22 Q28 28 32 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <path d="M20 18 Q24 15 28 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+    <!-- 小装饰：中心节点内的小点 -->
+    <circle cx="24" cy="18" r="1.5" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 社区 ========== -->
+  <symbol id="icon-community" viewBox="0 0 48 48">
+    <!-- 两个人物，手拉手 -->
+    <!-- 左边人物 -->
+    <circle cx="17" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M10 46 Q10 30 17 28 Q24 30 24 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 右边人物 -->
+    <circle cx="31" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M24 46 Q24 30 31 28 Q38 30 38 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 手拉手（弧线） -->
+    <path d="M22 22 Q24 26 26 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 猫咪（消消乐） ========== -->
+  <symbol id="icon-cat" viewBox="0 0 48 48">
+    <!-- 猫头 -->
+    <path d="M14 20 Q10 8 20 12 Q24 6 28 12 Q38 8 34 20"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 猫脸 -->
+    <circle cx="24" cy="26" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 眼睛 -->
+    <ellipse cx="20" cy="24" rx="2" ry="2.5" fill="currentColor"/>
+    <ellipse cx="28" cy="24" rx="2" ry="2.5" fill="currentColor"/>
+    <!-- 鼻子 -->
+    <path d="M24 27 L22.5 29 L25.5 29 Z" fill="currentColor"/>
+    <!-- 嘴巴 -->
+    <path d="M22.5 29 Q24 32 25.5 29" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- 胡须 -->
+    <path d="M15 26 Q12 25 13 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M15 28 Q12 29 13 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M33 26 Q36 25 35 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M33 28 Q36 29 35 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 设置 ========== -->
+  <symbol id="icon-settings" viewBox="0 0 48 48">
+    <!-- 齿轮，但用柔和线条 -->
+    <circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 齿轮齿（圆角矩形） -->
+    <rect x="22" y="4" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="22" y="36" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="4" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="36" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 斜角齿 -->
+    <rect x="37.5" y="7.5" width="4" height="8" rx="2" transform="rotate(45 39.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="6.5" y="32.5" width="4" height="8" rx="2" transform="rotate(45 8.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="37.5" y="32.5" width="4" height="8" rx="2" transform="rotate(-45 39.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="6.5" y="7.5" width="4" height="8" rx="2" transform="rotate(-45 8.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 中心小圆 -->
+    <circle cx="24" cy="24" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+  </symbol>
+
+  <!-- ========== 爱心（疗愈核心图标） ========== -->
+  <symbol id="icon-heart" viewBox="0 0 48 48">
+    <!-- 手绘风格爱心 -->
+    <path d="M24 42 Q10 32 10 20 Q10 10 18 10 Q22 10 24 14 Q26 10 30 10 Q38 10 38 20 Q38 32 24 42 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 叶子 / 自然疗愈 ========== -->
+  <symbol id="icon-leaf" viewBox="0 0 48 48">
+    <!-- 一片叶子 -->
+    <path d="M24 6 Q38 14 38 28 Q38 42 24 42 Q10 42 10 28 Q10 14 24 6 Z"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <!-- 叶脉 -->
+    <path d="M24 8 Q24 20 24 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <!-- 侧脉 -->
+    <path d="M24 16 Q32 12 34 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 24 Q34 20 36 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 16 Q16 12 14 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 24 Q16 20 14 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 星星 ========== -->
+  <symbol id="icon-star" viewBox="0 0 48 48">
+    <!-- 五角星，柔和线条 -->
+    <path d="M24 4 L29 18 L44 18 L32 27 L36 42 L24 33 L12 42 L16 27 L4 18 L19 18 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 太阳（光明/希望） ========== -->
+  <symbol id="icon-sun" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 光芒（柔和短线） -->
+    <line x1="24" y1="6" x2="24" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="24" y1="36" x2="24" y2="42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="6" y1="24" x2="12" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="36" y1="24" x2="42" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="11" y1="11" x2="15.5" y2="15.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="32.5" y1="32.5" x2="37" y2="37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="37" y1="11" x2="32.5" y2="15.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15.5" y1="32.5" x2="11" y2="37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 月亮（夜间疗愈） ========== -->
+  <symbol id="icon-moon" viewBox="0 0 48 48">
+    <!-- 弯月 -->
+    <path d="M32 10 Q24 10 20 20 Q16 30 22 38 Q30 44 36 40 Q40 36 40 28 Q40 18 32 10 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 内部小弧 -->
+    <path d="M28 16 Q26 24 30 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  </symbol>
+
+  <!-- ========== 云朵（轻松/呼吸） ========== -->
+  <symbol id="icon-cloud" viewBox="0 0 48 48">
+    <path d="M14 34 Q8 32 8 26 Q8 20 14 20 Q14 12 22 12 Q28 6 36 10 Q42 10 42 18 Q48 18 42 24 Q44 32 38 34 Z"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 树（成长） ========== -->
+  <symbol id="icon-tree" viewBox="0 0 48 48">
+    <!-- 树冠（云朵状） -->
+    <circle cx="24" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 第二层树冠 -->
+    <circle cx="18" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <circle cx="30" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
+    <!-- 树干 -->
+    <path d="M21 28 L21 42 L27 42 L27 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 花朵（绽放） ========== -->
+  <symbol id="icon-flower" viewBox="0 0 48 48">
+    <!-- 五片花瓣 -->
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(0 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(72 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(144 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(216 24 24)"/>
+    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(288 24 24)"/>
+    <!-- 花心 -->
+    <circle cx="24" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor" opacity="0.5"/>
+    <!-- 茎 -->
+    <path d="M24 28 Q22 36 24 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 水波 / 呼吸练习 ========== -->
+  <symbol id="icon-breathe" viewBox="0 0 48 48">
+    <!-- 呼吸波纹 -->
+    <ellipse cx="24" cy="24" rx="6" ry="12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/>
+    <ellipse cx="24" cy="24" rx="11" ry="17" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.35"/>
+    <ellipse cx="24" cy="24" rx="16" ry="21" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
+    <!-- 中心小圆 -->
+    <circle cx="24" cy="24" r="3" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 日记 / 情绪记录 ========== -->
+  <symbol id="icon-journal" viewBox="0 0 48 48">
+    <!-- 笔记本 -->
+    <rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 书脊 -->
+    <line x1="16" y1="6" x2="16" y2="42" stroke="currentColor" stroke-width="2"/>
+    <!-- 文字线 -->
+    <line x1="20" y1="16" x2="36" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="22" x2="34" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="28" x2="36" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+    <line x1="20" y1="34" x2="30" y2="34" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 播放（音频/冥想引导） ========== -->
+  <symbol id="icon-play" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 播放三角形 -->
+    <path d="M19 14 L19 34 L36 24 Z" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 暂停 ========== -->
+  <symbol id="icon-pause" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <rect x="17" y="14" width="4" height="20" rx="1.5" fill="currentColor" opacity="0.8"/>
+    <rect x="27" y="14" width="4" height="20" rx="1.5" fill="currentColor" opacity="0.8"/>
+  </symbol>
+
+  <!-- ========== 饼干（猫咪消消乐道具） ========== -->
+  <symbol id="icon-cookie" viewBox="0 0 48 48">
+    <!-- 圆形饼干 -->
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 饼干纹理（巧克力豆） -->
+    <circle cx="18" cy="18" r="2.5" fill="currentColor" opacity="0.5"/>
+    <circle cx="30" cy="20" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="22" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
+    <circle cx="32" cy="32" r="1.8" fill="currentColor" opacity="0.5"/>
+    <!-- 表面纹理 -->
+    <path d="M16 24 Q20 22 24 24 Q28 26 32 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+  </symbol>
+
+  <!-- ========== 炸弹（道具） ========== -->
+  <symbol id="icon-bomb" viewBox="0 0 48 48">
+    <circle cx="24" cy="28" r="13" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 引线 -->
+    <path d="M32 18 Q36 14 34 10 Q32 8 34 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 小火苗 -->
+    <path d="M34 6 Q33 4 34 2 Q36 3 35 6" fill="currentColor" opacity="0.7"/>
+    <!-- 表情 -->
+    <circle cx="20" cy="26" r="1.8" fill="currentColor"/>
+    <circle cx="28" cy="26" r="1.8" fill="currentColor"/>
+    <path d="M21 32 Q24 35 27 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 刷新 ========== -->
+  <symbol id="icon-refresh" viewBox="0 0 48 48">
+    <path d="M14 14 A16 16 0 1 1 20 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 14 L10 20 L20 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M34 34 A16 16 0 1 1 28 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M34 34 L38 28 L28 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 灯泡 / 提示 ========== -->
+  <symbol id="icon-lightbulb" viewBox="0 0 48 48">
+    <!-- 灯泡 -->
+    <path d="M18 14 Q16 8 24 6 Q32 8 30 14 Q34 18 34 24 Q34 32 24 34 Q14 32 14 24 Q14 18 18 14 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 灯座 -->
+    <rect x="20" y="34" width="8" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <rect x="19" y="38" width="10" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 光线 -->
+    <line x1="12" y1="10" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+    <line x1="36" y1="10" x2="40" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 撒花 / 庆祝 ========== -->
+  <symbol id="icon-confetti" viewBox="0 0 48 48">
+    <!-- 彩带碎片 -->
+    <rect x="12" y="8" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-20 15 9.5)"/>
+    <rect x="28" y="6" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(25 31 7.5)"/>
+    <rect x="18" y="36" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-15 21 37.5)"/>
+    <rect x="32" y="32" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(20 35 33.5)"/>
+    <!-- 圆形碎片 -->
+    <circle cx="10" cy="24" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="38" cy="22" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="24" cy="42" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <!-- 中心星星 -->
+    <path d="M24 14 L26 20 L32 20 L27 24 L29 30 L24 26 L19 30 L21 24 L16 20 L22 20 Z"
+          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 静音 ========== -->
+  <symbol id="icon-speaker-x" viewBox="0 0 48 48">
+    <!-- 喇叭 -->
+    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 禁止斜线 -->
+    <line x1="34" y1="10" x2="42" y2="38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 声音 ========== -->
+  <symbol id="icon-speaker" viewBox="0 0 48 48">
+    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
+          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 声波 -->
+    <path d="M34 16 Q38 24 34 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M38 12 Q44 24 38 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 禁止/关闭震动 ========== -->
+  <symbol id="icon-prohibit" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 返回首页 ========== -->
+  <symbol id="icon-house" viewBox="0 0 48 48">
+    <!-- 简洁房子 -->
+    <path d="M6 22 L24 6 L42 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M12 20 L12 38 L36 38 L36 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <rect x="19" y="28" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+
+  <!-- ========== 商店 ========== -->
+  <symbol id="icon-shop" viewBox="0 0 48 48">
+    <!-- 商店 -->
+    <path d="M8 18 L8 40 L40 40 L40 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 屋顶 -->
+    <path d="M4 18 L24 6 L44 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <!-- 门 -->
+    <rect x="20" y="28" width="8" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <!-- 橱窗 -->
+    <rect x="10" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+    <rect x="30" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 调色板（主题切换） ========== -->
+  <symbol id="icon-palette" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 颜色点 -->
+    <circle cx="18" cy="18" r="3" fill="#5cb8a8" opacity="0.7"/>
+    <circle cx="30" cy="16" r="2.5" fill="#f4a261" opacity="0.7"/>
+    <circle cx="32" cy="28" r="2.8" fill="#ef4444" opacity="0.5"/>
+    <circle cx="20" cy="32" r="2.2" fill="#10b981" opacity="0.6"/>
+    <circle cx="16" cy="26" r="1.8" fill="#6b9a9a" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 箭头循环（重新开始） ========== -->
+  <symbol id="icon-arrows-clockwise" viewBox="0 0 48 48">
+    <path d="M14 8 A17 17 0 1 1 14 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M14 8 L8 14 L20 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 震动 ========== -->
+  <symbol id="icon-vibrate" viewBox="0 0 48 48">
+    <!-- 手机 -->
+    <rect x="15" y="6" width="18" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 震动弧线 -->
+    <path d="M10 16 Q6 24 10 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M38 16 Q42 24 38 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 屏幕内容 -->
+    <rect x="18" y="12" width="12" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+  </symbol>
+
+  <!-- ========== 关闭 ========== -->
+  <symbol id="icon-x" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <line x1="16" y1="16" x2="32" y2="32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="32" y1="16" x2="16" y2="32" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 汉堡菜单 ========== -->
+  <symbol id="icon-menu" viewBox="0 0 48 48">
+    <line x1="10" y1="14" x2="38" y2="14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <line x1="10" y1="24" x2="38" y2="24" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+    <line x1="10" y1="34" x2="38" y2="34" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 搜索 ========== -->
+  <symbol id="icon-search" viewBox="0 0 48 48">
+    <circle cx="20" cy="20" r="12" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <line x1="30" y1="30" x2="42" y2="42" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+
+  <!-- ========== 用户 ========== -->
+  <symbol id="icon-user" viewBox="0 0 48 48">
+    <circle cx="24" cy="16" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M8 42 Q8 30 24 28 Q40 30 40 42" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 锁（专注模式） ========== -->
+  <symbol id="icon-lock" viewBox="0 0 48 48">
+    <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 锁扣 -->
+    <path d="M18 22 L18 14 Q18 8 24 8 Q30 8 30 14 L30 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 锁孔 -->
+    <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
+    <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 解锁（退出专注） ========== -->
+  <symbol id="icon-unlock" viewBox="0 0 48 48">
+    <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <!-- 打开的锁扣 -->
+    <path d="M18 22 L18 14 Q18 8 24 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <!-- 锁孔 -->
+    <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
+    <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
+  </symbol>
+
+  <!-- ========== 向下箭头 ========== -->
+  <symbol id="icon-chevron-down" viewBox="0 0 48 48">
+    <path d="M12 18 L24 32 L36 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 向右箭头 ========== -->
+  <symbol id="icon-chevron-right" viewBox="0 0 48 48">
+    <path d="M18 12 L32 24 L18 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 关闭圈（猫咪请求完成） ========== -->
+  <symbol id="icon-circle-check" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M16 24 L22 30 L34 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+  <!-- ========== 饼干（简版，用于标签） ========== -->
+  <symbol id="icon-cookie-simple" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <circle cx="19" cy="20" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="29" cy="22" r="1.8" fill="currentColor" opacity="0.5"/>
+    <circle cx="23" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+  <!-- ========== 派对（庆祝） ========== -->
+  <symbol id="icon-party" viewBox="0 0 48 48">
+    <!-- 派对帽子 -->
+    <path d="M24 6 L14 28 L34 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <!-- 帽子花纹 -->
+    <circle cx="24" cy="16" r="2" fill="currentColor" opacity="0.5"/>
+    <circle cx="19" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
+    <circle cx="29" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
+    <!-- 底部装饰带 -->
+    <path d="M14 28 Q24 32 34 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <!-- 小星星 -->
+    <path d="M10 18 L12 22 L8 22 Z" fill="currentColor" opacity="0.5"/>
+    <path d="M36 16 L39 20 L34 18 Z" fill="currentColor" opacity="0.5"/>
+  </symbol>
+
+</svg>
+
 </body>
 </html>

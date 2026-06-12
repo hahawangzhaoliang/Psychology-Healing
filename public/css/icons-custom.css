@@ -1,0 +1,159 @@
+/* ============================================================
+   心晴空间 — 自定义 SVG 图标样式
+   在所有 HTML 页面 <head> 中引入
+   ============================================================ */
+
+/* ---- SVG 图标基础样式 ---- */
+svg.icon {
+    display: inline-block;
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+    color: currentColor;
+    /* 让 currentColor 生效 */
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* 填充型图标（有 fill 的 symbol）*/
+svg.icon use {
+    color: inherit;
+}
+
+/* ---- 尺寸变体 ---- */
+svg.icon--xs   { width: 0.75em; height: 0.75em; }
+svg.icon--sm   { width: 0.9em;  height: 0.9em;  }
+svg.icon--lg   { width: 1.35em; height: 1.35em; }
+svg.icon--xl   { width: 1.75em; height: 1.75em; }
+svg.icon--2xl  { width: 2.5em;  height: 2.5em;  }
+
+/* ---- 品牌色变体 ---- */
+svg.icon--primary { color: var(--color-primary-500, #5cb8a8); }
+svg.icon--warm   { color: var(--color-primary-100, #a7e8dc); }
+svg.icon--cool   { color: #7eb8d8; }
+svg.icon--white  { color: #ffffff; }
+svg.icon--muted  { color: var(--color-text-light, #94a3b8); }
+svg.icon--success{ color: var(--color-success, #4ade80); }
+svg.icon--warn   { color: var(--color-warning, #fbbf24); }
+svg.icon--danger { color: var(--color-danger, #f87171); }
+
+/* ---- 呼吸动画（疗愈感）---- */
+svg.icon--breathe {
+    animation: iconBreathe 3s ease-in-out infinite;
+}
+@keyframes iconBreathe {
+    0%, 100% { transform: scale(1);     opacity: 0.85; }
+    50%       { transform: scale(1.12);  opacity: 1;    }
+}
+
+/* ---- 柔和悬浮效果 ---- */
+svg.icon--hoverable {
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1),
+                filter      0.25s ease;
+}
+svg.icon--hoverable:hover {
+    transform: scale(1.18);
+    filter: drop-shadow(0 2px 6px rgba(92,184,168,0.35));
+}
+
+/* ---- 旋转（加载/刷新） ---- */
+svg.icon--spin {
+    animation: iconSpin 1.2s linear infinite;
+}
+@keyframes iconSpin {
+    from { transform: rotate(0deg);   }
+    to   { transform: rotate(360deg); }
+}
+
+/* ---- 脉冲发光（重要提示） ---- */
+svg.icon--pulse {
+    animation: iconPulse 2s ease-in-out infinite;
+}
+@keyframes iconPulse {
+    0%, 100% { filter: drop-shadow(0 0 0px  rgba(92,184,168,0)); }
+    50%       { filter: drop-shadow(0 0 8px rgba(92,184,168,0.6)); }
+}
+
+/* ---- 页面特定覆盖 ---- */
+
+/* 导航栏图标 */
+.navbar .nav-icon svg.icon,
+.navbar svg.icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.2s ease;
+}
+.navbar .nav-link:hover .nav-icon svg.icon,
+.navbar .nav-link.active .nav-icon svg.icon {
+    transform: scale(1.15);
+}
+
+/* 按钮内图标 */
+.btn svg.icon {
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.35em;
+    vertical-align: -0.15em;
+}
+.btn svg.icon:only-child {
+    margin-right: 0;
+}
+
+/* 卡片图标 */
+.card .icon svg.icon,
+.card-icon svg.icon {
+    width: 2rem;
+    height: 2rem;
+    padding: 0.5rem;
+    border-radius: 12px;
+    background: rgba(92,184,168,0.1);
+    color: var(--color-primary-500, #5cb8a8);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+.card:hover .card-icon svg.icon {
+    background: rgba(92,184,168,0.18);
+    transform: scale(1.08);
+}
+
+/* 设置按钮（猫咪消消乐）*/
+.setting-btn svg.icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: var(--color-text-light, #94a3b8);
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.setting-btn:hover svg.icon {
+    color: var(--color-primary-500, #5cb8a8);
+    transform: scale(1.15);
+}
+
+/* 请求标签图标 */
+.request-label svg.icon {
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.1em;
+}
+
+/* 物品栏图标 */
+.item-icon svg.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--color-primary-500, #5cb8a8);
+}
+
+/* ============================================================
+   暗色模式适配
+   ============================================================ */
+@media (prefers-color-scheme: dark) {
+    svg.icon--muted {
+        color: var(--color-text-light-dark, #64748b);
+    }
+}
+html[data-theme="dark"] svg.icon--muted,
+body.dark svg.icon--muted {
+    color: #64748b;
+}

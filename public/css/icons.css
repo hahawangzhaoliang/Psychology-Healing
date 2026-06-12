@@ -1,0 +1,188 @@
+/* ========================================
+   icons.css — 心晴空间图标统一样式
+   基于 Lucide Icons，CSS 增强版
+   ======================================== */
+
+/* ---------- Lucide 图标基础样式 ----------
+   Lucide 使用 currentColor 渲染 SVG stroke，
+   因此通过 color 控制描边色，通过 filter 添加阴影。
+   ---------- */
+i[data-lucide] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--icon-color, #5cb8a8);
+    transition: color 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+    width: var(--icon-size, 1.25em);
+    height: var(--icon-size, 1.25em);
+}
+
+/* 确保 SVG 本身自适应容器 */
+i[data-lucide] svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* ---------- 图标尺寸变体 ---------- */
+i[data-lucide].icon--xs  { --icon-size: 0.75rem; }
+i[data-lucide].icon--sm  { --icon-size: 1rem;    }
+i[data-lucide].icon--base{ --icon-size: 1.25rem; }
+i[data-lucide].icon--lg  { --icon-size: 1.5rem;  }
+i[data-lucide].icon--xl  { --icon-size: 2rem;    }
+i[data-lucide].icon--2xl { --icon-size: 2.5rem;  }
+
+/* ---------- 图标颜色语义变体 ---------- */
+/* 主色（心晴绿） */
+i[data-lucide].icon--primary  { --icon-color: #5cb8a8; }
+.icon-wrapper--primary i[data-lucide] { --icon-color: #5cb8a8; }
+
+/* 暖色（温暖橙） */
+i[data-lucide].icon--warm  { --icon-color: #f4a261; }
+.icon-wrapper--warm i[data-lucide] { --icon-color: #f4a261; }
+
+/* 冷色（平静蓝绿） */
+i[data-lucide].icon--cool  { --icon-color: #6b9a9a; }
+.icon-wrapper--cool i[data-lucide] { --icon-color: #6b9a9a; }
+
+/* muted（低饱和度） */
+i[data-lucide].icon--muted { --icon-color: #94a3b8; }
+.icon-wrapper--muted i[data-lucide] { --icon-color: #94a3b8; }
+
+/* 白色（用于深色背景） */
+i[data-lucide].icon--white { --icon-color: #ffffff; }
+.icon-wrapper--white i[data-lucide] { --icon-color: #ffffff; }
+
+/* 成功色 */
+i[data-lucide].icon--success { --icon-color: #10b981; }
+.icon-wrapper--success i[data-lucide] { --icon-color: #10b981; }
+
+/* 警告色 */
+i[data-lucide].icon--warning { --icon-color: #f59e0b; }
+.icon-wrapper--warning i[data-lucide] { --icon-color: #f59e0b; }
+
+/* 错误色 */
+i[data-lucide].icon--error   { --icon-color: #ef4444; }
+.icon-wrapper--error i[data-lucide] { --icon-color: #ef4444; }
+
+/* ---------- 图标阴影（统一通过 filter:drop-shadow） ---------- */
+i[data-lucide].icon--shadow {
+    filter: drop-shadow(0 2px 4px rgba(92, 184, 168, 0.3));
+}
+i[data-lucide].icon--shadow:hover {
+    filter: drop-shadow(0 4px 8px rgba(92, 184, 168, 0.45));
+}
+
+/* 各语义色的配套阴影 */
+i[data-lucide].icon--primary.icon--shadow { filter: drop-shadow(0 2px 4px rgba(92,184,168,0.35)); }
+i[data-lucide].icon--warm.icon--shadow    { filter: drop-shadow(0 2px 4px rgba(244,162,97,0.35)); }
+i[data-lucide].icon--cool.icon--shadow    { filter: drop-shadow(0 2px 4px rgba(107,154,154,0.35)); }
+i[data-lucide].icon--success.icon--shadow { filter: drop-shadow(0 2px 4px rgba(16,185,129,0.35)); }
+i[data-lucide].icon--warning.icon--shadow { filter: drop-shadow(0 2px 4px rgba(245,158,11,0.35)); }
+i[data-lucide].icon--error.icon--shadow   { filter: drop-shadow(0 2px 4px rgba(239,68,68,0.35)); }
+
+/* ---------- 图标填充变体（实色背景 + 图标反白） ---------- */
+i[data-lucide].icon--filled {
+    background: var(--icon-color, #5cb8a8);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 4px;
+    width: calc(var(--icon-size, 1.25em) + 8px);
+    height: calc(var(--icon-size, 1.25em) + 8px);
+}
+
+/* ---------- 图标背景装饰（圆形/圆角方形背景） ---------- */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--icon-size, 1.25rem) + 12px);
+    height: calc(var(--icon-size, 1.25rem) + 12px);
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(92,184,168,0.12), rgba(167,232,220,0.25));
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+.icon-wrapper:hover {
+    background: linear-gradient(135deg, rgba(92,184,168,0.2), rgba(167,232,220,0.35));
+    transform: scale(1.08);
+}
+
+/* 圆角方形背景 */
+.icon-wrapper--square {
+    border-radius: 10px;
+}
+
+/* 背景尺寸变体 */
+.icon-wrapper--sm {
+    width: calc(var(--icon-size, 1rem) + 8px);
+    height: calc(var(--icon-size, 1rem) + 8px);
+}
+.icon-wrapper--lg {
+    width: calc(var(--icon-size, 1.5rem) + 16px);
+    height: calc(var(--icon-size, 1.5rem) + 16px);
+}
+
+/* ---------- 动画：呼吸脉冲 ---------- */
+i[data-lucide].icon--pulse {
+    animation: iconPulse 2.5s ease-in-out infinite;
+}
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1);   opacity: 0.85; }
+    50%       { transform: scale(1.12); opacity: 1;    }
+}
+
+/* ---------- 动画：轻柔悬浮 ---------- */
+i[data-lucide].icon--float {
+    animation: iconFloat 3s ease-in-out infinite;
+}
+@keyframes iconFloat {
+    0%, 100% { transform: translateY(0);    }
+    50%       { transform: translateY(-3px); }
+}
+
+/* ---------- 动画：旋转（用于 loading/refresh） ---------- */
+i[data-lucide].icon--spin {
+    animation: iconSpin 1.2s linear infinite;
+}
+@keyframes iconSpin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+/* ---------- 在按钮中的图标 ---------- */
+.btn i[data-lucide],
+.btn-icon-only i[data-lucide] {
+    margin-right: 0.35em;
+    vertical-align: -0.15em;
+}
+.btn:hover i[data-lucide],
+.btn-icon-only:hover i[data-lucide] {
+    color: var(--icon-color, #5cb8a8);
+    filter: brightness(1.15) drop-shadow(0 2px 6px rgba(92,184,168,0.4));
+}
+
+/* ---------- 在卡片标题中的图标 ---------- */
+.card-title i[data-lucide],
+.section-title i[data-lucide] {
+    margin-right: 0.4em;
+    vertical-align: -0.125em;
+}
+
+/* ---------- 在导航栏中的图标 ---------- */
+.navbar i[data-lucide] {
+    width: 1.1em;
+    height: 1.1em;
+}
+
+/* ---------- 无障碍：减少动画 ---------- */
+@media (prefers-reduced-motion: reduce) {
+    i[data-lucide].icon--pulse,
+    i[data-lucide].icon--float,
+    i[data-lucide].icon--spin {
+        animation: none !important;
+    }
+    i[data-lucide] {
+        transition: none !important;
+    }
+}

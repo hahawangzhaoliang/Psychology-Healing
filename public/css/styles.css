@@ -1,4 +1,29 @@
-/* 喵趣消消乐 - 样式文件 */
+
+/* ========== Phosphor Icons 支持 ========== */
+.setting-btn i.ph-duotone,
+.item-icon i.ph-duotone,
+.request-label i.ph-duotone,
+.btn i.ph-duotone {
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.15em;
+}
+
+.seting-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+}
+
+/* 喵趣消消乐 - 样式文件（优化版） */
 
 * {
     margin: 0;
@@ -9,12 +34,13 @@
 
 :root {
     --primary-color: #FF6B9D;
+    --primary-light: #FF8FAB;
     --secondary-color: #88D8E8;
     --accent-color: #FFD93D;
     --bg-gradient-start: #FFE5EC;
     --bg-gradient-end: #E8F4F8;
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --shadow-color: rgba(255, 107, 157, 0.3);
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --shadow-color: rgba(255, 107, 157, 0.25);
     --text-color: #5D4E60;
     --text-light: #8B7B8E;
 }
@@ -36,12 +62,12 @@ body {
 /* 游戏容器 */
 #game-container {
     width: 100%;
-    max-width: 420px;
-    padding: 10px;
+    max-width: 480px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     min-height: min-content;
 }
 
@@ -50,8 +76,10 @@ body {
     width: 100%;
     background: var(--card-bg);
     border-radius: 20px;
-    padding: 15px 20px;
-    box-shadow: 0 4px 15px var(--shadow-color);
+    padding: 16px 20px;
+    box-shadow: 0 4px 20px var(--shadow-color),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
 }
 
 .score-panel {
@@ -218,141 +246,157 @@ body {
     display: none;
 }
 
-/* 游戏棋盘 - 增强版：柔和阴影 + 内发光 */
+/* 游戏棋盘 - 优化版 */
+
+/* ========== 统一猫咪格子效果 ========== */
+.cell::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at 50% 50%, rgba(255,107,157,0.2), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.cell:hover::after {
+    opacity: 1;
+}
+
+/* 消除动画 - 统一脉冲效果 */
+.cell.matched {
+    animation: matchPulse 0.5s ease-out forwards;
+}
+
+@keyframes matchPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(0.8); opacity: 0; }
+}
+：更精致的阴影和圆角 */
+
 #board-container {
     position: relative;
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 10px;
+    border-radius: 24px;
+    padding: 12px;
     box-shadow:
-        0 8px 32px var(--shadow-color),
-        inset 0 2px 8px rgba(255, 255, 255, 0.15),
-        inset 0 -2px 8px rgba(0, 0, 0, 0.03);
-    transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        0 10px 40px var(--shadow-color),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 12px;
+    box-shadow:
+        0 10px 40px var(--shadow-color),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 #board-container:hover {
     box-shadow:
-        0 12px 40px rgba(255, 107, 157, 0.15),
-        inset 0 2px 8px rgba(255, 255, 255, 0.2),
+        0 15px 50px rgba(255, 107, 157, 0.2),
+        inset 0 2px 8px rgba(255, 255, 255, 0.25),
         inset 0 -2px 8px rgba(0, 0, 0, 0.03);
+    transform: translateY(-2px);
 }
+
 
 #game-board {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    gap: 4px;
+    gap: 5px;
     width: 340px;
     height: 450px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.5), rgba(240,240,240,0.8));
-    border-radius: 16px;
-    padding: 4px;
-    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(245,245,250,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    width: 340px;
+    height: 450px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(240,240,245,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
 }
+
 
 .cell {
     width: 100%;
     height: 100%;
-    border-radius: 12px;
-    background: linear-gradient(145deg, #f0f0f0, #e6e6e6);
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f8f8f8, #f0f0f0);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
     position: relative;
     overflow: hidden;
-}
+    border: 2px solid transparent;
 
-/* 猫咪类型独特视觉样式 - 使猫咪更好区分 */
-.cell.cat-type-1 { background: linear-gradient(145deg, #FFE0B2, #FFCC80); border: 2px solid #FFB347; }
-.cell.cat-type-2 { background: linear-gradient(145deg, #FFFFFF, #F0F0F0); border: 2px solid #E0E0E0; }
-.cell.cat-type-3 { background: linear-gradient(145deg, #FFE4C4, #FFDAB9); border: 2px solid #DEB887; }
-.cell.cat-type-4 { background: linear-gradient(145deg, #F5F5F5, #E8E8E8); border: 2px solid #D3D3D3; }
-.cell.cat-type-5 { background: linear-gradient(145deg, #404040, #2F2F2F); border: 2px solid #1A1A1A; }
-.cell.cat-type-6 { background: linear-gradient(145deg, #D2B48C, #A0522D); border: 2px solid #8B4513; }
-.cell.cat-type-7 { background: linear-gradient(145deg, #B0C4DE, #779ECB); border: 2px solid #5B8AC6; }
-.cell.cat-type-8 { background: linear-gradient(145deg, #E8D8C0, #D4B896); border: 2px solid #C4A77D; }
-.cell.cat-type-9 { background: linear-gradient(145deg, #F5DEB3, #EEE8AA); border: 2px solid #DAA520; }
-.cell.cat-type-10 { background: linear-gradient(145deg, #FAD6A5, #FFC0CB); border: 2px solid #FFB6C1; }
-.cell.cat-type-11 { background: linear-gradient(145deg, #E6E6FA, #D8BFD8); border: 2px solid #C8A2C8; }
-
-/* 猫咪图片优化 - 添加阴影和更好的显示效果 */
-.cell.cat-type-1 .cat { filter: drop-shadow(0 2px 4px rgba(255, 179, 71, 0.4)); }
-.cell.cat-type-2 .cat { filter: drop-shadow(0 2px 4px rgba(200, 200, 200, 0.5)); }
-.cell.cat-type-3 .cat { filter: drop-shadow(0 2px 4px rgba(222, 184, 135, 0.5)); }
-.cell.cat-type-4 .cat { filter: drop-shadow(0 2px 4px rgba(150, 150, 150, 0.4)); }
-.cell.cat-type-5 .cat { filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6)); }
-.cell.cat-type-6 .cat { filter: drop-shadow(0 2px 4px rgba(139, 69, 19, 0.5)); }
-.cell.cat-type-7 .cat { filter: drop-shadow(0 2px 4px rgba(91, 138, 198, 0.5)); }
-.cell.cat-type-8 .cat { filter: drop-shadow(0 2px 4px rgba(196, 167, 125, 0.5)); }
-.cell.cat-type-9 .cat { filter: drop-shadow(0 2px 4px rgba(218, 165, 32, 0.4)); }
-.cell.cat-type-10 .cat { filter: drop-shadow(0 2px 4px rgba(255, 182, 193, 0.5)); }
-.cell.cat-type-11 .cat { filter: drop-shadow(0 2px 4px rgba(200, 162, 200, 0.5)); }
-
-/* ========== 猫咪独特边框呼吸动画 ========== */
-@keyframes glowOrange {
-    0% { box-shadow: 0 0 5px rgba(255,179,71,0.4); }
-    100% { box-shadow: 0 0 20px rgba(255,140,0,0.8); }
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f5f5f5, #ebebeb);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
 }
-@keyframes glowWhite {
-    0% { box-shadow: 0 0 5px rgba(224,224,224,0.4); }
-    100% { box-shadow: 0 0 20px rgba(255,255,255,0.8); }
-}
-@keyframes glowLeopard {
-    0% { box-shadow: 0 0 5px rgba(222,184,135,0.4); }
-    100% { box-shadow: 0 0 20px rgba(205,133,63,0.8); }
-}
-@keyframes glowRagdoll {
-    0% { box-shadow: 0 0 5px rgba(211,211,211,0.4); }
-    100% { box-shadow: 0 0 20px rgba(169,169,169,0.8); }
-}
-@keyframes glowBlack {
-    0% { box-shadow: 0 0 5px rgba(26,26,26,0.4); }
-    100% { box-shadow: 0 0 20px rgba(74,74,74,0.8); }
-}
-@keyframes glowTabby {
-    0% { box-shadow: 0 0 5px rgba(139,69,19,0.4); }
-    100% { box-shadow: 0 0 20px rgba(160,82,45,0.8); }
-}
-@keyframes glowBlue {
-    0% { box-shadow: 0 0 5px rgba(91,138,198,0.4); }
-    100% { box-shadow: 0 0 20px rgba(58,110,165,0.8); }
-}
-@keyframes glowMaine {
-    0% { box-shadow: 0 0 5px rgba(196,167,125,0.4); }
-    100% { box-shadow: 0 0 20px rgba(160,128,90,0.8); }
-}
-@keyframes glowNapoleon {
-    0% { box-shadow: 0 0 5px rgba(218,165,32,0.4); }
-    100% { box-shadow: 0 0 20px rgba(184,134,11,0.8); }
-}
-@keyframes glowSphynx {
-    0% { box-shadow: 0 0 5px rgba(255,182,193,0.4); }
-    100% { box-shadow: 0 0 20px rgba(255,105,180,0.8); }
-}
-@keyframes glowSiamese {
-    0% { box-shadow: 0 0 5px rgba(200,162,200,0.4); }
-    100% { box-shadow: 0 0 20px rgba(147,112,219,0.8); }
-}
-
-/* 应用动画到猫咪单元格 */
-.cell.cat-type-1 { animation: glowOrange 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-2 { animation: glowWhite 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-3 { animation: glowLeopard 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-4 { animation: glowRagdoll 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-5 { animation: glowBlack 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-6 { animation: glowTabby 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-7 { animation: glowBlue 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-8 { animation: glowMaine 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-9 { animation: glowNapoleon 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-10 { animation: glowSphynx 2s ease-in-out infinite alternate; will-change: box-shadow; }
-.cell.cat-type-11 { animation: glowSiamese 2s ease-in-out infinite alternate; will-change: box-shadow; }
 
 .cell:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.35);
+    z-index: 1;
+}
+
+.cell.selected {
+    transform: scale(1.12);
+    box-shadow: 0 0 25px var(--primary-color),
+                0 0 40px rgba(255, 107, 157, 0.4);
+    border-color: var(--primary-color);
+    animation: pulse 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+    from { box-shadow: 0 0 20px var(--primary-color), 0 0 35px rgba(255, 107, 157, 0.3); }
+    to { box-shadow: 0 0 30px var(--primary-color), 0 0 50px rgba(255, 107, 157, 0.5); }
+}
+
+.cat {
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+}
+
+.cell:active .cat {
+    transform: scale(0.9);
 }
 
 .cell.selected {
@@ -901,7 +945,19 @@ body {
         gap: 8px;
     }
 
-    #game-board {
+    
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    width: 340px;
+    height: 450px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(245,245,250,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+
         width: calc(100vw - 30px);
         height: calc((100vw - 30px) * 4 / 3);
         max-height: 65vh;
@@ -966,7 +1022,19 @@ body {
 
 /* 小屏手机适配 */
 @media (max-width: 360px) {
-    #game-board {
+    
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    width: 340px;
+    height: 450px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(245,245,250,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+
         width: calc(100vw - 20px);
         height: calc((100vw - 20px) * 4 / 3);
     }
@@ -987,7 +1055,19 @@ body {
         padding: 5px 0;
     }
 
-    #game-board {
+    
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    width: 340px;
+    height: 450px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(245,245,250,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+
         height: 55vh;
         width: calc(55vh * 3 / 4);
     }
@@ -1045,7 +1125,22 @@ body {
 }
 
 /* 炸弹选择模式 */
-#game-board.bomb-mode .cell {
+#game-board.bomb-mode 
+.cell {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f8f8f8, #f0f0f0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+
     cursor: crosshair;
 }
 
@@ -1236,7 +1331,22 @@ body {
     cursor: pointer;
 }
 
-.snack-mode .cell {
+.snack-mode 
+.cell {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f8f8f8, #f0f0f0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+
     transition: transform 0.1s ease;
 }
 
@@ -2667,7 +2777,22 @@ body.relax-mode-active {
     will-change: transform, opacity;
 }
 
+
 .cell {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f8f8f8, #f0f0f0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 }
@@ -2677,7 +2802,20 @@ body.relax-mode-active {
 }
 
 /* ─── 棋盘容器优化 ─── */
+
 #board-container {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 12px;
+    box-shadow:
+        0 10px 40px var(--shadow-color),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
     touch-action: none;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -2763,7 +2901,20 @@ body.relax-mode-active {
 }
 
 /* ─── 棋盘背景优化 ─── */
+
 #board-container {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 12px;
+    box-shadow:
+        0 10px 40px var(--shadow-color),
+        inset 0 2px 8px rgba(255, 255, 255, 0.2),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.04);
+    transition: box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+
     background: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(255,245,247,0.95));
     border: 2px solid rgba(255, 179, 198, 0.15);
 }
@@ -2817,11 +2968,38 @@ body.relax-mode-active {
 }
 
 /* 悠闲模式下的棋盘样式 */
-body.relax-mode-active #game-board {
+body.relax-mode-active 
+#game-board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 5px;
+    width: 340px;
+    height: 450px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.6), rgba(245,245,250,0.9));
+    border-radius: 18px;
+    padding: 5px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.06);
+
     box-shadow: 0 10px 40px rgba(168, 230, 207, 0.3);
 }
 
-body.relax-mode-active .cell {
+body.relax-mode-active 
+.cell {
+    width: 100%;
+    height: 100%;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #f8f8f8, #f0f0f0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+
     box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.5),
                 0 2px 4px rgba(0, 0, 0, 0.05);
 }

@@ -1,580 +1,194 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="settings.page_title">个人设置 — 心晴空间</title>
-    <meta name="description" content="个性化你的心晴空间体验">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心晴空间 — 疗愈图标预览</title>
+<style>
+    /* ========== 基础变量 ========== */
+    :root {
+        --green:  #5cb8a8;
+        --warm:   #f4a261;
+        --cool:   #6b9a9a;
+        --bg:     #fafaf7;
+        --card:    #ffffff;
+        --text:   #2d3436;
+        --muted:  #94a3b8;
+        --radius: 16px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+        font-family: 'Nunito Sans', 'PingFang SC', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 2rem 1rem 4rem;
+    }
 
-    <!-- Tailwind CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- 神经美学设计系统 -->
-    <link rel="stylesheet" href="css/neuroaesthetics.css">
-    <!-- 组件库样式 -->
-    <link rel="stylesheet" href="css/components.css">
-    <script src="js/cache.js"></script>
+    /* ========== 页面标题 ========== */
+    .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+    .page-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--green);
+        margin-bottom: 0.5rem;
+    }
+    .page-header p {
+        color: var(--muted);
+        font-size: 1rem;
+    }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': { 50:'#f0faf7',100:'#daf1eb',200:'#b8e6d6',300:'#8ac4b5',400:'#5cb8a8',500:'#5cb8a8',
-                        600:'#4a9a8c',700:'#3d7f73',800:'#32665e',900:'#294f4a',950:'#1a3533' },
-                        'warm':   { 50:'#fef9f4',100:'#fdf0e4',200:'#fce4ce',300:'#fbd4b5',400:'#f59e0b',500:'#d97757',600:'#c5654a',
-                        700:'#a3523e',800:'#824334',900:'#6b3530',950:'#3a1c18' },
-                        'cool':   { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',
-                        600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a5f',950:'#0f2440' },
-                        'creative': { 50:'#fdf4ff',100:'#fae8ff',200:'#f5d0ff',300:'#e9a8f8',400:'#d580f0',500:'#c026d3',
-                        600:'#a21caf',700:'#86198f',800:'#6b1a7a',900:'#551c65',950:'#3b1045' },
-                    }
-                }
-            }
-        }
-    </script>
+    /* ========== 图标网格 ========== */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
 
-    <style>
-        body {
-            font-family: var(--font-sans);
-            background: var(--theme-bg);
-            color: var(--theme-text);
-        }
-        /* 设置页面专用 */
-        .settings-section {
-            max-width: 720px;
-            margin: 0 auto 2rem;
-            background: var(--theme-card);
-            border-radius: var(--radius-xl, 0.75rem);
-            box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
-            overflow: hidden;
-        }
-        .settings-section-header {
-            padding: 1.25rem 1.5rem 0.75rem;
-            font-weight: 600;
-            font-size: 0.925rem;
-            color: var(--color-primary-500);
-            border-bottom: 1px solid var(--theme-border, rgba(0,0,0,0.06));
-            margin-bottom: 0.25rem;
-        }
-        .setting-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--theme-border, rgba(0,0,0,0.04));
-            gap: 1rem;
-        }
-        .setting-row:last-child {
-            border-bottom: none;
-        }
-        .setting-label {
-            font-size: 0.95rem;
-            color: var(--theme-text);
-            font-weight: 500;
-        }
-        .setting-desc {
-            font-size: 0.8rem;
-            color: var(--theme-text-light);
-            margin-top: 0.2rem;
-        }
-        /* Toggle 开关 */
-        .toggle-switch {
-            position: relative;
-            width: 44px;
-            height: 24px;
-            flex-shrink: 0;
-        }
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            inset: 0;
-            background: var(--theme-border, #d1d5db);
-            border-radius: 9999px;
-            transition: background 0.2s;
-        }
-        .toggle-slider::before {
-            content: '';
-            position: absolute;
-            height: 18px;
-            width: 18px;
-            left: 3px;
-            bottom: 3px;
-            background: white;
-            border-radius: 50%;
-            transition: transform 0.2s var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1));
-            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-        }
-        .toggle-switch input:checked + .toggle-slider {
-            background: var(--color-primary-500);
-        }
-        .toggle-switch input:checked + .toggle-slider::before {
-            transform: translateX(20px);
-        }
-        /* 危险操作区 */
-        .danger-zone {
-            border: 1px solid #fca5a5;
-            border-radius: var(--radius-lg, 0.75rem);
-            background: #fef2f2;
-            padding: 1.25rem 1.5rem;
-            margin-top: 0.5rem;
-        }
-        [data-theme="dark"] .danger-zone {
-            background: rgba(127, 29, 29, 0.25);
-            border-color: #dc2626;
-        }
-        .danger-zone .setting-label { color: #dc2626; }
-    </style>
+    /* ========== 单张图标卡片 ========== */
+    .card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 1.5rem 1rem 1.2rem;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(92,184,168,0.08);
+        border: 1px solid rgba(92,184,168,0.12);
+        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1),
+                    box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+    .card:hover {
+        transform: translateY(-4px) scale(1.02);
+        box-shadow: 0 8px 24px rgba(92,184,168,0.18);
+    }
+
+    /* 图标展示区 */
+    .card-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(92,184,168,0.10), rgba(167,232,220,0.06), transparent);
+        margin-bottom: 0.8rem;
+        transition: background 0.3s ease;
+    }
+    .card:hover .card-icon {
+        background: radial-gradient(circle, rgba(92,184,168,0.18), rgba(167,232,220,0.12), transparent);
+    }
+    .card-icon .icon {
+        width: 40px;
+        height: 40px;
+        color: var(--green);
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        transition: color 0.3s ease, transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .card:hover .card-icon .icon {
+        color: var(--warm);
+        transform: scale(1.1);
+    }
+
+    /* 卡片文字 */
+    .card-name {
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 0.2rem;
+    }
+    .card-id {
+        font-size: 0.75rem;
+        color: var(--muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ========== 使用说明 ========== */
+    .usage {
+        max-width: 720px;
+        margin: 3rem auto 0;
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 2rem;
+        box-shadow: 0 2px 12px rgba(92,184,168,0.08);
+        border: 1px solid rgba(92,184,168,0.12);
+    }
+    .usage h2 {
+        font-size: 1.15rem;
+        color: var(--green);
+        margin-bottom: 1rem;
+    }
+    .usage code {
+        display: block;
+        background: #f0fdf9;
+        border: 1px solid #a7e8dc;
+        border-radius: 8px;
+        padding: 0.8rem 1rem;
+        font-size: 0.82rem;
+        color: #2d3436;
+        line-height: 1.7;
+        overflow-x: auto;
+        margin-top: 0.5rem;
+    }
+    .usage .tag {
+        display: inline-block;
+        background: #e0f7f2;
+        color: #5cb8a8;
+        border-radius: 6px;
+        padding: 0.15rem 0.5rem;
+        font-size: 0.78rem;
+        font-weight: 600;
+        margin-top: 0.8rem;
+    }
+
+    /* ========== 颜色变体演示 ========== */
+    .color-demo {
+        display: flex;
+        gap: 1.2rem;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0.6rem;
+        flex-wrap: wrap;
+    }
+    .color-demo .demo-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.3rem;
+    }
+    .color-demo .demo-label {
+        font-size: 0.7rem;
+        color: var(--muted);
+    }
+    .color-demo .icon {
+        width: 28px; height: 28px;
+        stroke: currentColor; stroke-width: 2;
+        stroke-linecap: round; stroke-linejoin: round; fill: none;
+    }
+
+    /* ========== 分类标签 ========== */
+    .section-label {
+        max-width: 1100px;
+        margin: 2.5rem auto 1rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding-left: 0.3rem;
+    }
+</style>
 </head>
-<body data-theme="warm">
-
-    <!-- 导航栏 -->
-    <div id="app-header"></div>
-
-    <!-- Hero 区（由 Layout.renderPageHero 渲染） -->
-    <section id="page-hero" class="py-14"></section>
-
-    <!-- 设置内容 -->
-    <main style="max-width: 720px; margin: -2rem auto 3rem; padding: 0 1rem; position: relative; z-index: 1;">
-
-        <!-- 消息容器 -->
-        <div id="settings-toast" style="display:none; position:fixed; top:1.5rem; right:1.5rem; z-index:9999;"></div>
-
-        <!-- 外观设置 -->
-        <div class="settings-section" id="section-appearance">
-            <div class="settings-section-header" data-i18n="settings.section_appearance">外观设置</div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.theme_label">主题模式</div>
-                    <div class="setting-desc" data-i18n="settings.theme_desc">选择你喜欢的色彩主题</div>
-                </div>
-                <div id="setting-theme-btns"></div>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.language_label">界面语言</div>
-                    <div class="setting-desc" data-i18n="settings.language_desc">切换显示语言</div>
-                </div>
-                <div id="setting-lang-btns"></div>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.animations_label">动画效果</div>
-                    <div class="setting-desc" data-i18n="settings.animations_desc">关闭可减少 motion 敏感用户的视觉负担</div>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-animations" checked>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- 通知设置 -->
-        <div class="settings-section" id="section-notifications">
-            <div class="settings-section-header" data-i18n="settings.section_notifications">通知设置</div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.daily_reminder_label">每日提醒</div>
-                    <div class="setting-desc" data-i18n="settings.daily_reminder_desc">每天固定时间提醒你进行疗愈练习</div>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-reminder">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="setting-row" id="setting-reminder-time-row" style="display:none;">
-                <div>
-                    <div class="setting-label" data-i18n="settings.reminder_time_label">提醒时间</div>
-                </div>
-                <div id="setting-reminder-time"></div>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.weekly_report_label">周报推送</div>
-                    <div class="setting-desc" data-i18n="settings.weekly_report_desc">每周一推送你的疗愈周报</div>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-weekly">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- 隐私设置 -->
-        <div class="settings-section" id="section-privacy">
-            <div class="settings-section-header" data-i18n="settings.section_privacy">隐私设置</div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.data_sync_label">数据同步</div>
-                    <div class="setting-desc" data-i18n="settings.data_sync_desc">将你的练习记录同步到云端</div>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-sync">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-
-            <div class="setting-row">
-                <div>
-                    <div class="setting-label" data-i18n="settings.anonymous_label">匿名模式</div>
-                    <div class="setting-desc" data-i18n="settings.anonymous_desc">在社区中以匿名身份出现</div>
-                </div>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggle-anonymous" checked>
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
-        </div>
-
-        <!-- 危险操作 -->
-        <div class="settings-section" style="margin-top: 2rem;">
-            <div class="settings-section-header" style="color: #dc2626;" data-i18n="settings.section_danger">危险操作</div>
-            <div style="padding: 1rem 1.5rem;">
-                <div class="danger-zone">
-                    <div class="setting-label" data-i18n="settings.export_data_label">导出个人数据</div>
-                    <p class="setting-desc" data-i18n="settings.export_data_desc">将你的所有练习记录和情绪日记导出为 JSON 文件</p>
-                    <div id="btn-export-data" style="margin-top: 0.75rem;"></div>
-                </div>
-                <div class="danger-zone" style="margin-top: 1rem;">
-                    <div class="setting-label" data-i18n="settings.delete_account_label">删除账户</div>
-                    <p class="setting-desc" data-i18n="settings.delete_account_desc">永久删除你的账户和所有数据，此操作不可撤销</p>
-                    <div id="btn-delete-account" style="margin-top: 0.75rem;"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 关于 -->
-        <div class="settings-section" style="margin-top: 2rem; margin-bottom: 3rem;">
-            <div class="settings-section-header" data-i18n="settings.section_about">关于</div>
-            <div class="setting-row">
-                <div class="setting-label" data-i18n="settings.version_label">版本</div>
-                <span style="font-size: 0.875rem; color: var(--theme-text-light);" data-i18n="settings.version_value">v2.0.0</span>
-            </div>
-            <div class="setting-row">
-                <div class="setting-label" data-i18n="settings.feedback_label">意见反馈</div>
-                <div id="btn-feedback" style="margin-left: auto;"></div>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- 页脚 -->
-    <footer style="text-align:center; padding:2rem 1rem; color:var(--theme-text-light); font-size:0.8rem;">
-        <p data-i18n="settings.footer">心晴空间 © 2024 — 用科技温暖每一颗心</p>
-    </footer>
-
-    <!-- ========== JS 依赖 ========== -->
-    <script src="js/i18n.js"></script>
-    <script src="js/neuroaesthetics.js"></script>
-    <script src="js/components/header.js"></script>
-    <script src="js/components/buttons.js"></script>
-    <script src="js/components/modals.js"></script>
-    <script src="js/components/forms.js"></script>
-    <script src="js/components/layout.js"></script>
-
-    <script>
-    ;(function () {
-        'use strict';
-
-        // ========== 初始化导航栏 ==========
-        document.addEventListener('DOMContentLoaded', function () {
-            if (window.renderHeader) renderHeader({ currentPage: 'settings' });
-
-            // Hero
-            if (window.Layout && Layout.renderPageHero) {
-                Layout.renderPageHero('page-hero', {
-                    icon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary-500)" stroke-width="2"><path d="M12 15V17M6.343 18.364l1.414-1.414M17.657 18.364l-1.414-1.414M12 3v1M4.93 4.929l.707.707M19.07 4.929l-.707.707M3 12h1M20 12h1M6.343 5.636l1.414 1.414M17.657 5.636l-1.414 1.414"/><circle cx="12" cy="12" r="4"/></svg>',
-                    title: '<span data-i18n-html="settings.hero_title">个性化你的<span class="highlight">心晴</span>体验</span>',
-                    subtitle: '<span data-i18n="settings.hero_subtitle">调整主题、语言、通知偏好，让心晴空间更懂你</span>',
-                    dataI18n: 'settings',
-                });
-            }
-
-            // 渲染按钮
-            renderSettingButtons();
-            initToggles();
-            initThemeButtons();
-            initLangButtons();
-        });
-
-        // ========== 渲染操作按钮 ==========
-        function renderSettingButtons() {
-            // 导出数据按钮
-            if (document.getElementById('btn-export-data') && window.Buttons) {
-                Buttons.renderButton('btn-export-data', {
-                    text: '导出数据',
-                    variant: 'secondary',
-                    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>',
-                    dataI18n: 'settings.export_btn',
-                    onclick: function() { handleExportData(); },
-                });
-            }
-
-            // 删除账户按钮
-            if (document.getElementById('btn-delete-account') && window.Buttons) {
-                Buttons.renderButton('btn-delete-account', {
-                    text: '删除账户',
-                    variant: 'danger',
-                    icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>',
-                    dataI18n: 'settings.delete_btn',
-                    onclick: function() { handleDeleteAccount(); },
-                });
-            }
-
-            // 意见反馈按钮
-            if (document.getElementById('btn-feedback') && window.Buttons) {
-                Buttons.renderButton('btn-feedback', {
-                    text: '提交反馈',
-                    variant: 'primary',
-                    size: 'sm',
-                    icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 0111.7-7.6 8.38 8.38 0 013.8.9z"/></svg>',
-                    dataI18n: 'settings.feedback_btn',
-                    onclick: function() { handleFeedback(); },
-                });
-            }
-
-            // 提醒时间选择
-            if (document.getElementById('setting-reminder-time') && window.Forms) {
-                Forms.renderInput('setting-reminder-time', {
-                    type: 'text',
-                    name: 'reminder_time',
-                    value: '20:00',
-                    placeholder: 'HH:MM',
-                    dataI18n: 'settings.reminder_time',
-                    onInput: function(val) { localStorage.setItem('settings-reminder-time', val); },
-                });
-            }
-        }
-
-        // ========== Toggle 初始化 ==========
-        function initToggles() {
-            var el = document.getElementById('toggle-animations');
-            if (el) {
-                el.checked = localStorage.getItem('settings-animations') !== 'off';
-                el.addEventListener('change', function () {
-                    localStorage.setItem('settings-animations', el.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
-                });
-            }
-
-            var rem = document.getElementById('toggle-reminder');
-            if (rem) {
-                rem.checked = localStorage.getItem('settings-reminder') === 'on';
-                var row = document.getElementById('setting-reminder-time-row');
-                if (row) row.style.display = rem.checked ? '' : 'none';
-                rem.addEventListener('change', function () {
-                    localStorage.setItem('settings-reminder', rem.checked ? 'on' : 'off');
-                    if (row) row.style.display = rem.checked ? '' : 'none';
-                    showToast('设置已保存', 'success');
-                });
-            }
-
-            var wk = document.getElementById('toggle-weekly');
-            if (wk) {
-                wk.checked = localStorage.getItem('settings-weekly') === 'on';
-                wk.addEventListener('change', function () {
-                    localStorage.setItem('settings-weekly', wk.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
-                });
-            }
-
-            var syn = document.getElementById('toggle-sync');
-            if (syn) {
-                syn.checked = localStorage.getItem('settings-sync') === 'on';
-                syn.addEventListener('change', function () {
-                    localStorage.setItem('settings-sync', syn.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
-                });
-            }
-
-            var anon = document.getElementById('toggle-anonymous');
-            if (anon) {
-                anon.checked = localStorage.getItem('settings-anonymous') !== 'off';
-                anon.addEventListener('change', function () {
-                    localStorage.setItem('settings-anonymous', anon.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
-                });
-            }
-        }
-
-        // ========== 主题按钮 ==========
-        function initThemeButtons() {
-            var container = document.getElementById('setting-theme-btns');
-            if (!container) return;
-
-            var themes = [
-                { key: 'warm',   label: '暖色调',  color: '#d97757' },
-                { key: 'cool',   label: '冷色调',  color: '#3b82f6' },
-                { key: 'creative', label: '创意紫',  color: '#c026d3' },
-            ];
-
-            var current = localStorage.getItem('theme-preference') || 'warm';
-
-            container.innerHTML = '<div style="display:flex;gap:0.5rem;">' +
-                themes.map(function (t) {
-                    var active = t.key === current ? 'box-shadow: 0 0 0 2px white, 0 0 0 4px ' + t.color + ';transform:scale(1.1);' : '';
-                    return '<button onclick="window.__setTheme(\'' + t.key + '\')" style="width:2.5rem;height:2.5rem;border-radius:50%;background:' + t.color + ';border:2px solid var(--theme-border);cursor:pointer;transition:all 0.2s;' + active + '" aria-label="' + t.label + '"></button>';
-                }).join('') +
-                '</div>';
-        }
-
-        window.__setTheme = function (key) {
-            document.body.setAttribute('data-theme', key);
-            localStorage.setItem('theme-preference', key);
-            initThemeButtons();
-            showToast('主题已切换', 'success');
-        };
-
-        // ========== 语言按钮 ==========
-        function initLangButtons() {
-            var container = document.getElementById('setting-lang-btns');
-            if (!container) return;
-
-            var current = (window.I18N && I18N.currentLocale) || 'zh-CN';
-
-            container.innerHTML = '<div style="display:flex;gap:0.5rem;">' +
-                '<button onclick="window.__setLang(\'zh-CN\')" class="lang-btn" style="' + (current === 'zh-CN' ? 'background:var(--color-primary-50);color:var(--color-primary-600);' : 'background:var(--theme-card);color:var(--theme-text-light);') + 'border:1.5px solid var(--theme-border);border-radius:var(--radius-md);padding:0.375rem 0.875rem;font-size:0.875rem;cursor:pointer;transition:all 0.15s;">中文</button>' +
-                '<button onclick="window.__setLang(\'en\')" class="lang-btn" style="' + (current === 'en' ? 'background:var(--color-primary-50);color:var(--color-primary-600);' : 'background:var(--theme-card);color:var(--theme-text-light);') + 'border:1.5px solid var(--theme-border);border-radius:var(--radius-md);padding:0.375rem 0.875rem;font-size:0.875rem;cursor:pointer;transition:all 0.15s;">EN</button>' +
-                '</div>';
-        }
-
-        window.__setLang = function (locale) {
-            if (window.I18N && I18N.setLocale) {
-                I18N.setLocale(locale);
-            }
-            initLangButtons();
-            showToast('语言已切换', 'success');
-        };
-
-        // ========== 操作处理 ==========
-        function handleExportData() {
-            if (window.Modals && Modals.confirm) {
-                Modals.confirm({
-                    title: '导出数据',
-                    message: '将导出你的所有练习记录、情绪日记和设置数据。是否继续？',
-                    confirmText: '确认导出',
-                    cancelText: '取消',
-                    variant: 'primary',
-                    dataI18n: 'settings',
-                    onConfirm: function () {
-                        showToast('数据导出功能开发中…', 'info');
-                    }
-                });
-            } else {
-                showToast('数据导出功能开发中…', 'info');
-            }
-        }
-
-        function handleDeleteAccount() {
-            if (window.Modals && Modals.confirm) {
-                Modals.confirm({
-                    title: '删除账户',
-                    message: '此操作将永久删除你的账户和所有数据，且不可撤销。请输入"DELETE"以确认。',
-                    confirmText: '确认删除',
-                    cancelText: '取消',
-                    variant: 'danger',
-                    onConfirm: function () {
-                        showToast('账户删除功能开发中…', 'info');
-                    }
-                });
-            }
-        }
-
-        function handleFeedback() {
-            if (window.Modals && Modals.show) {
-                var content = '<div id="feedback-form-container"></div>';
-                Modals.show('modal-feedback', {
-                    title: '意见反馈',
-                    content: content,
-                    size: 'md',
-                    closable: true,
-                });
-                // 渲染反馈表单
-                setTimeout(function () {
-                    var fc = document.getElementById('feedback-form-container');
-                    if (fc && window.Forms) {
-                        fc.innerHTML = '';
-                        // 反馈类型
-                        var typeContainer = document.createElement('div');
-                        typeContainer.id = 'feedback-type';
-                        fc.appendChild(typeContainer);
-                        Forms.renderInput('feedback-type', {
-                            type: 'select',
-                            name: 'feedback_type',
-                            label: '反馈类型',
-                            placeholder: '请选择类型',
-                            options: [
-                                { value: 'bug', label: 'Bug 反馈' },
-                                { value: 'feature', label: '功能建议' },
-                                { value: 'praise', label: '好评鼓励' },
-                            ],
-                        });
-                        // 反馈内容
-                        var textContainer = document.createElement('div');
-                        textContainer.style.marginTop = '1rem';
-                        textContainer.id = 'feedback-text';
-                        fc.appendChild(textContainer);
-                        Forms.renderInput('feedback-text', {
-                            type: 'textarea',
-                            name: 'feedback_text',
-                            label: '详细内容',
-                            placeholder: '请描述你的反馈…',
-                            rows: 4,
-                        });
-                        // 提交按钮
-                        var btnContainer = document.createElement('div');
-                        btnContainer.style.marginTop = '1.25rem';
-                        btnContainer.style.textAlign = 'right';
-                        btnContainer.id = 'feedback-submit';
-                        fc.appendChild(btnContainer);
-                        if (window.Buttons) {
-                            Buttons.renderButton('feedback-submit', {
-                                text: '提交反馈',
-                                variant: 'primary',
-                                onclick: function() { showToast('感谢你的反馈！', 'success'); Modals.hide('modal-feedback'); },
-                            });
-                        }
-                    }
-                }, 100);
-            }
-        }
-
-        // ========== Toast 提示 ==========
-        function showToast(message, type) {
-            if (window.Modals && Modals.toast) {
-                Modals.toast(message, type || 'info', 3000);
-            } else {
-                // 降级：简单提示
-                var el = document.getElementById('settings-toast');
-                if (el) {
-                    el.style.display = 'block';
-                    el.textContent = message;
-                    el.style.background = type === 'success' ? '#10b981' : '#3b82f6';
-                    el.style.color = 'white';
-                    el.style.padding = '0.75rem 1.25rem';
-                    el.style.borderRadius = '0.5rem';
-                    el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
-                    setTimeout(function () { el.style.display = 'none'; }, 3000);
-                }
-            }
-        }
-
-    })();
-    </script>
-
-
-<!-- 内联 SVG 精灵 -->
+<body>
+<!-- 内联 SVG 图标定义 -->
 <!--
   心晴空间 — 疗愈风格自定义 SVG 图标集
   设计理念：柔和、手绘感、有机形态、温暖疗愈
@@ -1029,6 +643,433 @@
   </symbol>
 
 </svg>
+
+
+
+<div class="page-header">
+    <h1>🎨 心晴空间 · 疗愈图标集</h1>
+    <p>全自主研发 SVG 图标 · 柔和手绘风 · 无第三方依赖</p>
+</div>
+
+<!-- ===== 导航类图标 ===== -->
+<div class="section-label">🧭 导航 & 核心功能</div>
+<div class="grid">
+
+    <div class="card" onclick="copyId('icon-home')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-home"></use></svg>
+        </div>
+        <div class="card-name">首页</div>
+        <div class="card-id">#icon-home</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-emotion')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-emotion"></use></svg>
+        </div>
+        <div class="card-name">情绪觉察</div>
+        <div class="card-id">#icon-emotion</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-flow')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-flow"></use></svg>
+        </div>
+        <div class="card-name">心流体验</div>
+        <div class="card-id">#icon-flow</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-knowledge')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-knowledge"></use></svg>
+        </div>
+        <div class="card-name">知识图谱</div>
+        <div class="card-id">#icon-knowledge</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-community')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-community"></use></svg>
+        </div>
+        <div class="card-name">社区</div>
+        <div class="card-id">#icon-community</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-cat')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-cat"></use></svg>
+        </div>
+        <div class="card-name">猫咪消消乐</div>
+        <div class="card-id">#icon-cat</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-settings')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-settings"></use></svg>
+        </div>
+        <div class="card-name">设置</div>
+        <div class="card-id">#icon-settings</div>
+    </div>
+
+</div>
+
+<!-- ===== 疗愈主题图标 ===== -->
+<div class="section-label">🌿 疗愈主题</div>
+<div class="grid">
+
+    <div class="card" onclick="copyId('icon-heart')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-heart"></use></svg>
+        </div>
+        <div class="card-name">爱心</div>
+        <div class="card-id">#icon-heart</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-leaf')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-leaf"></use></svg>
+        </div>
+        <div class="card-name">叶子</div>
+        <div class="card-id">#icon-leaf</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-sun')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-sun"></use></svg>
+        </div>
+        <div class="card-name">太阳</div>
+        <div class="card-id">#icon-sun</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-moon')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-moon"></use></svg>
+        </div>
+        <div class="card-name">月亮</div>
+        <div class="card-id">#icon-moon</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-cloud')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-cloud"></use></svg>
+        </div>
+        <div class="card-name">云朵</div>
+        <div class="card-id">#icon-cloud</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-tree')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-tree"></use></svg>
+        </div>
+        <div class="card-name">树</div>
+        <div class="card-id">#icon-tree</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-flower')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-flower"></use></svg>
+        </div>
+        <div class="card-name">花朵</div>
+        <div class="card-id">#icon-flower</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-breathe')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-breathe"></use></svg>
+        </div>
+        <div class="card-name">呼吸</div>
+        <div class="card-id">#icon-breathe</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-star')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-star"></use></svg>
+        </div>
+        <div class="card-name">星星</div>
+        <div class="card-id">#icon-star</div>
+    </div>
+
+</div>
+
+<!-- ===== 功能操作图标 ===== -->
+<div class="section-label">⚙️ 功能 & 操作</div>
+<div class="grid">
+
+    <div class="card" onclick="copyId('icon-journal')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-journal"></use></svg>
+        </div>
+        <div class="card-name">日记</div>
+        <div class="card-id">#icon-journal</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-play')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-play"></use></svg>
+        </div>
+        <div class="card-name">播放</div>
+        <div class="card-id">#icon-play</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-pause')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-pause"></use></svg>
+        </div>
+        <div class="card-name">暂停</div>
+        <div class="card-id">#icon-pause</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-cookie')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-cookie"></use></svg>
+        </div>
+        <div class="card-name">饼干（道具）</div>
+        <div class="card-id">#icon-cookie</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-bomb')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-bomb"></use></svg>
+        </div>
+        <div class="card-name">炸弹（道具）</div>
+        <div class="card-id">#icon-bomb</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-refresh')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-refresh"></use></svg>
+        </div>
+        <div class="card-name">刷新</div>
+        <div class="card-id">#icon-refresh</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-lightbulb')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-lightbulb"></use></svg>
+        </div>
+        <div class="card-name">灯泡 / 提示</div>
+        <div class="card-id">#icon-lightbulb</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-confetti')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-confetti"></use></svg>
+        </div>
+        <div class="card-name">撒花 / 庆祝</div>
+        <div class="card-id">#icon-confetti</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-speaker')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-speaker"></use></svg>
+        </div>
+        <div class="card-name">声音开</div>
+        <div class="card-id">#icon-speaker</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-speaker-x')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-speaker-x"></use></svg>
+        </div>
+        <div class="card-name">静音</div>
+        <div class="card-id">#icon-speaker-x</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-vibrate')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-vibrate"></use></svg>
+        </div>
+        <div class="card-name">震动开</div>
+        <div class="card-id">#icon-vibrate</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-prohibit')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-prohibit"></use></svg>
+        </div>
+        <div class="card-name">禁止 / 关闭</div>
+        <div class="card-id">#icon-prohibit</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-house')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-house"></use></svg>
+        </div>
+        <div class="card-name">返回首页</div>
+        <div class="card-id">#icon-house</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-shop')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-shop"></use></svg>
+        </div>
+        <div class="card-name">商店</div>
+        <div class="card-id">#icon-shop</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-palette')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-palette"></use></svg>
+        </div>
+        <div class="card-name">调色板</div>
+        <div class="card-id">#icon-palette</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-arrows-clockwise')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-arrows-clockwise"></use></svg>
+        </div>
+        <div class="card-name">循环 / 重开</div>
+        <div class="card-id">#icon-arrows-clockwise</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-lock')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-lock"></use></svg>
+        </div>
+        <div class="card-name">锁定 / 专注</div>
+        <div class="card-id">#icon-lock</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-unlock')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-unlock"></use></svg>
+        </div>
+        <div class="card-name">解锁</div>
+        <div class="card-id">#icon-unlock</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-x')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-x"></use></svg>
+        </div>
+        <div class="card-name">关闭</div>
+        <div class="card-id">#icon-x</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-circle-check')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-circle-check"></use></svg>
+        </div>
+        <div class="card-name">完成</div>
+        <div class="card-id">#icon-circle-check</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-menu')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-menu"></use></svg>
+        </div>
+        <div class="card-name">菜单</div>
+        <div class="card-id">#icon-menu</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-search')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-search"></use></svg>
+        </div>
+        <div class="card-name">搜索</div>
+        <div class="card-id">#icon-search</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-user')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-user"></use></svg>
+        </div>
+        <div class="card-name">用户</div>
+        <div class="card-id">#icon-user</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-chevron-down')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-chevron-down"></use></svg>
+        </div>
+        <div class="card-name">下拉箭头</div>
+        <div class="card-id">#icon-chevron-down</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-chevron-right')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-chevron-right"></use></svg>
+        </div>
+        <div class="card-name">右箭头</div>
+        <div class="card-id">#icon-chevron-right</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-cookie-simple')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-cookie-simple"></use></svg>
+        </div>
+        <div class="card-name">饼干（简版）</div>
+        <div class="card-id">#icon-cookie-simple</div>
+    </div>
+
+    <div class="card" onclick="copyId('icon-party')">
+        <div class="card-icon">
+            <svg class="icon"><use href="#icon-party"></use></svg>
+        </div>
+        <div class="card-name">派对</div>
+        <div class="card-id">#icon-party</div>
+    </div>
+
+</div>
+
+<!-- ===== 颜色变体演示 ===== -->
+<div class="section-label">🎨 颜色语义变体演示（以爱心为例）</div>
+<div class="grid" style="max-width:600px; margin:0 auto;">
+    <div class="card" style="padding:1.2rem;">
+        <div class="color-demo">
+            <div class="demo-item">
+                <svg class="icon" style="color:#5cb8a8"><use href="#icon-heart"></use></svg>
+                <span class="demo-label">primary</span>
+            </div>
+            <div class="demo-item">
+                <svg class="icon" style="color:#f4a261"><use href="#icon-heart"></use></svg>
+                <span class="demo-label">warm</span>
+            </div>
+            <div class="demo-item">
+                <svg class="icon" style="color:#6b9a9a"><use href="#icon-heart"></use></svg>
+                <span class="demo-label">cool</span>
+            </div>
+            <div class="demo-item">
+                <svg class="icon" style="color:#10b981"><use href="#icon-heart"></use></svg>
+                <span class="demo-label">success</span>
+            </div>
+            <div class="demo-item">
+                <svg class="icon" style="color:#f59e0b"><use href="#icon-heart"></use></svg>
+                <span class="demo-label">warning</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 使用说明 ===== -->
+<div class="usage">
+    <h2>📖 使用方式</h2>
+
+    <div class="tag">方式一：HTML 内联（推荐）</div>
+    <code>&lt;svg class="icon icon--lg"&gt;
+  &lt;use href="#icon-heart"&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+
+    <div class="tag">方式二：搭配 icons-custom.css 语义色</div>
+    <code>&lt;svg class="icon icon--lg icon--warm"&gt;
+  &lt;use href="#icon-heart"&gt;&lt;/use&gt;
+&lt;/svg&gt;</code>
+
+    <div class="tag">方式三：纯 CSS 控制颜色（自动继承）</div>
+    <code>&lt;style&gt;
+  .my-icon { color: #f4a261; }
+&lt;/style&gt;
+&lt;span class="my-icon"&gt;
+  &lt;svg class="icon"&gt;
+    &lt;use href="#icon-leaf"&gt;&lt;/use&gt;
+  &lt;/svg&gt;
+&lt;/span&gt;</code>
+
+    <div class="tag">⚡ 点击任意卡片可复制图标 ID</div>
+</div>
+
+
 
 </body>
 </html>
