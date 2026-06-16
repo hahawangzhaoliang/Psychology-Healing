@@ -11,6 +11,7 @@ class ThemeManager {
 
         this.themes = {
             home: {
+                name: '家', nameEn: 'Home', icon: '🏠',
                 name: '家', icon: '🏠',
                 vars: {
                     '--color-primary-50':  '#fdf8f0',
@@ -35,7 +36,7 @@ class ThemeManager {
                 }
             },
             work: {
-                name: '工作', icon: '💼',
+                name: '工作', nameEn: 'Work', icon: '💼',
                 vars: {
                     '--color-primary-50':  '#f0f6ff',
                     '--color-primary-100': '#daeafc',
@@ -59,7 +60,7 @@ class ThemeManager {
                 }
             },
             entertainment: {
-                name: '娱乐', icon: '🎮',
+                name: '娱乐', nameEn: 'Entertainment', icon: '🎮',
                 vars: {
                     '--color-primary-50':  '#f0fdf8',
                     '--color-primary-100': '#ccf5e8',
@@ -95,6 +96,13 @@ class ThemeManager {
         this.knowledgeCategories = {};
 
         this.init();
+    }
+
+    themeName(key) {
+        const t = this.themes[key];
+        if (!t) return key;
+        const isEn = window.I18N && I18N.currentLocale === 'en';
+        return isEn ? (t.nameEn || t.name || key) : (t.name || key);
     }
 
     init() {
@@ -1285,21 +1293,21 @@ class ThemeManager {
             </style>
             <div class="theme-dropdown-btn" id="themeDropdownBtn">
                 <span class="icon">${this.themes[this.currentTheme]?.icon || '🏠'}</span>
-                <span class="label">${this.themes[this.currentTheme]?.name || '家'}</span>
+                <span class="label">${this.themeName(this.currentTheme)}</span>
                 <span class="arrow">▾</span>
             </div>
             <div class="theme-dropdown-menu" id="themeDropdownMenu">
                 <div class="theme-dropdown-item ${this.currentTheme==='home'?'active':''}" data-theme="home">
                     <span class="dot" style="background:linear-gradient(135deg,#E8B87D,#D4956A)"></span>
-                    <span>🏠 家</span>
+                    <span>🏠 ${this.themeName('home')}</span>
                 </div>
                 <div class="theme-dropdown-item ${this.currentTheme==='work'?'active':''}" data-theme="work">
                     <span class="dot" style="background:linear-gradient(135deg,#6B9BD1,#4A7FB8)"></span>
-                    <span>💼 工作</span>
+                    <span>💼 ${this.themeName('work')}</span>
                 </div>
                 <div class="theme-dropdown-item ${this.currentTheme==='entertainment'?'active':''}" data-theme="entertainment">
                     <span class="dot" style="background:linear-gradient(135deg,#2ebe9a,#F5A9B8)"></span>
-                    <span>🎮 娱乐</span>
+                    <span>🎮 ${this.themeName('entertainment')}</span>
                 </div>
             </div>
         `;
