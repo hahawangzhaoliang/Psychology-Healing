@@ -1,0 +1,252 @@
+[
+  {
+    "id": "reading",
+    "name": "Deep Reading",
+    "icon": "📖",
+    "difficulty": 2,
+    "duration": "30-60 min",
+    "description": "Choose a book that interests you and immerse yourself in the world of words",
+    "tags": [
+      "Learning",
+      "Quiet",
+      "Indoor"
+    ],
+    "benefits": [
+      "Improve focus",
+      "Expand knowledge",
+      "Reduce stress"
+    ],
+    "tips": [
+      "Choose a quiet corner",
+      "Turn off phone notifications",
+      "Prepare a cup of tea or coffee"
+    ],
+    "scientific": "Reading activates multiple regions of the brain; long-term reading enhances neuroplasticity.",
+    "goalExampleEn": "Read the first two chapters and create a simple mind map"
+  },
+  {
+    "id": "writing",
+    "name": "Creative Writing",
+    "icon": "✍️",
+    "difficulty": 3,
+    "duration": "30-45 min",
+    "description": "Free writing or story creation, let your thoughts flow naturally",
+    "tags": [
+      "Creative",
+      "Expression",
+      "Indoor"
+    ],
+    "benefits": [
+      "Improve expression",
+      "Emotional release",
+      "Stimulate creativity"
+    ],
+    "tips": [
+      "Don't obsess over perfection",
+      "Write first, edit later",
+      "Find a comfortable position"
+    ],
+    "scientific": "Writing aids emotional regulation and cognitive processing; recommended by positive psychology as a self-exploration tool.",
+    "goalExampleEn": "Write 500 words, any genre"
+  },
+  {
+    "id": "painting",
+    "name": "Painting",
+    "icon": "🎨",
+    "difficulty": 3,
+    "duration": "45-60 min",
+    "description": "Express your inner world through colors and lines, enjoy the creative process",
+    "tags": [
+      "Creative",
+      "Art",
+      "Indoor"
+    ],
+    "benefits": [
+      "Stimulate creativity",
+      "Emotional expression",
+      "Improve focus"
+    ],
+    "tips": [
+      "Don't pursue perfection",
+      "Try different media",
+      "Enjoy the process, not the result"
+    ],
+    "scientific": "Art creation activates the brain's reward circuit, promotes dopamine secretion, and enhances well-being.",
+    "goalExampleEn": "Complete a small artwork, not pursuing perfection"
+  },
+  {
+    "id": "yoga",
+    "name": "Yoga Practice",
+    "icon": "🤸",
+    "difficulty": 2,
+    "duration": "30-45 min",
+    "description": "Connect body and mind through postures and breathing",
+    "tags": [
+      "Physical",
+      "Mind-Body",
+      "Indoor"
+    ],
+    "benefits": [
+      "Enhance body awareness",
+      "Reduce anxiety",
+      "Improve flexibility"
+    ],
+    "tips": [
+      "Focus on breathing rhythm",
+      "Don't compare with others",
+      "Listen to your body"
+    ],
+    "scientific": "Yoga combines breathing and movement, reduces cortisol levels, and promotes parasympathetic nervous system activity.",
+    "goalExampleEn": "Learn 3 new poses, focus on breathing"
+  },
+  {
+    "id": "meditation",
+    "name": "Mindfulness Meditation",
+    "icon": "🧘",
+    "difficulty": 1,
+    "duration": "15-20 min",
+    "description": "Focus on the present moment, observe the coming and going of breath and thoughts",
+    "tags": [
+      "Focus",
+      "Quiet",
+      "Indoor"
+    ],
+    "benefits": [
+      "Improve focus",
+      "Reduce stress",
+      "Enhance emotional regulation"
+    ],
+    "tips": [
+      "Find a quiet place",
+      "Keep your spine straight",
+      "Don't judge your thoughts"
+    ],
+    "scientific": "Mindfulness meditation can change brain structure, increase prefrontal cortex thickness, and enhance emotional regulation ability.",
+    "goalExampleEn": "Stay for 10 minutes, do not judge yourself"
+  },
+  {
+    "id": "coding",
+    "name": "Programming Learning",
+    "icon": "💻",
+    "difficulty": 4,
+    "duration": "45-60 min",
+    "description": "Solve a programming problem or learn a new technology",
+    "tags": [
+      "Learning",
+      "Challenge",
+      "Indoor"
+    ],
+    "benefits": [
+      "Improve logical thinking",
+      "Gain sense of achievement",
+      "Enhance problem-solving ability"
+    ],
+    "tips": [
+      "Break down big problems",
+      "Understand before coding",
+      "Take breaks when needed"
+    ],
+    "scientific": "The debugging process in programming trains executive function and enhances cognitive flexibility.",
+    "goalExampleEn": "Solve one specific problem or learn a new syntax"
+  },
+  {
+    "id": "cooking",
+    "name": "Cooking Creation",
+    "icon": "🍳",
+    "difficulty": 3,
+    "duration": "45-60 min",
+    "description": "Try a new recipe, prepare a delicious meal with care",
+    "tags": [
+      "Creative",
+      "Sensory",
+      "Indoor"
+    ],
+    "benefits": [
+      "Enhance well-being",
+      "Sensory pleasure",
+      "Sense of achievement"
+    ],
+    "tips": [
+      "Enjoy the cooking process",
+      "Try new ingredients",
+      "Plate with care"
+    ],
+    "scientific": "Cooking activates the senses, promotes mindfulness, and is significantly associated with improved mood.",
+    "goalExampleEn": "Try a new recipe, plate with care"
+  },
+  {
+    "id": "gardening",
+    "name": "Gardening",
+    "icon": "🌱",
+    "difficulty": 2,
+    "duration": "30-45 min",
+    "description": "Care for plants, feel the joy of life growing",
+    "tags": [
+      "Nature",
+      "Patience",
+      "Outdoor"
+    ],
+    "benefits": [
+      "Reduce stress",
+      "Enhance sense of responsibility",
+      "Connect with nature"
+    ],
+    "tips": [
+      "Observe plant needs",
+      "Don't rush the process",
+      "Enjoy touching the soil"
+    ],
+    "scientific": "Gardening reduces cortisol levels and enhances positive emotions; it is known as \"nature therapy\".",
+    "goalExampleEn": "Care for plants for 15 minutes, observe changes"
+  },
+  {
+    "id": "music",
+    "name": "Music Creation/Practice",
+    "icon": "🎵",
+    "difficulty": 3,
+    "duration": "30-45 min",
+    "description": "Practice an instrument or try to create a melody",
+    "tags": [
+      "Creative",
+      "Art",
+      "Indoor"
+    ],
+    "benefits": [
+      "Improve focus",
+      "Emotional expression",
+      "Enhance coordination"
+    ],
+    "tips": [
+      "Enjoy every note",
+      "Don't pursue perfection",
+      "Record your creations"
+    ],
+    "scientific": "Music training enhances connections between multiple brain regions and promotes neuroplasticity.",
+    "goalExampleEn": "Practice a melody, record your feelings"
+  },
+  {
+    "id": "running",
+    "name": "Running/Jogging",
+    "icon": "🏃",
+    "difficulty": 2,
+    "duration": "30-45 min",
+    "description": "Find your rhythm while running, let your thoughts flow freely",
+    "tags": [
+      "Physical",
+      "Outdoor",
+      "Health"
+    ],
+    "benefits": [
+      "Release endorphins",
+      "Reduce anxiety",
+      "Improve fitness"
+    ],
+    "tips": [
+      "Maintain a comfortable pace",
+      "Focus on breathing",
+      "Choose a suitable route"
+    ],
+    "scientific": "Aerobic exercise promotes BDNF (brain-derived neurotrophic factor) secretion, improving mood and cognitive function.",
+    "goalExampleEn": "Jog for 20 minutes, focus on breathing rhythm"
+  }
+]

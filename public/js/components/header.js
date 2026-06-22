@@ -135,7 +135,7 @@
     <nav class="navbar" id="navbar">
       <div class="navbar-inner">
         <a href="index.html" class="nav-logo">
-          <img src="assets/images/icons/favicon.png" alt="心晴空间" style="width:32px;height:32px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;">
+          <img src="assets/images/icons/favicon.png" alt="心晴空间" style="width:48px;height:48px;border-radius:var(--radius-md);object-fit:cover;flex-shrink:0;">
           <span style="font-weight:600;color:var(--theme-text);" data-i18n="footer.brand">心晴空间</span>
         </a>
 

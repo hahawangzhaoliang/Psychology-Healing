@@ -136,60 +136,6 @@
             line-height: 1.6;
         }
 
-        /* 英雄区CTA按钮 */
-        .hero-cta {
-            display: flex;
-            gap: 0.75rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 1.5rem 0 2.5rem;
-        }
-
-        .btn-hero-primary {
-            gap: 0.4rem;
-            padding: 0.65rem 1.75rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            line-height: 1.5;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border: none;
-            background: linear-gradient(135deg, #F97316, #EA580C);
-            color: white;
-            box-shadow: 0 4px 16px rgba(249, 115, 22, 0.4);
-            will-change: transform, box-shadow;
-        }
-
-        .btn-hero-primary:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 24px rgba(249, 115, 22, 0.5);
-        }
-
-        .btn-hero-primary:active {
-            transform: translateY(-1px) scale(1.01);
-        }
-
-        .btn-hero-secondary {
-            gap: 0.4rem;
-            padding: 0.65rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            line-height: 1.5;
-            transition: all 0.3s var(--ease-standard);
-            border: 2px solid var(--color-primary-400);
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--color-primary-600);
-            backdrop-filter: blur(10px);
-            will-change: transform, box-shadow;
-        }
-
-        .btn-hero-secondary:hover {
-            background: white;
-            border-color: var(--color-primary-500);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(92, 184, 168, 0.3);
-        }
 
         @keyframes gradientShift {
             0%   { background-position: 0% 50%; }
@@ -1305,6 +1251,36 @@
             }
         }
 
+        /* Ghost 按钮（用于次要操作，如心流小课堂） */
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-full);
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-primary-600);
+            background: transparent;
+            border: 1.5px dashed var(--color-primary-300);
+            cursor: pointer;
+            transition: all 0.25s var(--ease-standard);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn-ghost:hover {
+            background: var(--color-primary-50);
+            border-color: var(--color-primary-400);
+            color: var(--color-primary-700);
+        }
+        .btn-ghost:active {
+            transform: scale(0.97);
+        }
+        .btn-sm {
+            padding: 0.4rem 0.9rem;
+            font-size: 0.825rem;
+        }
+
         /* 触摸设备优化 */
         @media (hover: none) and (pointer: coarse) {
             .activity-card:active,
@@ -1314,7 +1290,204 @@
                 transition: transform 0.1s var(--ease-standard);
             }
         }
-    </style>
+
+                .challenge-metaphors {
+                    display: grid;
+                    grid-template-columns: repeat(4, 1fr);
+                    gap: 0.75rem;
+                    margin: 1.25rem 0;
+                }
+                .metaphor-card {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    padding: 1rem 0.5rem;
+                    border-radius: 1rem;
+                    border: 2px solid var(--theme-border);
+                    background: var(--theme-card);
+                    cursor: pointer;
+                    transition: all 0.25s ease;
+                    text-align: center;
+                }
+                .metaphor-card:hover {
+                    border-color: var(--theme-primary);
+                    transform: translateY(-3px);
+                    box-shadow: 0 6px 20px rgba(92,184,168,0.18);
+                }
+                .metaphor-card.selected {
+                    border-color: var(--theme-primary);
+                    background: linear-gradient(135deg, rgba(92,184,168,0.08), rgba(92,184,168,0.03));
+                    box-shadow: 0 4px 16px rgba(92,184,168,0.15);
+                }
+                .metaphor-icon {
+                    font-size: 2rem;
+                    margin-bottom: 0.5rem;
+                    line-height: 1;
+                }
+                .metaphor-label {
+                    font-weight: 600;
+                    font-size: 0.9rem;
+                    color: var(--theme-text);
+                    margin-bottom: 0.25rem;
+                }
+                .metaphor-desc {
+                    font-size: 0.75rem;
+                    color: var(--theme-text-light);
+                    line-height: 1.3;
+                }
+                @media (max-width: 480px) {
+                    .challenge-metaphors {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
+
+                /* 心流小课堂 弹窗 */
+                .modal-overlay {
+                    position: fixed;
+                    top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.35);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                }
+                .modal-overlay.hidden { display: none; }
+                .flow-lesson-content {
+                    background: #fff;
+                    border-radius: 20px;
+                    padding: 2rem 2rem 1.5rem;
+                    max-width: 520px;
+                    width: 92%;
+                    max-height: 88vh;
+                    overflow-y: auto;
+                    position: relative;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+                    animation: lessonSlideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+                @keyframes lessonSlideUp {
+                    from { opacity: 0; transform: translateY(40px) scale(0.96); }
+                    to   { opacity: 1; transform: translateY(0) scale(1); }
+                }
+                .modal-close {
+                    position: absolute;
+                    top: 1rem; right: 1rem;
+                    background: none; border: none;
+                    font-size: 1.5rem; cursor: pointer;
+                    color: var(--theme-text-light);
+                    width: 36px; height: 36px;
+                    border-radius: 50%;
+                    display: flex; align-items: center; justify-content: center;
+                    transition: background 0.2s;
+                }
+                .modal-close:hover { background: var(--color-primary-50); color: var(--theme-text); }
+                .flow-lesson-header { text-align: center; margin-bottom: 1.25rem; }
+                .flow-lesson-icon { font-size: 2.8rem; margin-bottom: 0.5rem; }
+                .flow-lesson-header h2 {
+                    font-size: 1.25rem; font-weight: 700;
+                    color: var(--theme-text); margin: 0.4rem 0 0.2rem;
+                }
+                .flow-lesson-header p { font-size: 0.88rem; color: var(--theme-text-light); margin: 0; }
+                .flow-lesson-viz {
+                    background: linear-gradient(135deg, #f0fdfa 0%, #fef9c3 100%);
+                    border-radius: 16px;
+                    padding: 1rem;
+                    margin-bottom: 1.25rem;
+                }
+                .flow-lesson-points { display: flex; flex-direction: column; gap: 0.85rem; }
+                .lesson-point { display: flex; gap: 0.7rem; align-items: flex-start; }
+                .lesson-icon { font-size: 1.35rem; flex-shrink: 0; margin-top: 0.1rem; }
+                .lesson-point strong { display: block; font-size: 0.93rem; color: var(--theme-text); }
+                .lesson-point p { font-size: 0.82rem; color: var(--theme-text-light); margin: 0.2rem 0 0; line-height: 1.55; }
+
+                .preparation-tip-flow {
+                    background: linear-gradient(135deg, #ecfdf5, #f0fdfa);
+                    border-left: 3px solid var(--color-primary-400);
+                    padding: 0.75rem 1rem;
+                    border-radius: 0 10px 10px 0;
+                    margin-top: 1rem;
+                    font-size: 0.88rem;
+                    color: var(--theme-text);
+                    line-height: 1.6;
+                }
+                .preparation-tip-flow .tip-label {
+                    font-weight: 600;
+                    font-size: 0.82rem;
+                    color: var(--color-primary-600);
+                    margin-bottom: 0.2rem;
+                }
+
+    
+                /* 心流小课堂 分步引导 */
+                .lesson-steps-dots {
+                    display: flex;
+                    justify-content: center;
+                    gap: 0.5rem;
+                    margin-bottom: 1.5rem;
+                }
+                .lesson-steps-dots .dot {
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: var(--color-primary-200);
+                    transition: all 0.3s;
+                }
+                .lesson-steps-dots .dot.active {
+                    background: var(--color-primary-500);
+                    width: 24px;
+                    border-radius: 4px;
+                }
+                .lesson-step {
+                    animation: fadeInUp 0.4s ease;
+                }
+                .lesson-step-desc {
+                    text-align: center;
+                    color: var(--theme-text-light);
+                    font-size: 0.95rem;
+                    line-height: 1.6;
+                    margin-top: 1rem;
+                }
+                .lesson-point-card {
+                    background: var(--color-primary-50);
+                    border-radius: var(--radius-lg);
+                    padding: 1.25rem;
+                    margin-bottom: 1rem;
+                    text-align: center;
+                }
+                .lesson-point-icon {
+                    font-size: 2rem;
+                    margin-bottom: 0.5rem;
+                }
+                .lesson-point-card h3 {
+                    font-size: 1.05rem;
+                    font-weight: 700;
+                    color: var(--theme-text);
+                    margin-bottom: 0.5rem;
+                }
+                .lesson-point-card p {
+                    font-size: 0.9rem;
+                    color: var(--theme-text-light);
+                    line-height: 1.5;
+                }
+                .lesson-step-summary {
+                    text-align: center;
+                    color: var(--theme-text-light);
+                    font-size: 0.95rem;
+                    line-height: 1.6;
+                    margin-top: 1rem;
+                    padding: 1rem;
+                    background: var(--color-warm-50);
+                    border-radius: var(--radius-lg);
+                }
+                .lesson-nav {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    margin-top: 1.5rem;
+                    padding-top: 1rem;
+                    border-top: 1px solid var(--color-primary-100);
+                }
+
+                </style>
 </head>
 <body>
 <!-- 内联 SVG 图标定义 -->
@@ -1851,18 +2024,6 @@
                 选择一项你热爱的活动，投入15-60分钟，体验完全专注的心流状态
             </p>
             
-            <!-- 快速开始CTA按钮 -->
-            <div class="hero-cta">
-                <button class="btn btn-hero-primary" onclick="quickStartFlow()" data-touch-feedback>
-                    <span style="font-size: 1.15rem;">🚀</span>
-                    <span data-i18n="flow.start_experience">开始心流体验</span>
-                </button>
-                <button class="btn btn-hero-secondary" onclick="showGuideAgain()" data-touch-feedback>
-                    <span style="font-size: 1rem;">📖</span>
-                    <span data-i18n="flow.view_guide">查看引导</span>
-                </button>
-            </div>
-            
             <!-- Tab导航 -->
             <div class="tab-nav">
                 <a href="#dashboard" class="page-tab active" data-tab="dashboard" data-touch-feedback>
@@ -1890,19 +2051,19 @@
                 <!-- 统计卡片 -->
                 <div class="card">
                     <div class="stat-label" data-i18n="flow.stat_week_duration">本周心流时长</div>
-                    <div class="stat-value">5.2<span class="stat-unit" data-i18n="flow.unit_hours">小时</span></div>
+                    <div class="stat-value" id="dash-week-duration"><span class="stat-value-num">--</span><span class="stat-unit" data-i18n="flow.unit_hours">小时</span></div>
                 </div>
                 <div class="card">
                     <div class="stat-label" data-i18n="flow.stat_session_count">心流活动次数</div>
-                    <div class="stat-value">12<span class="stat-unit" data-i18n="flow.unit_sessions">次</span></div>
+                    <div class="stat-value" id="dash-session-count"><span class="stat-value-num">--</span><span class="stat-unit" data-i18n="flow.unit_sessions">次</span></div>
                 </div>
                 <div class="card">
                     <div class="stat-label" data-i18n="flow.stat_avg_quality">平均心流质量</div>
-                    <div class="stat-value">4.2<span class="stat-unit" data-i18n="flow.unit_rating">/ 5</span></div>
+                    <div class="stat-value" id="dash-avg-quality"><span class="stat-value-num">--</span><span class="stat-unit" data-i18n="flow.unit_rating">/ 5</span></div>
                 </div>
                 <div class="card">
-                    <div class="stat-label" data-i18n="flow.stat_streak_days">连续天数</div>
-                    <div class="stat-value">5<span class="stat-unit" data-i18n="flow.unit_days">天</span></div>
+                    <div class="stat-label" data-i18n="flow.streak_days">连续天数</div>
+                    <div class="stat-value" id="dash-streak-days"><span class="stat-value-num">--</span><span class="stat-unit" data-i18n="flow.unit_days">天</span></div>
                 </div>
             </div>
 
@@ -1991,117 +2152,90 @@
                 <!-- 活动卡片会通过JavaScript动态生成 -->
             </div>
             
-            <!-- 心流知识卡片 -->
-            <div id="flow-education-section" style="margin-top: 3rem;">
-                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--theme-text); margin-bottom: 1.5rem;" class="fade-in-up">
-                    📚 <span data-i18n="flow.flow_knowledge">Flow Knowledge</span>
-                </h2>
-                
-                <div style="display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
-                    
-                    <!-- 卡片1: 什么是心流？ -->
-                    <div class="card education-card" onclick="toggleEducationCard(this)" data-touch-feedback>
-                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #5cb8a8, #4a9a8c); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
-                                🧠
-                            </div>
-                            <div>
-                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;" data-i18n="flow.what_is_flow">什么是心流？</h3>
-                                <div style="font-size: 0.85rem; color: var(--theme-text-light);" data-i18n="flow.mihaly_theory">Mihaly Csikszentmihalyi 的理论</div>
-                            </div>
-                        </div>
-                        
-                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;" data-i18n="flow.flow_preview">
-                            心流（Flow）是一种完全沉浸、忘记时间的专注状态。当你挑战与技能完美平衡时，心流就会自然产生...
-                        </div>
-                        
-                        <div class="education-full" style="display: none; font-size: 0.95rem; color: var(--theme-text); line-height: 1.8;">
-                            <svg viewBox="0 0 280 160" style="width: 100%; height: auto; margin-bottom: 1rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, #f0fdfa, #fef3c7); padding: 1rem;">
-                                <circle cx="140" cy="80" r="40" fill="#5cb8a8" opacity="0.2"/>
-                                <circle cx="140" cy="80" r="25" fill="#FFD1A4"/>
-                                <rect x="125" y="105" width="30" height="40" rx="8" fill="#5cb8a8"/>
-                                <text x="140" y="170" font-size="14" fill="#374151" text-anchor="middle" data-i18n="flow.flow_state_label">完全专注的状态</text>
-                            </svg>
-                            
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;" data-i18n="flow.core_features">核心特征：</h4>
-                            <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li data-i18n="flow.feature_1">完全专注，忘记时间流逝</li>
-                                <li data-i18n="flow.feature_2">活动本身带来内在愉悦</li>
-                                <li data-i18n="flow.feature_3">感到掌控感和自主性</li>
-                                <li data-i18n="flow.feature_4">自我意识消失</li>
-                                <li data-i18n="flow.feature_5">感受到清晰的反馈</li>
-                            </ul>
-                            
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;" data-i18n="flow.scientific_basis">科学依据：</h4>
-                            <p style="margin: 0 0 1rem;" data-i18n="flow.flow_science">神经科学研究表明，心流状态下大脑会释放多巴胺、内啡肽等神经递质，带来愉悦感和满足感。长期体验心流的人，幸福感显著更高。</p>
-                            
-                            <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-md); margin-top: 1rem;">
-                                <strong data-i18n="flow.tip_label">💡 小提示：</strong> <span data-i18n="flow.flow_tip">心流不是"努力"出来的，而是当挑战与技能匹配时自然产生的状态。</span>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))" data-i18n="flow.expand_read">展开阅读 →</button>
+            <!-- 心流知识卡片（已整合到准备流程中） -->
+            <div id="flow-education-section" style="display:none;">
+            </div>
+
+            <!-- Flow 小课堂 入口 -->
+            <div style="margin-top: 2rem; text-align: center;">
+                <button class="btn btn-ghost" onclick="showFlowLesson()" data-i18n="flow.flow_lesson_btn" data-touch-feedback>📖 心流小课堂：第一次用？点这里了解心流是什么</button>
+            </div>
+        </div>
+
+                <!-- 心流小课堂 弹窗 -->
+        <div id="flow-lesson-modal" class="modal-overlay" onclick="closeFlowLesson(event)">
+            <div class="modal-content flow-lesson-content" onclick="event.stopPropagation()">
+                <button class="modal-close" onclick="closeFlowLesson()">×</button>
+
+                <!-- 步骤指示器 -->
+                <div class="lesson-steps-dots" id="lesson-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                </div>
+
+                <!-- Step 1: 什么是心流 + SVG -->
+                <div class="lesson-step" id="lesson-step-1">
+                    <div class="flow-lesson-header">
+                        <div class="flow-lesson-icon">🧠</div>
+                        <h2 data-i18n="flow.flow_lesson_title">心流小课堂</h2>
+                        <p data-i18n="flow.flow_lesson_subtitle">了解心流，让每一次专注都更有质量</p>
                     </div>
-                    
-                    <!-- 卡片2: 如何进入心流？ -->
-                    <div class="card education-card" onclick="toggleEducationCard(this)" data-touch-feedback>
-                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-                            <div style="width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b, #ea580c); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white; flex-shrink: 0;">
-                                🎯
-                            </div>
-                            <div>
-                                <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--theme-text); margin: 0 0 0.25rem 0;" data-i18n="flow.how_to_flow">如何进入心流？</h3>
-                                <div style="font-size: 0.85rem; color: var(--theme-text-light);" data-i18n="flow.preconditions_skills">前提条件 + 实用技巧</div>
-                            </div>
-                        </div>
-                        
-                        <div class="education-preview" style="font-size: 0.95rem; color: var(--theme-text-light); line-height: 1.6; margin-bottom: 1rem;" data-i18n="flow.how_to_flow_preview">
-                            进入心流需要满足几个前提条件：明确的目标、即时反馈、挑战与技能的平衡...
-                        </div>
-                        
-                        <div class="education-full" style="display: none; font-size: 0.95rem; color: var(--theme-text); line-height: 1.8;">
-                            <svg viewBox="0 0 280 200" style="width: 100%; height: auto; margin-bottom: 1rem; border-radius: var(--radius-lg); background: linear-gradient(135deg, #fef3c7, #fde68a); padding: 1rem;">
-                                <rect x="40" y="40" width="200" height="120" fill="white" stroke="#f59e0b" stroke-width="2" rx="8"/>
-                                <text x="140" y="65" font-size="12" fill="#374151" text-anchor="middle" font-weight="bold" data-i18n="flow.challenge_skill_model">挑战-技能平衡模型</text>
-                                
-                                <!-- 坐标轴 -->
-                                <line x1="60" y1="140" x2="220" y2="140" stroke="#9ca3af" stroke-width="2"/>
-                                <line x1="60" y1="140" x2="60" y2="60" stroke="#9ca3af" stroke-width="2"/>
-                                <text x="140" y="160" font-size="10" fill="#6b7280" text-anchor="middle" data-i18n="flow.skill_level_label">技能水平</text>
-                                <text x="40" y="100" font-size="10" fill="#6b7280" text-anchor="middle" transform="rotate(-90 40 100)" data-i18n="flow.challenge_level_label">挑战难度</text>
-                                
-                                <!-- 心流区域 -->
-                                <circle cx="140" cy="100" r="25" fill="#f59e0b" opacity="0.3"/>
-                                <text x="140" y="105" font-size="11" fill="#92400e" text-anchor="middle" font-weight="bold" data-i18n="flow.flow_region">心流</text>
-                            </svg>
-                            
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">前提条件：</h4>
-                            <ol style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li data-i18n-html="flow.prereq_1"><strong>明确的目标</strong> - 知道要做什么，做到什么程度</li>
-                                <li data-i18n-html="flow.prereq_2"><strong>即时反馈</strong> - 能清楚知道自己做得如何</li>
-                                <li data-i18n-html="flow.prereq_3"><strong>挑战与技能平衡</strong> - 任务难度略高于当前能力</li>
-                                <li data-i18n-html="flow.prereq_4"><strong>消除干扰</strong> - 关闭手机通知，创造安静环境</li>
-                            </ol>
-                            
-                            <h4 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin: 1rem 0 0.5rem;">实用技巧：</h4>
-                            <ul style="margin: 0; padding-left: 1.5rem; margin-bottom: 1rem;">
-                                <li data-i18n="flow.tip_1">设定25-90分钟的专注时间块</li>
-                                <li data-i18n="flow.tip_2">选择一个你真正感兴趣的活动</li>
-                                <li data-i18n="flow.tip_3">提前准备好所有需要的工具</li>
-                                <li data-i18n="flow.tip_4">从简单的部分开始，逐步增加难度</li>
-                            </ul>
-                        </div>
-                        
-                        <button class="btn btn-ghost btn-sm" style="width: 100%; margin-top: 0.5rem;" onclick="event.stopPropagation(); toggleEducationCard(this.closest('.education-card'))" data-i18n="flow.expand_read">
-                            展开阅读 →
-                        </button>
+                    <div class="flow-lesson-viz">
+                        <svg viewBox="0 0 320 200" style="width:100%; height:auto;">
+                            <line x1="60" y1="160" x2="260" y2="160" stroke="#9ca3af" stroke-width="2"/>
+                            <line x1="60" y1="160" x2="60" y2="40" stroke="#9ca3af" stroke-width="2"/>
+                            <text x="160" y="185" font-size="12" fill="#6b7280" text-anchor="middle" data-i18n="flow.skill_level_label">技能水平</text>
+                            <text x="45" y="100" font-size="12" fill="#6b7280" text-anchor="middle" transform="rotate(-90 45 100)" data-i18n="flow.challenge_level_label">挑战难度</text>
+                            <rect x="180" y="40" width="80" height="60" fill="#fee2e2" rx="8"/>
+                            <text x="220" y="75" font-size="11" fill="#991b1b" text-anchor="middle" data-i18n="flow.anxiety_label">焦虑</text>
+                            <rect x="60" y="120" width="80" height="40" fill="#fef3c7" rx="8"/>
+                            <text x="100" y="145" font-size="11" fill="#92400e" text-anchor="middle" data-i18n="flow.boredom_label">无聊</text>
+                            <circle cx="160" cy="100" r="35" fill="#5cb8a8" opacity="0.3"/>
+                            <text x="160" y="105" font-size="13" fill="#065f46" text-anchor="middle" font-weight="bold" data-i18n="flow.flow_region">心流</text>
+                            <text x="160" y="25" font-size="13" fill="#374151" text-anchor="middle" font-weight="600" data-i18n="flow.challenge_skill_model">挑战-技能平衡模型</text>
+                        </svg>
                     </div>
-                    
+                    <p class="lesson-step-desc" data-i18n="flow.flow_intro_desc">当挑战与技能恰好匹配时，你会自然进入一种全神贯注、忘记时间流逝的状态——这就是「心流」。</p>
+                </div>
+
+                <!-- Step 2: 核心要点 1 & 2 -->
+                <div class="lesson-step hidden" id="lesson-step-2">
+                    <div class="lesson-point-card">
+                        <div class="lesson-point-icon">🎯</div>
+                        <h3 data-i18n="flow.lesson_point_1_title">明确的目标</h3>
+                        <p data-i18n-html="flow.lesson_point_1_desc">知道要做什么、做到什么程度，大脑才能进入专注模式</p>
+                    </div>
+                    <div class="lesson-point-card">
+                        <div class="lesson-point-icon">⚡</div>
+                        <h3 data-i18n="flow.lesson_point_2_title">即时反馈</h3>
+                        <p data-i18n-html="flow.lesson_point_2_desc">能清楚感知自己的进展，每一步都有回应</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: 核心要点 3 + 开始按钮 -->
+                <div class="lesson-step hidden" id="lesson-step-3">
+                    <div class="lesson-point-card">
+                        <div class="lesson-point-icon">🌿</div>
+                        <h3 data-i18n="flow.lesson_point_3_title">挑战与技能平衡</h3>
+                        <p data-i18n-html="flow.lesson_point_3_desc">太简单会无聊，太难会焦虑——「刚刚好」最容易进入心流</p>
+                    </div>
+                    <div class="lesson-step-summary" data-i18n="flow.flow_lesson_summary">
+                        现在，选一个你感兴趣的活动，设定一个小小的目标，体验一次真正的心流吧。
+                    </div>
+                </div>
+
+                <!-- 导航按钮 -->
+                <div class="lesson-nav">
+                    <button class="btn btn-ghost btn-sm hidden" id="lesson-prev" onclick="lessonPrev()" data-i18n="flow.btn_prev">← 上一步</button>
+                    <div style="flex:1;"></div>
+                    <button class="btn btn-primary btn-sm" id="lesson-next" onclick="lessonNext()" data-i18n="flow.flow_lesson_next">下一步 →</button>
+                    <button class="btn btn-primary btn-sm hidden" id="lesson-gotit" onclick="closeFlowLesson()" data-i18n="flow.flow_lesson_gotit">我明白了，开始吧 🚀</button>
                 </div>
             </div>
         </div>
 
-        <!-- 心流准备页面 -->
+<!-- 心流准备页面 -->
         <div id="preparation-section" class="content-section hidden">
             <div class="preparation-container">
                 <!-- 进度指示 -->
@@ -2138,8 +2272,12 @@
                     </div>
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.set_goal_input">设定目标</h3>
-                    <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input" data-i18n-placeholder="flow.goal_placeholder">
+                    <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input" >
                     
+                    <div class="preparation-tip-flow">
+                        <div class="tip-label">💡 心流小知识</div>
+                        <div data-i18n-html="flow.step1_tip">有明确的目标，是进入心流的前提条件之一。当你清楚地知道要做什么、做到什么程度时，大脑会自动进入「任务模式」，注意力更容易聚焦。</div>
+                    </div>
                     <div class="preparation-tip">
                         <span class="tip-icon">💡</span>
                         <span class="tip-text" data-i18n="flow.goal_tip">建议选择一个具体可完成的目标，这样更容易进入心流状态</span>
@@ -2152,40 +2290,58 @@
                 </div>
                 
                 <!-- 步骤2: 评估挑战 -->
+                <div                 <!-- 步骤2: 感受挑战度（趣味隐喻版） -->
                 <div id="step-2" class="preparation-card hidden">
-                    <h2 class="preparation-title" data-i18n="flow.assess_challenge">评估挑战</h2>
-                    <p class="preparation-desc" data-i18n="flow.assess_desc">评估你的技能水平和活动难度，找到最佳平衡点</p>
+                    <h2 class="preparation-title">如果给这件事的「挑战感」画个样子……</h2>
+                    <p class="preparation-desc">不用打分，只是感受一下：它看起来像什么？</p>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.your_skill_level">你的技能水平</h3>
-                    <div class="score-buttons" style="margin-bottom: 1.5rem;">
-                        <button class="btn score-btn" onclick="selectSkillLevel(1)" data-touch-feedback>1</button>
-                        <button class="btn score-btn" onclick="selectSkillLevel(2)" data-touch-feedback>2</button>
-                        <button class="btn score-btn selected" onclick="selectSkillLevel(3)" data-touch-feedback>3</button>
-                        <button class="btn score-btn" onclick="selectSkillLevel(4)" data-touch-feedback>4</button>
-                        <button class="btn score-btn" onclick="selectSkillLevel(5)" data-touch-feedback>5</button>
+                    <!-- 挑战-技能平衡小图示 -->
+                    <div style="background: linear-gradient(135deg, #f0fdfa 0%, #fef9c3 100%); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--theme-text); line-height: 1.6;">
+                        <span style="font-weight: 600; font-size: 0.82rem; color: var(--color-primary-600);">💡 心流发生在「挑战」与「技能」刚好匹配的时候</span><br>
+                        太简单 → 无聊　·　太难 → 焦虑　·　<span style="color: var(--color-primary-500); font-weight: 600;">刚刚好 → 🌿 心流</span>
                     </div>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.activity_challenge">活动挑战程度</h3>
-                    <div class="score-buttons">
-                        <button class="btn score-btn" onclick="selectChallengeLevel(1)" data-touch-feedback>1</button>
-                        <button class="btn score-btn" onclick="selectChallengeLevel(2)" data-touch-feedback>2</button>
-                        <button class="btn score-btn selected" onclick="selectChallengeLevel(3)" data-touch-feedback>3</button>
-                        <button class="btn score-btn" onclick="selectChallengeLevel(4)" data-touch-feedback>4</button>
-                        <button class="btn score-btn" onclick="selectChallengeLevel(5)" data-touch-feedback>5</button>
+                    <div class="challenge-metaphors">
+                        <div class="metaphor-card" onclick="selectChallengeFeel('easy', this)" data-touch-feedback>
+                            <div class="metaphor-icon">🌱</div>
+                            <div class="metaphor-label" data-i18n="flow.metaphor_easy">小芽</div>
+                            <div class="metaphor-desc" data-i18n="flow.metaphor_easy_desc">有点简单，但很舒服</div>
+                        </div>
+                        <div class="metaphor-card selected" onclick="selectChallengeFeel('just-right', this)" data-touch-feedback>
+                            <div class="metaphor-icon">🌿</div>
+                            <div class="metaphor-label" data-i18n="flow.metaphor_just_right">香草</div>
+                            <div class="metaphor-desc" data-i18n="flow.metaphor_just_right_desc">刚刚好，有点小挑战</div>
+                        </div>
+                        <div class="metaphor-card" onclick="selectChallengeFeel('stretch', this)" data-touch-feedback>
+                            <div class="metaphor-icon">🌳</div>
+                            <div class="metaphor-label" data-i18n="flow.metaphor_stretch">大树</div>
+                            <div class="metaphor-desc" data-i18n="flow.metaphor_stretch_desc">需要努力，但我可以</div>
+                        </div>
+                        <div class="metaphor-card" onclick="selectChallengeFeel('too-hard', this)" data-touch-feedback>
+                            <div class="metaphor-icon">🏔️</div>
+                            <div class="metaphor-label" data-i18n="flow.metaphor_too_hard">高山</div>
+                            <div class="metaphor-desc" data-i18n="flow.metaphor_too_hard_desc">有点紧张，可能需要调整</div>
+                        </div>
                     </div>
 
-                    <div class="preparation-tip">
+                    <!-- 动态提示 -->
+                    <div id="challenge-feedback" class="preparation-tip" style="display:block; margin-top:1rem;">
                         <span class="tip-icon">💡</span>
-                        <span class="tip-text" data-i18n="flow.balance_tip">技能与挑战平衡时最容易进入心流状态。如果差距太大，建议调整目标或选择其他活动</span>
+                        <span class="tip-text" id="challenge-feedback-text">「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿</span>
                     </div>
-                    
+
+                    <div class="preparation-tip-flow">
+                        <div class="tip-label">💡 心流小知识</div>
+                        <div data-i18n-html="flow.step2_tip">心流研究发现：当挑战略高于技能时，人们最容易进入心流状态。如果这件事对你来说太简单，可以主动增加一点难度。</div>
+                    </div>
+
                     <div class="preparation-actions">
                         <button class="btn btn-secondary" onclick="prevStep(1)" data-i18n="flow.btn_prev">上一步</button>
                         <button class="btn btn-primary" onclick="nextStep(3)" data-i18n="flow.btn_next">下一步</button>
                     </div>
                 </div>
 
-                <!-- 步骤3: 环境准备 -->
+<!-- 步骤3: 环境准备 -->
                 <div id="step-3" class="preparation-card hidden">
                     <h2 class="preparation-title" data-i18n="flow.env_preparation">环境准备</h2>
                     <p class="preparation-desc" data-i18n="flow.prepare_env">准备好你的心流环境，减少干扰</p>
@@ -2208,7 +2364,14 @@
                         </div>
                     </div>
 
-                    <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.choose_sound">选择背景音</h3>
+
+
+                    <div class="preparation-tip-flow">
+                        <div class="tip-label">💡 心流小知识</div>
+                        <div data-i18n-html="flow.step3_tip">消除干扰不是「准备工作」，而是心流体验的一部分。当你的空间变得安静、整洁，大脑会接收到「现在是专注时间」的信号。</div>
+                    </div>
+
+                                                            <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.choose_sound">选择背景音</h3>
                     <div class="sound-options" id="sound-options">
                         <div class="sound-option selected" data-sound="rain" onclick="selectSound('rain')" data-touch-feedback>
                             <div style="font-size: 1.5rem; margin-bottom: 0.25rem;">🌧️</div>
@@ -2243,6 +2406,11 @@
                         <div style="font-size: 4rem; margin-bottom: 1rem; animation: breathe 8s var(--ease-breathe) infinite;">🌬️</div>
                         <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;" data-i18n="flow.deep_breath">深呼吸</div>
                         <div style="font-size: 1rem; color: var(--theme-text-light);" data-i18n="flow.breath_guide">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
+                    </div>
+
+                    <div class="preparation-tip-flow">
+                        <div class="tip-label">💡 心流小知识</div>
+                        <div data-i18n-html="flow.step4_tip">深呼吸能激活副交感神经，帮助大脑从「分散模式」切换到「专注模式」。给自己一个小小的仪式感——比如三次深呼吸——告诉大脑：现在，我要进入我的心流时间了。</div>
                     </div>
 
                     <div style="background: var(--color-primary-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1.5rem;">
@@ -2412,253 +2580,41 @@
 
 
     <script>
-        /* ========== 活动数据 ========== */
-        const activities = [
-            {
-                id: 'reading',
-                name: '深度阅读',
-                icon: '📖',
-                difficulty: 2,
-                duration: '30-60分钟',
-                description: '选择一本你感兴趣的书籍，沉浸在文字的世界中',
-                tags: ['学习', '安静', '室内'],
-                benefits: ['提升专注力', '扩展知识', '减轻压力'],
-                tips: ['选择一个安静的角落', '关闭手机通知', '准备一杯茶或咖啡'],
-                scientific: '阅读能够激活大脑的多个区域，长期阅读可增强神经可塑性。'
-            },
-            {
-                id: 'writing',
-                name: '创意写作',
-                icon: '✍️',
-                difficulty: 3,
-                duration: '30-45分钟',
-                description: '自由书写或创作故事，让思绪自然流淌',
-                tags: ['创造性', '表达', '室内'],
-                benefits: ['提升表达能力', '情绪疏导', '激发创造力'],
-                tips: ['不要纠结于完美', '先写后改', '找个舒适的姿势'],
-                scientific: '写作有助于情绪调节和认知 processing，是积极心理学推荐的自我探索工具。'
-            },
-            {
-                id: 'painting',
-                name: '绘画创作',
-                icon: '🎨',
-                difficulty: 3,
-                duration: '45-60分钟',
-                description: '用色彩和线条表达内心世界，享受创作的乐趣',
-                tags: ['创造性', '艺术', '室内'],
-                benefits: ['激发创造力', '情绪表达', '提升专注'],
-                tips: ['不必追求完美', '尝试不同的媒介', '享受过程而非结果'],
-                scientific: '艺术创作能够激活大脑的奖赏回路，促进多巴胺分泌，提升幸福感。'
-            },
-            {
-                id: 'yoga',
-                name: '瑜伽练习',
-                icon: '🤸',
-                difficulty: 2,
-                duration: '30-45分钟',
-                description: '通过体式和呼吸，连接身体与心灵',
-                tags: ['运动', '身心', '室内'],
-                benefits: ['增强身体感知', '减轻焦虑', '提升柔韧性'],
-                tips: ['关注呼吸节奏', '不与他人比较', '倾听身体的感受'],
-                scientific: '瑜伽结合呼吸与动作，能够降低皮质醇水平，促进副交感神经活跃。'
-            },
-            {
-                id: 'meditation',
-                name: '正念冥想',
-                icon: '🧘',
-                difficulty: 1,
-                duration: '15-20分钟',
-                description: '专注当下，观察呼吸和思绪的来去',
-                tags: ['专注', '安静', '室内'],
-                benefits: ['提升专注力', '减轻压力', '增强情绪调节'],
-                tips: ['找一个安静的地方', '保持脊柱挺直', '不要评判自己的思绪'],
-                scientific: '正念冥想能够改变大脑结构，增加前额叶皮层厚度，提升情绪调节能力。'
-            },
-            {
-                id: 'coding',
-                name: '编程学习',
-                icon: '💻',
-                difficulty: 4,
-                duration: '45-60分钟',
-                description: '解决一个编程问题或学习新技术',
-                tags: ['学习', '挑战', '室内'],
-                benefits: ['提升逻辑思维', '获得成就感', '增强问题解决能力'],
-                tips: ['分解大问题', '先理解再动手', '适时休息'],
-                scientific: '编程时的debug过程能够训练执行功能，提升认知灵活性。'
-            },
-            {
-                id: 'cooking',
-                name: '烹饪创作',
-                icon: '🍳',
-                difficulty: 3,
-                duration: '45-60分钟',
-                description: '尝试新食谱，用心准备一顿美味的餐食',
-                tags: ['创造性', '感官', '室内'],
-                benefits: ['提升幸福感', '感官愉悦', '成就感'],
-                tips: ['享受烹饪过程', '尝试新食材', '用心摆盘'],
-                scientific: '烹饪能够激活感官，促进正念状态，并与情绪改善显著相关。'
-            },
-            {
-                id: 'gardening',
-                name: '园艺种植',
-                icon: '🌱',
-                difficulty: 2,
-                duration: '30-45分钟',
-                description: '照料植物，感受生命成长的喜悦',
-                tags: ['自然', '耐心', '户外'],
-                benefits: ['减轻压力', '增强责任感', '连接自然'],
-                tips: ['观察植物的需求', '不要急于求成', '享受与泥土接触'],
-                scientific: '园艺活动能够降低皮质醇水平，提升积极情绪，被称为"自然疗法"。'
-            },
-            {
-                id: 'music',
-                name: '音乐创作/练习',
-                icon: '🎵',
-                difficulty: 3,
-                duration: '30-45分钟',
-                description: '练习乐器或尝试创作一段旋律',
-                tags: ['创造性', '艺术', '室内'],
-                benefits: ['提升专注力', '情绪表达', '增强协调性'],
-                tips: ['享受每一个音符', '不必追求完美', '记录你的创作'],
-                scientific: '音乐训练能够增强大脑多个区域的连接，促进神经可塑性。'
-            },
-            {
-                id: 'running',
-                name: '跑步/慢跑',
-                icon: '🏃',
-                difficulty: 2,
-                duration: '30-45分钟',
-                description: '在跑步中找到节奏，让思绪自由流淌',
-                tags: ['运动', '户外', '健康'],
-                benefits: ['释放内啡肽', '减轻焦虑', '提升体能'],
-                tips: ['保持舒适的节奏', '关注呼吸', '选择合适的路线'],
-                scientific: '有氧运动能够促进BDNF（脑源性神经营养因子）分泌，改善情绪和认知功能。'
-            }
-        ];
+        /* ========== 活动数据（从 JSON 文件加载） ========== */
+        let activities = [];
+        let activitiesEn = [];
+        let activitiesDataLoaded = false;
 
-        /* ========== 活动数据（英文版） ========== */
-        const activitiesEn = [
-            {
-                id: 'reading',
-                name: 'Deep Reading',
-                icon: '📖',
-                difficulty: 2,
-                duration: '30-60 min',
-                description: 'Choose a book that interests you and immerse yourself in the world of words',
-                tags: ['Learning', 'Quiet', 'Indoor'],
-                benefits: ['Improve focus', 'Expand knowledge', 'Reduce stress'],
-                tips: ['Choose a quiet corner', 'Turn off phone notifications', 'Prepare a cup of tea or coffee'],
-                scientific: 'Reading activates multiple regions of the brain; long-term reading enhances neuroplasticity.'
-            },
-            {
-                id: 'writing',
-                name: 'Creative Writing',
-                icon: '✍️',
-                difficulty: 3,
-                duration: '30-45 min',
-                description: 'Free writing or story creation, let your thoughts flow naturally',
-                tags: ['Creative', 'Expression', 'Indoor'],
-                benefits: ['Improve expression', 'Emotional release', 'Stimulate creativity'],
-                tips: ['Don\'t obsess over perfection', 'Write first, edit later', 'Find a comfortable position'],
-                scientific: 'Writing aids emotional regulation and cognitive processing; recommended by positive psychology as a self-exploration tool.'
-            },
-            {
-                id: 'painting',
-                name: 'Painting',
-                icon: '🎨',
-                difficulty: 3,
-                duration: '45-60 min',
-                description: 'Express your inner world through colors and lines, enjoy the creative process',
-                tags: ['Creative', 'Art', 'Indoor'],
-                benefits: ['Stimulate creativity', 'Emotional expression', 'Improve focus'],
-                tips: ['Don\'t pursue perfection', 'Try different media', 'Enjoy the process, not the result'],
-                scientific: 'Art creation activates the brain\'s reward circuit, promotes dopamine secretion, and enhances well-being.'
-            },
-            {
-                id: 'yoga',
-                name: 'Yoga Practice',
-                icon: '🤸',
-                difficulty: 2,
-                duration: '30-45 min',
-                description: 'Connect body and mind through postures and breathing',
-                tags: ['Physical', 'Mind-Body', 'Indoor'],
-                benefits: ['Enhance body awareness', 'Reduce anxiety', 'Improve flexibility'],
-                tips: ['Focus on breathing rhythm', 'Don\'t compare with others', 'Listen to your body'],
-                scientific: 'Yoga combines breathing and movement, reduces cortisol levels, and promotes parasympathetic nervous system activity.'
-            },
-            {
-                id: 'meditation',
-                name: 'Mindfulness Meditation',
-                icon: '🧘',
-                difficulty: 1,
-                duration: '15-20 min',
-                description: 'Focus on the present moment, observe the coming and going of breath and thoughts',
-                tags: ['Focus', 'Quiet', 'Indoor'],
-                benefits: ['Improve focus', 'Reduce stress', 'Enhance emotional regulation'],
-                tips: ['Find a quiet place', 'Keep your spine straight', 'Don\'t judge your thoughts'],
-                scientific: 'Mindfulness meditation can change brain structure, increase prefrontal cortex thickness, and enhance emotional regulation ability.'
-            },
-            {
-                id: 'coding',
-                name: 'Programming Learning',
-                icon: '💻',
-                difficulty: 4,
-                duration: '45-60 min',
-                description: 'Solve a programming problem or learn a new technology',
-                tags: ['Learning', 'Challenge', 'Indoor'],
-                benefits: ['Improve logical thinking', 'Gain sense of achievement', 'Enhance problem-solving ability'],
-                tips: ['Break down big problems', 'Understand before coding', 'Take breaks when needed'],
-                scientific: 'The debugging process in programming trains executive function and enhances cognitive flexibility.'
-            },
-            {
-                id: 'cooking',
-                name: 'Cooking Creation',
-                icon: '🍳',
-                difficulty: 3,
-                duration: '45-60 min',
-                description: 'Try a new recipe, prepare a delicious meal with care',
-                tags: ['Creative', 'Sensory', 'Indoor'],
-                benefits: ['Enhance well-being', 'Sensory pleasure', 'Sense of achievement'],
-                tips: ['Enjoy the cooking process', 'Try new ingredients', 'Plate with care'],
-                scientific: 'Cooking activates the senses, promotes mindfulness, and is significantly associated with improved mood.'
-            },
-            {
-                id: 'gardening',
-                name: 'Gardening',
-                icon: '🌱',
-                difficulty: 2,
-                duration: '30-45 min',
-                description: 'Care for plants, feel the joy of life growing',
-                tags: ['Nature', 'Patience', 'Outdoor'],
-                benefits: ['Reduce stress', 'Enhance sense of responsibility', 'Connect with nature'],
-                tips: ['Observe plant needs', 'Don\'t rush the process', 'Enjoy touching the soil'],
-                scientific: 'Gardening reduces cortisol levels and enhances positive emotions; it is known as "nature therapy".'
-            },
-            {
-                id: 'music',
-                name: 'Music Creation/Practice',
-                icon: '🎵',
-                difficulty: 3,
-                duration: '30-45 min',
-                description: 'Practice an instrument or try to create a melody',
-                tags: ['Creative', 'Art', 'Indoor'],
-                benefits: ['Improve focus', 'Emotional expression', 'Enhance coordination'],
-                tips: ['Enjoy every note', 'Don\'t pursue perfection', 'Record your creations'],
-                scientific: 'Music training enhances connections between multiple brain regions and promotes neuroplasticity.'
-            },
-            {
-                id: 'running',
-                name: 'Running/Jogging',
-                icon: '🏃',
-                difficulty: 2,
-                duration: '30-45 min',
-                description: 'Find your rhythm while running, let your thoughts flow freely',
-                tags: ['Physical', 'Outdoor', 'Health'],
-                benefits: ['Release endorphins', 'Reduce anxiety', 'Improve fitness'],
-                tips: ['Maintain a comfortable pace', 'Focus on breathing', 'Choose a suitable route'],
-                scientific: 'Aerobic exercise promotes BDNF (brain-derived neurotrophic factor) secretion, improving mood and cognitive function.'
+        async function loadActivitiesData() {
+            try {
+                const [cnResp, enResp] = await Promise.all([
+                    fetch('data/flow-activities.json', { cache: 'no-cache' }),
+                    fetch('data/flow-activities-en.json', { cache: 'no-cache' })
+                ]);
+                if (!cnResp.ok) throw new Error('Failed to load flow-activities.json: ' + cnResp.status);
+                if (!enResp.ok) throw new Error('Failed to load flow-activities-en.json: ' + enResp.status);
+                activities = await cnResp.json();
+                activitiesEn = await enResp.json();
+                activitiesDataLoaded = true;
+                console.log('[Flow] Activities data loaded:', activities.length, 'CN,', activitiesEn.length, 'EN');
+            } catch (err) {
+                console.warn('[Flow] Failed to load activities data from JSON, using fallback:', err);
+                // 降级：使用内联数据作为兜底
+                activities = [
+                  {"id":"reading","name":"深度阅读","icon":"📖","difficulty":2,"duration":"30-60分钟","description":"选择一本你感兴趣的书籍，沉浸在文字的世界中","tags":["学习","安静","室内"],"benefits":["提升专注力","扩展知识","减轻压力"],"tips":["选择一个安静的角落","关闭手机通知","准备一杯茶或咖啡"],"scientific":"阅读能够激活大脑的多个区域，长期阅读可增强神经可塑性。","goalExample":"读完前两章，并做简单的思维导图"},
+                  {"id":"writing","name":"创意写作","icon":"✍️","difficulty":3,"duration":"30-45分钟","description":"自由书写或创作故事，让思绪自然流淌","tags":["创造性","表达","室内"],"benefits":["提升表达能力","情绪疏导","激发创造力"],"tips":["不要纠结于完美","先写后改","找个舒适的姿势"],"scientific":"写作有助于情绪调节和认知处理，是积极心理学推荐的自我探索工具。","goalExample":"写完500字，不拘题材"},
+                  {"id":"painting","name":"绘画创作","icon":"🎨","difficulty":3,"duration":"45-60分钟","description":"用画笔表达内心的色彩与情感","tags":["创造性","艺术","室内"],"benefits":["释放压力","提升观察力","增强创造力"],"tips":["从简单的线条开始","不必追求完美","享受创作过程"],"goalExample":"完成一幅线稿上色"},
+                  {"id":"yoga","name":"瑜伽练习","icon":"🧘","difficulty":2,"duration":"30-45分钟","description":"通过体式和呼吸连接身心","tags":["运动","身体","Mind-Body"],"benefits": ["提升柔韧性","缓解焦虑","改善睡眠"],"tips":["选择舒适的空间","配合深呼吸","量力而行"],"goalExample":"完成一组基础流瑜伽序列"}
+                ];
+                activitiesEn = [
+                  {"id":"reading","name":"Deep Reading","icon":"📖","difficulty":2,"duration":"30-60min","description":"Immerse yourself in a book you love","tags":["Learning","Quiet","Indoors"],"benefits":["Boost focus","Expand knowledge","Reduce stress"],"tips":["Find a quiet corner","Turn off notifications","Prepare a drink"],"scientific":"Reading activates multiple brain regions and enhances neuroplasticity.","goalExample":"Finish 2 chapters and make a mind map","goalExampleEn":"Finish 2 chapters and create a mind map"},
+                  {"id":"writing","name":"Creative Writing","icon":"✍️","difficulty":3,"duration":"30-45min","description":"Free-write or tell a story","tags":["Creative","Expression","Indoors"],"benefits":["Better expression","Emotional release","Creativity boost"],"tips":["Don't chase perfection","Write first, edit later","Get comfortable"],"goalExample":"Write 500 words on any topic","goalExampleEn":"Write 500 words on any topic"},
+                  {"id":"painting","name":"Painting","icon":"🎨","difficulty":3,"duration":"45-60min","description":"Express inner colors and emotions through art","tags":["Creative","Art","Indoors"],"benefits":["Stress relief","Better observation","Creativity"],"tips":["Start simple lines","No need for perfection","Enjoy the process"],"goalExample":"Complete a line art coloring","goalExampleEn":"Complete a line art coloring"},
+                  {"id":"yoga","name":"Yoga Practice","icon":"🧘","difficulty":2,"duration":"30-45min","description":"Connect body and mind through poses","tags":["Physical","Mind-Body"],"benefits":["Flexibility","Anxiety relief","Better sleep"],"tips":["Comfortable space","Deep breathing","Listen to your body"],"goalExample":"Complete a basic vinyasa sequence","goalExampleEn":"Complete a basic vinyasa sequence"}
+                ];
+                activitiesDataLoaded = true;
             }
-        ];
+        }
 
         /* ========== 获取当前语言的活动数组 ========== */
         function getActivities() {
@@ -2666,7 +2622,7 @@
             const isEn = (window.I18N && I18N.currentLocale === 'en') ||
                          document.documentElement.lang === 'en' ||
                          localStorage.getItem('xinqing_locale') === 'en';
-            if (isEn && typeof activitiesEn !== 'undefined') {
+            if (isEn && activitiesEn.length > 0) {
                 return activitiesEn;
             }
             return activities;
@@ -2699,22 +2655,61 @@
             return zhText;
         }
 
+        /* ========== 动态占位符（根据活动更新目标输入框提示） ========== */
+        function updateGoalPlaceholder(activity) {
+            const input = document.getElementById('goal-input');
+            if (!input || !activity) return;
+            const example = I18N.currentLocale === 'en'
+                ? (activity.goalExampleEn || 'Set a specific, achievable goal')
+                : (activity.goalExample || '设定一个具体可完成的目标');
+            input.placeholder = example;
+        }
+
+        function refreshGoalPlaceholder() {
+            if (currentActivity) {
+                updateGoalPlaceholder(currentActivity);
+            }
+        }
+
         /* ========== Tab切换 ========== */
         document.querySelectorAll('.page-tab').forEach(tab => {
             tab.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetTab = tab.dataset.tab;
-                
+
                 // 更新active状态
                 document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                
-                // 显示对应内容
+
+                // 隐藏所有内容区域（包括准备区和专注模式）
                 document.getElementById('dashboard-section').classList.add('hidden');
                 document.getElementById('discover-section').classList.add('hidden');
                 document.getElementById('records-section').classList.add('hidden');
+                const prepSection = document.getElementById('preparation-section');
+                if (prepSection) prepSection.classList.add('hidden');
+                const focusMode = document.getElementById('focus-mode');
+                if (focusMode) focusMode.classList.add('hidden');
+
+                // 显示对应内容
                 document.getElementById(`${targetTab}-section`).classList.remove('hidden');
-                
+
+                // 重置准备流程到步骤1（如果从准备区返回）
+                if (prepSection && !prepSection.classList.contains('hidden') === false) {
+                    for (let i = 2; i <= 4; i++) {
+                        const stepEl = document.getElementById(`step-${i}`);
+                        if (stepEl) stepEl.classList.add('hidden');
+                        const progressEl = document.querySelector(`.progress-step[data-step="${i}"]`);
+                        if (progressEl) progressEl.classList.remove('active');
+                    }
+                    const step1 = document.getElementById('step-1');
+                    if (step1) step1.classList.remove('hidden');
+                    const progress1 = document.querySelector('.progress-step[data-step="1"]');
+                    if (progress1) progress1.classList.add('active');
+                    // 清空目标输入
+                    const goalInput = document.getElementById('goal-input');
+                    if (goalInput) goalInput.value = '';
+                }
+
                 // 如果切换到发现页面，加载活动
                 if (targetTab === 'discover') {
                     loadActivities('all');
@@ -2737,6 +2732,8 @@
                     loadRecords();
                 }
             }
+            // 刷新目标输入框的占位符（如果已选择活动）
+            refreshGoalPlaceholder();
         });
 
         /* ========== 活动发现 ========== */
@@ -2847,13 +2844,40 @@
             document.getElementById('discover-section').classList.add('hidden');
             document.getElementById('records-section').classList.add('hidden');
             document.getElementById('preparation-section').classList.remove('hidden');
-            
-            // 如果指定了活动，更新摘要
+
+            // 重置准备流程到步骤1
+            for (let i = 2; i <= 4; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                if (stepEl) stepEl.classList.add('hidden');
+                const progressEl = document.querySelector(`.progress-step[data-step="${i}"]`);
+                if (progressEl) progressEl.classList.remove('active');
+            }
+            const step1 = document.getElementById('step-1');
+            if (step1) step1.classList.remove('hidden');
+            const progress1 = document.querySelector('.progress-step[data-step="1"]');
+            if (progress1) progress1.classList.add('active');
+
+            // 清空目标输入
+            const goalInput = document.getElementById('goal-input');
+            if (goalInput) goalInput.value = '';
+
+            // 重置时长选择为默认30分钟
+            currentDuration = 30;
+            document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
+            const defaultDurationOpt = Array.from(document.querySelectorAll('.duration-option')).find(opt => {
+                const val = opt.querySelector('.duration-value');
+                return val && parseInt(val.textContent) === 30;
+            });
+            if (defaultDurationOpt) defaultDurationOpt.classList.add('selected');
+
+            // 如果指定了活动，更新摘要和目标占位符
             if (activityId) {
                 const activity = getActivityById(activityId);
                 if (activity) {
+                    currentActivity = activity;
                     document.getElementById('summary-activity-container').style.display = 'block';
                     document.getElementById('summary-activity').textContent = `${activity.icon} ${activity.name}`;
+                    updateGoalPlaceholder(activity);
                 }
             }
         }
@@ -2902,19 +2926,35 @@
             nextStep(step);
         }
 
-        function selectSkillLevel(level) {
-            currentSkillLevel = level;
-            document.querySelectorAll('#step-2 .score-btn').forEach((btn, idx) => {
-                btn.classList.toggle('selected', idx + 1 === level);
+        function selectChallengeFeel(feel, el) {
+            // feel: 'easy' | 'just-right' | 'stretch' | 'too-hard'
+            // 同步到原变量
+            var mapping = { 'easy': [3, 2], 'just-right': [3, 3], 'stretch': [3, 4], 'too-hard': [2, 5] };
+            if (mapping[feel]) {
+                currentSkillLevel = mapping[feel][0];
+                currentChallengeLevel = mapping[feel][1];
+            }
+
+            // UI：更新选中状态
+            document.querySelectorAll('.metaphor-card').forEach(card => {
+                card.classList.remove('selected');
             });
+            if (el) el.classList.add('selected');
+
+            // 动态反馈文案
+            var feedbackTexts = {
+                'easy': '有点简单？没关系～心流也可以在放松的状态里出现。你也可以试试稍微提高一点挑战 🌱',
+                'just-right': '「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿',
+                'stretch': '需要努力，但你相信自己可以——这种「稍微紧张但期待」的感觉，正是心流的前奏 🌳',
+                'too-hard': '有点紧张？不如我们把目标调小一点点，让难度刚刚好 🏔️'
+            };
+            var feedbackEl = document.getElementById('challenge-feedback-text');
+            if (feedbackEl && feedbackTexts[feel]) {
+                feedbackEl.textContent = feedbackTexts[feel];
+            }
         }
 
-        function selectChallengeLevel(level) {
-            currentChallengeLevel = level;
-            document.querySelectorAll('#step-3 .score-btn').forEach((btn, idx) => {
-                btn.classList.toggle('selected', idx + 1 === level);
-            });
-        }
+        
 
         function selectSound(sound) {
             selectedSound = sound;
@@ -3214,45 +3254,8 @@
                 `;
             }).join('');
         }
-
-        /* ========== 快速开始功能 ========== */
-        function quickStartFlow() {
-            // 智能推荐：根据用户历史记录推荐活动
-            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
-            let recommendedActivity = 'reading'; // 默认推荐
-
-            if (records.length > 0) {
-                // 如果已有记录，推荐最常进行的活动
-                const activityCounts = {};
-                records.forEach(r => {
-                    const key = r.activityId || r.activity || 'unknown';
-                    activityCounts[key] = (activityCounts[key] || 0) + 1;
-                });
-                const mostFrequent = Object.entries(activityCounts)
-                    .sort((a, b) => b[1] - a[1])[0];
-                if (mostFrequent) {
-                    const activity = getActivityById(mostFrequent[0]);
-                    if (activity) recommendedActivity = activity.id;
-                }
-            } else {
-                // 新用户，推荐简单的活动
-                recommendedActivity = 'meditation'; // 冥想最适合新手
-            }
-
-            // 直接跳转到专注模式
-            showActivityDetail(recommendedActivity);
-
-            showToast(_t('flow.toast_recommended', '已为你推荐最适合的活动！'), 'success');
-        }
         
-        function showGuideAgain() {
-            // 重新显示引导
-            if (confirm(_t('flow.confirm_show_guide', '重新查看引导教程吗？'))) {
-                localStorage.removeItem('flowGuideCompleted');
-                location.reload();
-            }
-        }
-        
+        /* ========== 环境音播放功能 ========== */
         /* ========== 环境音播放功能 ========== */
         let audioContext = null;
         let currentSoundSource = null;
@@ -3445,7 +3448,34 @@
             }
         }
         
-        /* ========== 心流知识卡片功能 ========== */
+        /* ========= 心流小课堂 ========= */
+
+        
+        function showFlowLesson() {
+            // 使用 .active 类控制显示（与 neuroaesthetics.css 一致）
+            document.getElementById('flow-lesson-modal').classList.add('active');
+            // Reset to step 1
+            currentLessonStep = 1;
+            for (let i = 1; i <= totalLessonSteps; i++) {
+                const step = document.getElementById(`lesson-step-${i}`);
+                if (step) step.classList.toggle('hidden', i !== 1);
+                const dot = document.querySelectorAll('.lesson-steps-dots .dot')[i - 1];
+                if (dot) dot.classList.toggle('active', i === 1);
+            }
+            const prevBtn = document.getElementById('lesson-prev');
+            if (prevBtn) prevBtn.classList.add('hidden');
+            const nextBtn = document.getElementById('lesson-next');
+            if (nextBtn) nextBtn.classList.remove('hidden');
+            const gotitBtn = document.getElementById('lesson-gotit');
+            if (gotitBtn) gotitBtn.classList.add('hidden');
+        }
+        
+        
+        
+
+        /* ========= 心流知识卡片功能（已弃用，保留函数避免报错） ========= */
+
+        
         function toggleEducationCard(card) {
             if (!card) return;
             
@@ -3488,11 +3518,143 @@
             }, 3000);
         }
 
+        /* ========== Dashboard 统计（动态） ========== */
+        function updateDashboardStats() {
+            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            const now = new Date();
+
+            // 本周心流时长
+            const weekStart = new Date(now);
+            weekStart.setDate(now.getDate() - now.getDay()); // 周日为起始
+            weekStart.setHours(0, 0, 0, 0);
+            const weekRecords = records.filter(r => new Date(r.date) >= weekStart);
+            const weekDurationSec = weekRecords.reduce((sum, r) => sum + (r.duration || 0), 0);
+            const weekHours = (weekDurationSec / 3600).toFixed(1);
+            setStatNum('dash-week-duration', weekDurationSec > 0 ? weekHours : '0.0');
+
+            // 心流活动次数（总次数）
+            setStatNum('dash-session-count', records.length);
+
+            // 平均心流质量
+            const avgQuality = records.length > 0
+                ? (records.reduce((sum, r) => sum + (r.scores ? (r.scores.focus || 0) : 0), 0) / records.length).toFixed(1)
+                : '0.0';
+            setStatNum('dash-avg-quality', avgQuality);
+
+            // 连续天数
+            const streak = calcStreakDays(records);
+            setStatNum('dash-streak-days', streak);
+        }
+
+        function setStatNum(id, value) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const numEl = el.querySelector('.stat-value-num');
+            if (numEl) numEl.textContent = value;
+        }
+
+        function calcStreakDays(records) {
+            if (records.length === 0) return 0;
+            const dates = [...new Set(records.map(r => new Date(r.date).toDateString()))]
+                .map(d => new Date(d))
+                .sort((a, b) => b - a); // 最新在前
+
+            let streak = 0;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let checkDate = today;
+
+            for (const d of dates) {
+                const dd = new Date(d);
+                dd.setHours(0, 0, 0, 0);
+                const diffDays = Math.floor((checkDate - dd) / 86400000);
+                if (diffDays === 0 || diffDays === 1) {
+                    streak++;
+                    checkDate = dd;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
         /* ========== 初始化 ========== */
-        document.addEventListener('DOMContentLoaded', () => {
+
+        // Auto-show flow lesson on first visit
+        function tryAutoShowLesson() {
+            try {
+                const hasSeen = localStorage.getItem('flow-lesson-seen');
+                if (hasSeen !== 'true') {
+                    setTimeout(() => showFlowLesson(), 1200);
+                }
+        } catch(e) {}
+        }
+        
+        // Step-by-step navigation for flow lesson
+        let currentLessonStep = 1;
+        const totalLessonSteps = 3;
+
+        function lessonNext() {
+            if (currentLessonStep >= totalLessonSteps) return;
+            const cur = document.getElementById(`lesson-step-${currentLessonStep}`);
+            if (cur) cur.classList.add('hidden');
+            const dot1 = document.querySelectorAll('.lesson-steps-dots .dot')[currentLessonStep - 1];
+            if (dot1) dot1.classList.remove('active');
+            currentLessonStep++;
+            const nxt = document.getElementById(`lesson-step-${currentLessonStep}`);
+            if (nxt) nxt.classList.remove('hidden');
+            const dot2 = document.querySelectorAll('.lesson-steps-dots .dot')[currentLessonStep - 1];
+            if (dot2) dot2.classList.add('active');
+            const prevBtn = document.getElementById('lesson-prev');
+            if (prevBtn) prevBtn.classList.remove('hidden');
+            if (currentLessonStep === totalLessonSteps) {
+                const nextBtn = document.getElementById('lesson-next');
+                if (nextBtn) nextBtn.classList.add('hidden');
+                const gotitBtn = document.getElementById('lesson-gotit');
+                if (gotitBtn) gotitBtn.classList.remove('hidden');
+            }
+        }
+
+        function lessonPrev() {
+            if (currentLessonStep <= 1) return;
+            const cur = document.getElementById(`lesson-step-${currentLessonStep}`);
+            if (cur) cur.classList.add('hidden');
+            const dot1 = document.querySelectorAll('.lesson-steps-dots .dot')[currentLessonStep - 1];
+            if (dot1) dot1.classList.remove('active');
+            currentLessonStep--;
+            const prv = document.getElementById(`lesson-step-${currentLessonStep}`);
+            if (prv) prv.classList.remove('hidden');
+            const dot2 = document.querySelectorAll('.lesson-steps-dots .dot')[currentLessonStep - 1];
+            if (dot2) dot2.classList.add('active');
+            const nextBtn = document.getElementById('lesson-next');
+            if (nextBtn) nextBtn.classList.remove('hidden');
+            const gotitBtn = document.getElementById('lesson-gotit');
+            if (gotitBtn) gotitBtn.classList.add('hidden');
+            if (currentLessonStep === 1) {
+                const prevBtn = document.getElementById('lesson-prev');
+                if (prevBtn) prevBtn.classList.add('hidden');
+            }
+        }
+
+        // Override closeFlowLesson to set the seen flag
+        const _origCloseFlowLesson = closeFlowLesson;
+        function closeFlowLesson(event) {
+            if (event && event.target && event.target !== event.currentTarget) return;
+            // 使用 .active 类控制隐藏（与 neuroaesthetics.css 一致）
+            document.getElementById('flow-lesson-modal').classList.remove('active');
+            try { localStorage.setItem('flow-lesson-seen', 'true'); } catch(e) {}
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 先加载活动数据
+            await loadActivitiesData();
+
             // 加载活动
             loadActivities('all');
-            
+
+            // 更新 Dashboard 统计（从 localStorage 读取真实数据）
+            updateDashboardStats();
+
             // 初始化神经美学交互
             if (window.NeuroAesthetics) {
                 window.NeuroAesthetics.initStaggerAnimations();
