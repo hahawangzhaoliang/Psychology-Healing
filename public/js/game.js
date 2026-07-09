@@ -454,8 +454,6 @@ const CONFIG = {
     BOARD_ROWS: 8,
     CAT_TYPES: 11,
     MATCH_MIN: 3,
-    BASE_SCORE: 10,
-    COMBO_MULTIPLIER: 1.5,
     ANIMATION_DURATION: 300,
 };
 
@@ -803,15 +801,56 @@ const REQUEST_TEMPLATES = {
 };
 
 /**
- * 请求完成后的感谢语
+ * 请求完成后的感谢语（疗愈风格，非竞争性）
+ * 注意：所有对话都经过积极心理学审核，避免情感操控
  */
 const THANKS_MESSAGES = [
-    _t('thanks_1', '谢谢你！你是最棒的朋友！'),
+    _t('thanks_1', '谢谢你！你是最棒的朋友~'),
     _t('thanks_2', '喵呜~ 太感谢了！'),
     _t('thanks_3', '好开心！谢谢你帮我！'),
     _t('thanks_4', '你真好！猫咪爱你！'),
     _t('thanks_5', '哇！谢谢你！蹭蹭~'),
     _t('thanks_6', '太棒了！你是猫咪的救星！'),
+    // 新增：疗愈风格感谢语（非竞争性）
+    _t('thanks_7', '有你陪伴，猫咪觉得很温暖~'),
+    _t('thanks_8', '你总是这么温柔，谢谢你~'),
+    _t('thanks_9', '和你一起玩，猫咪好开心！'),
+    _t('thanks_10', '你今天也很棒哦！'),
+];
+
+/**
+ * 猫咪日常对话（点击猫咪时触发，疗愈风格）
+ * 注意：对话是非评判性的、接纳的、温暖的
+ */
+const CAT_DAILY_DIALOGUES = [
+    // 正向鼓励（非竞争性）
+    { type: 'encourage', texts: [
+        _t('cat_encourage_1', '你今天做得很好哦~'),
+        _t('cat_encourage_2', '慢慢来，猫咪会等你~'),
+        _t('cat_encourage_3', '你已经很棒了！'),
+        _t('cat_encourage_4', '累了就休息一下吧，没关系~'),
+    ]},
+    // 共情陪伴（非评判性）
+    { type: 'companion', texts: [
+        _t('cat_companion_1', '猫咪在这里陪着你~'),
+        _t('cat_companion_2', '不管发生什么，猫咪都会陪着你~'),
+        _t('cat_companion_3', '想说话的时候，猫咪都在这里~'),
+        _t('cat_companion_4', '你不是一个人哦，猫咪在这里~'),
+    ]},
+    // 温暖提醒（非强制性的）
+    { type: 'reminder', texts: [
+        _t('cat_reminder_1', '记得喝水哦~ 猫咪去给你倒水~'),
+        _t('cat_reminder_2', '休息一下眼睛吧~ 来看看窗外~'),
+        _t('cat_reminder_3', '深呼吸一下吧~ 呼~ 吸~'),
+        _t('cat_reminder_4', '想不想出去走走？猫咪陪你~'),
+    ]},
+    // 疗愈小练习（可选，非强制性）
+    { type: 'exercise', texts: [
+        _t('cat_exercise_1', '我们来做个小练习吧~ 说说今天的三件好事？'),
+        _t('cat_exercise_2', '猫咪想知道，今天有什么让你微笑的事吗？'),
+        _t('cat_exercise_3', '闭上眼睛，听听周围的声音~ 有什么发现？'),
+        _t('cat_exercise_4', '深呼吸三次~ 吸气... 呼气... 感觉好点了吗？'),
+    ]},
 ];
 
 /**
@@ -1057,9 +1096,9 @@ const CAT_STORIES = {
 const CatInteractionManager = {
     // 触发概率配置（根据连击数调整）
     TRIGGER_CHANCE: {
-        base: 0.15,      // 基础概率 15%
-        comboBonus: 0.05, // 每连击增加 5%
-        max: 0.40        // 最大概率 40%
+        base: 0.04,      // 基础概率 4%（疗愈节奏：稀有、惊喜）
+        comboBonus: 0.03, // 每连击增加 3%（降低）
+        max: 0.18         // 最大概率 18%（降低）
     },
 
     // 互动配置
@@ -1095,20 +1134,29 @@ const CatInteractionManager = {
     activeRub: null,
 
     // 冷却时间（毫秒）
-    cooldown: 5000,
+    cooldown: 60000,  // 延长至60秒（疗愈节奏）
     lastTriggerTime: 0,
 
+    // 消除次数间隔控制（疗愈节奏核心）
+    minMatchesBetween: 8,   // 至少间隔8次消除才允许再次触发
+    matchesSinceLastInteraction: 0, // 自上次互动以来的消除次数
+    totalMatches: 0,            // 总消除次数（用于触发判断）
+
     /**
-     * 尝试触发蹭屏互动
+     * 尝试触发蹭屏互动（疗愈节奏：稀有、惊喜、不打断）
      * @param {number} combo - 当前连击数
      * @returns {boolean} 是否成功触发
      */
     tryTrigger(combo = 0) {
         const now = Date.now();
+        // 检查1：冷却时间内不触发
         if (now - this.lastTriggerTime < this.cooldown) return false;
-        if (this.activeRub) return false; // 已有活跃蹭屏
+        // 检查2：已有活跃蹭屏时不触发
+        if (this.activeRub) return false;
+        // 检查3：消除次数不够时不触发（疗愈节奏核心）
+        if (this.matchesSinceLastInteraction < this.minMatchesBetween) return false;
 
-        // 计算触发概率
+        // 计算触发概率（连击越高概率略增，但上限较低）
         let chance = this.TRIGGER_CHANCE.base + (combo * this.TRIGGER_CHANCE.comboBonus);
         chance = Math.min(chance, this.TRIGGER_CHANCE.max);
 
@@ -1120,10 +1168,11 @@ const CatInteractionManager = {
     },
 
     /**
-     * 触发蹭屏效果
+     * 触发蹭屏效果（同时重置消除计数）
      */
     triggerRub() {
         this.lastTriggerTime = Date.now();
+        this.matchesSinceLastInteraction = 0; // 重置消除计数
 
         // 随机选择一只猫咪（优先选择亲密度较高的）
         const catType = this.selectCatForRub();
@@ -2000,7 +2049,6 @@ const RelaxModeManager = {
 // ═══════════════════════════════════════════════════
 let gameState = {
     board: [],
-    score: 0,
     cookies: 0,           // 爱心饼干（替代步数，消除积累）
     level: 1,
     target: null,         // 当前关卡目标（向后兼容）
@@ -2008,13 +2056,15 @@ let gameState = {
     currentRequest: null, // 当前猫咪请求对象
     requestCompleted: false, // 当前请求是否已完成
     completedRequests: [], // 已完成的请求历史
-    combo: 0,
     isAnimating: false,
     selectedCell: null,
     items: { bomb: 3, shuffle: 2, refresh: 2, hint: 5 },
     activeItem: null,
     isPaused: false,
     gameMode: 'level',    // 'level' = 关卡模式, 'relax' = 悠闲模式
+    emotionCheckinCompleted: false, // 情绪签到是否已完成
+    pendingLevel: null,      // 待开始的关卡
+    emotionCheckin: null      // 情绪签到结果
 };
 
 const DOM = {};
@@ -2088,14 +2138,11 @@ function cleanupAllOverlays() {
 function cacheDOM() {
     DOM.board = document.getElementById('game-board');
     DOM.effectsLayer = document.getElementById('effects-layer');
-    DOM.score = document.getElementById('score');
     DOM.cookies = document.getElementById('cookies');
     DOM.level = document.getElementById('level');
     DOM.targetText = document.getElementById('target-text');
     DOM.targetCount = document.getElementById('target-count');
     DOM.targetCat = document.querySelector('.target-cat');
-    DOM.comboDisplay = document.getElementById('combo-display');
-    DOM.comboText = document.getElementById('combo-text');
     DOM.pauseModal = document.getElementById('pause-modal');
     DOM.winModal = document.getElementById('win-modal');
     DOM.bombCount = document.getElementById('bomb-count');
@@ -2162,6 +2209,76 @@ function bindEvents() {
         startLevel(gameState.level);
     });
 
+    // 温柔引导按钮事件
+    const btnBreathing = document.getElementById('btn-breathing');
+    if (btnBreathing) {
+        btnBreathing.addEventListener('click', () => {
+            hideModal(DOM.winModal);
+            // 跳转到呼吸练习页面
+            window.location.href = 'relax.html';
+        });
+    }
+    
+    const btnJournal = document.getElementById('btn-journal');
+    if (btnJournal) {
+        btnJournal.addEventListener('click', () => {
+            hideModal(DOM.winModal);
+            // 跳转到情绪日记页面
+            window.location.href = 'emotion.html';
+        });
+    }
+    
+    const btnSkipGuidance = document.getElementById('btn-skip-guidance');
+    if (btnSkipGuidance) {
+        btnSkipGuidance.addEventListener('click', () => {
+            // 隐藏引导区域（不关闭模态框）
+            const guidance = document.querySelector('.healing-guidance');
+            if (guidance) {
+                guidance.style.display = 'none';
+            }
+        });
+    }
+    
+    // 情绪签到按钮事件
+    const emotionBtns = document.querySelectorAll('.emotion-btn');
+    emotionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const emotion = btn.dataset.emotion;
+            // 保存情绪选择结果
+            gameState.emotionCheckin = emotion;
+            gameState.emotionCheckinCompleted = true;
+            
+            // 隐藏情绪签到模态框
+            hideEmotionCheckin();
+            
+            // 继续开始关卡
+            if (gameState.pendingLevel) {
+                const level = gameState.pendingLevel;
+                gameState.pendingLevel = null;
+                startLevel(level);
+            }
+        });
+    });
+    
+    // 跳过情绪签到按钮
+    const btnSkipCheckin = document.getElementById('btn-skip-checkin');
+    if (btnSkipCheckin) {
+        btnSkipCheckin.addEventListener('click', () => {
+            // 标记已完成（跳过）
+            gameState.emotionCheckinCompleted = true;
+            
+            // 隐藏情绪签到模态框
+            hideEmotionCheckin();
+            
+            // 继续开始关卡
+            if (gameState.pendingLevel) {
+                const level = gameState.pendingLevel;
+                gameState.pendingLevel = null;
+                startLevel(level);
+            }
+        });
+    }
+    
     // 道具事件
     document.querySelectorAll('.item').forEach(item => {
         item.addEventListener('click', () => handleItemClick(item.dataset.item));
@@ -2403,8 +2520,7 @@ async function handleSnackClick(row, col) {
     // 标记为 null
     gameState.board[row][col] = null;
 
-    // 计分
-    gameState.score += CONFIG.BASE_SCORE * 2;
+    // 更新目标进度
     updateTargetProgress([{ row, col }]);
 
     // 下落填充
@@ -2451,9 +2567,7 @@ async function triggerSpecialItemEffect(row, col) {
             gameState.board[pos.row][pos.col] = null;
         });
 
-        // 计分
-        const baseScore = toRemove.length * CONFIG.BASE_SCORE * 2; // 特殊道具双倍分
-        gameState.score += Math.floor(baseScore);
+        // 更新目标进度
         updateTargetProgress(toRemove);
 
         // 下落填充
@@ -2783,38 +2897,24 @@ async function processMatches() {
                     showAffinityLevelUp(type, result.newLevel, result.unlockedStory);
                 }
 
-                // 累加亲密度得分加成
+                // 累加亲密度加成
                 affinityMultiplier += (AffinityManager.getScoreBonus(type) - 1) * (count / allCells.length);
             });
 
-            const totalScore = Math.floor(baseScore * comboBonus * buffMultiplier * affinityMultiplier);
-            gameState.score += totalScore;
-
-            // 显示得分飘字（在第一个消除的格子上）
+            // 显示消除特效（在第一个消除的格子上）
             if (allCells.length > 0) {
                 const firstPos = allCells[0];
                 const topShape = getTopShape(groups);
-                const popupType = gameState.combo >= 3 ? 'combo' :
-                                  (topShape === MATCH_SHAPE.LINE5 || topShape === MATCH_SHAPE.CROSS) ? 'special' : 'normal';
-                showScorePopup(firstPos.row, firstPos.col, totalScore, popupType);
-            }
-
-            if (gameState.combo > 1) {
-                showCombo(gameState.combo);
-                playSound('combo', gameState.combo);
-                // 连击屏幕震动（强度随连击增加）
-                triggerScreenShake(Math.min(gameState.combo - 1, 5));
-            } else {
-                // 根据最高阶形状选择音效
-                const topShape = getTopShape(groups);
+                // 根据消除形状选择音效（疗愈导向，非竞争性）
                 if (topShape === MATCH_SHAPE.LINE5 || topShape === MATCH_SHAPE.CROSS) {
-                    playSound('bomb'); // 大消除感
+                    playSound('bomb'); // 大消除感，但非竞争性
                 } else if (topShape === MATCH_SHAPE.LINE4 || topShape === MATCH_SHAPE.L_SHAPE) {
                     playSound('bell'); // 特殊道具生成提示音
                 } else {
-                    playSound('match');
+                    playSound('match'); // 温和的消除音效
                 }
             }
+
 
             // ★ 先统计目标进度（格子还未被 null 化）
             updateTargetProgress(allCells);
@@ -2840,7 +2940,11 @@ async function processMatches() {
     // Buff 回合减少
     BuffManager.onMatchEnd();
 
-    // 尝试触发猫咪蹭屏互动
+    // 消除次数计数（疗愈节奏：控制触发频率）
+    CatInteractionManager.matchesSinceLastInteraction++;
+    CatInteractionManager.totalMatches++;
+
+    // 尝试触发猫咪蹭屏互动（内部会检查冷却时间 + 消除次数间隔）
     CatInteractionManager.tryTrigger(gameState.combo);
 
     gameState.isAnimating = false;
@@ -2998,76 +3102,62 @@ function createParticles(row, col) {
     const rect = cell.getBoundingClientRect();
     const boardRect = DOM.board.getBoundingClientRect();
 
-    // 11种猫咪对应的独特粒子颜色
-    const catTypeColors = {
-        1: ['#FFB347', '#FFA500', '#FF8C00'],       // 橘猫 - 橙色系
-        2: ['#F5F5F5', '#FFFFFF', '#E8E8E8'],       // 白猫 - 白色系
-        3: ['#DAA520', '#CD853F', '#B8860B'],       // 豹猫 - 金棕色系
-        4: ['#B0C4DE', '#A9A9A9', '#C0C0C0'],       // 布偶猫 - 淡钢蓝/灰色系
-        5: ['#36454F', '#4A4A4A', '#2F4F4F'],       // 黑猫 - 深灰/炭色系
-        6: ['#D2691E', '#A0522D', '#8B4513'],       // 虎斑猫 - 棕色系
-        7: ['#5B8AC6', '#3A6EA5', '#4A90D9'],       // 蓝猫 - 蓝色系
-        8: ['#C4A77D', '#A08060', '#D2B48C'],       // 缅因猫 - 沙棕色系
-        9: ['#DAA520', '#B8860B', '#FFD700'],       // 拿破仑 - 金色系
-        10: ['#FFB6C1', '#FF69B4', '#FFC0CB'],      // 斯芬克斯猫 - 粉色系
-        11: ['#C8A8E9', '#9370DB', '#BA55D3']       // 暹罗猫 - 紫色系
-    };
-
+    // 疗愈风格：花瓣飘落（非爆炸）
+    const petals = ['🌸', '🌺', '🌼', '🍃', '✨'];
     const catType = gameState.board[row][col];
-    const colors = catTypeColors[catType] || ['#FF6B9D', '#88D8E8', '#FFD93D', '#A8E6CF', '#FFB6C1', '#C8A8E9'];
+    // 根据猫咪类型选择花瓣颜色（温和）
+    const petalColors = {
+        1: '#FFB347', 2: '#FFFFFF', 3: '#DAA520', 4: '#B0C4DE',
+        5: '#36454F', 6: '#D2691E', 7: '#5B8AC6', 8: '#C4A77D',
+        9: '#DAA520', 10: '#FFB6C1', 11: '#C8A8E9'
+    };
+    const color = petalColors[catType] || '#FFB6C1';
 
-    // 增强：15个粒子（原10个），增加大小变化和旋转
-    for (let i = 0; i < 15; i++) {
+    // 创建5-8个花瓣粒子（温和数量）
+    const particleCount = 5 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.className = 'healing-particle';
+        particle.textContent = petals[Math.floor(Math.random() * petals.length)];
+        particle.style.fontSize = `${12 + Math.random() * 8}px`;
+        particle.style.color = color;
 
-        // 随机大小（3-8px）
-        const size = 3 + Math.random() * 5;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.borderRadius = '50%';
+        // 起始位置：格子中心
+        particle.style.left = `${rect.left - boardRect.left + rect.width / 2 + (Math.random() - 0.5) * 20}px`;
+        particle.style.top = `${rect.top - boardRect.top}px`;
 
-        particle.style.left = `${rect.left - boardRect.left + rect.width / 2}px`;
-        particle.style.top = `${rect.top - boardRect.top + rect.height / 2}px`;
-
-        const angle = (Math.PI * 2 * i) / 15 + (Math.random() - 0.5) * 0.5;
-        const distance = 25 + Math.random() * 50;
-        const tx = Math.cos(angle) * distance;
-        const ty = Math.sin(angle) * distance;
-        particle.style.setProperty('--tx', `${tx}px`);
-        particle.style.setProperty('--ty', `${ty}px`);
-
-        // 添加旋转
-        particle.style.setProperty('--rot', `${Math.random() * 360}deg`);
-
-        // 随机延迟（0-150ms），让爆炸更自然
-        particle.style.animationDelay = `${Math.random() * 150}ms`;
+        // 飘落动画参数（缓入缓出）
+        const fallDuration = 2 + Math.random() * 2; // 2-4秒缓慢飘落
+        const driftX = (Math.random() - 0.5) * 100; // 水平漂移
+        particle.style.setProperty('--drift-x', `${driftX}px`);
+        particle.style.animationDuration = `${fallDuration}s`;
+        particle.style.animationTimingFunction = 'var(--ease-healing)';
 
         DOM.effectsLayer.appendChild(particle);
-        setTimeout(() => particle.remove(), 1000);
+
+        // 动画结束后移除
+        setTimeout(() => particle.remove(), fallDuration * 1000);
     }
 
-    // 额外添加3-5个"星星"粒子（特殊形状）
-    const sparkCount = 3 + Math.floor(Math.random() * 3);
-    for (let i = 0; i < sparkCount; i++) {
-        const spark = document.createElement('div');
-        spark.className = 'particle-spark';
-        spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        const sx = (Math.random() - 0.5) * 40;
-        const sy = -(20 + Math.random() * 30); // 向上飘
-        spark.style.setProperty('--sx', `${sx}px`);
-        spark.style.setProperty('--sy', `${sy}px`);
-        spark.style.left = `${rect.left - boardRect.left + rect.width / 2}px`;
-        spark.style.top = `${rect.top - boardRect.top + rect.height / 2}px`;
-        spark.style.width = '4px';
-        spark.style.height = '4px';
-        spark.style.borderRadius = '1px'; // 方形粒子
-        spark.style.animation = `sparkle 0.8s ease-out forwards`;
-        DOM.effectsLayer.appendChild(spark);
-        setTimeout(() => spark.remove(), 800);
-    }
+    // 添加水波纹效果
+    createWaterRipple(rect.left - boardRect.left + rect.width / 2, rect.top - boardRect.top + rect.height / 2);
 }
+
+/** 创建水波纹效果（疗愈风格，非爆炸性） */
+function createWaterRipple(centerX, centerY) {
+    const ripple = document.createElement('div');
+    ripple.className = 'water-ripple';
+    ripple.style.left = `${centerX}px`;
+    ripple.style.top = `${centerY}px`;
+
+    DOM.effectsLayer.appendChild(ripple);
+
+    // 动画结束后移除
+    setTimeout(() => ripple.remove(), 1500);
+}
+
+/** 移除得分飘字函数（竞争性，已不需要） */
+// function showScorePopup(row, col, score, type = 'normal') { ... }
 
 // ═══════════════════════════════════════════════════
 //  下落和填充（修复：仅对新格子添加动画）
@@ -3641,7 +3731,6 @@ function clearSelection() {
 //  UI 更新
 // ═══════════════════════════════════════════════════
 function updateUI() {
-    DOM.score.textContent = gameState.score;
     if (DOM.cookies) DOM.cookies.textContent = gameState.cookies;
     DOM.level.textContent = gameState.level;
 
@@ -4445,7 +4534,6 @@ function getRequestProgressPercent() {
 // ═══════════════════════════════════════════════════
 function startLevel(level) {
     gameState.level = level;
-    gameState.score = 0;
     gameState.cookies = 0;       // 爱心饼干重置（每关从0开始积累）
     gameState.combo = 0;
     gameState.isAnimating = false;
@@ -4629,19 +4717,77 @@ function checkGameState() {
     // 无焦虑设计：移除步数耗尽失败判断，玩家可以永远继续消除
 }
 
-function showWinModal() {
-    document.getElementById('final-score').textContent = gameState.score;
-    // 奖励星级改为基于爱心饼干数量（每关目标消除次数越少，获星越多）
-    const bonus = gameState.cookies;
-    let stars = 1;
-    if (bonus >= 15) stars = 3;
-    else if (bonus >= 8) stars = 2;
-    document.querySelectorAll('.star').forEach((star, i) => {
-        star.classList.toggle('active', i < stars);
-    });
-    showModal(DOM.winModal);
+/**
+ * 显示情绪签到模态框
+ */
+function showEmotionCheckin() {
+    const modal = document.getElementById('emotion-checkin-modal');
+    if (modal) {
+        showModal(modal);
+    }
+}
 
-    // 彩纸飘落庆祝特效
+/**
+ * 隐藏情绪签到模态框
+ */
+function hideEmotionCheckin() {
+    const modal = document.getElementById('emotion-checkin-modal');
+    if (modal) {
+        hideModal(modal);
+    }
+}
+
+// 温柔引导文案（每天变化）
+const HEALING_GUIDANCES = [
+    '要不要花2分钟做个呼吸练习？',
+    '想不想记录一下现在的心情？',
+    '要不要试试放松一下？',
+    '想不想给今天的自己一个温暖的拥抱？',
+    '要不要花1分钟，听听自然的声音？'
+];
+
+// 莫兰迪色系 - 用于彩纸特效
+const HEALING_COLORS = [
+    'rgba(168, 181, 162, 0.8)',  // 灰绿色
+    'rgba(184, 169, 201, 0.8)',  // 灰紫色
+    'rgba(216, 200, 168, 0.8)',  // 暖米色
+    'rgba(168, 200, 207, 0.8)',  // 灰蓝色
+    'rgba(201, 162, 168, 0.8)',  // 灰粉色
+    'rgba(168, 230, 207, 0.8)',  // 薄荷绿
+    'rgba(92, 184, 168, 0.8)',   // 青绿色
+    'rgba(255, 179, 195, 0.8)'   // 浅粉色
+];
+
+/**
+ * 更新温柔引导文案（根据日期种子选择）
+ */
+function updateHealingGuidance() {
+    const guidanceText = document.getElementById('guidance-text');
+    if (!guidanceText) return;
+    
+    // 根据日期种子选择文案（确保同一天显示相同文案）
+    const today = new Date();
+    const dateSeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    const index = dateSeed % HEALING_GUIDANCES.length;
+    
+    guidanceText.textContent = HEALING_GUIDANCES[index];
+}
+
+function showWinModal() {
+    // 疗愈导向：不显示分数和星级，只显示完成提示
+    showModal(DOM.winModal);
+    
+    // 温柔引导：每天变化文案
+    updateHealingGuidance();
+
+    // 触发猫咪陪伴提示（非竞争性）
+    const companionHint = document.getElementById('cat-companion-hint');
+    if (companionHint) {
+        companionHint.classList.remove('hidden');
+        setTimeout(() => companionHint.classList.add('hidden'), 3000);
+    }
+
+    // 彩纸飘落庆祝特效（疗愈风格，非竞争性）
     let container = document.getElementById('confetti-container');
     if (!container) {
         container = document.createElement('div');
@@ -4650,11 +4796,10 @@ function showWinModal() {
         document.body.appendChild(container);
     }
     container.innerHTML = '';
-    const colors = ['#FF6B9D','#FFD93D','#88D8E8','#A8E6CF','#C8A8E9','#FF8FAB','#5CB8A8','#FFB347'];
     for (let i = 0; i < 80; i++) {
         const c = document.createElement('div');
         c.className = 'confetti ' + (Math.random() > 0.5 ? 'circle' : 'rect');
-        c.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        c.style.backgroundColor = HEALING_COLORS[Math.floor(Math.random() * HEALING_COLORS.length)];
         c.style.left = Math.random() * 100 + 'vw';
         c.style.width = (6 + Math.random() * 8) + 'px';
         c.style.height = (4 + Math.random() * 8) + 'px';
@@ -4780,7 +4925,6 @@ async function useBomb(row, col) {
     playSound('bomb');
     await animateMatches(toRemove);
     toRemove.forEach(pos => { gameState.board[pos.row][pos.col] = null; });
-    gameState.score += toRemove.length * CONFIG.BASE_SCORE;
     updateUI();
     await dropAndFill();
     gameState.combo = 0;
@@ -5892,3 +6036,43 @@ const TutorialManager = {
 //  启动
 // ═══════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', init);
+
+// ═══════════════════════════════════════════
+//  情绪共鸣集成（简化版）
+// ═══════════════════════════════════════════
+
+/**
+ * 在猫咪互动时显示情绪共情反应
+ * 在 showRubScreen() 中调用此函数
+ */
+function showEmpatheticReactionInCatInteraction() {
+    const emotion = getUserEmotion();
+    const reaction = generateEmpatheticReaction(emotion ? emotion.emotionType : null);
+    
+    // 在猫咪气泡中显示共情反应
+    const bubble = document.querySelector('.rub-cat-bubble');
+    if (bubble) {
+        // 延迟显示（让猫咪先出现）
+        setTimeout(() => {
+            bubble.textContent = reaction;
+            bubble.classList.add('empathy-active');
+        }, 800);
+    }
+}
+
+/**
+ * 修改原有的 showRubScreen() 函数（简化集成）
+ * 在显示猫咪蹭屏时，添加情绪共情反应
+ */
+const originalShowRubScreen = CatInteractionManager.showRubScreen;
+CatInteractionManager.showRubScreen = function(catType, side) {
+    // 调用原始函数
+    originalShowRubScreen.call(CatInteractionManager, catType, side);
+    
+    // 添加情绪共情反应
+    setTimeout(() => {
+        showEmpatheticReactionInCatInteraction();
+    }, 500);
+};
+
+console.log('✅ 猫咪情绪共鸣系统已加载');

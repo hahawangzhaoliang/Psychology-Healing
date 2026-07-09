@@ -159,6 +159,14 @@
             const keys = key.split('.');
             let result = keys.reduce((obj, k) => (obj || {})[k], this.enTranslations);
             if (result === undefined) {
+                // 查找失败，尝试添加 cat_game. 前缀
+                if (!key.startsWith('cat_game.')) {
+                    const prefixedKey = 'cat_game.' + key;
+                    const prefixedKeys = prefixedKey.split('.');
+                    result = prefixedKeys.reduce((obj, k) => (obj || {})[k], this.enTranslations);
+                }
+            }
+            if (result === undefined) {
                 console.warn(`[i18n] 缺失翻译: ${key}`);
                 if (typeof zhDefault === 'string' && zhDefault) return zhDefault;
                 return key;

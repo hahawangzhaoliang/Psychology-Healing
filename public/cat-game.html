@@ -6,7 +6,6 @@
     <title id="cat-game-title">喵趣消消乐</title>
     <!-- 临时移除 Phosphor CDN，测试游戏是否能加载 -->
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link rel="stylesheet" href="css/icons-custom.css">
     <script src="js/i18n.js"></script>
@@ -453,26 +452,21 @@
     <!-- 游戏容器 -->
     <div id="game-container">
         <!-- 返回按钮 -->
-        <button class="back-btn" data-i18n="cat_game.back_btn" onclick="location.href='index.html'" title="返回主页">← 返回</button>
+        <button class="back-btn" data-i18n="cat_game.back_btn" data-i18n-title="cat_game.back_btn_title" onclick="location.href='index.html'">← 返回</button>
         <!-- 顶部信息栏 -->
         <div id="header">
-            <div class="score-panel">
-                <div class="score-item">
-                    <span class="label" data-i18n="cat_game.score_label">分数</span>
-                    <span id="score" class="value">0</span>
-                </div>
-                <div class="score-item">
-                    <span class="label" data-i18n="cat_game.cookie_label"><svg class="icon icon--md"><use href="#icon-cookie"></use></svg> 饼干</span>
-                    <span id="cookies" class="value cookie-value">0</span>
-                </div>
-                <div class="score-item">
+            <div class="info-panel">
+                <div class="info-item">
                     <span class="label" data-i18n="cat_game.level_label">关卡</span>
                     <span id="level" class="value">1</span>
+                </div>
+                <div class="info-item">
+                    <span class="label"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> <span data-i18n="cat_game.cookie_label">饼干</span></span>
+                    <span id="cookies" class="value cookie-value">0</span>
                 </div>
                 <!-- 音效/震动控制按钮 -->
                 <div class="settings-btns">
                     <button id="btn-home" class="setting-btn" data-i18n-title="cat_game.btn_home_title"><svg class="icon icon--md"><use href="#icon-house"></use></svg></button>
-                    <button id="btn-affinity" class="setting-btn" data-i18n-title="cat_game.btn_affinity_title"><svg class="icon icon--md"><use href="#icon-heart"></use></svg></button>
                     <button id="btn-mute" class="setting-btn" data-i18n-title="cat_game.btn_mute_title"><svg class="icon icon--md"><use href="#icon-speaker"></use></svg></button>
                     <button id="btn-vibrate" class="setting-btn" data-i18n-title="cat_game.btn_vibrate_title"><svg class="icon icon--md"><use href="#icon-vibrate"></use></svg></button>
                 </div>
@@ -506,7 +500,7 @@
             <!-- Buff 状态显示 -->
             <div id="buff-container"></div>
             <!-- 模式切换按钮 -->
-            <button id="btn-relax-mode" data-i18n="cat_game.relax_mode" title="切换到猫咪庭院"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> 庭院</button>
+            <button id="btn-relax-mode" data-i18n="cat_game.relax_mode" data-i18n-title="cat_game.relax_mode_title"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> 庭院</button>
         </div>
 
         <!-- 游戏棋盘 -->
@@ -554,31 +548,81 @@
         </div>
     </div>
 
+    <!-- 情绪签到弹窗 -->
+    <div id="emotion-checkin-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2><svg class="icon icon--md"><use href="#icon-heart"></use></svg> <span data-i18n="cat_game.checkin_title">要不要先和自己的情绪打个招呼？</span></h2>
+            <p class="checkin-subtitle" data-i18n="cat_game.checkin_subtitle">选择一个最符合你当前状态的情绪吧~</p>
+            
+            <!-- 情绪选择按钮 -->
+            <div class="emotion-options">
+                <button class="emotion-btn" data-emotion="happy">
+                    <span class="emotion-icon">😊</span>
+                    <span class="emotion-label" data-i18n="cat_game.emotion_happy">愉快</span>
+                </button>
+                <button class="emotion-btn" data-emotion="calm">
+                    <span class="emotion-icon">😌</span>
+                    <span class="emotion-label" data-i18n="cat_game.emotion_calm">平静</span>
+                </button>
+                <button class="emotion-btn" data-emotion="anxious">
+                    <span class="emotion-icon">😰</span>
+                    <span class="emotion-label" data-i18n="cat_game.emotion_anxious">焦虑</span>
+                </button>
+                <button class="emotion-btn" data-emotion="tired">
+                    <span class="emotion-icon">😴</span>
+                    <span class="emotion-label" data-i18n="cat_game.emotion_tired">疲惫</span>
+                </button>
+                <button class="emotion-btn" data-emotion="other">
+                    <span class="emotion-icon">🤔</span>
+                    <span class="emotion-label" data-i18n="cat_game.emotion_other">其他</span>
+                </button>
+            </div>
+            
+            <button id="btn-skip-checkin" class="btn btn-text">
+                <span data-i18n="cat_game.btn_skip_checkin">直接开始游戏</span>
+            </button>
+        </div>
+    </div>
+
     <!-- 过关弹窗 -->
     <div id="win-modal" class="modal hidden">
         <div class="modal-content">
-            <h2 data-i18n="cat_game.win_title"><svg class="icon icon--md"><use href="#icon-confetti"></use></svg> 恭喜过关！</h2>
-            <div class="star-rating">
-                <span class="star" data-star="1"><svg class="icon icon--md"><use href="#icon-star"></use></svg></span>
-                <span class="star" data-star="2"><svg class="icon icon--md"><use href="#icon-star"></use></svg></span>
-                <span class="star" data-star="3"><svg class="icon icon--md"><use href="#icon-star"></use></svg></span>
+            <h2 data-i18n="cat_game.win_title"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> 恭喜完成！</h2>
+            <p class="win-message" data-i18n="cat_game.win_message">猫咪们很开心，你也做得很棒！</p>
+            
+            <!-- 温柔引导区域 -->
+            <div class="healing-guidance">
+                <p class="guidance-text" id="guidance-text">要不要花2分钟做个呼吸练习？</p>
+                <div class="guidance-buttons">
+                    <button id="btn-breathing" class="btn btn-primary">
+                        <svg class="icon icon--sm"><use href="#icon-breathe"></use></svg>
+                        <span data-i18n="cat_game.btn_breathing">呼吸练习</span>
+                    </button>
+                    <button id="btn-journal" class="btn">
+                        <svg class="icon icon--sm"><use href="#icon-journal"></use></svg>
+                        <span data-i18n="cat_game.btn_journal">情绪日记</span>
+                    </button>
+                </div>
+                <button id="btn-skip-guidance" class="btn btn-text">
+                    <span data-i18n="cat_game.btn_skip_guidance">暂不，谢谢</span>
+                </button>
             </div>
-            <p><span data-i18n="cat_game.final_score">得分:</span> <span id="final-score">0</span></p>
+            
             <div class="modal-buttons">
-                <button id="btn-next-level" class="btn btn-primary" data-i18n="cat_game.next_level">下一关</button>
+                <button id="btn-next-level" class="btn btn-primary" data-i18n="cat_game.next_level">继续旅程</button>
                 <button id="btn-replay" class="btn" data-i18n="cat_game.replay">再玩一次</button>
             </div>
         </div>
     </div>
 
-    <!-- 连击提示 -->
-    <div id="combo-display" class="hidden">
-        <span id="combo-text"></span>
-    </div>
+    <!-- 猫咪陪伴提示 -->
+        <div id="cat-companion-hint" class="hidden">
+            <span><svg class="icon icon--md"><use href="#icon-heart"></use></svg> <span data-i18n="cat_game.cat_companion">猫咪在旁边陪伴着你~</span></span>
+        </div>
 
-    <!-- 请求完成提示 -->
+    <!-- 完成提示 -->
         <div id="request-complete-hint" class="hidden">
-            <span data-i18n="cat_game.request_complete"><svg class="icon icon--md"><use href="#icon-confetti"></use></svg> 请求完成！猫咪很开心！</span>
+            <span data-i18n="cat_game.request_complete"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> 完成啦！猫咪在旁边陪伴着你~</span>
         </div>
 
     <script src="js/game.js"></script>
@@ -589,23 +633,5 @@
             // Phosphor Icons 会自动处理
         });
     </script>
-    
-    <!-- 猫咪消消乐不需要顶部导航栏 -->
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide)
-});
-        document.addEventListener('localeChanged', () => {
-            if (window.lucide)
-});
-    </script>
-
-<!-- 内联 SVG 精灵 -->
-<!--
-  心晴空间 — 疗愈风格自定义 SVG 图标集
-  设计理念：柔和、手绘感、有机形态、温暖疗愈
-  使用方式：<svg class="icon icon--lg"><use href="#icon-home"></use></svg>
--->
 </body>
 </html>

@@ -1,310 +1,303 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>心晴空间 — 疗愈图标预览</title>
-<style>
-    /* ========== 基础变量 ========== */
-    :root {
-        --green:  #5cb8a8;
-        --warm:   #f4a261;
-        --cool:   #6b9a9a;
-        --bg:     #fafaf7;
-        --card:    #ffffff;
-        --text:   #2d3436;
-        --muted:  #94a3b8;
-        --radius: 16px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图标预览 — 心晴空间</title>
+  <style>
+    /* ========== 基础重置 ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-        font-family: 'Nunito Sans', 'PingFang SC', sans-serif;
-        background: var(--bg);
-        color: var(--text);
-        min-height: 100vh;
-        padding: 2rem 1rem 4rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #f0f7f5;
+      color: #2d3436;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    /* ========== 隐藏 SVG sprite（页面内联） ========== */
+    svg.sprite-defs {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
     }
 
     /* ========== 页面标题 ========== */
     .page-header {
-        text-align: center;
-        margin-bottom: 3rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
     }
     .page-header h1 {
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--green);
-        margin-bottom: 0.5rem;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #2d6a4f;
+      margin-bottom: 0.4rem;
     }
     .page-header p {
-        color: var(--muted);
-        font-size: 1rem;
+      font-size: 0.95rem;
+      color: #6b9a9a;
+    }
+
+    /* ========== 控制栏 ========== */
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(92,184,168,0.12);
+    }
+    .control-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .control-group label {
+      font-size: 0.85rem;
+      color: #6b9a9a;
+      font-weight: 500;
+    }
+    .control-group input[type="range"] {
+      width: 120px;
+      accent-color: #5cb8a8;
+    }
+    .control-group span {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2d6a4f;
+      min-width: 3rem;
+      text-align: center;
+    }
+    .color-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2.5px solid white;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .color-btn:hover { transform: scale(1.15); }
+    .color-btn.active { border-color: #2d6a4f; transform: scale(1.15); }
+
+    /* ========== 分组标题 ========== */
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d6a4f;
+      margin: 2rem 0 1rem;
+      padding-left: 0.5rem;
+      border-left: 4px solid #5cb8a8;
     }
 
     /* ========== 图标网格 ========== */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1.5rem;
-        max-width: 1100px;
-        margin: 0 auto;
+    .icons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
     }
 
-    /* ========== 单张图标卡片 ========== */
-    .card {
-        background: var(--card);
-        border-radius: var(--radius);
-        padding: 1.5rem 1rem 1.2rem;
-        text-align: center;
-        box-shadow: 0 2px 12px rgba(92,184,168,0.08);
-        border: 1px solid rgba(92,184,168,0.12);
-        transition: transform 0.3s cubic-bezier(.34,1.56,.64,1),
-                    box-shadow 0.3s ease;
-        cursor: pointer;
+    /* ========== 单个图标卡片 ========== */
+    .icon-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      box-shadow: 0 2px 12px rgba(92,184,168,0.10);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s;
+      cursor: pointer;
+      position: relative;
     }
-    .card:hover {
-        transform: translateY(-4px) scale(1.02);
-        box-shadow: 0 8px 24px rgba(92,184,168,0.18);
+    .icon-card:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(92,184,168,0.22);
     }
-
-    /* 图标展示区 */
-    .card-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 72px;
-        height: 72px;
-        border-radius: 50%;
-        background: radial-gradient(circle, rgba(92,184,168,0.10), rgba(167,232,220,0.06), transparent);
-        margin-bottom: 0.8rem;
-        transition: background 0.3s ease;
-    }
-    .card:hover .card-icon {
-        background: radial-gradient(circle, rgba(92,184,168,0.18), rgba(167,232,220,0.12), transparent);
-    }
-    .card-icon .icon {
-        width: 40px;
-        height: 40px;
-        color: var(--green);
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        fill: none;
-        transition: color 0.3s ease, transform 0.3s cubic-bezier(.34,1.56,.64,1);
-    }
-    .card:hover .card-icon .icon {
-        color: var(--warm);
-        transform: scale(1.1);
+    .icon-card:active {
+      transform: translateY(-2px) scale(1.01);
     }
 
-    /* 卡片文字 */
-    .card-name {
-        font-size: 0.92rem;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 0.2rem;
+    /* 图标本体 */
+    .icon-card svg {
+      display: block;
+      /* 大小由 JS 控制 */
+      transition: color 0.3s;
     }
-    .card-id {
-        font-size: 0.75rem;
-        color: var(--muted);
-        font-family: 'JetBrains Mono', monospace;
+
+    /* 图标名称 */
+    .icon-name {
+      font-size: 0.78rem;
+      color: #6b9a9a;
+      text-align: center;
+      word-break: break-all;
+      line-height: 1.3;
+    }
+
+    /* 点击复制提示 */
+    .icon-card .copy-toast {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #2d6a4f;
+      color: white;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .icon-card .copy-toast.show {
+      opacity: 1;
     }
 
     /* ========== 使用说明 ========== */
-    .usage {
-        max-width: 720px;
-        margin: 3rem auto 0;
-        background: var(--card);
-        border-radius: var(--radius);
-        padding: 2rem;
-        box-shadow: 0 2px 12px rgba(92,184,168,0.08);
-        border: 1px solid rgba(92,184,168,0.12);
+    .usage-section {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      box-shadow: 0 2px 12px rgba(92,184,168,0.10);
     }
-    .usage h2 {
-        font-size: 1.15rem;
-        color: var(--green);
-        margin-bottom: 1rem;
+    .usage-section h3 {
+      font-size: 1rem;
+      color: #2d6a4f;
+      margin-bottom: 0.8rem;
     }
-    .usage code {
-        display: block;
-        background: #f0fdf9;
-        border: 1px solid #a7e8dc;
-        border-radius: 8px;
-        padding: 0.8rem 1rem;
-        font-size: 0.82rem;
-        color: #2d3436;
-        line-height: 1.7;
-        overflow-x: auto;
-        margin-top: 0.5rem;
+    .usage-section code {
+      background: #e8f6f3;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      color: #2d6a4f;
     }
-    .usage .tag {
-        display: inline-block;
-        background: #e0f7f2;
-        color: #5cb8a8;
-        border-radius: 6px;
-        padding: 0.15rem 0.5rem;
-        font-size: 0.78rem;
-        font-weight: 600;
-        margin-top: 0.8rem;
+    .usage-section pre {
+      background: #f0f7f5;
+      padding: 1rem 1.2rem;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #2d3436;
+      overflow-x: auto;
+      margin-top: 0.5rem;
     }
 
-    /* ========== 颜色变体演示 ========== */
-    .color-demo {
-        display: flex;
-        gap: 1.2rem;
-        align-items: center;
-        justify-content: center;
-        margin-top: 0.6rem;
-        flex-wrap: wrap;
+    /* ========== 响应式 ========== */
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .icons-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 0.8rem;
+      }
+      .page-header h1 { font-size: 1.5rem; }
     }
-    .color-demo .demo-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.3rem;
-    }
-    .color-demo .demo-label {
-        font-size: 0.7rem;
-        color: var(--muted);
-    }
-    .color-demo .icon {
-        width: 28px; height: 28px;
-        stroke: currentColor; stroke-width: 2;
-        stroke-linecap: round; stroke-linejoin: round; fill: none;
-    }
-
-    /* ========== 分类标签 ========== */
-    .section-label {
-        max-width: 1100px;
-        margin: 2.5rem auto 1rem;
-        font-size: 0.82rem;
-        font-weight: 700;
-        color: var(--muted);
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        padding-left: 0.3rem;
-    }
-</style>
+  </style>
 </head>
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
+
+  <!-- ========== SVG 精灵（从 cat-game.html 同步） ========== -->
+  <svg class="sprite-defs" xmlns="http://www.w3.org/2000/svg">
   <symbol id="icon-home" viewBox="0 0 48 48">
-    <!-- 小房子 + 心形窗户 -->
-    <path d="M24 6 L6 22 L10 22 L10 40 L38 40 L38 22 L42 22 Z"
-          fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-    <!-- 门 -->
-    <path d="M19 40 L19 30 Q24 27 29 30 L29 40"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- 屋顶小装饰（叶子） -->
+    <path d="M24 6 L6 22 L10 22 L10 40 L38 40 L38 22 L42 22 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M19 40 L19 30 Q24 27 29 30 L29 40" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
     <path d="M24 6 Q20 2 16 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-emotion" viewBox="0 0 48 48">
-    <!-- 脸 -->
     <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 眼睛：弯弯的笑眼 -->
     <path d="M16 20 Q18 16 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
     <path d="M28 20 Q30 16 32 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 嘴巴：微笑弧线 -->
     <path d="M17 29 Q24 36 31 29" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- 脸颊红晕（用两个小弧表示） -->
     <path d="M13 25 Q12 28 14 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
     <path d="M34 25 Q35 28 33 27" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
   </symbol>
   <symbol id="icon-flow" viewBox="0 0 48 48">
-    <!-- 水波纹扩散，表示心流状态 -->
     <circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
     <circle cx="24" cy="24" r="12" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
     <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
-    <!-- 中心小点 -->
     <circle cx="24" cy="24" r="2" fill="currentColor" opacity="0.8"/>
   </symbol>
   <symbol id="icon-knowledge" viewBox="0 0 48 48">
-    <!-- 节点连接图，表示知识网络 -->
-    <!-- 中心节点 -->
     <circle cx="24" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 左下节点 -->
     <circle cx="14" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-    <!-- 右下节点 -->
     <circle cx="34" cy="34" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-    <!-- 连接线（柔和曲线） -->
     <path d="M22 22 Q20 28 16 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
     <path d="M26 22 Q28 28 32 31" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
     <path d="M20 18 Q24 15 28 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
-    <!-- 小装饰：中心节点内的小点 -->
     <circle cx="24" cy="18" r="1.5" fill="currentColor" opacity="0.5"/>
   </symbol>
   <symbol id="icon-community" viewBox="0 0 48 48">
-    <!-- 两个人物，手拉手 -->
-    <!-- 左边人物 -->
     <circle cx="17" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
     <path d="M10 46 Q10 30 17 28 Q24 30 24 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 右边人物 -->
     <circle cx="31" cy="18" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
     <path d="M24 46 Q24 30 31 28 Q38 30 38 46" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 手拉手（弧线） -->
     <path d="M22 22 Q24 26 26 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-cat" viewBox="0 0 48 48">
-    <!-- 猫头 -->
-    <path d="M14 20 Q10 8 20 12 Q24 6 28 12 Q38 8 34 20"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 猫脸 -->
-    <circle cx="24" cy="26" r="11" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 眼睛 -->
-    <ellipse cx="20" cy="24" rx="2" ry="2.5" fill="currentColor"/>
-    <ellipse cx="28" cy="24" rx="2" ry="2.5" fill="currentColor"/>
-    <!-- 鼻子 -->
-    <path d="M24 27 L22.5 29 L25.5 29 Z" fill="currentColor"/>
-    <!-- 嘴巴 -->
-    <path d="M22.5 29 Q24 32 25.5 29" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-    <!-- 胡须 -->
-    <path d="M15 26 Q12 25 13 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M15 28 Q12 29 13 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M33 26 Q36 25 35 23" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-    <path d="M33 28 Q36 29 35 31" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    <path d="M13 19 Q9 6 20 11 Q23 7 25 12 Q22 9 20 11 Q18 6 13 19 Z" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M35 19 Q39 6 28 11 Q25 7 23 12 Q26 9 28 11 Q30 6 35 19 Z" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <ellipse cx="24" cy="27" rx="13" ry="12" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2.2"/>
+    <ellipse cx="19" cy="24" rx="2.8" ry="3.2" fill="currentColor" fill-opacity="0.85"/>
+    <ellipse cx="29" cy="24" rx="2.8" ry="3.2" fill="currentColor" fill-opacity="0.85"/>
+    <circle cx="20" cy="22.5" r="1" fill="white" fill-opacity="0.75"/>
+    <circle cx="30" cy="22.5" r="1" fill="white" fill-opacity="0.75"/>
+    <path d="M24 28 L22.2 30.2 L25.8 30.2 Z" fill="currentColor" fill-opacity="0.55"/>
+    <path d="M22.5 31.5 Q24 33.5 25.5 31.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <path d="M25.5 31.5 Q27 33.5 28 31.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+    <path d="M14 25 Q9 23 11 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+    <path d="M14 27.5 Q9 28 11 31" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+    <path d="M34 25 Q39 23 37 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+    <path d="M34 27.5 Q39 28 37 31" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.5"/>
+    <ellipse cx="15" cy="29" rx="3.5" ry="2.2" fill="currentColor" fill-opacity="0.07"/>
+    <ellipse cx="33" cy="29" rx="3.5" ry="2.2" fill="currentColor" fill-opacity="0.07"/>
   </symbol>
   <symbol id="icon-settings" viewBox="0 0 48 48">
-    <!-- 齿轮，但用柔和线条 -->
     <circle cx="24" cy="24" r="7" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 齿轮齿（圆角矩形） -->
     <rect x="22" y="4" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="22" y="36" width="4" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="4" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="36" y="22" width="8" height="4" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <!-- 斜角齿 -->
     <rect x="37.5" y="7.5" width="4" height="8" rx="2" transform="rotate(45 39.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="6.5" y="32.5" width="4" height="8" rx="2" transform="rotate(45 8.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="37.5" y="32.5" width="4" height="8" rx="2" transform="rotate(-45 39.5 36.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
     <rect x="6.5" y="7.5" width="4" height="8" rx="2" transform="rotate(-45 8.5 11.5)" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <!-- 中心小圆 -->
     <circle cx="24" cy="24" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
   </symbol>
   <symbol id="icon-heart" viewBox="0 0 48 48">
-    <!-- 手绘风格爱心 -->
-    <path d="M24 42 Q10 32 10 20 Q10 10 18 10 Q22 10 24 14 Q26 10 30 10 Q38 10 38 20 Q38 32 24 42 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M24 42 Q10 32 10 20 Q10 10 18 10 Q22 10 24 14 Q26 10 30 10 Q38 10 38 20 Q38 32 24 42 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M22 16 Q20 13 18 14" fill="none" stroke="white" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+    <path d="M17 20 Q15 18 17 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M31 20 Q33 18 31 16" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
   </symbol>
   <symbol id="icon-leaf" viewBox="0 0 48 48">
-    <!-- 一片叶子 -->
-    <path d="M24 6 Q38 14 38 28 Q38 42 24 42 Q10 42 10 28 Q10 14 24 6 Z"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-    <!-- 叶脉 -->
-    <path d="M24 8 Q24 20 24 40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
-    <!-- 侧脉 -->
-    <path d="M24 16 Q32 12 34 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
-    <path d="M24 24 Q34 20 36 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
-    <path d="M24 16 Q16 12 14 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
-    <path d="M24 24 Q16 20 14 16" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 6 Q38 14 38 26 Q38 42 24 42 Q10 42 10 26 Q10 14 24 6 Z" fill="currentColor" fill-opacity="0.07" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M24 8 Q24 20 24 40" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+    <path d="M24 14 Q32 10 36 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <path d="M24 20 Q34 16 38 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <path d="M24 26 Q36 24 40 22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.25"/>
+    <path d="M24 32 Q34 34 36 38" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.25"/>
+    <path d="M24 14 Q16 10 12 8" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <path d="M24 20 Q14 16 10 12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <path d="M24 26 Q12 24 8 22" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.25"/>
+    <path d="M24 32 Q14 34 12 38" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.25"/>
+    <path d="M28 10 Q30 8 32 9" fill="none" stroke="white" stroke-width="0.8" stroke-linecap="round" opacity="0.2"/>
   </symbol>
   <symbol id="icon-star" viewBox="0 0 48 48">
-    <!-- 五角星，柔和线条 -->
-    <path d="M24 4 L29 18 L44 18 L32 27 L36 42 L24 33 L12 42 L16 27 L4 18 L19 18 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M24 4 L29.5 18.5 L44 18.5 L32.5 27 L36.5 42 L24 33.5 L11.5 42 L15.5 27 L4 18.5 L18.5 18.5 Z" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M24 8 L28 19 L38 19 L30 26 L33 40 L24 32 L15 40 L18 26 L10 19 L20 19 Z" fill="currentColor" fill-opacity="0.06"/>
+    <circle cx="24" cy="24" r="2" fill="white" fill-opacity="0.3"/>
   </symbol>
   <symbol id="icon-sun" viewBox="0 0 48 48">
     <circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 光芒（柔和短线） -->
     <line x1="24" y1="6" x2="24" y2="12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
     <line x1="24" y1="36" x2="24" y2="42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
     <line x1="6" y1="24" x2="12" y2="24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
@@ -315,52 +308,45 @@
     <line x1="15.5" y1="32.5" x2="11" y2="37" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-moon" viewBox="0 0 48 48">
-    <!-- 弯月 -->
-    <path d="M32 10 Q24 10 20 20 Q16 30 22 38 Q30 44 36 40 Q40 36 40 28 Q40 18 32 10 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 内部小弧 -->
+    <path d="M32 10 Q24 10 20 20 Q16 30 22 38 Q30 44 36 40 Q40 36 40 28 Q40 18 32 10 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
     <path d="M28 16 Q26 24 30 32" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
   </symbol>
   <symbol id="icon-cloud" viewBox="0 0 48 48">
-    <path d="M14 34 Q8 32 8 26 Q8 20 14 20 Q14 12 22 12 Q28 6 36 10 Q42 10 42 18 Q48 18 42 24 Q44 32 38 34 Z"
-          fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M14 34 Q8 32 8 26 Q8 20 14 20 Q14 12 22 12 Q28 6 36 10 Q42 10 42 18 Q48 18 42 24 Q44 32 38 34 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
   </symbol>
   <symbol id="icon-tree" viewBox="0 0 48 48">
-    <!-- 树冠（云朵状） -->
-    <circle cx="24" cy="16" r="12" fill="none" stroke="currentColor" stroke-width="2"/>
-    <!-- 第二层树冠 -->
-    <circle cx="18" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
-    <circle cx="30" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.7"/>
-    <!-- 树干 -->
-    <path d="M21 28 L21 42 L27 42 L27 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="24" cy="16" r="13" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2"/>
+    <circle cx="18" cy="20" r="9" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-width="1.6" opacity="0.7"/>
+    <circle cx="30" cy="20" r="9" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-width="1.6" opacity="0.7"/>
+    <path d="M22 28 Q24 26 26 28 L25 44 Q24 46 23 44 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M24 32 Q23 34 24 36" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+    <path d="M23 38 Q24 40 23 42" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.15"/>
+    <path d="M20 12 Q18 10 21 8" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
   </symbol>
   <symbol id="icon-flower" viewBox="0 0 48 48">
-    <!-- 五片花瓣 -->
-    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(0 24 24)"/>
-    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(72 24 24)"/>
-    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(144 24 24)"/>
-    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(216 24 24)"/>
-    <ellipse cx="24" cy="14" rx="5" ry="8" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(288 24 24)"/>
-    <!-- 花心 -->
-    <circle cx="24" cy="24" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
-    <circle cx="24" cy="24" r="1.5" fill="currentColor" opacity="0.5"/>
-    <!-- 茎 -->
-    <path d="M24 28 Q22 36 24 44" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M24 14 Q20 6 18 12 Q16 18 20 20 Q22 22 24 24 Q26 22 28 20 Q32 18 30 12 Q28 6 24 14 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M14 20 Q8 16 12 12 Q16 10 20 14 Q22 18 24 24 Q22 28 18 30 Q14 32 12 28 Q8 26 14 20 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M34 20 Q40 16 36 12 Q32 10 28 14 Q26 18 24 24 Q26 28 30 30 Q34 32 36 28 Q40 26 34 20 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M17 30 Q12 30 10 36 Q10 42 16 42 Q20 42 24 24 Q20 22 17 30 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M31 30 Q36 30 38 36 Q38 42 32 42 Q28 42 24 24 Q28 22 31 30 Z" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="24" cy="24" r="5" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="24" cy="24" r="2" fill="currentColor" fill-opacity="0.35"/>
+    <path d="M24 16 Q23 20 24 22" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
+    <path d="M16 24 Q20 23 22 24" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
+    <path d="M32 24 Q28 23 26 24" fill="none" stroke="currentColor" stroke-width="0.8" opacity="0.2"/>
+    <path d="M24 29 Q22 36 24 44" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M24 34 Q30 30 36 32" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M24 37 Q18 35 14 38" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-breathe" viewBox="0 0 48 48">
-    <!-- 呼吸波纹 -->
     <ellipse cx="24" cy="24" rx="6" ry="12" fill="none" stroke="currentColor" stroke-width="2" opacity="0.5"/>
     <ellipse cx="24" cy="24" rx="11" ry="17" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.35"/>
     <ellipse cx="24" cy="24" rx="16" ry="21" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.2"/>
-    <!-- 中心小圆 -->
     <circle cx="24" cy="24" r="3" fill="currentColor" opacity="0.6"/>
   </symbol>
   <symbol id="icon-journal" viewBox="0 0 48 48">
-    <!-- 笔记本 -->
     <rect x="10" y="6" width="28" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 书脊 -->
     <line x1="16" y1="6" x2="16" y2="42" stroke="currentColor" stroke-width="2"/>
-    <!-- 文字线 -->
     <line x1="20" y1="16" x2="36" y2="16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
     <line x1="20" y1="22" x2="34" y2="22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
     <line x1="20" y1="28" x2="36" y2="28" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
@@ -368,7 +354,6 @@
   </symbol>
   <symbol id="icon-play" viewBox="0 0 48 48">
     <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 播放三角形 -->
     <path d="M19 14 L19 34 L36 24 Z" fill="currentColor" opacity="0.8"/>
   </symbol>
   <symbol id="icon-pause" viewBox="0 0 48 48">
@@ -377,26 +362,34 @@
     <rect x="27" y="14" width="4" height="20" rx="1.5" fill="currentColor" opacity="0.8"/>
   </symbol>
   <symbol id="icon-cookie" viewBox="0 0 48 48">
-    <!-- 圆形饼干 -->
-    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 饼干纹理（巧克力豆） -->
-    <circle cx="18" cy="18" r="2.5" fill="currentColor" opacity="0.5"/>
-    <circle cx="30" cy="20" r="2" fill="currentColor" opacity="0.5"/>
-    <circle cx="22" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
-    <circle cx="32" cy="32" r="1.8" fill="currentColor" opacity="0.5"/>
-    <!-- 表面纹理 -->
-    <path d="M16 24 Q20 22 24 24 Q28 26 32 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <circle cx="24" cy="24" r="15" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M16 18 Q18 16 20 18" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M28 16 Q30 14 32 17" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M20 32 Q22 30 24 33" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M32 30 Q34 28 36 31" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
+    <path d="M17 26 Q15 28 17 30" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+    <path d="M31 22 Q33 24 31 27" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
+    <circle cx="19" cy="20" r="2.8" fill="currentColor" fill-opacity="0.45"/>
+    <circle cx="19.5" cy="19.2" r="0.9" fill="white" fill-opacity="0.45"/>
+    <circle cx="30" cy="22" r="2.2" fill="currentColor" fill-opacity="0.4"/>
+    <circle cx="30.4" cy="21.4" r="0.8" fill="white" fill-opacity="0.4"/>
+    <circle cx="23" cy="31" r="2.5" fill="currentColor" fill-opacity="0.42"/>
+    <circle cx="23.4" cy="30.3" r="0.85" fill="white" fill-opacity="0.42"/>
+    <circle cx="33" cy="30" r="2" fill="currentColor" fill-opacity="0.38"/>
+    <circle cx="33.3" cy="29.4" r="0.7" fill="white" fill-opacity="0.38"/>
+    <path d="M12 20 Q11 22 12 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
+    <path d="M36 20 Q37 22 36 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.3"/>
   </symbol>
   <symbol id="icon-bomb" viewBox="0 0 48 48">
-    <circle cx="24" cy="28" r="13" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 引线 -->
-    <path d="M32 18 Q36 14 34 10 Q32 8 34 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 小火苗 -->
-    <path d="M34 6 Q33 4 34 2 Q36 3 35 6" fill="currentColor" opacity="0.7"/>
-    <!-- 表情 -->
-    <circle cx="20" cy="26" r="1.8" fill="currentColor"/>
-    <circle cx="28" cy="26" r="1.8" fill="currentColor"/>
-    <path d="M21 32 Q24 35 27 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="24" cy="28" r="13" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M18 22 Q16 24 17 26" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+    <path d="M32 18 Q36 14 34 10 Q31 6 33 4 Q35 2 36 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M33 5 Q31.5 2 33 0 Q35 1.5 36 4 Q35 6 33 5 Z" fill="currentColor" fill-opacity="0.7"/>
+    <path d="M34 3 Q33 1.5 34 0.5" fill="none" stroke="white" stroke-width="0.8" stroke-linecap="round" opacity="0.5"/>
+    <circle cx="20" cy="27" r="1.8" fill="currentColor" fill-opacity="0.6"/>
+    <circle cx="28" cy="27" r="1.8" fill="currentColor" fill-opacity="0.6"/>
+    <path d="M21 33 Q24 35 27 33" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M16 28 Q20 26 24 28 Q28 30 32 28" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.15"/>
   </symbol>
   <symbol id="icon-refresh" viewBox="0 0 48 48">
     <path d="M14 14 A16 16 0 1 1 20 36" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
@@ -405,86 +398,102 @@
     <path d="M34 34 L38 28 L28 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-lightbulb" viewBox="0 0 48 48">
-    <!-- 灯泡 -->
-    <path d="M18 14 Q16 8 24 6 Q32 8 30 14 Q34 18 34 24 Q34 32 24 34 Q14 32 14 24 Q14 18 18 14 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 灯座 -->
-    <rect x="20" y="34" width="8" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
-    <rect x="19" y="38" width="10" height="4" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
-    <!-- 光线 -->
-    <line x1="12" y1="10" x2="8" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
-    <line x1="36" y1="10" x2="40" y2="6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+    <path d="M18 12 Q16 6 24 4 Q32 6 30 12 Q34 16 34 22 Q34 30 24 32 Q14 30 14 22 Q14 16 18 12 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M21 22 Q24 18 27 22 Q24 26 21 22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="24" cy="22" r="1.2" fill="currentColor" fill-opacity="0.4"/>
+    <rect x="20" y="32" width="8" height="4" rx="1.2" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="1.8"/>
+    <rect x="19" y="36" width="10" height="4" rx="1.2" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.8"/>
+    <line x1="12" y1="10" x2="8" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+    <line x1="36" y1="10" x2="40" y2="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
+    <line x1="12" y1="34" x2="8" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/>
+    <line x1="36" y1="34" x2="40" y2="38" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.25"/>
+    <path d="M20 14 Q19 10 22 8" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.2"/>
   </symbol>
   <symbol id="icon-confetti" viewBox="0 0 48 48">
-    <!-- 彩带碎片 -->
-    <rect x="12" y="8" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-20 15 9.5)"/>
-    <rect x="28" y="6" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(25 31 7.5)"/>
-    <rect x="18" y="36" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(-15 21 37.5)"/>
-    <rect x="32" y="32" width="6" height="3" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8" transform="rotate(20 35 33.5)"/>
-    <!-- 圆形碎片 -->
-    <circle cx="10" cy="24" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <circle cx="38" cy="22" r="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <circle cx="24" cy="42" r="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <!-- 中心星星 -->
-    <path d="M24 14 L26 20 L32 20 L27 24 L29 30 L24 26 L19 30 L21 24 L16 20 L22 20 Z"
-          fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+    <rect x="10" y="6" width="7" height="3.5" rx="1.8" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.5" transform="rotate(-25 13.5 7.8)"/>
+    <rect x="30" y="5" width="7" height="3.5" rx="1.8" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.5" transform="rotate(30 33.5 6.8)"/>
+    <rect x="16" y="38" width="7" height="3.5" rx="1.8" fill="currentColor" fill-opacity="0.22" stroke="currentColor" stroke-width="1.5" transform="rotate(-15 19.5 39.8)"/>
+    <rect x="34" y="34" width="6" height="3" rx="1.5" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-width="1.5" transform="rotate(20 37 35.5)"/>
+    <circle cx="6" cy="22" r="3" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="6" cy="22" r="1" fill="white" fill-opacity="0.25"/>
+    <circle cx="42" cy="20" r="2.8" fill="currentColor" fill-opacity="0.13" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="42" cy="20" r="0.9" fill="white" fill-opacity="0.25"/>
+    <circle cx="24" cy="44" r="2.5" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="1.5"/>
+    <path d="M24 10 L26 16 L32 16 L27 20 L29 26 L24 22 L19 26 L21 20 L16 16 L22 16 Z" fill="currentColor" fill-opacity="0.18" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+    <circle cx="14" cy="14" r="1.2" fill="currentColor" fill-opacity="0.15"/>
+    <circle cx="36" cy="14" r="1" fill="currentColor" fill-opacity="0.12"/>
+    <circle cx="20" cy="42" r="1.4" fill="currentColor" fill-opacity="0.13"/>
   </symbol>
   <symbol id="icon-speaker-x" viewBox="0 0 48 48">
-    <!-- 喇叭 -->
-    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 禁止斜线 -->
-    <line x1="34" y1="10" x2="42" y2="38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8 20 Q10 18 12 18 L18 14 Q24 10 24 24 Q24 38 18 34 L12 30 Q10 30 8 28 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <circle cx="34" cy="24" r="11" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <path d="M26 16 L42 32" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+    <circle cx="26" cy="16" r="1.5" fill="currentColor" fill-opacity="0.3"/>
+    <circle cx="42" cy="32" r="1.5" fill="currentColor" fill-opacity="0.3"/>
   </symbol>
   <symbol id="icon-speaker" viewBox="0 0 48 48">
-    <path d="M8 18 L18 18 L30 8 L30 40 L18 30 L8 30 Z"
-          fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 声波 -->
-    <path d="M34 16 Q38 24 34 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <path d="M38 12 Q44 24 38 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M8 20 Q10 18 12 18 L18 14 Q24 10 24 24 Q24 38 18 34 L12 30 Q10 30 8 28 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M28 14 Q34 24 28 34" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M32 10 Q40 24 32 38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+    <path d="M36 7 Q46 24 36 41" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+    <path d="M12 20 Q14 19 18 17" fill="none" stroke="white" stroke-width="1" stroke-linecap="round" opacity="0.25"/>
   </symbol>
   <symbol id="icon-prohibit" viewBox="0 0 48 48">
     <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
     <line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
   </symbol>
   <symbol id="icon-house" viewBox="0 0 48 48">
-    <!-- 简洁房子 -->
-    <path d="M6 22 L24 6 L42 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    <path d="M12 20 L12 38 L36 38 L36 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <rect x="19" y="28" width="10" height="10" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M4 23 L24 7 L44 23" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M12 21 L24 13 L36 21" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.25"/>
+    <path d="M13 22 L13 42 L35 42 L35 22" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M20 42 L20 32 Q24 29 28 32 L28 42" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-width="2"/>
+    <circle cx="26" cy="37" r="1" fill="currentColor" fill-opacity="0.35"/>
+    <path d="M18 42 L30 42" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.4"/>
+    <rect x="15" y="26" width="7" height="7" rx="1.2" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.6"/>
+    <line x1="18.5" y1="26" x2="18.5" y2="33" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+    <line x1="15" y1="29.5" x2="22" y2="29.5" stroke="currentColor" stroke-width="1" opacity="0.2"/>
+    <path d="M30 18 L30 14 L34 14 L34 23" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
   </symbol>
   <symbol id="icon-shop" viewBox="0 0 48 48">
-    <!-- 商店 -->
     <path d="M8 18 L8 40 L40 40 L40 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 屋顶 -->
     <path d="M4 18 L24 6 L44 18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-    <!-- 门 -->
     <rect x="20" y="28" width="8" height="12" rx="1" fill="none" stroke="currentColor" stroke-width="2"/>
-    <!-- 橱窗 -->
     <rect x="10" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
     <rect x="30" y="20" width="8" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
   </symbol>
   <symbol id="icon-palette" viewBox="0 0 48 48">
-    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 颜色点 -->
-    <circle cx="18" cy="18" r="3" fill="#5cb8a8" opacity="0.7"/>
-    <circle cx="30" cy="16" r="2.5" fill="#f4a261" opacity="0.7"/>
-    <circle cx="32" cy="28" r="2.8" fill="#ef4444" opacity="0.5"/>
-    <circle cx="20" cy="32" r="2.2" fill="#10b981" opacity="0.6"/>
-    <circle cx="16" cy="26" r="1.8" fill="#6b9a9a" opacity="0.5"/>
+    <circle cx="24" cy="24" r="17" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2.2"/>
+    <circle cx="17" cy="17" r="3.5" fill="#5cb8a8" fill-opacity="0.55" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="17.8" cy="16.2" r="1" fill="white" fill-opacity="0.4"/>
+    <circle cx="29" cy="15" r="3" fill="#f4a261" fill-opacity="0.55" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="29.6" cy="14.4" r="0.9" fill="white" fill-opacity="0.4"/>
+    <circle cx="31" cy="28" r="3.2" fill="#ef4444" fill-opacity="0.4" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="31.5" cy="27.3" r="0.9" fill="white" fill-opacity="0.35"/>
+    <circle cx="19" cy="32" r="2.8" fill="#10b981" fill-opacity="0.5" stroke="currentColor" stroke-width="1.2"/>
+    <circle cx="19.5" cy="31.4" r="0.8" fill="white" fill-opacity="0.35"/>
+    <circle cx="15" cy="26" r="2.2" fill="#8b5cf6" fill-opacity="0.45" stroke="currentColor" stroke-width="1"/>
+    <circle cx="15.5" cy="25.5" r="0.7" fill="white" fill-opacity="0.3"/>
+    <path d="M20 20 Q24 18 28 20" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.12"/>
+    <path d="M22 30 Q26 32 30 30" fill="none" stroke="currentColor" stroke-width="0.8" stroke-linecap="round" opacity="0.1"/>
   </symbol>
   <symbol id="icon-arrows-clockwise" viewBox="0 0 48 48">
-    <path d="M14 8 A17 17 0 1 1 14 40" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-    <path d="M14 8 L8 14 L20 14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M14 10 A17 17 0 1 1 18 38" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+    <path d="M14 10 L8 18 L20 16" fill="currentColor" fill-opacity="0.2" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M14 10 L10 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+    <path d="M34 10 A17 17 0 1 1 30 38" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+    <circle cx="24" cy="24" r="1.5" fill="currentColor" fill-opacity="0.3"/>
   </symbol>
   <symbol id="icon-vibrate" viewBox="0 0 48 48">
-    <!-- 手机 -->
-    <rect x="15" y="6" width="18" height="36" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 震动弧线 -->
-    <path d="M10 16 Q6 24 10 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <path d="M38 16 Q42 24 38 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 屏幕内容 -->
-    <rect x="18" y="12" width="12" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+    <rect x="15" y="7" width="18" height="34" rx="3.5" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2.2"/>
+    <rect x="18" y="12" width="12" height="18" rx="1.5" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="1.2" opacity="0.5"/>
+    <line x1="20" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <line x1="20" y1="20" x2="26" y2="20" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <line x1="20" y1="24" x2="28" y2="24" stroke="currentColor" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+    <path d="M11 18 Q7 24 11 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M9 15 Q5 24 9 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+    <path d="M37 18 Q41 24 37 30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M39 15 Q43 24 39 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+    <circle cx="24" cy="34" r="1.5" fill="currentColor" fill-opacity="0.25"/>
   </symbol>
   <symbol id="icon-x" viewBox="0 0 48 48">
     <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="2.2"/>
@@ -506,17 +515,13 @@
   </symbol>
   <symbol id="icon-lock" viewBox="0 0 48 48">
     <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 锁扣 -->
     <path d="M18 22 L18 14 Q18 8 24 8 Q30 8 30 14 L30 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- 锁孔 -->
     <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
     <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
   </symbol>
   <symbol id="icon-unlock" viewBox="0 0 48 48">
     <rect x="12" y="22" width="24" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 打开的锁扣 -->
     <path d="M18 22 L18 14 Q18 8 24 8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-    <!-- 锁孔 -->
     <circle cx="24" cy="32" r="2.5" fill="currentColor" opacity="0.6"/>
     <rect x="23" y="32" width="2" height="6" rx="1" fill="currentColor" opacity="0.6"/>
   </symbol>
@@ -537,476 +542,191 @@
     <circle cx="23" cy="30" r="2.2" fill="currentColor" opacity="0.5"/>
   </symbol>
   <symbol id="icon-party" viewBox="0 0 48 48">
-    <!-- 派对帽子 -->
     <path d="M24 6 L14 28 L34 28 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-    <!-- 帽子花纹 -->
     <circle cx="24" cy="16" r="2" fill="currentColor" opacity="0.5"/>
     <circle cx="19" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
     <circle cx="29" cy="22" r="1.5" fill="currentColor" opacity="0.4"/>
-    <!-- 底部装饰带 -->
     <path d="M14 28 Q24 32 34 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 小星星 -->
     <path d="M10 18 L12 22 L8 22 Z" fill="currentColor" opacity="0.5"/>
     <path d="M36 16 L39 20 L34 18 Z" fill="currentColor" opacity="0.5"/>
   </symbol>
   <symbol id="icon-globe" viewBox="0 0 48 48">
-    <!-- 地球圆圈 -->
     <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 经线（椭圆弧线，手绘感） -->
     <path d="M24 6 Q32 24 24 42" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
     <path d="M24 6 Q16 24 24 42" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
-    <!-- 纬线 -->
     <path d="M10 18 Q24 14 38 18" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
     <path d="M10 30 Q24 34 38 30" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.6"/>
-    <!-- 小陆块（右下） -->
     <path d="M28 20 Q34 18 36 24 Q34 28 28 26 Z" fill="currentColor" opacity="0.25"/>
-    <!-- 小陆块（左下） -->
     <path d="M14 28 Q18 26 20 32 Q16 34 14 30 Z" fill="currentColor" opacity="0.2"/>
   </symbol>
   <symbol id="icon-clock" viewBox="0 0 48 48">
-    <!-- 时钟圆盘 -->
     <circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.2"/>
-    <!-- 时刻度（12点） -->
     <line x1="24" y1="8" x2="24" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 时指针（指向2点） -->
     <line x1="24" y1="24" x2="24" y2="15" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-    <!-- 分指针（指向4点） -->
     <line x1="24" y1="24" x2="30" y2="24" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-    <!-- 中心点 -->
     <circle cx="24" cy="24" r="1.5" fill="currentColor"/>
   </symbol>
-</svg>
+  </svg>
 
-<!-- 内联 SVG 图标定义 -->
-<!--
-  心晴空间 — 疗愈风格自定义 SVG 图标集
-  设计理念：柔和、手绘感、有机形态、温暖疗愈
-  使用方式：<svg class="icon icon--lg"><use href="#icon-home"></use></svg>
--->
-<div class="page-header">
-    <h1>🎨 心晴空间 · 疗愈图标集</h1>
-    <p>全自主研发 SVG 图标 · 柔和手绘风 · 无第三方依赖</p>
-</div>
+  <!-- ========== 页面内容 ========== -->
+  <div class="page-header">
+    <h1>🎨 图标预览</h1>
+    <p>心晴空间 · 自定义 SVG 图标集 · 点击图标复制使用代码</p>
+  </div>
 
-<!-- ===== 导航类图标 ===== -->
-<div class="section-label">🧭 导航 & 核心功能</div>
-<div class="grid">
-
-    <div class="card" onclick="copyId('icon-home')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-home"></use></svg>
-        </div>
-        <div class="card-name">首页</div>
-        <div class="card-id">#icon-home</div>
+  <!-- ========== 控制栏 ========== -->
+  <div class="controls">
+    <div class="control-group">
+      <label>大小</label>
+      <input type="range" id="size-slider" min="24" max="96" value="48" oninput="updateAllIcons()">
+      <span id="size-label">48px</span>
     </div>
-
-    <div class="card" onclick="copyId('icon-emotion')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-emotion"></use></svg>
-        </div>
-        <div class="card-name">情绪觉察</div>
-        <div class="card-id">#icon-emotion</div>
+    <div class="control-group">
+      <label>颜色</label>
+      <button class="color-btn active" style="background:#2d6a4f" data-color="#2d6a4f" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#5cb8a8" data-color="#5cb8a8" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#f4a261" data-color="#f4a261" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#ef4444" data-color="#ef4444" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#6b9a9a" data-color="#6b9a9a" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#333" data-color="#333" onclick="setColor(this)"></button>
     </div>
+  </div>
 
-    <div class="card" onclick="copyId('icon-flow')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-flow"></use></svg>
-        </div>
-        <div class="card-name">心流体验</div>
-        <div class="card-id">#icon-flow</div>
-    </div>
+  <!-- ========== 图标网格（由 JS 生成） ========== -->
+  <div id="icons-container"></div>
 
-    <div class="card" onclick="copyId('icon-knowledge')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-knowledge"></use></svg>
-        </div>
-        <div class="card-name">知识图谱</div>
-        <div class="card-id">#icon-knowledge</div>
-    </div>
+  <!-- ========== 使用说明 ========== -->
+  <div class="usage-section">
+    <h3>📖 使用方式</h3>
+    <p>在 HTML 中引入 SVG 精灵后，用以下方式调用图标：</p>
+    <pre>&lt;!-- 方式一：直接嵌入 SVG 精灵 --
+&lt;svg style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;!-- 粘贴精灵内容 --&gt;
+&lt;/svg&gt;
 
-    <div class="card" onclick="copyId('icon-community')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-community"></use></svg>
-        </div>
-        <div class="card-name">社区</div>
-        <div class="card-id">#icon-community</div>
-    </div>
+&lt;!-- 方式二：在页面任意位置使用图标 --
+&lt;svg class="icon" width="24" height="24"&gt;
+  &lt;use href="#icon-cat"&gt;&lt;/use&gt;
+&lt;/svg&gt;
 
-    <div class="card" onclick="copyId('icon-cat')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-cat"></use></svg>
-        </div>
-        <div class="card-name">猫咪消消乐</div>
-        <div class="card-id">#icon-cat</div>
-    </div>
+&lt;!-- 方式三：配合 CSS 控制大小 --
+&lt;style&gt;
+  .icon { width: 24px; height: 24px; color: #5cb8a8; }
+  .icon--lg { width: 32px; height: 32px; }
+&lt;/style&gt;</pre>
+  </div>
 
-    <div class="card" onclick="copyId('icon-settings')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-settings"></use></svg>
-        </div>
-        <div class="card-name">设置</div>
-        <div class="card-id">#icon-settings</div>
-    </div>
+  <script>
+    // ========== 图标数据（按分组） ==========
+    const ICON_GROUPS = [
+      {
+        title: '🏠 导航与通用',
+        ids: ['icon-home', 'icon-house', 'icon-menu', 'icon-x', 'icon-search', 'icon-user', 'icon-lock', 'icon-unlock', 'icon-circle-check', 'icon-chevron-down', 'icon-chevron-right', 'icon-prohibit']
+      },
+      {
+        title: '😊 情感与状态',
+        ids: ['icon-emotion', 'icon-heart', 'icon-star', 'icon-sun', 'icon-moon', 'icon-cloud', 'icon-party', 'icon-confetti', 'icon-breathe']
+      },
+      {
+        title: '🐱 猫咪消消乐',
+        ids: ['icon-cat', 'icon-cookie', 'icon-cookie-simple', 'icon-bomb', 'icon-flower', 'icon-leaf', 'icon-tree', 'icon-palette', 'icon-lightbulb', 'icon-speaker', 'icon-speaker-x', 'icon-vibrate', 'icon-refresh', 'icon-arrows-clockwise']
+      },
+      {
+        title: '📦 功能与工具',
+        ids: ['icon-flow', 'icon-knowledge', 'icon-community', 'icon-journal', 'icon-settings', 'icon-shop', 'icon-globe', 'icon-clock', 'icon-play', 'icon-pause']
+      }
+    ];
 
-</div>
+    let currentColor = '#2d6a4f';
+    let currentSize = 48;
 
-<!-- ===== 疗愈主题图标 ===== -->
-<div class="section-label">🌿 疗愈主题</div>
-<div class="grid">
+    // ========== 渲染图标网格 ==========
+    function renderIcons() {
+      const container = document.getElementById('icons-container');
+      container.innerHTML = '';
 
-    <div class="card" onclick="copyId('icon-heart')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-heart"></use></svg>
-        </div>
-        <div class="card-name">爱心</div>
-        <div class="card-id">#icon-heart</div>
-    </div>
+      ICON_GROUPS.forEach(group => {
+        // 分组标题
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.textContent = group.title;
+        container.appendChild(title);
 
-    <div class="card" onclick="copyId('icon-leaf')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-leaf"></use></svg>
-        </div>
-        <div class="card-name">叶子</div>
-        <div class="card-id">#icon-leaf</div>
-    </div>
+        // 图标网格
+        const grid = document.createElement('div');
+        grid.className = 'icons-grid';
 
-    <div class="card" onclick="copyId('icon-sun')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-sun"></use></svg>
-        </div>
-        <div class="card-name">太阳</div>
-        <div class="card-id">#icon-sun</div>
-    </div>
+        group.ids.forEach(id => {
+          const card = document.createElement('div');
+          card.className = 'icon-card';
+          card.addEventListener('click', function() { copyCode(id, card); });
 
-    <div class="card" onclick="copyId('icon-moon')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-moon"></use></svg>
-        </div>
-        <div class="card-name">月亮</div>
-        <div class="card-id">#icon-moon</div>
-    </div>
+          const svgNS = 'http://www.w3.org/2000/svg';
+          const svg = document.createElementNS(svgNS, 'svg');
+          svg.setAttribute('width', currentSize);
+          svg.setAttribute('height', currentSize);
+          svg.style.color = currentColor;
 
-    <div class="card" onclick="copyId('icon-cloud')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-cloud"></use></svg>
-        </div>
-        <div class="card-name">云朵</div>
-        <div class="card-id">#icon-cloud</div>
-    </div>
+          const use = document.createElementNS(svgNS, 'use');
+          use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#' + id);
+          svg.appendChild(use);
 
-    <div class="card" onclick="copyId('icon-tree')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-tree"></use></svg>
-        </div>
-        <div class="card-name">树</div>
-        <div class="card-id">#icon-tree</div>
-    </div>
+          const name = document.createElement('div');
+          name.className = 'icon-name';
+          name.textContent = id.replace('icon-', '');
 
-    <div class="card" onclick="copyId('icon-flower')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-flower"></use></svg>
-        </div>
-        <div class="card-name">花朵</div>
-        <div class="card-id">#icon-flower</div>
-    </div>
+          const toast = document.createElement('div');
+          toast.className = 'copy-toast';
+          toast.textContent = '已复制!';
 
-    <div class="card" onclick="copyId('icon-breathe')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-breathe"></use></svg>
-        </div>
-        <div class="card-name">呼吸</div>
-        <div class="card-id">#icon-breathe</div>
-    </div>
+          card.appendChild(svg);
+          card.appendChild(name);
+          card.appendChild(toast);
+          grid.appendChild(card);
+        });
 
-    <div class="card" onclick="copyId('icon-star')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-star"></use></svg>
-        </div>
-        <div class="card-name">星星</div>
-        <div class="card-id">#icon-star</div>
-    </div>
+        container.appendChild(grid);
+      });
+    }
 
-</div>
+    // ========== 更新所有图标大小 ==========
+    function updateAllIcons() {
+      currentSize = parseInt(document.getElementById('size-slider').value);
+      document.getElementById('size-label').textContent = currentSize + 'px';
 
-<!-- ===== 功能操作图标 ===== -->
-<div class="section-label">⚙️ 功能 & 操作</div>
-<div class="grid">
+      document.querySelectorAll('.icon-card svg').forEach(svg => {
+        svg.setAttribute('width', currentSize);
+        svg.setAttribute('height', currentSize);
+      });
+    }
 
-    <div class="card" onclick="copyId('icon-journal')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-journal"></use></svg>
-        </div>
-        <div class="card-name">日记</div>
-        <div class="card-id">#icon-journal</div>
-    </div>
+    // ========== 设置颜色 ==========
+    function setColor(btn) {
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.dataset.color;
 
-    <div class="card" onclick="copyId('icon-play')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-play"></use></svg>
-        </div>
-        <div class="card-name">播放</div>
-        <div class="card-id">#icon-play</div>
-    </div>
+      document.querySelectorAll('.icon-card svg').forEach(svg => {
+        svg.style.color = currentColor;
+      });
+    }
 
-    <div class="card" onclick="copyId('icon-pause')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-pause"></use></svg>
-        </div>
-        <div class="card-name">暂停</div>
-        <div class="card-id">#icon-pause</div>
-    </div>
+    // ========== 点击复制使用代码 ==========
+    function copyCode(id, card) {
+      const code = `<svg class="icon" width="24" height="24" style="color:inherit">\n  <use href="#${id}"></use>\n</svg>`;
+      navigator.clipboard.writeText(code).then(() => {
+        // 显示 toast
+        const toast = card.querySelector('.copy-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1200);
+      }).catch(() => {
+        // fallback
+        prompt('复制以下代码：', code);
+      });
+    }
 
-    <div class="card" onclick="copyId('icon-cookie')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-cookie"></use></svg>
-        </div>
-        <div class="card-name">饼干（道具）</div>
-        <div class="card-id">#icon-cookie</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-bomb')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-bomb"></use></svg>
-        </div>
-        <div class="card-name">炸弹（道具）</div>
-        <div class="card-id">#icon-bomb</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-refresh')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-refresh"></use></svg>
-        </div>
-        <div class="card-name">刷新</div>
-        <div class="card-id">#icon-refresh</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-lightbulb')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-lightbulb"></use></svg>
-        </div>
-        <div class="card-name">灯泡 / 提示</div>
-        <div class="card-id">#icon-lightbulb</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-confetti')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-confetti"></use></svg>
-        </div>
-        <div class="card-name">撒花 / 庆祝</div>
-        <div class="card-id">#icon-confetti</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-speaker')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-speaker"></use></svg>
-        </div>
-        <div class="card-name">声音开</div>
-        <div class="card-id">#icon-speaker</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-speaker-x')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-speaker-x"></use></svg>
-        </div>
-        <div class="card-name">静音</div>
-        <div class="card-id">#icon-speaker-x</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-vibrate')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-vibrate"></use></svg>
-        </div>
-        <div class="card-name">震动开</div>
-        <div class="card-id">#icon-vibrate</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-prohibit')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-prohibit"></use></svg>
-        </div>
-        <div class="card-name">禁止 / 关闭</div>
-        <div class="card-id">#icon-prohibit</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-house')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-house"></use></svg>
-        </div>
-        <div class="card-name">返回首页</div>
-        <div class="card-id">#icon-house</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-shop')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-shop"></use></svg>
-        </div>
-        <div class="card-name">商店</div>
-        <div class="card-id">#icon-shop</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-palette')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-palette"></use></svg>
-        </div>
-        <div class="card-name">调色板</div>
-        <div class="card-id">#icon-palette</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-arrows-clockwise')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-arrows-clockwise"></use></svg>
-        </div>
-        <div class="card-name">循环 / 重开</div>
-        <div class="card-id">#icon-arrows-clockwise</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-lock')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-lock"></use></svg>
-        </div>
-        <div class="card-name">锁定 / 专注</div>
-        <div class="card-id">#icon-lock</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-unlock')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-unlock"></use></svg>
-        </div>
-        <div class="card-name">解锁</div>
-        <div class="card-id">#icon-unlock</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-x')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-x"></use></svg>
-        </div>
-        <div class="card-name">关闭</div>
-        <div class="card-id">#icon-x</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-circle-check')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-circle-check"></use></svg>
-        </div>
-        <div class="card-name">完成</div>
-        <div class="card-id">#icon-circle-check</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-menu')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-menu"></use></svg>
-        </div>
-        <div class="card-name">菜单</div>
-        <div class="card-id">#icon-menu</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-search')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-search"></use></svg>
-        </div>
-        <div class="card-name">搜索</div>
-        <div class="card-id">#icon-search</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-user')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-user"></use></svg>
-        </div>
-        <div class="card-name">用户</div>
-        <div class="card-id">#icon-user</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-chevron-down')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-chevron-down"></use></svg>
-        </div>
-        <div class="card-name">下拉箭头</div>
-        <div class="card-id">#icon-chevron-down</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-chevron-right')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-chevron-right"></use></svg>
-        </div>
-        <div class="card-name">右箭头</div>
-        <div class="card-id">#icon-chevron-right</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-cookie-simple')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-cookie-simple"></use></svg>
-        </div>
-        <div class="card-name">饼干（简版）</div>
-        <div class="card-id">#icon-cookie-simple</div>
-    </div>
-
-    <div class="card" onclick="copyId('icon-party')">
-        <div class="card-icon">
-            <svg class="icon"><use href="#icon-party"></use></svg>
-        </div>
-        <div class="card-name">派对</div>
-        <div class="card-id">#icon-party</div>
-    </div>
-
-</div>
-
-<!-- ===== 颜色变体演示 ===== -->
-<div class="section-label">🎨 颜色语义变体演示（以爱心为例）</div>
-<div class="grid" style="max-width:600px; margin:0 auto;">
-    <div class="card" style="padding:1.2rem;">
-        <div class="color-demo">
-            <div class="demo-item">
-                <svg class="icon" style="color:#5cb8a8"><use href="#icon-heart"></use></svg>
-                <span class="demo-label">primary</span>
-            </div>
-            <div class="demo-item">
-                <svg class="icon" style="color:#f4a261"><use href="#icon-heart"></use></svg>
-                <span class="demo-label">warm</span>
-            </div>
-            <div class="demo-item">
-                <svg class="icon" style="color:#6b9a9a"><use href="#icon-heart"></use></svg>
-                <span class="demo-label">cool</span>
-            </div>
-            <div class="demo-item">
-                <svg class="icon" style="color:#10b981"><use href="#icon-heart"></use></svg>
-                <span class="demo-label">success</span>
-            </div>
-            <div class="demo-item">
-                <svg class="icon" style="color:#f59e0b"><use href="#icon-heart"></use></svg>
-                <span class="demo-label">warning</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ===== 使用说明 ===== -->
-<div class="usage">
-    <h2>📖 使用方式</h2>
-
-    <div class="tag">方式一：HTML 内联（推荐）</div>
-    <code>&lt;svg class="icon icon--lg"&gt;
-  &lt;use href="#icon-heart"&gt;&lt;/use&gt;
-&lt;/svg&gt;</code>
-
-    <div class="tag">方式二：搭配 icons-custom.css 语义色</div>
-    <code>&lt;svg class="icon icon--lg icon--warm"&gt;
-  &lt;use href="#icon-heart"&gt;&lt;/use&gt;
-&lt;/svg&gt;</code>
-
-    <div class="tag">方式三：纯 CSS 控制颜色（自动继承）</div>
-    <code>&lt;style&gt;
-  .my-icon { color: #f4a261; }
-&lt;/style&gt;
-&lt;span class="my-icon"&gt;
-  &lt;svg class="icon"&gt;
-    &lt;use href="#icon-leaf"&gt;&lt;/use&gt;
-  &lt;/svg&gt;
-&lt;/span&gt;</code>
-
-    <div class="tag">⚡ 点击任意卡片可复制图标 ID</div>
-</div>
-
-
-
+    // ========== 初始化 ==========
+    renderIcons();
+  </script>
 </body>
 </html>
