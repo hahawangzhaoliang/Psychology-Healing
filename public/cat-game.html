@@ -464,11 +464,12 @@
                     <span class="label"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> <span data-i18n="cat_game.cookie_label">饼干</span></span>
                     <span id="cookies" class="value cookie-value">0</span>
                 </div>
-                <!-- 音效/震动控制按钮 -->
+                <!-- 音效/震动控制按钮 + 语言切换 -->
                 <div class="settings-btns">
                     <button id="btn-home" class="setting-btn" data-i18n-title="cat_game.btn_home_title"><svg class="icon icon--md"><use href="#icon-house"></use></svg></button>
                     <button id="btn-mute" class="setting-btn" data-i18n-title="cat_game.btn_mute_title"><svg class="icon icon--md"><use href="#icon-speaker"></use></svg></button>
                     <button id="btn-vibrate" class="setting-btn" data-i18n-title="cat_game.btn_vibrate_title"><svg class="icon icon--md"><use href="#icon-vibrate"></use></svg></button>
+                    <div class="i18n-switcher" style="display:flex;align-items:center;"></div>
                 </div>
             </div>
             <!-- 猫咪小请求面板 -->
@@ -627,10 +628,9 @@
 
     <script src="js/game.js"></script>
     <script>
-        // 监听语言切换，更新页面文本
+        // 监听语言切换，刷新动态文案（每日温柔引导等）
         document.addEventListener('localeChanged', () => {
-            // 语言切换时不需要重新初始化图标
-            // Phosphor Icons 会自动处理
+            if (typeof updateHealingGuidance === 'function') updateHealingGuidance();
         });
     </script>
 </body>

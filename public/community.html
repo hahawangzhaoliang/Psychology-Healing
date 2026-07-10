@@ -1531,6 +1531,43 @@
             `).join('');
         }
 
+        /* ========== 语言切换时刷新所有动态注入内容 ========== */
+        function refreshCommunityI18n() {
+            if (typeof initAnonIdentity === 'function') initAnonIdentity();
+            if (typeof renderThemeSelector === 'function') renderThemeSelector();
+            if (typeof loadPosts === 'function') loadPosts();
+            // 重新应用当前打卡主题（卡片名/描述/按钮）
+            if (typeof currentCheckinTheme !== 'undefined' && currentCheckinTheme && typeof selectCheckinTheme === 'function') {
+                selectCheckinTheme(currentCheckinTheme.id);
+            }
+            // 刷新心情标签按钮文案
+            document.querySelectorAll('.mood-tag').forEach(b => {
+                const m = b.dataset.mood || '';
+                const c = (typeof moodConfig !== 'undefined' && moodConfig[m]) || {};
+                if (!m) return;
+                if (m === (typeof selectedMood !== 'undefined' ? selectedMood : null)) {
+                    b.innerHTML = (c.emoji || '') + _t('community.mood_selected', ' 已选');
+                } else {
+                    b.innerHTML = c.emoji ? c.emoji + ' ' + _t(c.tagKey, c.tagZh) : b.innerText;
+                }
+            });
+            // 若打卡弹窗打开，刷新弹窗文案
+            const modal = document.getElementById('checkinModal');
+            if (modal && modal.classList.contains('active') && typeof currentCheckinTheme !== 'undefined' && currentCheckinTheme) {
+                const t = currentCheckinTheme;
+                document.getElementById('checkin-modal-title').textContent = _t(t.nameKey, t.nameZh);
+                document.getElementById('checkin-modal-desc').textContent = _t(t.descKey, t.descZh);
+                const lk = t.inputLabelKeys, lz = t.inputLabelsZh;
+                if (lk && lz) {
+                    ['checkin-input-1', 'checkin-input-2', 'checkin-input-3'].forEach((id, i) => {
+                        const el = document.getElementById(id);
+                        if (el) el.placeholder = _t(lk[i], lz[i]) + '...';
+                    });
+                }
+            }
+        }
+        document.addEventListener('localeChanged', refreshCommunityI18n);
+
         function selectCheckinTheme(themeId) {
             const theme = CHECKIN_THEMES.find(t => t.id === themeId);
             if (!theme) return;

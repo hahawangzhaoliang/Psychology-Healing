@@ -105,23 +105,6 @@ class ThemeManager {
         return isEn ? (t.nameEn || t.name || key) : (t.name || key);
     }
 
-    _updateSwitcherText() {
-        const btnEl = document.getElementById('themeDropdownBtn');
-        const menuEl = document.getElementById('themeDropdownMenu');
-        if (btnEl) {
-            btnEl.querySelector('.label').textContent = this.themeName(this.currentTheme);
-        }
-        if (menuEl) {
-            menuEl.querySelectorAll('.theme-dropdown-item').forEach(item => {
-                const themeKey = item.dataset.theme;
-                const labelSpan = item.querySelector('span:last-child');
-                if (labelSpan && themeKey) {
-                    labelSpan.textContent = this.themeName(themeKey);
-                }
-            });
-        }
-    }
-
     init() {
         // 异步加载外部数据
         this.loadTextData();
@@ -131,14 +114,6 @@ class ThemeManager {
             document.addEventListener('DOMContentLoaded', () => this.createThemeSwitcher());
         } else {
             this.createThemeSwitcher();
-        }
-
-        // 语言切换时更新主题切换器文字
-        if (!this._localeListenerBound) {
-            this._localeListenerBound = true;
-            document.addEventListener('localeChanged', () => {
-                this._updateSwitcherText();
-            });
         }
     }
 
@@ -1364,16 +1339,17 @@ class ThemeManager {
         if (!this._themeListenerBound) {
             this._themeListenerBound = true;
             window.addEventListener('themeChanged', (e) => {
-                const themeKey = e.detail.theme;
+                const theme = this.themes[e.detail.theme];
+                if (!theme) return;
                 const btnEl = document.getElementById('themeDropdownBtn');
                 const menuEl = document.getElementById('themeDropdownMenu');
                 if (btnEl) {
-                    btnEl.querySelector('.icon').textContent = this.themes[themeKey]?.icon || '';
-                    btnEl.querySelector('.label').textContent = this.themeName(themeKey);
+                    btnEl.querySelector('.icon').textContent  = theme.icon;
+                    btnEl.querySelector('.label').textContent = theme.name;
                 }
                 if (menuEl) {
                     menuEl.querySelectorAll('.theme-dropdown-item').forEach(i => {
-                        i.classList.toggle('active', i.dataset.theme === themeKey);
+                        i.classList.toggle('active', i.dataset.theme === e.detail.theme);
                     });
                 }
             });

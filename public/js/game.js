@@ -1278,14 +1278,15 @@ const CatInteractionManager = {
      */
     getRandomGreeting(catType) {
         const greetings = [
-            '喵~',
-            '蹭蹭~',
-            '陪我玩嘛~',
-            '摸摸我~',
-            '好无聊呀~',
-            '想你了~'
+            { key: 'cat_game.greeting_meow', zh: '喵~' },
+            { key: 'cat_game.greeting_rub', zh: '蹭蹭~' },
+            { key: 'cat_game.greeting_play', zh: '陪我玩嘛~' },
+            { key: 'cat_game.greeting_pet', zh: '摸摸我~' },
+            { key: 'cat_game.greeting_bored', zh: '好无聊呀~' },
+            { key: 'cat_game.greeting_miss', zh: '想你了~' }
         ];
-        return greetings[Math.floor(Math.random() * greetings.length)];
+        const g = greetings[Math.floor(Math.random() * greetings.length)];
+        return (typeof _t === 'function') ? _t(g.key, g.zh) : g.zh;
     },
 
     /**
@@ -4737,13 +4738,13 @@ function hideEmotionCheckin() {
     }
 }
 
-// 温柔引导文案（每天变化）
+// 温柔引导文案（每天变化，支持 i18n）
 const HEALING_GUIDANCES = [
-    '要不要花2分钟做个呼吸练习？',
-    '想不想记录一下现在的心情？',
-    '要不要试试放松一下？',
-    '想不想给今天的自己一个温暖的拥抱？',
-    '要不要花1分钟，听听自然的声音？'
+    { key: 'cat_game.guidance_breathing', zh: '要不要花2分钟做个呼吸练习？' },
+    { key: 'cat_game.guidance_journal', zh: '想不想记录一下现在的心情？' },
+    { key: 'cat_game.guidance_relax', zh: '要不要试试放松一下？' },
+    { key: 'cat_game.guidance_hug', zh: '想不想给今天的自己一个温暖的拥抱？' },
+    { key: 'cat_game.guidance_nature', zh: '要不要花1分钟，听听自然的声音？' }
 ];
 
 // 莫兰迪色系 - 用于彩纸特效
@@ -4769,8 +4770,12 @@ function updateHealingGuidance() {
     const today = new Date();
     const dateSeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
     const index = dateSeed % HEALING_GUIDANCES.length;
+    const guidance = HEALING_GUIDANCES[index];
     
-    guidanceText.textContent = HEALING_GUIDANCES[index];
+    // 使用 _t() 支持 i18n
+    guidanceText.textContent = (typeof _t === 'function')
+        ? _t(guidance.key, guidance.zh)
+        : guidance.zh;
 }
 
 function showWinModal() {

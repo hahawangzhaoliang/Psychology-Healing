@@ -1930,9 +1930,14 @@
                 document.addEventListener('i18n:ready', startSlider, { once: true });
             }
 
-            /* 语言切换时重新更新温度计显示 */
+            /* 语言切换时：刷新温度计、重绘轮盘画布、刷新已选情绪标签与二级情绪面板 */
             document.addEventListener('localeChanged', () => {
                 updateThermometer(selectedIntensity);
+                if (typeof emotionWheel !== 'undefined' && emotionWheel) {
+                    emotionWheel.draw();
+                    const sel = emotionWheel.getSelection();
+                    updateSelectedEmotionsDisplay(sel);
+                }
             });
 
             /* 窗口大小变化时重新初始化轮盘 */

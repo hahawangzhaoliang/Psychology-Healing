@@ -1387,6 +1387,37 @@ body {
     opacity: 0.65;
 }
 
+/* 语言切换按钮（与设置按钮风格统一） */
+.settings-btns .i18n-switcher-btn {
+    padding: 0 0.5rem !important;
+    height: 34px !important;
+    min-width: 34px;
+    border: none !important;
+    border-radius: 12px !important;
+    background: linear-gradient(145deg, rgba(255,255,255,0.85), rgba(245,242,250,0.9)) !important;
+    box-shadow: 0 2px 8px rgba(184, 169, 201, 0.2),
+                inset 0 1px 2px rgba(255, 255, 255, 0.95);
+    color: var(--primary-color, #B8A9C9) !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1 !important;
+}
+
+.settings-btns .i18n-switcher-btn:hover {
+    transform: scale(1.08) translateY(-1px);
+    box-shadow: 0 4px 14px rgba(184, 169, 201, 0.35),
+                inset 0 1px 2px rgba(255, 255, 255, 0.95);
+}
+
+.settings-btns .i18n-switcher-btn:active {
+    transform: scale(0.93);
+}
+
 /* ─── 增强 combo 显示动画 ─── */
 #combo-display {
     animation: combo-pop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);

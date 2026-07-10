@@ -683,7 +683,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadCurrentCompanion();
             renderCompanionGrid();
-            
+
+            // 语言切换时刷新已选伙伴预览（卡片文字由 data-i18n 自动处理）
+            document.addEventListener('localeChanged', () => {
+                if (tempSelected) updatePreview(tempSelected);
+            });
+
             // 检查是否有已保存的伙伴
             const saved = localStorage.getItem('xinqing_companion');
             if (saved) {

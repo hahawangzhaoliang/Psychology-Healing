@@ -1374,6 +1374,27 @@
 
             /* 初始可视化条为半透明 */
             document.getElementById('musicVisualizer').style.opacity = '0.3';
+
+            /* 语言切换时刷新动态内容（故事/图片/音乐）译文，不翻动内容 */
+            document.addEventListener('localeChanged', () => {
+                // 图片说明
+                const images = imagePool[currentScenario] || imagePool.morning;
+                const img = images[currentImageIndex];
+                const capEl = document.getElementById('image-caption');
+                if (img && capEl) capEl.textContent = _t(img.captionKey || 'charging_station.img_default', img.caption);
+                // 故事
+                const story = getScenarioStory(currentScenario, currentStoryIndex);
+                const themeEl = document.getElementById('story-theme');
+                const moralEl = document.getElementById('story-moral');
+                const timeEl = document.getElementById('story-time');
+                if (story && themeEl) {
+                    themeEl.textContent = '📌 ' + _t('charging_station.story_theme_' + story.id, story.theme) + ' · ' + story.tags.slice(0, 2).join(' · ');
+                    moralEl.textContent = '💬 ' + _t('charging_station.story_moral_' + story.id, story.moral);
+                    timeEl.textContent = _t('charging_station.story_time', '阅读时间：约') + story.duration + _t('charging_station.story_minute', '分钟');
+                }
+                // 音乐
+                updateMusicDisplay();
+            });
         });
     </script>
 

@@ -3090,7 +3090,7 @@
                 playAmbientSound(selectedSound);
             }
             
-            showToast(_t('flow.toast_sound_changed', `已切换到${getSoundName(selectedSound)}`), 'success');
+            showToast(_t('flow.toast_sound_changed', '已切换到') + getSoundName(selectedSound), 'success');
         }
         
         // 添加播放/暂停环境音功能
