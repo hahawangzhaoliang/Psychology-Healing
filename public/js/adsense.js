@@ -1,17 +1,15 @@
 /**
  * AdSense 自动广告接入（心晴空间 / Mind Clear Space）
  * ------------------------------------------------------------
- * 工作方式：
- *   本脚本在页面 <head> 中自动注入 AdSense「自动广告」客户端脚本。
- *   自动广告（Auto Ads）由 Google 自动在页面合适位置投放，无需手动放置广告位。
+ * 注意：当前已改为「静态 snippet」方式接入。
+ * 官方 AdSense snippet 已直接写入 14 个用户页面的 <head> 中：
+ *   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
+ * 这样 AdSense 验证爬虫无需执行 JS 即可在 HTML 源码中看到代码，验证成功率最高。
  *
- * 如何配置（重要）：
- *   将下方 PUBLISHER_ID 替换为你真实的 AdSense 发布商 ID，
- *   格式为 ca-pub-XXXXXXXXXXXXXXXX（在 AdSense 后台「网站」→ 你的站点 → 代码中获取）。
- *   只改这一处即可全站生效。
+ * 本文件保留作为备用方案：若未来需要恢复动态注入或扩展手动广告单元，可直接引用。
  *
  * 后台页排除：
- *   admin.html / settings.html 等后台管理页不会加载广告（符合 AdSense 政策，也避免干扰管理操作）。
+ *   admin.html / settings.html 等后台管理页不放置 snippet（符合 AdSense 政策，也避免干扰管理操作）。
  *   另外内部预览页 icons-preview.html 也被排除（非面向用户的真实功能页）。
  *
  * 合规提醒：
