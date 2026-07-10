@@ -44,6 +44,9 @@
         // 语言包基础路径（相对路径，兼容 file:// 和 http://）
         basePath: 'i18n',
 
+        // 语言包版本号（修改 en.json 后请 +1，防止浏览器缓存旧版）
+        langPackVersion: '20260710-1',
+
         /**
          * 初始化 i18n
          */
@@ -129,7 +132,7 @@
          */
         async loadEnTranslations() {
             try {
-                const url = `${this.basePath}/en.json`;
+                const url = `${this.basePath}/en.json?v=${this.langPackVersion}`;
                 const resp = await fetch(url);
                 if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
                 this.enTranslations = await resp.json();

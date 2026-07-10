@@ -543,7 +543,11 @@
     "emotion": "Emotions",
     "relax": "Relax",
     "companion": "Companion",
-    "article": "Content"
+    "article": "Content",
+    "practice": "Practice",
+    "flow": "Flow Experience",
+    "knowledge": "Knowledge Graph",
+    "about": "About Us"
   },
   "emotion": {
     "page_title": "Explore Your Emotional World",
@@ -1342,5 +1346,23 @@
   "role_sug_item_selfcare_2": "Give yourself room to make mistakes and rest",
   "role_sug_item_support_0": "Share your feelings with family and friends",
   "role_sug_item_support_1": "Seek professional help when needed",
-  "role_sug_item_support_2": "Join a support group to connect with people of similar experience"
+  "role_sug_item_support_2": "Join a support group to connect with people of similar experience",
+  "footer": {
+    "brand": "Mind Clear Space",
+    "brand_desc": "A public welfare mental healing platform<br>Bite-sized healing, accompanying every moment of yours",
+    "features_title": "Core Features",
+    "link_healing": "Relaxation Exercise",
+    "link_flow": "Flow Experience",
+    "link_emotion": "Emotion Awareness",
+    "link_knowledge": "Knowledge Graph",
+    "about_title": "About Us",
+    "link_about": "About Us",
+    "link_disclaimer": "Disclaimer",
+    "link_privacy": "Privacy Policy",
+    "hotline_title": "Hotline",
+    "hotline_label": "National Psychological Assistance Hotline",
+    "hotline_note": "24-hour free service",
+    "disclaimer": "This platform is a public welfare mental health education and emotional support service. It does not provide any form of medical diagnosis or psychological treatment. If you are experiencing severe psychological distress, please seek professional help promptly.",
+    "copyright": "© 2026 Mind Clear Space · Public Welfare Mental Healing Platform · Bite-sized healing, accompanying every moment of yours"
+  }
 }
