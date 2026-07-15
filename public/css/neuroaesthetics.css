@@ -75,6 +75,9 @@
     --space-10: 2.5rem;    /* 40px */
     --space-12: 3rem;      /* 48px */
     --space-16: 4rem;      /* 64px */
+    --space-20: 5rem;      /* 80px  — section rhythm (slow tempo) */
+    --space-24: 6rem;      /* 96px */
+    --space-32: 8rem;      /* 128px — major section break */
 
     /* === 圆角系统（流体感） === */
     --radius-sm:   0.5rem;    /* 8px  — 按钮、标签 */
@@ -807,14 +810,14 @@ body {
 /* ---------- 文字排版层次 ---------- */
 .text-display {
     font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 800;
+    font-weight: 600;
     line-height: 1.15;
     letter-spacing: -0.02em;
 }
 
 .text-heading {
     font-size: clamp(1.5rem, 3vw, 2.25rem);
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.25;
     letter-spacing: -0.01em;
 }
@@ -980,4 +983,92 @@ body {
     color: var(--color-primary-500);
     font-weight: 500;
     background: var(--color-primary-50);
+}
+
+/* ============================================================
+   DESIGN.md 落地补充（2026-07-14）
+   将 DESIGN.md 的疗愈设计建议实现为可用工具类与主题变体
+   ============================================================ */
+
+/* ---------- 区块节奏：慢节奏留白（DESIGN.md §5.1） ---------- */
+/* 移动端 48–64px，桌面 80–128px，营造平静、不拥挤的呼吸感 */
+.section {
+    padding-top: var(--space-12);
+    padding-bottom: var(--space-12);
+}
+@media (min-width: 640px) {
+    .section {
+        padding-top: var(--space-20);
+        padding-bottom: var(--space-20);
+    }
+}
+@media (min-width: 1024px) {
+    .section {
+        padding-top: var(--space-32);
+        padding-bottom: var(--space-32);
+    }
+}
+.section-sm {
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-8);
+}
+@media (min-width: 640px) {
+    .section-sm {
+        padding-top: var(--space-12);
+        padding-bottom: var(--space-12);
+    }
+}
+
+/* ---------- 阅读栏：限制测量宽度（DESIGN.md §4.1） ---------- */
+/* 阅读列限制在 ~68 字符，避免长行带来的认知负荷；行高 1.7 */
+.prose {
+    max-width: 68ch;
+    line-height: 1.7;
+}
+.reading-column {
+    max-width: 68ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid-cards {
+    display: grid;
+    gap: var(--space-6); /* ≥24px 卡片间距（DESIGN.md §5.1） */
+}
+
+/* ---------- 通用触控反馈（DESIGN.md §7.3） ---------- */
+/* 任何元素加 data-touch-feedback 即获得按压缩放，禁用无意义弹跳 */
+[data-touch-feedback] {
+    transition: transform var(--duration-fast) var(--ease-spring);
+    cursor: pointer;
+}
+[data-touch-feedback]:active {
+    transform: scale(0.95);
+}
+
+/* ---------- 沉浸式深色主题（DESIGN.md §3.2） ---------- */
+/* 用于专注 / 冥想 / 助眠场景；深中性底 + 单一平静绿光，避免纯黑眩光 */
+[data-theme="dark"] {
+    --theme-bg: #121212;
+    --theme-card: #1e1e1e;
+    --theme-text: #e8e8e8;
+    --theme-text-light: #a0a0a0;
+    --theme-border: #2c2c2c;
+    --theme-primary: #1ed760;
+    --theme-primary-light: rgba(30, 215, 96, 0.16);
+    --color-primary-50:  rgba(30, 215, 96, 0.08);
+    --color-primary-100: rgba(30, 215, 96, 0.16);
+    --color-primary-200: rgba(30, 215, 96, 0.28);
+    --color-primary-300: rgba(30, 215, 96, 0.50);
+    --color-primary-400: #1ed760;
+    --color-primary-500: #169c47;
+    --color-primary-600: #0f7d38;
+    --color-primary-700: #0a5e2a;
+    --color-warm-50:  #1a1a1a;
+    --color-warm-100: #242424;
+    --color-calm-50:  #161b1f;
+    --color-heal-50:  #1b1622;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.40);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.50);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.60);
+    --shadow-glow: 0 0 24px rgba(30, 215, 96, 0.30);
 }

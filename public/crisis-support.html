@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="crisis.page_title">心理危机求助 - 心晴空间</title>
+    <meta name="description" content="如果你正处于艰难时刻，这里汇总了可随时拨打的心理援助与危机干预热线，以及何时应当寻求专业帮助的判断参考。" data-i18n="crisis.meta_desc">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/icons-custom.css">
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
+    <div id="app-header"></div>
+
+    <main style="max-width:860px;margin:0 auto;padding:2.5rem 1.25rem 4rem;">
+        <!-- 标题 -->
+        <header style="text-align:center;margin-bottom:2rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--color-primary-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <svg style="width:32px;height:32px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                </svg>
+            </div>
+            <h1 style="font-size:clamp(1.75rem,4vw,2.5rem);font-weight:600;color:var(--color-gray-800);margin-bottom:0.75rem;" data-i18n="crisis.hero_title">你不需要一个人扛着</h1>
+            <p style="font-size:0.9375rem;color:var(--color-gray-500);max-width:34rem;margin:0 auto;line-height:1.7;" data-i18n="crisis.hero_subtitle">如果你正经历艰难的时刻，请知道——求助是勇敢的选择。以下是一些可以提供专业帮助的资源。</p>
+        </header>
+
+        <div style="display:flex;flex-direction:column;gap:1.5rem;">
+            <!-- 热线 -->
+            <section class="cs-section">
+                <h2 class="cs-title" data-i18n="crisis.hotlines_title">可随时拨打的热线</h2>
+                <div class="cs-grid">
+                    <a href="tel:4001619995" class="cs-card" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h1">全国心理援助热线</p><p class="cs-time" data-i18n="crisis.t1">24小时免费服务</p></div>
+                        <div class="cs-number">400-161-9995</div>
+                    </a>
+                    <a href="tel:01082951332" class="cs-card" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h2">北京危机干预热线</p><p class="cs-time" data-i18n="crisis.t2">24小时服务</p></div>
+                        <div class="cs-number">010-82951332</div>
+                    </a>
+                    <a href="tel:4008211215" class="cs-card" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h3">生命热线</p><p class="cs-time" data-i18n="crisis.t3">每天 10:00-22:00</p></div>
+                        <div class="cs-number">400-821-1215</div>
+                    </a>
+                    <a href="tel:12355" class="cs-card" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h4">青少年心理咨询热线</p><p class="cs-time">12355</p></div>
+                        <div class="cs-number">12355</div>
+                    </a>
+                </div>
+                <div class="cs-encourage">
+                    <span style="font-size:1.5rem;">❤️</span>
+                    <p data-i18n="crisis.encourage">有人愿意帮你，你值得被好好对待。</p>
+                </div>
+            </section>
+
+            <!-- 何时寻求帮助 -->
+            <section class="cs-section">
+                <h2 class="cs-title" data-i18n="crisis.when_title">何时应当寻求专业帮助？</h2>
+                <ul class="cs-sign-list">
+                    <li><span class="cs-sign">●</span><span data-i18n="crisis.li_when0">情绪低落或焦虑持续两周以上，影响日常生活</span></li>
+                    <li><span class="cs-sign" style="color:#ef4444;">●</span><span data-i18n="crisis.li_when1">出现伤害自己或轻生的念头、计划或行为</span></li>
+                    <li><span class="cs-sign">●</span><span data-i18n="crisis.li_when2">严重的睡眠问题、食欲明显改变</span></li>
+                    <li><span class="cs-sign">●</span><span data-i18n="crisis.li_when3">无法控制的情绪波动或持续的恐慌</span></li>
+                    <li><span class="cs-sign">●</span><span data-i18n="crisis.li_when4">经历创伤事件后长期被困扰</span></li>
+                </ul>
+            </section>
+
+            <!-- 呼吸练习 -->
+            <section class="cs-section cs-breathe">
+                <h2 class="cs-title" data-i18n="crisis.breathe_title">如果此刻很难受，先一起慢慢呼吸</h2>
+                <p class="cs-text" data-i18n="crisis.breathe_text">吸气 4 秒，屏息 4 秒，呼气 6 秒。重复几次，让身体先慢下来。你也可以使用平台里的「放松练习」陪伴自己。</p>
+                <a href="relax.html" class="cs-link" data-i18n="crisis.breathe_link">前往放松练习 →</a>
+            </section>
+
+            <!-- 免责说明 -->
+            <section class="cs-section" style="background:var(--color-warm-50);">
+                <p class="cs-text" style="font-size:0.8125rem;color:var(--color-gray-500);margin:0;" data-i18n="crisis.note">本页面仅提供资源指引，不构成任何医疗诊断或治疗。如遇紧急危险，请立即拨打上述热线或当地急救电话。本页面不展示广告。</p>
+            </section>
+
+            <div style="text-align:center;margin-top:0.5rem;">
+                <a href="index.html" class="cs-back" data-i18n="crisis.back_home">← 返回首页</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            renderHeader({ currentPage: 'about' });
+            renderFooter();
+            NeuroAesthetics.initStaggerAnimations();
+            NeuroAesthetics.initNavbarScroll('navbar');
+        });
+    </script>
+
+    <style>
+        .cs-section {
+            background: white;
+            border-radius: var(--radius-xl);
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+        .cs-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-gray-800);
+            margin-bottom: 1rem;
+        }
+        .cs-text { color: var(--color-gray-600); line-height: 1.8; }
+        .cs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        @media (max-width: 640px) { .cs-grid { grid-template-columns: 1fr; } }
+        .cs-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-warm-50) 100%);
+            padding: 1.25rem;
+            border-radius: var(--radius-xl);
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s var(--ease-spring);
+        }
+        .cs-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .cs-name { font-weight: 600; color: var(--color-gray-800); font-size: 0.9375rem; }
+        .cs-time { font-size: 0.75rem; color: var(--color-gray-500); margin-top: 0.125rem; }
+        .cs-number { font-size: 1.125rem; font-weight: 700; color: var(--color-primary-500); white-space: nowrap; }
+        .cs-encourage {
+            display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+            background: var(--color-warm-100); padding: 1rem; border-radius: var(--radius-xl); margin-top: 1.25rem;
+        }
+        .cs-encourage p { font-weight: 500; color: var(--color-gray-700); margin: 0; }
+        .cs-sign-list { list-style: none; padding: 0; margin: 0; }
+        .cs-sign-list li { display: flex; align-items: flex-start; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--color-gray-600); line-height: 1.6; }
+        .cs-sign { color: var(--color-primary-400); font-size: 0.5rem; margin-top: 0.5rem; flex-shrink: 0; }
+        .cs-breathe { background: linear-gradient(135deg, var(--color-primary-50) 0%, #eef7f4 100%); }
+        .cs-link { display: inline-block; margin-top: 0.75rem; color: var(--color-primary-500); font-weight: 600; text-decoration: none; }
+        .cs-back { color: var(--color-gray-500); text-decoration: none; font-size: 0.875rem; }
+        .cs-back:hover { color: var(--color-primary-500); }
+        @media (prefers-reduced-motion: reduce) {
+            .cs-section, .cs-card { transition: none; animation: none !important; opacity: 1; transform: none; }
+        }
+    </style>
+</body>
+</html>

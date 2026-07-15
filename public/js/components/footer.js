@@ -25,7 +25,8 @@
   const ABOUT_LINKS = [
     { key: 'footer.link_about',      href: 'about.html',           label: '平台介绍' },
     { key: 'footer.link_disclaimer', href: 'about.html#disclaimer',label: '免责声明' },
-    { key: 'footer.link_privacy',    href: 'about.html#privacy',   label: '隐私政策' },
+    { key: 'footer.link_privacy',    href: 'privacy-policy.html',  label: '隐私政策' },
+    { key: 'footer.link_crisis',     href: 'crisis-support.html',  label: '心理危机求助' },
   ];
 
   // ========== 渲染页脚 ==========
@@ -98,6 +99,7 @@
             <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;" data-i18n="footer.hotline_label">全国心理援助热线</p>
             <p style="font-size:1.05rem;font-weight:600;color:var(--color-primary-500);">400-161-9995</p>
             <p style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;" data-i18n="footer.hotline_note">24小时免费服务</p>
+            <a href="crisis-support.html" style="font-size:0.75rem;color:var(--color-primary-500);text-decoration:none;display:inline-block;margin-top:0.4rem;" data-i18n="footer.hotline_more">更多求助资源 →</a>
           </div>
         </div>
 
