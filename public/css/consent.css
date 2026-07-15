@@ -1,0 +1,148 @@
+/*
+ * CMP banner styles — calm / healing aesthetic (matches neuroaesthetics.css)
+ * Soft teal accent, generous rounding, gentle rise, no bounce.
+ */
+#cmp-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  width: min(calc(100% - 2rem), 720px);
+  z-index: 9999;
+  --cmp-teal: #5cb8a8;
+  --cmp-teal-d: #4aa392;
+  --cmp-ink: #374151;
+  --cmp-muted: #6b7280;
+  --cmp-bg: #ffffff;
+  --cmp-line: #e7e3da;
+  --cmp-radius: 16px;
+  --cmp-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  font-family: var(--font-sans, 'Nunito Sans', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif);
+}
+
+#cmp-banner.cmp-hide {
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  transition: opacity 0.35s var(--cmp-ease), transform 0.35s var(--cmp-ease);
+}
+
+.cmp-card {
+  background: var(--cmp-bg);
+  border: 1px solid var(--cmp-line);
+  border-radius: var(--cmp-radius);
+  box-shadow: 0 14px 44px rgba(55, 65, 81, 0.20);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  color: var(--cmp-ink);
+  animation: cmp-rise 0.5s var(--cmp-ease) both;
+}
+
+@keyframes cmp-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.cmp-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cmp-ink);
+}
+
+.cmp-desc {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--cmp-muted);
+}
+
+.cmp-link {
+  font-size: 0.8rem;
+  color: var(--cmp-teal-d);
+  text-decoration: none;
+  font-weight: 600;
+}
+.cmp-link:hover { text-decoration: underline; }
+
+.cmp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.cmp-btn {
+  border-radius: 9999px;
+  padding: 0.55rem 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.18s var(--cmp-ease), background 0.2s var(--cmp-ease), box-shadow 0.2s var(--cmp-ease);
+}
+.cmp-btn:active { transform: scale(0.95); }
+
+.cmp-btn-primary {
+  background: var(--cmp-teal);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(92, 184, 168, 0.35);
+}
+.cmp-btn-primary:hover { background: var(--cmp-teal-d); }
+
+.cmp-btn-ghost {
+  background: transparent;
+  color: var(--cmp-ink);
+  border-color: var(--cmp-line);
+}
+.cmp-btn-ghost:hover { background: #f6f4ef; }
+
+.cmp-manage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border-top: 1px solid var(--cmp-line);
+  padding-top: 0.9rem;
+}
+
+.cmp-manage-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--cmp-ink);
+}
+
+.cmp-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.cmp-toggle input {
+  margin-top: 0.2rem;
+  width: 1.05rem;
+  height: 1.05rem;
+  accent-color: var(--cmp-teal);
+  cursor: pointer;
+}
+.cmp-toggle-text { display: flex; flex-direction: column; }
+.cmp-toggle-text strong { font-weight: 600; color: var(--cmp-ink); }
+.cmp-toggle-text small { color: var(--cmp-muted); font-size: 0.75rem; line-height: 1.5; }
+
+.cmp-save { align-self: flex-end; margin-top: 0.25rem; }
+
+@media (max-width: 540px) {
+  #cmp-banner { bottom: 0.75rem; }
+  .cmp-actions { justify-content: stretch; }
+  .cmp-btn { flex: 1 1 auto; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmp-card { animation: none; }
+  #cmp-banner.cmp-hide { transition: opacity 0.2s linear; }
+  .cmp-btn:active { transform: none; }
+}
