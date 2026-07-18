@@ -49,7 +49,7 @@ coverage/
 docs/
 deliverables/
 prototype/
-scripts/test/
+scripts/
 
 # 工具文件夹
 .dumate/

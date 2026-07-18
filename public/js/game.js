@@ -467,17 +467,17 @@ const MATCH_SHAPE = {
 };
 
 const CAT_TYPES = [
-    { id: 1, name: _t('cat_name_1', '橘猫'), file: '橘猫.png' },
-    { id: 2, name: _t('cat_name_2', '白猫'), file: '白猫.png' },
-    { id: 3, name: _t('cat_name_3', '豹猫'), file: '豹猫.png' },
-    { id: 4, name: _t('cat_name_4', '布偶猫'), file: '布偶猫.png' },
-    { id: 5, name: _t('cat_name_5', '黑猫'), file: '黑猫.png' },
-    { id: 6, name: _t('cat_name_6', '虎斑猫'), file: '虎斑猫.png' },
-    { id: 7, name: _t('cat_name_7', '蓝猫'), file: '蓝猫.png' },
-    { id: 8, name: _t('cat_name_8', '缅因猫'), file: '缅因猫.png' },
-    { id: 9, name: _t('cat_name_9', '拿破仑'), file: '拿破仑.png' },
-    { id: 10, name: _t('cat_name_10', '斯芬克斯猫'), file: '斯芬克斯猫.png' },
-    { id: 11, name: _t('cat_name_11', '暹罗猫'), file: '暹罗猫.png' },
+    { id: 1, name: _t('cat_game.cat_name_1', '橘猫'), __k: 'cat_game.cat_name_1', __z: '橘猫', __f: 'name', file: '橘猫.png' },
+    { id: 2, name: _t('cat_game.cat_name_2', '白猫'), __k: 'cat_game.cat_name_2', __z: '白猫', __f: 'name', file: '白猫.png' },
+    { id: 3, name: _t('cat_game.cat_name_3', '豹猫'), __k: 'cat_game.cat_name_3', __z: '豹猫', __f: 'name', file: '豹猫.png' },
+    { id: 4, name: _t('cat_game.cat_name_4', '布偶猫'), __k: 'cat_game.cat_name_4', __z: '布偶猫', __f: 'name', file: '布偶猫.png' },
+    { id: 5, name: _t('cat_game.cat_name_5', '黑猫'), __k: 'cat_game.cat_name_5', __z: '黑猫', __f: 'name', file: '黑猫.png' },
+    { id: 6, name: _t('cat_game.cat_name_6', '虎斑猫'), __k: 'cat_game.cat_name_6', __z: '虎斑猫', __f: 'name', file: '虎斑猫.png' },
+    { id: 7, name: _t('cat_game.cat_name_7', '蓝猫'), __k: 'cat_game.cat_name_7', __z: '蓝猫', __f: 'name', file: '蓝猫.png' },
+    { id: 8, name: _t('cat_game.cat_name_8', '缅因猫'), __k: 'cat_game.cat_name_8', __z: '缅因猫', __f: 'name', file: '缅因猫.png' },
+    { id: 9, name: _t('cat_game.cat_name_9', '拿破仑'), __k: 'cat_game.cat_name_9', __z: '拿破仑', __f: 'name', file: '拿破仑.png' },
+    { id: 10, name: _t('cat_game.cat_name_10', '斯芬克斯猫'), __k: 'cat_game.cat_name_10', __z: '斯芬克斯猫', __f: 'name', file: '斯芬克斯猫.png' },
+    { id: 11, name: _t('cat_game.cat_name_11', '暹罗猫'), __k: 'cat_game.cat_name_11', __z: '暹罗猫', __f: 'name', file: '暹罗猫.png' },
 ];
 
 const SPECIAL_TYPES = {
@@ -503,27 +503,27 @@ const SPECIAL_TYPES = {
 const BUFF_TYPES = {
     PURR: {
         id: 'purr',
-        name: _t('buff_name_purr', '呼噜结界'),
+        name: _t('cat_game.buff_name_purr', '呼噜结界'), __k: 'cat_game.buff_name_purr', __z: '呼噜结界', __f: 'name',
         icon: '💤',
-        description: _t('buff_desc_purr', '3回合内得分翻倍，伴随呼噜声'),
+        description: _t('cat_game.buff_desc_purr', '3回合内得分翻倍，伴随呼噜声'), __k: 'cat_game.buff_desc_purr', __z: '3回合内得分翻倍，伴随呼噜声', __f: 'description',
         duration: 3,           // 持续消除次数
         scoreMultiplier: 2,
         color: '#C8A8E9',
     },
     SNACK: {
         id: 'snack',
-        name: _t('buff_name_snack', '零食投喂'),
+        name: _t('cat_game.buff_name_snack', '零食投喂'), __k: 'cat_game.buff_name_snack', __z: '零食投喂', __f: 'name',
         icon: '😋',
-        description: _t('buff_desc_snack', '点击任意格子直接消除'),
+        description: _t('cat_game.buff_desc_snack', '点击任意格子直接消除'), __k: 'cat_game.buff_desc_snack', __z: '点击任意格子直接消除', __f: 'description',
         duration: 1,
         scoreMultiplier: 1,
         color: '#FFD93D',
     },
     CUDDLE: {
         id: 'cuddle',
-        name: _t('buff_name_cuddle', '抱团取暖'),
+        name: _t('cat_game.buff_name_cuddle', '抱团取暖'), __k: 'cat_game.buff_name_cuddle', __z: '抱团取暖', __f: 'name',
         icon: '🤗',
-        description: _t('buff_desc_cuddle', '猫咪组队，消除额外生成道具'),
+        description: _t('cat_game.buff_desc_cuddle', '猫咪组队，消除额外生成道具'), __k: 'cat_game.buff_desc_cuddle', __z: '猫咪组队，消除额外生成道具', __f: 'description',
         duration: 2,
         scoreMultiplier: 1.5,
         color: '#FF6B9D',
@@ -769,34 +769,34 @@ const REQUEST_TYPES = {
  */
 const REQUEST_TEMPLATES = {
     [REQUEST_TYPES.COLLECT]: [
-        { catType: 1, dialog: _t('request_dialog_collect_1', '喵~ 能帮我找些小伙伴吗？'), desc: _t('request_desc_collect_1', '收集橘猫'), targetCount: 8 },
-        { catType: 2, dialog: _t('request_dialog_collect_2', '我想和同伴们一起玩耍~'), desc: _t('request_desc_collect_2', '收集白猫'), targetCount: 8 },
-        { catType: 3, dialog: _t('request_dialog_collect_3', '可以帮我召集一些朋友吗？'), desc: _t('request_desc_collect_3', '收集豹猫'), targetCount: 8 },
-        { catType: 4, dialog: _t('request_dialog_collect_4', '喵呜~ 想要更多小伙伴！'), desc: _t('request_desc_collect_4', '收集布偶猫'), targetCount: 8 },
-        { catType: 5, dialog: _t('request_dialog_collect_5', '好孤单呀，能找些朋友来吗？'), desc: _t('request_desc_collect_5', '收集黑猫'), targetCount: 8 },
-        { catType: 6, dialog: _t('request_dialog_collect_6', '想要一个热闹的聚会~'), desc: _t('request_desc_collect_6', '收集虎斑猫'), targetCount: 8 },
-        { catType: 7, dialog: _t('request_dialog_collect_7', '能帮我找些玩伴吗？'), desc: _t('request_desc_collect_7', '收集蓝猫'), targetCount: 8 },
-        { catType: 8, dialog: _t('request_dialog_collect_8', '喵~ 想要更多猫咪朋友！'), desc: _t('request_desc_collect_8', '收集缅因猫'), targetCount: 8 },
-        { catType: 9, dialog: _t('request_dialog_collect_9', '想和大家一起玩~'), desc: _t('request_desc_collect_9', '收集拿破仑'), targetCount: 8 },
-        { catType: 10, dialog: _t('request_dialog_collect_10', '能帮我找些朋友吗？'), desc: _t('request_desc_collect_10', '收集斯芬克斯猫'), targetCount: 8 },
-        { catType: 11, dialog: _t('request_dialog_collect_11', '想要更多小伙伴！'), desc: _t('request_desc_collect_11', '收集暹罗猫'), targetCount: 8 },
+        { catType: 1, dialog: _t('cat_game.request_dialog_collect_1', '喵~ 能帮我找些小伙伴吗？'), __k: 'cat_game.request_dialog_collect_1', __z: '喵~ 能帮我找些小伙伴吗？', __f: 'dialog', desc: _t('cat_game.request_desc_collect_1', '收集橘猫'), __k: 'cat_game.request_desc_collect_1', __z: '收集橘猫', __f: 'desc', targetCount: 8 },
+        { catType: 2, dialog: _t('cat_game.request_dialog_collect_2', '我想和同伴们一起玩耍~'), __k: 'cat_game.request_dialog_collect_2', __z: '我想和同伴们一起玩耍~', __f: 'dialog', desc: _t('cat_game.request_desc_collect_2', '收集白猫'), __k: 'cat_game.request_desc_collect_2', __z: '收集白猫', __f: 'desc', targetCount: 8 },
+        { catType: 3, dialog: _t('cat_game.request_dialog_collect_3', '可以帮我召集一些朋友吗？'), __k: 'cat_game.request_dialog_collect_3', __z: '可以帮我召集一些朋友吗？', __f: 'dialog', desc: _t('cat_game.request_desc_collect_3', '收集豹猫'), __k: 'cat_game.request_desc_collect_3', __z: '收集豹猫', __f: 'desc', targetCount: 8 },
+        { catType: 4, dialog: _t('cat_game.request_dialog_collect_4', '喵呜~ 想要更多小伙伴！'), __k: 'cat_game.request_dialog_collect_4', __z: '喵呜~ 想要更多小伙伴！', __f: 'dialog', desc: _t('cat_game.request_desc_collect_4', '收集布偶猫'), __k: 'cat_game.request_desc_collect_4', __z: '收集布偶猫', __f: 'desc', targetCount: 8 },
+        { catType: 5, dialog: _t('cat_game.request_dialog_collect_5', '好孤单呀，能找些朋友来吗？'), __k: 'cat_game.request_dialog_collect_5', __z: '好孤单呀，能找些朋友来吗？', __f: 'dialog', desc: _t('cat_game.request_desc_collect_5', '收集黑猫'), __k: 'cat_game.request_desc_collect_5', __z: '收集黑猫', __f: 'desc', targetCount: 8 },
+        { catType: 6, dialog: _t('cat_game.request_dialog_collect_6', '想要一个热闹的聚会~'), __k: 'cat_game.request_dialog_collect_6', __z: '想要一个热闹的聚会~', __f: 'dialog', desc: _t('cat_game.request_desc_collect_6', '收集虎斑猫'), __k: 'cat_game.request_desc_collect_6', __z: '收集虎斑猫', __f: 'desc', targetCount: 8 },
+        { catType: 7, dialog: _t('cat_game.request_dialog_collect_7', '能帮我找些玩伴吗？'), __k: 'cat_game.request_dialog_collect_7', __z: '能帮我找些玩伴吗？', __f: 'dialog', desc: _t('cat_game.request_desc_collect_7', '收集蓝猫'), __k: 'cat_game.request_desc_collect_7', __z: '收集蓝猫', __f: 'desc', targetCount: 8 },
+        { catType: 8, dialog: _t('cat_game.request_dialog_collect_8', '喵~ 想要更多猫咪朋友！'), __k: 'cat_game.request_dialog_collect_8', __z: '喵~ 想要更多猫咪朋友！', __f: 'dialog', desc: _t('cat_game.request_desc_collect_8', '收集缅因猫'), __k: 'cat_game.request_desc_collect_8', __z: '收集缅因猫', __f: 'desc', targetCount: 8 },
+        { catType: 9, dialog: _t('cat_game.request_dialog_collect_9', '想和大家一起玩~'), __k: 'cat_game.request_dialog_collect_9', __z: '想和大家一起玩~', __f: 'dialog', desc: _t('cat_game.request_desc_collect_9', '收集拿破仑'), __k: 'cat_game.request_desc_collect_9', __z: '收集拿破仑', __f: 'desc', targetCount: 8 },
+        { catType: 10, dialog: _t('cat_game.request_dialog_collect_10', '能帮我找些朋友吗？'), __k: 'cat_game.request_dialog_collect_10', __z: '能帮我找些朋友吗？', __f: 'dialog', desc: _t('cat_game.request_desc_collect_10', '收集斯芬克斯猫'), __k: 'cat_game.request_desc_collect_10', __z: '收集斯芬克斯猫', __f: 'desc', targetCount: 8 },
+        { catType: 11, dialog: _t('cat_game.request_dialog_collect_11', '想要更多小伙伴！'), __k: 'cat_game.request_dialog_collect_11', __z: '想要更多小伙伴！', __f: 'dialog', desc: _t('cat_game.request_desc_collect_11', '收集暹罗猫'), __k: 'cat_game.request_desc_collect_11', __z: '收集暹罗猫', __f: 'desc', targetCount: 8 },
     ],
     [REQUEST_TYPES.FIND_PILLOW]: [
-        { catType: 1, dialog: _t('request_dialog_pillow_1', '我找不到我的枕头了，能帮我找找吗？'), desc: _t('request_desc_pillow_1', '帮橘猫找枕头'), targetCount: 5 },
-        { catType: 3, dialog: _t('request_dialog_pillow_3', '我的枕头不见了喵...'), desc: _t('request_desc_pillow_3', '帮豹猫找枕头'), targetCount: 5 },
-        { catType: 5, dialog: _t('request_dialog_pillow_5', '想要软软的枕头睡觉觉~'), desc: _t('request_desc_pillow_5', '帮黑猫找枕头'), targetCount: 5 },
-        { catType: 6, dialog: _t('request_dialog_pillow_6', '枕头跑掉了，能帮我找回来吗？'), desc: _t('request_desc_pillow_6', '帮虎斑猫找枕头'), targetCount: 5 },
+        { catType: 1, dialog: _t('cat_game.request_dialog_pillow_1', '我找不到我的枕头了，能帮我找找吗？'), __k: 'cat_game.request_dialog_pillow_1', __z: '我找不到我的枕头了，能帮我找找吗？', __f: 'dialog', desc: _t('cat_game.request_desc_pillow_1', '帮橘猫找枕头'), __k: 'cat_game.request_desc_pillow_1', __z: '帮橘猫找枕头', __f: 'desc', targetCount: 5 },
+        { catType: 3, dialog: _t('cat_game.request_dialog_pillow_3', '我的枕头不见了喵...'), __k: 'cat_game.request_dialog_pillow_3', __z: '我的枕头不见了喵...', __f: 'dialog', desc: _t('cat_game.request_desc_pillow_3', '帮豹猫找枕头'), __k: 'cat_game.request_desc_pillow_3', __z: '帮豹猫找枕头', __f: 'desc', targetCount: 5 },
+        { catType: 5, dialog: _t('cat_game.request_dialog_pillow_5', '想要软软的枕头睡觉觉~'), __k: 'cat_game.request_dialog_pillow_5', __z: '想要软软的枕头睡觉觉~', __f: 'dialog', desc: _t('cat_game.request_desc_pillow_5', '帮黑猫找枕头'), __k: 'cat_game.request_desc_pillow_5', __z: '帮黑猫找枕头', __f: 'desc', targetCount: 5 },
+        { catType: 6, dialog: _t('cat_game.request_dialog_pillow_6', '枕头跑掉了，能帮我找回来吗？'), __k: 'cat_game.request_dialog_pillow_6', __z: '枕头跑掉了，能帮我找回来吗？', __f: 'dialog', desc: _t('cat_game.request_desc_pillow_6', '帮虎斑猫找枕头'), __k: 'cat_game.request_desc_pillow_6', __z: '帮虎斑猫找枕头', __f: 'desc', targetCount: 5 },
     ],
     [REQUEST_TYPES.FEED_FISH]: [
-        { catType: 2, dialog: _t('request_dialog_fish_2', '肚子饿啦~ 想吃小鱼干！'), desc: _t('request_desc_fish_2', '喂白猫吃小鱼干'), targetCount: 6 },
-        { catType: 4, dialog: _t('request_dialog_fish_4', '喵呜~ 小鱼干最棒了！'), desc: _t('request_desc_fish_4', '喂布偶猫吃小鱼干'), targetCount: 6 },
-        { catType: 7, dialog: _t('request_dialog_fish_7', '有好吃的吗？想要小鱼干~'), desc: _t('request_desc_fish_7', '喂蓝猫吃小鱼干'), targetCount: 6 },
-        { catType: 11, dialog: _t('request_dialog_fish_11', '饿了饿了，想吃小鱼干喵~'), desc: _t('request_desc_fish_11', '喂暹罗猫吃小鱼干'), targetCount: 6 },
+        { catType: 2, dialog: _t('cat_game.request_dialog_fish_2', '肚子饿啦~ 想吃小鱼干！'), __k: 'cat_game.request_dialog_fish_2', __z: '肚子饿啦~ 想吃小鱼干！', __f: 'dialog', desc: _t('cat_game.request_desc_fish_2', '喂白猫吃小鱼干'), __k: 'cat_game.request_desc_fish_2', __z: '喂白猫吃小鱼干', __f: 'desc', targetCount: 6 },
+        { catType: 4, dialog: _t('cat_game.request_dialog_fish_4', '喵呜~ 小鱼干最棒了！'), __k: 'cat_game.request_dialog_fish_4', __z: '喵呜~ 小鱼干最棒了！', __f: 'dialog', desc: _t('cat_game.request_desc_fish_4', '喂布偶猫吃小鱼干'), __k: 'cat_game.request_desc_fish_4', __z: '喂布偶猫吃小鱼干', __f: 'desc', targetCount: 6 },
+        { catType: 7, dialog: _t('cat_game.request_dialog_fish_7', '有好吃的吗？想要小鱼干~'), __k: 'cat_game.request_dialog_fish_7', __z: '有好吃的吗？想要小鱼干~', __f: 'dialog', desc: _t('cat_game.request_desc_fish_7', '喂蓝猫吃小鱼干'), __k: 'cat_game.request_desc_fish_7', __z: '喂蓝猫吃小鱼干', __f: 'desc', targetCount: 6 },
+        { catType: 11, dialog: _t('cat_game.request_dialog_fish_11', '饿了饿了，想吃小鱼干喵~'), __k: 'cat_game.request_dialog_fish_11', __z: '饿了饿了，想吃小鱼干喵~', __f: 'dialog', desc: _t('cat_game.request_desc_fish_11', '喂暹罗猫吃小鱼干'), __k: 'cat_game.request_desc_fish_11', __z: '喂暹罗猫吃小鱼干', __f: 'desc', targetCount: 6 },
     ],
     [REQUEST_TYPES.CUDDLE]: [
-        { catType: 1, dialog: _t('request_dialog_cuddle_1', '想和小伙伴贴贴~ 能帮我们凑一对吗？'), desc: _t('request_desc_cuddle_1', '让橘猫和小伙伴贴贴'), targetCount: 4 },
-        { catType: 5, dialog: _t('request_dialog_cuddle_5', '想要抱抱~ 帮我找个朋友吧！'), desc: _t('request_desc_cuddle_5', '让黑猫和小伙伴贴贴'), targetCount: 4 },
-        { catType: 4, dialog: _t('request_dialog_cuddle_4', '贴贴最温暖了，能帮我们吗？'), desc: _t('request_desc_cuddle_4', '让布偶猫和小伙伴贴贴'), targetCount: 4 },
+        { catType: 1, dialog: _t('cat_game.request_dialog_cuddle_1', '想和小伙伴贴贴~ 能帮我们凑一对吗？'), __k: 'cat_game.request_dialog_cuddle_1', __z: '想和小伙伴贴贴~ 能帮我们凑一对吗？', __f: 'dialog', desc: _t('cat_game.request_desc_cuddle_1', '让橘猫和小伙伴贴贴'), __k: 'cat_game.request_desc_cuddle_1', __z: '让橘猫和小伙伴贴贴', __f: 'desc', targetCount: 4 },
+        { catType: 5, dialog: _t('cat_game.request_dialog_cuddle_5', '想要抱抱~ 帮我找个朋友吧！'), __k: 'cat_game.request_dialog_cuddle_5', __z: '想要抱抱~ 帮我找个朋友吧！', __f: 'dialog', desc: _t('cat_game.request_desc_cuddle_5', '让黑猫和小伙伴贴贴'), __k: 'cat_game.request_desc_cuddle_5', __z: '让黑猫和小伙伴贴贴', __f: 'desc', targetCount: 4 },
+        { catType: 4, dialog: _t('cat_game.request_dialog_cuddle_4', '贴贴最温暖了，能帮我们吗？'), __k: 'cat_game.request_dialog_cuddle_4', __z: '贴贴最温暖了，能帮我们吗？', __f: 'dialog', desc: _t('cat_game.request_desc_cuddle_4', '让布偶猫和小伙伴贴贴'), __k: 'cat_game.request_desc_cuddle_4', __z: '让布偶猫和小伙伴贴贴', __f: 'desc', targetCount: 4 },
     ],
 };
 
@@ -804,64 +804,67 @@ const REQUEST_TEMPLATES = {
  * 请求完成后的感谢语（疗愈风格，非竞争性）
  * 注意：所有对话都经过积极心理学审核，避免情感操控
  */
-const THANKS_MESSAGES = [
-    _t('thanks_1', '谢谢你！你是最棒的朋友~'),
-    _t('thanks_2', '喵呜~ 太感谢了！'),
-    _t('thanks_3', '好开心！谢谢你帮我！'),
-    _t('thanks_4', '你真好！猫咪爱你！'),
-    _t('thanks_5', '哇！谢谢你！蹭蹭~'),
-    _t('thanks_6', '太棒了！你是猫咪的救星！'),
+const THANKS_DEFS = [
+    ['cat_game.thanks_1', '谢谢你！你是最棒的朋友~'],
+    ['cat_game.thanks_2', '喵呜~ 太感谢了！'],
+    ['cat_game.thanks_3', '好开心！谢谢你帮我！'],
+    ['cat_game.thanks_4', '你真好！猫咪爱你！'],
+    ['cat_game.thanks_5', '哇！谢谢你！蹭蹭~'],
+    ['cat_game.thanks_6', '太棒了！你是猫咪的救星！'],
     // 新增：疗愈风格感谢语（非竞争性）
-    _t('thanks_7', '有你陪伴，猫咪觉得很温暖~'),
-    _t('thanks_8', '你总是这么温柔，谢谢你~'),
-    _t('thanks_9', '和你一起玩，猫咪好开心！'),
-    _t('thanks_10', '你今天也很棒哦！'),
+    ['cat_game.thanks_7', '有你陪伴，猫咪觉得很温暖~'],
+    ['cat_game.thanks_8', '你总是这么温柔，谢谢你~'],
+    ['cat_game.thanks_9', '和你一起玩，猫咪好开心！'],
+    ['cat_game.thanks_10', '你今天也很棒哦！'],
 ];
+const THANKS_MESSAGES = THANKS_DEFS.map(([k, z]) => _t(k, z));
 
 /**
  * 猫咪日常对话（点击猫咪时触发，疗愈风格）
  * 注意：对话是非评判性的、接纳的、温暖的
  */
+const DIALOGUE_DEFS = {
+    encourage: [
+        ['cat_game.cat_encourage_1', '你今天做得很好哦~'],
+        ['cat_game.cat_encourage_2', '慢慢来，猫咪会等你~'],
+        ['cat_game.cat_encourage_3', '你已经很棒了！'],
+        ['cat_game.cat_encourage_4', '累了就休息一下吧，没关系~'],
+    ],
+    companion: [
+        ['cat_game.cat_companion_1', '猫咪在这里陪着你~'],
+        ['cat_game.cat_companion_2', '不管发生什么，猫咪都会陪着你~'],
+        ['cat_game.cat_companion_3', '想说话的时候，猫咪都在这里~'],
+        ['cat_game.cat_companion_4', '你不是一个人哦，猫咪在这里~'],
+    ],
+    reminder: [
+        ['cat_game.cat_reminder_1', '记得喝水哦~ 猫咪去给你倒水~'],
+        ['cat_game.cat_reminder_2', '休息一下眼睛吧~ 来看看窗外~'],
+        ['cat_game.cat_reminder_3', '深呼吸一下吧~ 呼~ 吸~'],
+        ['cat_game.cat_reminder_4', '想不想出去走走？猫咪陪你~'],
+    ],
+    exercise: [
+        ['cat_game.cat_exercise_1', '我们来做个小练习吧~ 说说今天的三件好事？'],
+        ['cat_game.cat_exercise_2', '猫咪想知道，今天有什么让你微笑的事吗？'],
+        ['cat_game.cat_exercise_3', '闭上眼睛，听听周围的声音~ 有什么发现？'],
+        ['cat_game.cat_exercise_4', '深呼吸三次~ 吸气... 呼气... 感觉好点了吗？'],
+    ],
+};
 const CAT_DAILY_DIALOGUES = [
-    // 正向鼓励（非竞争性）
-    { type: 'encourage', texts: [
-        _t('cat_encourage_1', '你今天做得很好哦~'),
-        _t('cat_encourage_2', '慢慢来，猫咪会等你~'),
-        _t('cat_encourage_3', '你已经很棒了！'),
-        _t('cat_encourage_4', '累了就休息一下吧，没关系~'),
-    ]},
-    // 共情陪伴（非评判性）
-    { type: 'companion', texts: [
-        _t('cat_companion_1', '猫咪在这里陪着你~'),
-        _t('cat_companion_2', '不管发生什么，猫咪都会陪着你~'),
-        _t('cat_companion_3', '想说话的时候，猫咪都在这里~'),
-        _t('cat_companion_4', '你不是一个人哦，猫咪在这里~'),
-    ]},
-    // 温暖提醒（非强制性的）
-    { type: 'reminder', texts: [
-        _t('cat_reminder_1', '记得喝水哦~ 猫咪去给你倒水~'),
-        _t('cat_reminder_2', '休息一下眼睛吧~ 来看看窗外~'),
-        _t('cat_reminder_3', '深呼吸一下吧~ 呼~ 吸~'),
-        _t('cat_reminder_4', '想不想出去走走？猫咪陪你~'),
-    ]},
-    // 疗愈小练习（可选，非强制性）
-    { type: 'exercise', texts: [
-        _t('cat_exercise_1', '我们来做个小练习吧~ 说说今天的三件好事？'),
-        _t('cat_exercise_2', '猫咪想知道，今天有什么让你微笑的事吗？'),
-        _t('cat_exercise_3', '闭上眼睛，听听周围的声音~ 有什么发现？'),
-        _t('cat_exercise_4', '深呼吸三次~ 吸气... 呼气... 感觉好点了吗？'),
-    ]},
+    { type: 'encourage', texts: DIALOGUE_DEFS.encourage.map(([k, z]) => _t(k, z)) },
+    { type: 'companion', texts: DIALOGUE_DEFS.companion.map(([k, z]) => _t(k, z)) },
+    { type: 'reminder', texts: DIALOGUE_DEFS.reminder.map(([k, z]) => _t(k, z)) },
+    { type: 'exercise', texts: DIALOGUE_DEFS.exercise.map(([k, z]) => _t(k, z)) },
 ];
 
 /**
  * 请求完成后的动作描述
  */
 const CAT_ACTIONS = [
-    { action: _t('action_1', '蹭屏幕'), emoji: '🐱💨' },
-    { action: _t('action_2', '舔爪子'), emoji: '🐱👅' },
-    { action: _t('action_3', '打滚'), emoji: '🐱🌀' },
-    { action: _t('action_4', '摇尾巴'), emoji: '🐱〰️' },
-    { action: _t('action_5', '眨眼睛'), emoji: '🐱😉' },
+    { action: _t('cat_game.action_1', '蹭屏幕'), __k: 'cat_game.action_1', __z: '蹭屏幕', __f: 'action', emoji: '🐱💨' },
+    { action: _t('cat_game.action_2', '舔爪子'), __k: 'cat_game.action_2', __z: '舔爪子', __f: 'action', emoji: '🐱👅' },
+    { action: _t('cat_game.action_3', '打滚'), __k: 'cat_game.action_3', __z: '打滚', __f: 'action', emoji: '🐱🌀' },
+    { action: _t('cat_game.action_4', '摇尾巴'), __k: 'cat_game.action_4', __z: '摇尾巴', __f: 'action', emoji: '🐱〰️' },
+    { action: _t('cat_game.action_5', '眨眼睛'), __k: 'cat_game.action_5', __z: '眨眼睛', __f: 'action', emoji: '🐱😉' },
 ];
 
 // ═══════════════════════════════════════════════════
@@ -872,13 +875,13 @@ const CAT_ACTIONS = [
  * 亲密度等级配置
  */
 const AFFINITY_LEVELS = {
-    1: { name: _t('affinity_1', '陌生人'), minExp: 0, maxExp: 20, bonus: 1 },
-    2: { name: _t('affinity_2', '认识'), minExp: 20, maxExp: 50, bonus: 1.1 },
-    3: { name: _t('affinity_3', '熟悉'), minExp: 50, maxExp: 100, bonus: 1.2 },
-    4: { name: _t('affinity_4', '友好'), minExp: 100, maxExp: 200, bonus: 1.3 },
-    5: { name: _t('affinity_5', '亲密'), minExp: 200, maxExp: 350, bonus: 1.5 },
-    6: { name: _t('affinity_6', '挚友'), minExp: 350, maxExp: 500, bonus: 1.7 },
-    7: { name: _t('affinity_7', '家人'), minExp: 500, maxExp: Infinity, bonus: 2 },
+    1: { name: _t('cat_game.affinity_1', '陌生人'), __k: 'cat_game.affinity_1', __z: '陌生人', __f: 'name', minExp: 0, maxExp: 20, bonus: 1 },
+    2: { name: _t('cat_game.affinity_2', '认识'), __k: 'cat_game.affinity_2', __z: '认识', __f: 'name', minExp: 20, maxExp: 50, bonus: 1.1 },
+    3: { name: _t('cat_game.affinity_3', '熟悉'), __k: 'cat_game.affinity_3', __z: '熟悉', __f: 'name', minExp: 50, maxExp: 100, bonus: 1.2 },
+    4: { name: _t('cat_game.affinity_4', '友好'), __k: 'cat_game.affinity_4', __z: '友好', __f: 'name', minExp: 100, maxExp: 200, bonus: 1.3 },
+    5: { name: _t('cat_game.affinity_5', '亲密'), __k: 'cat_game.affinity_5', __z: '亲密', __f: 'name', minExp: 200, maxExp: 350, bonus: 1.5 },
+    6: { name: _t('cat_game.affinity_6', '挚友'), __k: 'cat_game.affinity_6', __z: '挚友', __f: 'name', minExp: 350, maxExp: 500, bonus: 1.7 },
+    7: { name: _t('cat_game.affinity_7', '家人'), __k: 'cat_game.affinity_7', __z: '家人', __f: 'name', minExp: 500, maxExp: Infinity, bonus: 2 },
 };
 
 /**
@@ -1025,59 +1028,59 @@ const AffinityManager = {
  */
 const CAT_STORIES = {
     1: [ // 橘猫
-        { id: 'story_1_2', unlockLevel: 2, title: '初次相识', content: '这只橘猫看起来很害羞，但当你靠近时，它会轻轻地蹭你的手指。' },
-        { id: 'story_1_4', unlockLevel: 4, title: '美食诱惑', content: '橘猫带你找到了它藏小鱼干的地方，它愿意和你分享！' },
-        { id: 'story_1_6', unlockLevel: 6, title: '温暖午后', content: '橘猫最喜欢在你的腿上打盹，发出满足的呼噜声。' },
+        { id: 'story_1_2', unlockLevel: 2, title: _t('cat_game.story_1_2_title', '初次相识'), __k: 'cat_game.story_1_2_title', __z: '初次相识', __f: 'title', content: _t('cat_game.story_1_2_content', '这只橘猫看起来很害羞，但当你靠近时，它会轻轻地蹭你的手指。'), __k: 'cat_game.story_1_2_content', __z: '这只橘猫看起来很害羞，但当你靠近时，它会轻轻地蹭你的手指。', __f: 'content' },
+        { id: 'story_1_4', unlockLevel: 4, title: _t('cat_game.story_1_4_title', '美食诱惑'), __k: 'cat_game.story_1_4_title', __z: '美食诱惑', __f: 'title', content: _t('cat_game.story_1_4_content', '橘猫带你找到了它藏小鱼干的地方，它愿意和你分享！'), __k: 'cat_game.story_1_4_content', __z: '橘猫带你找到了它藏小鱼干的地方，它愿意和你分享！', __f: 'content' },
+        { id: 'story_1_6', unlockLevel: 6, title: _t('cat_game.story_1_6_title', '温暖午后'), __k: 'cat_game.story_1_6_title', __z: '温暖午后', __f: 'title', content: _t('cat_game.story_1_6_content', '橘猫最喜欢在你的腿上打盹，发出满足的呼噜声。'), __k: 'cat_game.story_1_6_content', __z: '橘猫最喜欢在你的腿上打盹，发出满足的呼噜声。', __f: 'content' },
     ],
     2: [ // 白猫
-        { id: 'story_2_2', unlockLevel: 2, title: '纯洁天使', content: '白猫像一个小天使，它的出现让周围都变得明亮。' },
-        { id: 'story_2_4', unlockLevel: 4, title: '治愈之源', content: '抚摸白猫时，你会感到内心的烦恼都被抚平了。' },
-        { id: 'story_2_6', unlockLevel: 6, title: '永恒友谊', content: '白猫承诺会永远陪伴你，无论风雨。' },
+        { id: 'story_2_2', unlockLevel: 2, title: _t('cat_game.story_2_2_title', '纯洁天使'), __k: 'cat_game.story_2_2_title', __z: '纯洁天使', __f: 'title', content: _t('cat_game.story_2_2_content', '白猫像一个小天使，它的出现让周围都变得明亮。'), __k: 'cat_game.story_2_2_content', __z: '白猫像一个小天使，它的出现让周围都变得明亮。', __f: 'content' },
+        { id: 'story_2_4', unlockLevel: 4, title: _t('cat_game.story_2_4_title', '治愈之源'), __k: 'cat_game.story_2_4_title', __z: '治愈之源', __f: 'title', content: _t('cat_game.story_2_4_content', '抚摸白猫时，你会感到内心的烦恼都被抚平了。'), __k: 'cat_game.story_2_4_content', __z: '抚摸白猫时，你会感到内心的烦恼都被抚平了。', __f: 'content' },
+        { id: 'story_2_6', unlockLevel: 6, title: _t('cat_game.story_2_6_title', '永恒友谊'), __k: 'cat_game.story_2_6_title', __z: '永恒友谊', __f: 'title', content: _t('cat_game.story_2_6_content', '白猫承诺会永远陪伴你，无论风雨。'), __k: 'cat_game.story_2_6_content', __z: '白猫承诺会永远陪伴你，无论风雨。', __f: 'content' },
     ],
     3: [ // 豹猫
-        { id: 'story_3_2', unlockLevel: 2, title: '野性之美', content: '豹猫保留着一丝野性，但对你却格外温柔。' },
-        { id: 'story_3_4', unlockLevel: 4, title: '狩猎教学', content: '豹猫想教你狩猎技巧，虽然你并不需要...' },
-        { id: 'story_3_6', unlockLevel: 6, title: '丛林之王', content: '在豹猫心中，你就是它的丛林之王。' },
+        { id: 'story_3_2', unlockLevel: 2, title: _t('cat_game.story_3_2_title', '野性之美'), __k: 'cat_game.story_3_2_title', __z: '野性之美', __f: 'title', content: _t('cat_game.story_3_2_content', '豹猫保留着一丝野性，但对你却格外温柔。'), __k: 'cat_game.story_3_2_content', __z: '豹猫保留着一丝野性，但对你却格外温柔。', __f: 'content' },
+        { id: 'story_3_4', unlockLevel: 4, title: _t('cat_game.story_3_4_title', '狩猎教学'), __k: 'cat_game.story_3_4_title', __z: '狩猎教学', __f: 'title', content: _t('cat_game.story_3_4_content', '豹猫想教你狩猎技巧，虽然你并不需要...'), __k: 'cat_game.story_3_4_content', __z: '豹猫想教你狩猎技巧，虽然你并不需要...', __f: 'content' },
+        { id: 'story_3_6', unlockLevel: 6, title: _t('cat_game.story_3_6_title', '丛林之王'), __k: 'cat_game.story_3_6_title', __z: '丛林之王', __f: 'title', content: _t('cat_game.story_3_6_content', '在豹猫心中，你就是它的丛林之王。'), __k: 'cat_game.story_3_6_content', __z: '在豹猫心中，你就是它的丛林之王。', __f: 'content' },
     ],
     4: [ // 布偶猫
-        { id: 'story_4_2', unlockLevel: 2, title: '软萌玩偶', content: '布偶猫柔软得像玩偶，抱起来特别舒服。' },
-        { id: 'story_4_4', unlockLevel: 4, title: '跟随者', content: '布偶猫会像小狗一样跟随你，走到哪里跟到哪里。' },
-        { id: 'story_4_6', unlockLevel: 6, title: '无条件的爱', content: '布偶猫给予你无条件的爱，这是世界上最珍贵的礼物。' },
+        { id: 'story_4_2', unlockLevel: 2, title: _t('cat_game.story_4_2_title', '软萌玩偶'), __k: 'cat_game.story_4_2_title', __z: '软萌玩偶', __f: 'title', content: _t('cat_game.story_4_2_content', '布偶猫柔软得像玩偶，抱起来特别舒服。'), __k: 'cat_game.story_4_2_content', __z: '布偶猫柔软得像玩偶，抱起来特别舒服。', __f: 'content' },
+        { id: 'story_4_4', unlockLevel: 4, title: _t('cat_game.story_4_4_title', '跟随者'), __k: 'cat_game.story_4_4_title', __z: '跟随者', __f: 'title', content: _t('cat_game.story_4_4_content', '布偶猫会像小狗一样跟随你，走到哪里跟到哪里。'), __k: 'cat_game.story_4_4_content', __z: '布偶猫会像小狗一样跟随你，走到哪里跟到哪里。', __f: 'content' },
+        { id: 'story_4_6', unlockLevel: 6, title: _t('cat_game.story_4_6_title', '无条件的爱'), __k: 'cat_game.story_4_6_title', __z: '无条件的爱', __f: 'title', content: _t('cat_game.story_4_6_content', '布偶猫给予你无条件的爱，这是世界上最珍贵的礼物。'), __k: 'cat_game.story_4_6_content', __z: '布偶猫给予你无条件的爱，这是世界上最珍贵的礼物。', __f: 'content' },
     ],
     5: [ // 黑猫
-        { id: 'story_5_2', unlockLevel: 2, title: '神秘访客', content: '黑猫总是在意想不到的时候出现，带来神秘的气息。' },
-        { id: 'story_5_4', unlockLevel: 4, title: '幸运符', content: '自从认识了黑猫，你觉得生活中多了很多小幸运。' },
-        { id: 'story_5_6', unlockLevel: 6, title: '守护之灵', content: '黑猫成为了你的守护灵，在黑暗中为你照亮前路。' },
+        { id: 'story_5_2', unlockLevel: 2, title: _t('cat_game.story_5_2_title', '神秘访客'), __k: 'cat_game.story_5_2_title', __z: '神秘访客', __f: 'title', content: _t('cat_game.story_5_2_content', '黑猫总是在意想不到的时候出现，带来神秘的气息。'), __k: 'cat_game.story_5_2_content', __z: '黑猫总是在意想不到的时候出现，带来神秘的气息。', __f: 'content' },
+        { id: 'story_5_4', unlockLevel: 4, title: _t('cat_game.story_5_4_title', '幸运符'), __k: 'cat_game.story_5_4_title', __z: '幸运符', __f: 'title', content: _t('cat_game.story_5_4_content', '自从认识了黑猫，你觉得生活中多了很多小幸运。'), __k: 'cat_game.story_5_4_content', __z: '自从认识了黑猫，你觉得生活中多了很多小幸运。', __f: 'content' },
+        { id: 'story_5_6', unlockLevel: 6, title: _t('cat_game.story_5_6_title', '守护之灵'), __k: 'cat_game.story_5_6_title', __z: '守护之灵', __f: 'title', content: _t('cat_game.story_5_6_content', '黑猫成为了你的守护灵，在黑暗中为你照亮前路。'), __k: 'cat_game.story_5_6_content', __z: '黑猫成为了你的守护灵，在黑暗中为你照亮前路。', __f: 'content' },
     ],
     6: [ // 虎斑猫
-        { id: 'story_6_2', unlockLevel: 2, title: '条纹魅力', content: '虎斑猫身上的条纹像艺术品一样美丽。' },
-        { id: 'story_6_4', unlockLevel: 4, title: '活泼好动', content: '虎斑猫精力充沛，总是邀请你一起玩耍。' },
-        { id: 'story_6_6', unlockLevel: 6, title: '最佳玩伴', content: '虎斑猫成为了你最好的玩伴，每一天都充满欢乐。' },
+        { id: 'story_6_2', unlockLevel: 2, title: _t('cat_game.story_6_2_title', '条纹魅力'), __k: 'cat_game.story_6_2_title', __z: '条纹魅力', __f: 'title', content: _t('cat_game.story_6_2_content', '虎斑猫身上的条纹像艺术品一样美丽。'), __k: 'cat_game.story_6_2_content', __z: '虎斑猫身上的条纹像艺术品一样美丽。', __f: 'content' },
+        { id: 'story_6_4', unlockLevel: 4, title: _t('cat_game.story_6_4_title', '活泼好动'), __k: 'cat_game.story_6_4_title', __z: '活泼好动', __f: 'title', content: _t('cat_game.story_6_4_content', '虎斑猫精力充沛，总是邀请你一起玩耍。'), __k: 'cat_game.story_6_4_content', __z: '虎斑猫精力充沛，总是邀请你一起玩耍。', __f: 'content' },
+        { id: 'story_6_6', unlockLevel: 6, title: _t('cat_game.story_6_6_title', '最佳玩伴'), __k: 'cat_game.story_6_6_title', __z: '最佳玩伴', __f: 'title', content: _t('cat_game.story_6_6_content', '虎斑猫成为了你最好的玩伴，每一天都充满欢乐。'), __k: 'cat_game.story_6_6_content', __z: '虎斑猫成为了你最好的玩伴，每一天都充满欢乐。', __f: 'content' },
     ],
     7: [ // 蓝猫
-        { id: 'story_7_2', unlockLevel: 2, title: '温柔巨人', content: '蓝猫体型较大，但性格却出奇地温柔。' },
-        { id: 'story_7_4', unlockLevel: 4, title: '安静陪伴', content: '蓝猫不喜欢吵闹，它更喜欢静静地陪在你身边。' },
-        { id: 'story_7_6', unlockLevel: 6, title: '坚实依靠', content: '当你需要依靠时，蓝猫会用它温暖的身体给你力量。' },
+        { id: 'story_7_2', unlockLevel: 2, title: _t('cat_game.story_7_2_title', '温柔巨人'), __k: 'cat_game.story_7_2_title', __z: '温柔巨人', __f: 'title', content: _t('cat_game.story_7_2_content', '蓝猫体型较大，但性格却出奇地温柔。'), __k: 'cat_game.story_7_2_content', __z: '蓝猫体型较大，但性格却出奇地温柔。', __f: 'content' },
+        { id: 'story_7_4', unlockLevel: 4, title: _t('cat_game.story_7_4_title', '安静陪伴'), __k: 'cat_game.story_7_4_title', __z: '安静陪伴', __f: 'title', content: _t('cat_game.story_7_4_content', '蓝猫不喜欢吵闹，它更喜欢静静地陪在你身边。'), __k: 'cat_game.story_7_4_content', __z: '蓝猫不喜欢吵闹，它更喜欢静静地陪在你身边。', __f: 'content' },
+        { id: 'story_7_6', unlockLevel: 6, title: _t('cat_game.story_7_6_title', '坚实依靠'), __k: 'cat_game.story_7_6_title', __z: '坚实依靠', __f: 'title', content: _t('cat_game.story_7_6_content', '当你需要依靠时，蓝猫会用它温暖的身体给你力量。'), __k: 'cat_game.story_7_6_content', __z: '当你需要依靠时，蓝猫会用它温暖的身体给你力量。', __f: 'content' },
     ],
     8: [ // 缅因猫
-        { id: 'story_8_2', unlockLevel: 2, title: '贵族气质', content: '缅因猫有着与生俱来的贵族气质，举止优雅。' },
-        { id: 'story_8_4', unlockLevel: 4, title: '温柔巨兽', content: '虽然体型庞大，但缅因猫的内心却像小猫一样柔软。' },
-        { id: 'story_8_6', unlockLevel: 6, title: '忠诚守护', content: '缅因猫会用它庞大的身躯守护你的每一个梦境。' },
+        { id: 'story_8_2', unlockLevel: 2, title: _t('cat_game.story_8_2_title', '贵族气质'), __k: 'cat_game.story_8_2_title', __z: '贵族气质', __f: 'title', content: _t('cat_game.story_8_2_content', '缅因猫有着与生俱来的贵族气质，举止优雅。'), __k: 'cat_game.story_8_2_content', __z: '缅因猫有着与生俱来的贵族气质，举止优雅。', __f: 'content' },
+        { id: 'story_8_4', unlockLevel: 4, title: _t('cat_game.story_8_4_title', '温柔巨兽'), __k: 'cat_game.story_8_4_title', __z: '温柔巨兽', __f: 'title', content: _t('cat_game.story_8_4_content', '虽然体型庞大，但缅因猫的内心却像小猫一样柔软。'), __k: 'cat_game.story_8_4_content', __z: '虽然体型庞大，但缅因猫的内心却像小猫一样柔软。', __f: 'content' },
+        { id: 'story_8_6', unlockLevel: 6, title: _t('cat_game.story_8_6_title', '忠诚守护'), __k: 'cat_game.story_8_6_title', __z: '忠诚守护', __f: 'title', content: _t('cat_game.story_8_6_content', '缅因猫会用它庞大的身躯守护你的每一个梦境。'), __k: 'cat_game.story_8_6_content', __z: '缅因猫会用它庞大的身躯守护你的每一个梦境。', __f: 'content' },
     ],
     9: [ // 拿破仑
-        { id: 'story_9_2', unlockLevel: 2, title: '短腿萌物', content: '拿破仑的小短腿跑起来特别可爱，让人忍俊不禁。' },
-        { id: 'story_9_4', unlockLevel: 4, title: '勇敢之心', content: '虽然腿短，但拿破仑有着一颗勇敢无畏的心。' },
-        { id: 'story_9_6', unlockLevel: 6, title: '快乐源泉', content: '拿破仑总能用它独特的方式给你带来快乐。' },
+        { id: 'story_9_2', unlockLevel: 2, title: _t('cat_game.story_9_2_title', '短腿萌物'), __k: 'cat_game.story_9_2_title', __z: '短腿萌物', __f: 'title', content: _t('cat_game.story_9_2_content', '拿破仑的小短腿跑起来特别可爱，让人忍俊不禁。'), __k: 'cat_game.story_9_2_content', __z: '拿破仑的小短腿跑起来特别可爱，让人忍俊不禁。', __f: 'content' },
+        { id: 'story_9_4', unlockLevel: 4, title: _t('cat_game.story_9_4_title', '勇敢之心'), __k: 'cat_game.story_9_4_title', __z: '勇敢之心', __f: 'title', content: _t('cat_game.story_9_4_content', '虽然腿短，但拿破仑有着一颗勇敢无畏的心。'), __k: 'cat_game.story_9_4_content', __z: '虽然腿短，但拿破仑有着一颗勇敢无畏的心。', __f: 'content' },
+        { id: 'story_9_6', unlockLevel: 6, title: _t('cat_game.story_9_6_title', '快乐源泉'), __k: 'cat_game.story_9_6_title', __z: '快乐源泉', __f: 'title', content: _t('cat_game.story_9_6_content', '拿破仑总能用它独特的方式给你带来快乐。'), __k: 'cat_game.story_9_6_content', __z: '拿破仑总能用它独特的方式给你带来快乐。', __f: 'content' },
     ],
     10: [ // 斯芬克斯猫
-        { id: 'story_10_2', unlockLevel: 2, title: '独特外表', content: '斯芬克斯猫没有毛发的外表让它与众不同。' },
-        { id: 'story_10_4', unlockLevel: 4, title: '温暖触感', content: '摸斯芬克斯猫的感觉很特别，温暖而柔软。' },
-        { id: 'story_10_6', unlockLevel: 6, title: '深情厚谊', content: '斯芬克斯猫对主人的感情特别深厚，忠诚而专一。' },
+        { id: 'story_10_2', unlockLevel: 2, title: _t('cat_game.story_10_2_title', '独特外表'), __k: 'cat_game.story_10_2_title', __z: '独特外表', __f: 'title', content: _t('cat_game.story_10_2_content', '斯芬克斯猫没有毛发的外表让它与众不同。'), __k: 'cat_game.story_10_2_content', __z: '斯芬克斯猫没有毛发的外表让它与众不同。', __f: 'content' },
+        { id: 'story_10_4', unlockLevel: 4, title: _t('cat_game.story_10_4_title', '温暖触感'), __k: 'cat_game.story_10_4_title', __z: '温暖触感', __f: 'title', content: _t('cat_game.story_10_4_content', '摸斯芬克斯猫的感觉很特别，温暖而柔软。'), __k: 'cat_game.story_10_4_content', __z: '摸斯芬克斯猫的感觉很特别，温暖而柔软。', __f: 'content' },
+        { id: 'story_10_6', unlockLevel: 6, title: _t('cat_game.story_10_6_title', '深情厚谊'), __k: 'cat_game.story_10_6_title', __z: '深情厚谊', __f: 'title', content: _t('cat_game.story_10_6_content', '斯芬克斯猫对主人的感情特别深厚，忠诚而专一。'), __k: 'cat_game.story_10_6_content', __z: '斯芬克斯猫对主人的感情特别深厚，忠诚而专一。', __f: 'content' },
     ],
     11: [ // 暹罗猫
-        { id: 'story_11_2', unlockLevel: 2, title: '优雅贵族', content: '暹罗猫举止优雅，仿佛来自遥远的皇家宫廷。' },
-        { id: 'story_11_4', unlockLevel: 4, title: '话痨模式', content: '暹罗猫开始和你聊天，用不同的叫声表达各种情绪。' },
-        { id: 'story_11_6', unlockLevel: 6, title: '心灵感应', content: '你们之间仿佛有了心灵感应，它总能知道你的心情。' },
+        { id: 'story_11_2', unlockLevel: 2, title: _t('cat_game.story_11_2_title', '优雅贵族'), __k: 'cat_game.story_11_2_title', __z: '优雅贵族', __f: 'title', content: _t('cat_game.story_11_2_content', '暹罗猫举止优雅，仿佛来自遥远的皇家宫廷。'), __k: 'cat_game.story_11_2_content', __z: '暹罗猫举止优雅，仿佛来自遥远的皇家宫廷。', __f: 'content' },
+        { id: 'story_11_4', unlockLevel: 4, title: _t('cat_game.story_11_4_title', '话痨模式'), __k: 'cat_game.story_11_4_title', __z: '话痨模式', __f: 'title', content: _t('cat_game.story_11_4_content', '暹罗猫开始和你聊天，用不同的叫声表达各种情绪。'), __k: 'cat_game.story_11_4_content', __z: '暹罗猫开始和你聊天，用不同的叫声表达各种情绪。', __f: 'content' },
+        { id: 'story_11_6', unlockLevel: 6, title: _t('cat_game.story_11_6_title', '心灵感应'), __k: 'cat_game.story_11_6_title', __z: '心灵感应', __f: 'title', content: _t('cat_game.story_11_6_content', '你们之间仿佛有了心灵感应，它总能知道你的心情。'), __k: 'cat_game.story_11_6_content', __z: '你们之间仿佛有了心灵感应，它总能知道你的心情。', __f: 'content' },
     ],
 };
 
@@ -1426,46 +1429,46 @@ const DECORATION_ITEMS = {
     // 阳光阳台主题
     balcony: {
         id: 'balcony',
-        name: '阳光阳台',
-        description: '温暖的阳光洒满整个阳台，猫咪们最喜欢在这里晒太阳',
+        name: _t('cat_game.theme_balcony_name', '阳光阳台'), __k: 'cat_game.theme_balcony_name', __z: '阳光阳台', __f: 'name',
+        description: _t('cat_game.theme_balcony_desc', '温暖的阳光洒满整个阳台，猫咪们最喜欢在这里晒太阳'), __k: 'cat_game.theme_balcony_desc', __z: '温暖的阳光洒满整个阳台，猫咪们最喜欢在这里晒太阳', __f: 'description',
         theme: 'balcony',
         items: [
-            { id: 'balcony_floor', name: '木质地板', type: 'background', icon: '🪵', cost: 0, default: true, description: '温暖的木质地板' },
-            { id: 'balcony_sunbed', name: '猫咪躺椅', type: 'furniture', icon: '🛋️', cost: 50, description: '舒适的躺椅，适合晒太阳' },
-            { id: 'balcony_plant', name: '猫草盆栽', type: 'plant', icon: '🪴', cost: 30, description: '新鲜的猫草，猫咪的最爱' },
-            { id: 'balcony_toy', name: '毛线球', type: 'toy', icon: '🧶', cost: 20, description: '经典的猫咪玩具' },
-            { id: 'balcony_bowl', name: '精致食盆', type: 'furniture', icon: '🥣', cost: 40, description: '漂亮的陶瓷食盆' },
-            { id: 'balcony_curtain', name: '蕾丝窗帘', type: 'background', icon: '🪟', cost: 60, description: '飘逸的蕾丝窗帘' },
+            { id: 'balcony_floor', name: _t('cat_game.item_balcony_floor_name', '木质地板'), __k: 'cat_game.item_balcony_floor_name', __z: '木质地板', __f: 'name', type: 'background', icon: '🪵', cost: 0, default: true, description: _t('cat_game.item_balcony_floor_desc', '温暖的木质地板'), __k: 'cat_game.item_balcony_floor_desc', __z: '温暖的木质地板', __f: 'description' },
+            { id: 'balcony_sunbed', name: _t('cat_game.item_balcony_sunbed_name', '猫咪躺椅'), __k: 'cat_game.item_balcony_sunbed_name', __z: '猫咪躺椅', __f: 'name', type: 'furniture', icon: '🛋️', cost: 50, description: _t('cat_game.item_balcony_sunbed_desc', '舒适的躺椅，适合晒太阳'), __k: 'cat_game.item_balcony_sunbed_desc', __z: '舒适的躺椅，适合晒太阳', __f: 'description' },
+            { id: 'balcony_plant', name: _t('cat_game.item_balcony_plant_name', '猫草盆栽'), __k: 'cat_game.item_balcony_plant_name', __z: '猫草盆栽', __f: 'name', type: 'plant', icon: '🪴', cost: 30, description: _t('cat_game.item_balcony_plant_desc', '新鲜的猫草，猫咪的最爱'), __k: 'cat_game.item_balcony_plant_desc', __z: '新鲜的猫草，猫咪的最爱', __f: 'description' },
+            { id: 'balcony_toy', name: _t('cat_game.item_balcony_toy_name', '毛线球'), __k: 'cat_game.item_balcony_toy_name', __z: '毛线球', __f: 'name', type: 'toy', icon: '🧶', cost: 20, description: _t('cat_game.item_balcony_toy_desc', '经典的猫咪玩具'), __k: 'cat_game.item_balcony_toy_desc', __z: '经典的猫咪玩具', __f: 'description' },
+            { id: 'balcony_bowl', name: _t('cat_game.item_balcony_bowl_name', '精致食盆'), __k: 'cat_game.item_balcony_bowl_name', __z: '精致食盆', __f: 'name', type: 'furniture', icon: '🥣', cost: 40, description: _t('cat_game.item_balcony_bowl_desc', '漂亮的陶瓷食盆'), __k: 'cat_game.item_balcony_bowl_desc', __z: '漂亮的陶瓷食盆', __f: 'description' },
+            { id: 'balcony_curtain', name: _t('cat_game.item_balcony_curtain_name', '蕾丝窗帘'), __k: 'cat_game.item_balcony_curtain_name', __z: '蕾丝窗帘', __f: 'name', type: 'background', icon: '🪟', cost: 60, description: _t('cat_game.item_balcony_curtain_desc', '飘逸的蕾丝窗帘'), __k: 'cat_game.item_balcony_curtain_desc', __z: '飘逸的蕾丝窗帘', __f: 'description' },
         ]
     },
     // 花园草坪主题
     garden: {
         id: 'garden',
-        name: '花园草坪',
-        description: '绿意盎然的花园，让猫咪尽情奔跑嬉戏',
+        name: _t('cat_game.theme_garden_name', '花园草坪'), __k: 'cat_game.theme_garden_name', __z: '花园草坪', __f: 'name',
+        description: _t('cat_game.theme_garden_desc', '绿意盎然的花园，让猫咪尽情奔跑嬉戏'), __k: 'cat_game.theme_garden_desc', __z: '绿意盎然的花园，让猫咪尽情奔跑嬉戏', __f: 'description',
         theme: 'garden',
         items: [
-            { id: 'garden_grass', name: '青青草坪', type: 'background', icon: '🌿', cost: 0, default: true, description: '柔软的绿色草坪' },
-            { id: 'garden_tree', name: '大树', type: 'plant', icon: '🌳', cost: 80, description: '可以提供阴凉的大树' },
-            { id: 'garden_flower', name: '花丛', type: 'plant', icon: '🌸', cost: 35, description: '五颜六色的花丛' },
-            { id: 'garden_tunnel', name: '猫隧道', type: 'toy', icon: '🔲', cost: 45, description: '可以钻来钻去的隧道' },
-            { id: 'garden_fountain', name: '小喷泉', type: 'furniture', icon: '⛲', cost: 100, description: '潺潺流水的小喷泉' },
-            { id: 'garden_butterfly', name: '蝴蝶装饰', type: 'toy', icon: '🦋', cost: 25, description: '会动的蝴蝶装饰' },
+            { id: 'garden_grass', name: _t('cat_game.item_garden_grass_name', '青青草坪'), __k: 'cat_game.item_garden_grass_name', __z: '青青草坪', __f: 'name', type: 'background', icon: '🌿', cost: 0, default: true, description: _t('cat_game.item_garden_grass_desc', '柔软的绿色草坪'), __k: 'cat_game.item_garden_grass_desc', __z: '柔软的绿色草坪', __f: 'description' },
+            { id: 'garden_tree', name: _t('cat_game.item_garden_tree_name', '大树'), __k: 'cat_game.item_garden_tree_name', __z: '大树', __f: 'name', type: 'plant', icon: '🌳', cost: 80, description: _t('cat_game.item_garden_tree_desc', '可以提供阴凉的大树'), __k: 'cat_game.item_garden_tree_desc', __z: '可以提供阴凉的大树', __f: 'description' },
+            { id: 'garden_flower', name: _t('cat_game.item_garden_flower_name', '花丛'), __k: 'cat_game.item_garden_flower_name', __z: '花丛', __f: 'name', type: 'plant', icon: '🌸', cost: 35, description: _t('cat_game.item_garden_flower_desc', '五颜六色的花丛'), __k: 'cat_game.item_garden_flower_desc', __z: '五颜六色的花丛', __f: 'description' },
+            { id: 'garden_tunnel', name: _t('cat_game.item_garden_tunnel_name', '猫隧道'), __k: 'cat_game.item_garden_tunnel_name', __z: '猫隧道', __f: 'name', type: 'toy', icon: '🔲', cost: 45, description: _t('cat_game.item_garden_tunnel_desc', '可以钻来钻去的隧道'), __k: 'cat_game.item_garden_tunnel_desc', __z: '可以钻来钻去的隧道', __f: 'description' },
+            { id: 'garden_fountain', name: _t('cat_game.item_garden_fountain_name', '小喷泉'), __k: 'cat_game.item_garden_fountain_name', __z: '小喷泉', __f: 'name', type: 'furniture', icon: '⛲', cost: 100, description: _t('cat_game.item_garden_fountain_desc', '潺潺流水的小喷泉'), __k: 'cat_game.item_garden_fountain_desc', __z: '潺潺流水的小喷泉', __f: 'description' },
+            { id: 'garden_butterfly', name: _t('cat_game.item_garden_butterfly_name', '蝴蝶装饰'), __k: 'cat_game.item_garden_butterfly_name', __z: '蝴蝶装饰', __f: 'name', type: 'toy', icon: '🦋', cost: 25, description: _t('cat_game.item_garden_butterfly_desc', '会动的蝴蝶装饰'), __k: 'cat_game.item_garden_butterfly_desc', __z: '会动的蝴蝶装饰', __f: 'description' },
         ]
     },
     // 温暖窝窝主题
     cozy: {
         id: 'cozy',
-        name: '温暖窝窝',
-        description: '温馨舒适的室内空间，给猫咪一个安心的家',
+        name: _t('cat_game.theme_cozy_name', '温暖窝窝'), __k: 'cat_game.theme_cozy_name', __z: '温暖窝窝', __f: 'name',
+        description: _t('cat_game.theme_cozy_desc', '温馨舒适的室内空间，给猫咪一个安心的家'), __k: 'cat_game.theme_cozy_desc', __z: '温馨舒适的室内空间，给猫咪一个安心的家', __f: 'description',
         theme: 'cozy',
         items: [
-            { id: 'cozy_carpet', name: '毛绒地毯', type: 'background', icon: '🟫', cost: 0, default: true, description: '柔软的毛绒地毯' },
-            { id: 'cozy_bed', name: '猫窝', type: 'furniture', icon: '🛏️', cost: 70, description: '温暖舒适的猫窝' },
-            { id: 'cozy_scratch', name: '猫抓板', type: 'toy', icon: '📋', cost: 30, description: '保护家具的猫抓板' },
-            { id: 'cozy_lamp', name: '小夜灯', type: 'furniture', icon: '🛋️', cost: 40, description: '温暖的小夜灯' },
-            { id: 'cozy_pillow', name: '抱枕堆', type: 'furniture', icon: '🟦', cost: 35, description: '软绵绵的抱枕堆' },
-            { id: 'cozy_cushion', name: '窗台垫', type: 'furniture', icon: '🟨', cost: 25, description: '放在窗台的软垫' },
+            { id: 'cozy_carpet', name: _t('cat_game.item_cozy_carpet_name', '毛绒地毯'), __k: 'cat_game.item_cozy_carpet_name', __z: '毛绒地毯', __f: 'name', type: 'background', icon: '🟫', cost: 0, default: true, description: _t('cat_game.item_cozy_carpet_desc', '柔软的毛绒地毯'), __k: 'cat_game.item_cozy_carpet_desc', __z: '柔软的毛绒地毯', __f: 'description' },
+            { id: 'cozy_bed', name: _t('cat_game.item_cozy_bed_name', '猫窝'), __k: 'cat_game.item_cozy_bed_name', __z: '猫窝', __f: 'name', type: 'furniture', icon: '🛏️', cost: 70, description: _t('cat_game.item_cozy_bed_desc', '温暖舒适的猫窝'), __k: 'cat_game.item_cozy_bed_desc', __z: '温暖舒适的猫窝', __f: 'description' },
+            { id: 'cozy_scratch', name: _t('cat_game.item_cozy_scratch_name', '猫抓板'), __k: 'cat_game.item_cozy_scratch_name', __z: '猫抓板', __f: 'name', type: 'toy', icon: '📋', cost: 30, description: _t('cat_game.item_cozy_scratch_desc', '保护家具的猫抓板'), __k: 'cat_game.item_cozy_scratch_desc', __z: '保护家具的猫抓板', __f: 'description' },
+            { id: 'cozy_lamp', name: _t('cat_game.item_cozy_lamp_name', '小夜灯'), __k: 'cat_game.item_cozy_lamp_name', __z: '小夜灯', __f: 'name', type: 'furniture', icon: '🛋️', cost: 40, description: _t('cat_game.item_cozy_lamp_desc', '温暖的小夜灯'), __k: 'cat_game.item_cozy_lamp_desc', __z: '温暖的小夜灯', __f: 'description' },
+            { id: 'cozy_pillow', name: _t('cat_game.item_cozy_pillow_name', '抱枕堆'), __k: 'cat_game.item_cozy_pillow_name', __z: '抱枕堆', __f: 'name', type: 'furniture', icon: '🟦', cost: 35, description: _t('cat_game.item_cozy_pillow_desc', '软绵绵的抱枕堆'), __k: 'cat_game.item_cozy_pillow_desc', __z: '软绵绵的抱枕堆', __f: 'description' },
+            { id: 'cozy_cushion', name: _t('cat_game.item_cozy_cushion_name', '窗台垫'), __k: 'cat_game.item_cozy_cushion_name', __z: '窗台垫', __f: 'name', type: 'furniture', icon: '🟨', cost: 25, description: _t('cat_game.item_cozy_cushion_desc', '放在窗台的软垫'), __k: 'cat_game.item_cozy_cushion_desc', __z: '放在窗台的软垫', __f: 'description' },
         ]
     }
 };
@@ -1599,15 +1602,15 @@ const HomeSystem = {
         const item = theme.items.find(i => i.id === itemId);
 
         if (!item) {
-            return { success: false, message: '装饰不存在' };
+            return { success: false, message: _t('cat_game.err_decor_not_found', '装饰不存在') };
         }
 
         if (this.purchasedItems[this.currentTheme]?.includes(itemId)) {
-            return { success: false, message: '已经购买过了' };
+            return { success: false, message: _t('cat_game.err_already_purchased', '已经购买过了') };
         }
 
         if (gameState.cookies < item.cost) {
-            return { success: false, message: '爱心饼干不足' };
+            return { success: false, message: _t('cat_game.err_insufficient_cookies', '爱心饼干不足') };
         }
 
         // 扣除饼干
@@ -1627,7 +1630,7 @@ const HomeSystem = {
 
         return {
             success: true,
-            message: `成功购买 ${item.name}！`,
+            message: `${_t('cat_game.purchase_success', '成功购买')} ${item.name}！`,
             remainingCookies: gameState.cookies
         };
     },
@@ -3234,24 +3237,24 @@ function createRandomCat() {
  */
 const SPECIAL_ITEMS = {
     [SPECIAL_TYPES.HEART]: {
-        name: '猫咪爱心',
+        name: _t('cat_game.special_heart_name', '猫咪爱心'),
         icon: '💖',
         effect: 'bomb3x3',
-        description: '消除周围 3×3 区域',
+        description: _t('cat_game.special_heart_desc', '消除周围 3×3 区域'),
         color: '#FF6B9D',
     },
     [SPECIAL_TYPES.PILLOW]: {
-        name: '呼噜抱枕',
+        name: _t('cat_game.special_pillow_name', '呼噜抱枕'),
         icon: '🛏️',
         effect: 'cross',
-        description: '消除整行+整列',
+        description: _t('cat_game.special_pillow_desc', '消除整行+整列'),
         color: '#C8A8E9',
     },
     [SPECIAL_TYPES.GIFT]: {
-        name: '零食礼盒',
+        name: _t('cat_game.special_gift_name', '零食礼盒'),
         icon: '🎁',
         effect: 'area+buff',
-        description: '区域爆炸+随机治愈buff',
+        description: _t('cat_game.special_gift_desc', '区域爆炸+随机治愈buff'),
         color: '#FFD93D',
     },
 };
@@ -5315,21 +5318,21 @@ function showHomeScreen() {
     homeScreen.innerHTML = `
         <div class="home-overlay">
             <div class="home-header">
-                <h2><svg class="icon icon--md"><use href="#icon-house"></use></svg> 猫咪家园</h2>
+                <h2><svg class="icon icon--md"><use href="#icon-house"></use></svg> <span data-i18n="cat_game.home_title">猫咪家园</span></h2>
                 <div class="home-level-info">
                     <span class="home-level">Lv.${HomeSystem.homeLevel}</span>
                     <div class="home-exp-bar">
                         <div class="home-exp-fill" style="width: ${HomeSystem.getHomeLevelInfo().percentage}%"></div>
                     </div>
-                    <span class="home-comfort">舒适度: ${HomeSystem.getComfortLevel()}</span>
+                    <span class="home-comfort"><span data-i18n="cat_game.home_comfort">舒适度</span>: ${HomeSystem.getComfortLevel()}</span>
                 </div>
         <button class="home-close-btn" onclick="closeHomeScreen()"><svg class="icon icon--md"><use href="#icon-x"></use></svg></button>
             </div>
             <div class="home-content">
                 <div class="home-sidebar">
-                    <button class="home-tab-btn active" data-tab="scene" onclick="switchHomeTab('scene')"><svg class="icon icon--md"><use href="#icon-house"></use></svg><br>场景</button>
-                    <button class="home-tab-btn" data-tab="shop" onclick="switchHomeTab('shop')"><svg class="icon icon--md"><use href="#icon-shop"></use></svg><br>商店</button>
-                    <button class="home-tab-btn" data-tab="themes" onclick="switchHomeTab('themes')"><svg class="icon icon--md"><use href="#icon-palette"></use></svg><br>主题</button>
+                    <button class="home-tab-btn active" data-tab="scene" onclick="switchHomeTab('scene')"><svg class="icon icon--md"><use href="#icon-house"></use></svg><br><span data-i18n="cat_game.home_tab_scene">场景</span></button>
+                    <button class="home-tab-btn" data-tab="shop" onclick="switchHomeTab('shop')"><svg class="icon icon--md"><use href="#icon-shop"></use></svg><br><span data-i18n="cat_game.home_tab_shop">商店</span></button>
+                    <button class="home-tab-btn" data-tab="themes" onclick="switchHomeTab('themes')"><svg class="icon icon--md"><use href="#icon-palette"></use></svg><br><span data-i18n="cat_game.home_tab_theme">主题</span></button>
                 </div>
                 <div class="home-main">
                     <div id="home-tab-scene" class="home-tab-content active">
@@ -5418,8 +5421,8 @@ function renderHomeScene() {
             </div>
             <div class="scene-info">
                 <h3>${theme.name}</h3>
-                <p>已购买装饰: ${purchasedItems.length}/${theme.items.length}</p>
-                <p>家园舒适度: ${HomeSystem.getComfortLevel()}</p>
+                <p><span data-i18n="cat_game.home_purchased">已购买装饰</span>: ${purchasedItems.length}/${theme.items.length}</p>
+                <p><span data-i18n="cat_game.home_comfort_label">家园舒适度</span>: ${HomeSystem.getComfortLevel()}</p>
             </div>
         </div>
     `;
@@ -5435,19 +5438,19 @@ function renderHomeShop() {
         if (unpurchasedItems.length === 0) {
             return `
                 <div class="shop-header">
-                    <h3>装饰商店</h3>
+                    <h3 data-i18n="cat_game.shop_title">装饰商店</h3>
                     <span class="shop-cookies"><svg class="icon icon--md"><use href="#icon-cookie"></use></svg> ${currentCookies}</span>
                 </div>
                 <div class="shop-empty">
                     <div class="shop-empty-icon"><svg class="icon icon--md"><use href="#icon-confetti"></use></svg></div>
-                    <div class="shop-empty-text">太棒了！<br>你已经购买了所有装饰！</div>
+                    <div class="shop-empty-text"><span data-i18n="cat_game.shop_empty_1">太棒了！</span><br><span data-i18n="cat_game.shop_empty_2">你已经购买了所有装饰！</span></div>
                 </div>
             `;
         }
 
         return `
             <div class="shop-header">
-                <h3>装饰商店</h3>
+                <h3 data-i18n="cat_game.shop_title">装饰商店</h3>
                 <span class="shop-cookies"><svg class="icon icon--md"><use href="#icon-cookie"></use></svg> ${currentCookies}</span>
             </div>
         <div class="shop-grid">
@@ -6081,3 +6084,101 @@ CatInteractionManager.showRubScreen = function(catType, side) {
 };
 
 console.log('✅ 猫咪情绪共鸣系统已加载');
+
+// ═══════════════════════════════════════════════════════════════
+//  i18n 实时重渲染：语言切换时，重新翻译在加载时即固化的动态内容
+//  （猫咪名称、Buff、请求对话、感谢语、日常对话、动作、亲密度等级等），
+//  并刷新当前可见的动态界面，确保中英文切换即时生效。
+// ═══════════════════════════════════════════════════════════════
+function _catReTranslateField(o) {
+    if (o && typeof o === 'object' && typeof o.__k === 'string') {
+        o[o.__f] = _t(o.__k, o.__z);
+    }
+}
+
+function _catReTranslateData() {
+    if (typeof CAT_TYPES !== 'undefined') CAT_TYPES.forEach(_catReTranslateField);
+    if (typeof BUFF_TYPES !== 'undefined') Object.values(BUFF_TYPES).forEach(_catReTranslateField);
+    if (typeof REQUESTS !== 'undefined') {
+        for (const grp of Object.values(REQUESTS)) {
+            if (Array.isArray(grp)) grp.forEach(_catReTranslateField);
+        }
+    }
+    if (typeof CAT_ACTIONS !== 'undefined') CAT_ACTIONS.forEach(_catReTranslateField);
+    if (typeof AFFINITY_LEVELS !== 'undefined') Object.values(AFFINITY_LEVELS).forEach(_catReTranslateField);
+    if (typeof SPECIAL_ITEMS !== 'undefined' && typeof SPECIAL_TYPES !== 'undefined') {
+        SPECIAL_ITEMS[SPECIAL_TYPES.HEART].name = _t('cat_game.special_heart_name', '猫咪爱心');
+        SPECIAL_ITEMS[SPECIAL_TYPES.HEART].description = _t('cat_game.special_heart_desc', '消除周围 3×3 区域');
+        SPECIAL_ITEMS[SPECIAL_TYPES.PILLOW].name = _t('cat_game.special_pillow_name', '呼噜抱枕');
+        SPECIAL_ITEMS[SPECIAL_TYPES.PILLOW].description = _t('cat_game.special_pillow_desc', '消除整行+整列');
+        SPECIAL_ITEMS[SPECIAL_TYPES.GIFT].name = _t('cat_game.special_gift_name', '零食礼盒');
+        SPECIAL_ITEMS[SPECIAL_TYPES.GIFT].description = _t('cat_game.special_gift_desc', '区域爆炸+随机治愈buff');
+    }
+    if (typeof DECORATION_ITEMS !== 'undefined') {
+        Object.values(DECORATION_ITEMS).forEach(theme => {
+            _catReTranslateField(theme);
+            if (Array.isArray(theme.items)) theme.items.forEach(_catReTranslateField);
+        });
+    }
+    if (typeof THANKS_MESSAGES !== 'undefined' && typeof THANKS_DEFS !== 'undefined') {
+        THANKS_MESSAGES.length = 0;
+        THANKS_DEFS.forEach(([k, z]) => THANKS_MESSAGES.push(_t(k, z)));
+    }
+    if (typeof CAT_DAILY_DIALOGUES !== 'undefined' && typeof DIALOGUE_DEFS !== 'undefined') {
+        CAT_DAILY_DIALOGUES.forEach(g => {
+            g.texts.length = 0;
+            (DIALOGUE_DEFS[g.type] || []).forEach(([k, z]) => g.texts.push(_t(k, z)));
+        });
+    }
+}
+
+function _catReRenderVisible() {
+    if (typeof updateRequestUI === 'function') updateRequestUI();
+    if (typeof BuffManager !== 'undefined' && typeof BuffManager.updateBuffUI === 'function') BuffManager.updateBuffUI();
+
+    const btnRelaxMode = document.getElementById('btn-relax-mode');
+    if (btnRelaxMode) {
+        const relax = !!(gameState && gameState.gameMode === 'relax');
+        btnRelaxMode.textContent = _t(relax ? 'cat_game.mode_level' : 'cat_game.mode_relax', relax ? '🎮 关卡' : '🌸 庭院');
+        btnRelaxMode.title = _t(relax ? 'cat_game.mode_level_title' : 'cat_game.mode_relax_title', relax ? '返回关卡模式' : '切换到猫咪庭院');
+    }
+
+    const ind = document.getElementById('relax-mode-indicator');
+    if (ind) ind.innerHTML = _t('cat_game.relax_mode_indicator', '🌸 猫咪庭院 · 悠闲模式');
+
+    const snackHint = document.getElementById('snack-hint');
+    if (snackHint) snackHint.textContent = _t('cat_game.snack_mode_hint', '😋 零食投喂模式！点击任意格子直接消除');
+
+    const affinityPanel = document.getElementById('affinity-panel');
+    if (affinityPanel && affinityPanel.style.display !== 'none' && typeof showAffinityPanel === 'function') {
+        showAffinityPanel();
+    }
+
+    // 刷新已渲染的特殊道具 hover 名称
+    if (typeof DOM !== 'undefined' && DOM.board && typeof SPECIAL_ITEMS !== 'undefined') {
+        DOM.board.querySelectorAll('.cell.special-item').forEach(el => {
+            const st = el.dataset.special;
+            if (st && SPECIAL_ITEMS[st]) {
+                el.dataset.specialName = SPECIAL_ITEMS[st].name;
+            }
+        });
+    }
+
+    // 重新渲染家园商店 / 主题 / 场景（装饰名称与描述需即时切换语言）
+    ['home-tab-shop', 'home-tab-themes', 'home-tab-scene'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (id === 'home-tab-shop' && typeof renderHomeShop === 'function') el.innerHTML = renderHomeShop();
+        else if (id === 'home-tab-themes' && typeof renderHomeThemes === 'function') el.innerHTML = renderHomeThemes();
+        else if (id === 'home-tab-scene' && typeof renderHomeScene === 'function') el.innerHTML = renderHomeScene();
+    });
+}
+
+function onCatLocaleChanged() {
+    _catReTranslateData();
+    _catReRenderVisible();
+}
+
+if (typeof window !== 'undefined') {
+    window.addEventListener('localeChanged', onCatLocaleChanged);
+}
