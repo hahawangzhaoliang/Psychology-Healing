@@ -13,8 +13,7 @@ const pages = [
   'public/charging-station.html',
   'public/community.html',
   'public/practice.html',
-  'public/role.html',
-  'public/cat-game.html'
+  'public/role.html'
 ];
 
 // Key UI text that appears in multiple pages - add data-i18n attribute

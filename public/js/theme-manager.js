@@ -220,7 +220,6 @@ class ThemeManager {
         switch (themeName) {
             case 'home':          this.createHomeEffects();          break;
             case 'work':          this.createWorkEffects();          break;
-            case 'entertainment': this.createEntertainmentEffects(); break;
         }
     }
 
@@ -1137,68 +1136,6 @@ class ThemeManager {
         }, 2500);
     }
 
-    /* ===== 娱乐主题 ===== */
-    createEntertainmentEffects() {
-        const container = document.createElement('div');
-        container.id = 'theme-effects';
-        container.innerHTML = `
-            <canvas id="particle-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;"></canvas>
-            <style>
-                .game-entrance{position:fixed;bottom:20px;right:20px;z-index:10;}
-                .game-btn{
-                    background:linear-gradient(135deg,#2ebe9a,#20a882);color:white;
-                    padding:15px 25px;border-radius:25px;border:none;cursor:pointer;
-                    font-size:16px;font-weight:600;
-                    box-shadow:0 4px 15px rgba(46,190,154,0.35);transition:all 0.3s ease;
-                }
-                .game-btn:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(46,190,154,0.45);}
-            </style>
-            <div class="game-entrance">
-                <button class="game-btn" onclick="window.location.href='cat-game.html'" data-i18n="flow.relax_game">🎮 放松游戏</button>
-            </div>
-        `;
-        document.body.appendChild(container);
-        this.startParticles();
-    }
-
-    /* ===== 拖拽交互 ===== */
-    /* ===== 粒子动画 ===== */
-    startParticles() {
-        const canvas = document.getElementById('particle-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const particles = Array.from({ length: 50 }, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 3 + 1,
-            color: Math.random() > 0.5 ? '#2ebe9a' : '#F5A9B8',
-            speedX: (Math.random() - 0.5) * 0.5,
-            speedY: (Math.random() - 0.5) * 0.5
-        }));
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.x += p.speedX; p.y += p.speedY;
-                if (p.x < 0 || p.x > canvas.width)  p.speedX *= -1;
-                if (p.y < 0 || p.y > canvas.height)  p.speedY *= -1;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.globalAlpha = 0.6;
-                ctx.fill();
-            });
-            requestAnimationFrame(animate);
-        };
-        animate();
-        window.addEventListener('resize', () => {
-            canvas.width  = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-    }
 
     /* ===== 情绪卡片 ===== */
     openEmotionCard(emotion) {

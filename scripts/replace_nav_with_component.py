@@ -19,7 +19,6 @@ PAGE_KEY = {
     'companion.html':         'companion',
     'community.html':         'community',
     'charging-station.html': 'charging-station',
-    'cat-game.html':          'cat-game',
     'growth-statistics.html': 'growth-statistics',
     'role.html':              'role',
     'article.html':           'article',
