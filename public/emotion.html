@@ -1461,6 +1461,9 @@
 
                 showToast(_t('emotion.toast_saved', '记录保存成功') + ' 🌟', 'success');
 
+                /* P0 埋点：情绪日记完成（匿名，仅事件计数） */
+                try { if (window.Analytics) window.Analytics.track('emotion_diary_complete'); } catch (e) { /* ignore */ }
+
                 /* 重置表单 */
                 selectedEmotions = [];
                 selectedIntensity = 5;

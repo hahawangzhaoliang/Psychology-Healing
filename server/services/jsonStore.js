@@ -36,10 +36,25 @@ try {
 
 const CACHE_TTL = 60; // 秒
 
+// Redis 操作超时（毫秒）：网络不可达时快速降级为直读 Blob，避免接口挂起
+const REDIS_TIMEOUT_MS = 3000;
+
+async function withRedisTimeout(promise, label) {
+    let timer;
+    const timeout = new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error(label + ' 超时(' + REDIS_TIMEOUT_MS + 'ms)')), REDIS_TIMEOUT_MS);
+    });
+    try {
+        return await Promise.race([promise, timeout]);
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
 async function getFromCache(key) {
     if (!redisClient) return null;
     try {
-        const cached = await redisClient.get(key);
+        const cached = await withRedisTimeout(redisClient.get(key), 'Redis 读取缓存');
         // @upstash/redis v1.x 会自动 JSON.parse，所以 cached 已经是对象或 null
         return cached || null;
     } catch (err) {
@@ -52,7 +67,7 @@ async function setCache(key, value) {
     if (!redisClient) return;
     try {
         // @upstash/redis v1.x 会自动 JSON.stringify 对象
-        await redisClient.set(key, value, { ex: CACHE_TTL });
+        await withRedisTimeout(redisClient.set(key, value, { ex: CACHE_TTL }), 'Redis 写入缓存');
     } catch (err) {
         console.warn('[JSONStore] Redis 写入缓存失败:', err.message);
     }
@@ -61,7 +76,7 @@ async function setCache(key, value) {
 async function invalidateCache(key) {
     if (!redisClient) return;
     try {
-        await redisClient.del(key);
+        await withRedisTimeout(redisClient.del(key), 'Redis 失效缓存');
     } catch (err) {
         console.warn('[JSONStore] Redis 失效缓存失败:', err.message);
     }

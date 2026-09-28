@@ -318,32 +318,6 @@
             font-weight: 600;
         }
 
-        /* ---------- 科学背书区域 ---------- */
-        .science-grid {
-            max-width: 72rem;
-            margin: 0 auto;
-            padding: 5rem 1.5rem 4rem;
-            position: relative;
-        }
-        /* 左侧装饰竖线 */
-        .science-grid::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(180deg, transparent, var(--color-primary-200));
-            opacity: 0.6;
-        }
-
-        @media (min-width: 640px) {
-            .science-grid {
-                padding: 6rem 2rem 5rem;
-            }
-        }
-
         .science-card {
             background: var(--theme-card);
             border-radius: var(--radius-xl);
@@ -1008,8 +982,7 @@
                     碎片化<span class="highlight">疗愈</span><br>陪伴你的每一刻
                 </h1>
                 <p class="hero-subtitle" data-i18n="hero.subtitle">
-                    1-7分钟快速放松，在工作学习的间隙照顾自己<br>
-                    基于科学论文，温暖陪伴每一天
+                    1-7分钟快速放松，在工作学习的间隙照顾自己
                 </p>
                 <div class="hero-cta">
                     <a href="relax.html" class="btn btn-primary btn-lg" style="text-decoration:none;" data-i18n="hero.cta_primary">
@@ -1025,49 +998,12 @@
         <!-- 核心功能 -->
         <section class="features-grid">
             <div class="section-label fade-in-up" style="animation-delay:0.15s;">
-                <h2 data-i18n="index.features_title">四大核心功能</h2>
-                <p data-i18n="index.features_subtitle">科学驱动，温暖陪伴</p>
+                <h2 data-i18n="index.primary_title">从这里开始</h2>
+                <p data-i18n="index.primary_subtitle">三件小事，照顾好此刻的自己</p>
             </div>
 
-            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-2" data-stagger="fade-in-up">
-                <!-- 疗愈练习 -->
-                <a href="relax.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
-                    <div style="display:flex;align-items:flex-start;gap:1rem;">
-                        <div class="feature-icon" style="background:var(--color-primary-100);">
-                            <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-                            </svg>
-                        </div>
-                        <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.feature_healing_title">碎片化疗愈练习</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.feature_healing_desc">1分钟呼吸觉察、3分钟身体扫描、5分钟正念冥想、7分钟深度放松</p>
-                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_science"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_instant"><span style="color:var(--color-primary-400);">✓</span> 即时效果</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="flow-experience.html" class="card" style="text-decoration:none;display:block;position:relative;" data-touch-feedback>
-                    <div style="display:flex;align-items:flex-start;gap:1rem;">
-                        <div class="feature-icon" style="background:linear-gradient(135deg,#FED7AA,#FDBA74);">
-                            <svg style="width:28px;height:28px;color:#EA580C;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
-                        </div>
-                        <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.feature_flow_title">心流体验室</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.feature_flow_desc">发现你的热爱、15-60分钟深度投入、获得心流体验与成长</p>
-                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_flow_theory"><span style="color:var(--color-primary-400);">✓</span> 心流理论</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_flow_activity"><span style="color:var(--color-primary-400);">✓</span> 活动发现</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 情绪觉察 -->
+            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
+                <!-- 主入口：情绪日记 -->
                 <a href="emotion.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
                     <div style="display:flex;align-items:flex-start;gap:1rem;">
                         <div class="feature-icon" style="background:var(--color-warm-100);">
@@ -1076,8 +1012,8 @@
                             </svg>
                         </div>
                         <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.feature_emotion_title">情绪觉察工具</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.feature_emotion_desc">记录情绪日记、了解情绪模式、获得调节建议</p>
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_diary_title">情绪日记</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_diary_desc">记录此刻的感受，看见自己的情绪模式，获得温和的调节建议</p>
                             <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
                                 <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_self_awareness"><span style="color:var(--color-primary-400);">✓</span> 自我觉察</span>
                                 <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_data_analysis"><span style="color:var(--color-primary-400);">✓</span> 数据分析</span>
@@ -1086,39 +1022,39 @@
                     </div>
                 </a>
 
-                <!-- 角色探索 -->
-                <a href="role.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                <!-- 主入口：放松练习 -->
+                <a href="relax.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
                     <div style="display:flex;align-items:flex-start;gap:1rem;">
-                        <div class="feature-icon" style="background:var(--color-primary-50);">
-                            <svg style="width:28px;height:28px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        <div class="feature-icon" style="background:var(--color-primary-100);">
+                            <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
                         </div>
                         <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.feature_role_title">身份角色探索</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.feature_role_desc">识别多重角色、分析角色冲突、获得平衡建议</p>
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_relax_title">放松练习</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_relax_desc">1-7分钟的呼吸觉察、身体扫描与正念冥想，随时为自己充电</p>
                             <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_identity"><span style="color:var(--color-primary-400);">✓</span> 身份认同</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_role_balance"><span style="color:var(--color-primary-400);">✓</span> 角色平衡</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_science"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_instant"><span style="color:var(--color-primary-400);">✓</span> 即时效果</span>
                             </div>
                         </div>
                     </div>
                 </a>
 
-                <!-- 知识图谱 -->
-                <a href="knowledge-graph.html" class="card" style="text-decoration:none;display:block;" data-touch-feedback>
+                <!-- 主入口：求助导航 -->
+                <a href="crisis-support.html" class="card" style="text-decoration:none;display:block;position:relative;" data-touch-feedback>
                     <div style="display:flex;align-items:flex-start;gap:1rem;">
-                        <div class="feature-icon" style="background:var(--color-warm-100);">
-                            <svg style="width:28px;height:28px;color:#92400E;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                        <div class="feature-icon" style="background:var(--color-primary-50);">
+                            <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h2.28a1 1 0 01.95.68l1.2 3.6a1 1 0 01-.44 1.16l-1.57 1.05a13.5 13.5 0 006.88 6.88l1.05-1.57a1 1 0 011.16-.44l3.6 1.2a1 1 0 01.68.95V19a2 2 0 01-2 2h-1C9.72 21 3 14.28 3 6V5z"></path>
                             </svg>
                         </div>
                         <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.feature_knowledge_title">心理知识图谱</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.feature_knowledge_desc">可视化知识关联、个性化学习路径、论文来源标注</p>
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_help_title">求助导航</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_help_desc">心理援助热线与危机支持资源，需要时随时可用</p>
                             <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_systematic"><span style="color:var(--color-primary-400);">✓</span> 系统学习</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_science"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="crisis.h1"><span style="color:var(--color-primary-400);">✓</span> 全国心理援助热线</span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.helpline_note"><span style="color:var(--color-primary-400);">✓</span> 24小时免费服务</span>
                             </div>
                         </div>
                     </div>
@@ -1126,11 +1062,11 @@
             </div>
         </section>
 
-        <!-- 新功能推荐 -->
+        <!-- 更多工具 -->
         <section class="new-features-grid">
             <div class="section-label fade-in-up" style="animation-delay:0.2s;">
-                <h2 data-i18n="index.new_section_title">✨ 全新体验</h2>
-                <p data-i18n="index.new_section_subtitle">更多温暖功能，陪伴你的每一刻</p>
+                <h2 data-i18n="index.tools_title">更多工具</h2>
+                <p data-i18n="index.tools_subtitle">探索更多温暖陪伴的方式</p>
             </div>
 
             <div style="display:grid;gap:1.5rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
@@ -1145,7 +1081,7 @@
                 </a>
 
                 <a href="charging-station.html" class="new-feature-card" data-touch-feedback>
-                    <span class="emoji">⚡</span>
+                    <span class="emoji">🎐</span>
                     <h3 data-i18n="index.new_charging_title">5分钟充电站</h3>
                     <p data-i18n="index.new_charging_desc">治愈图片 + 神经音乐 + 微故事</p>
                     <div class="tags">
@@ -1155,13 +1091,23 @@
                     </div>
                 </a>
 
-                <a href="emotion.html" class="new-feature-card" data-touch-feedback>
-                    <span class="emoji">🌡️</span>
-                    <h3 data-i18n="index.new_thermometer_title">情绪温度计</h3>
-                    <p data-i18n="index.new_thermometer_desc">滑动量表 + 情绪曲线 + 调节建议</p>
+                <a href="knowledge-graph.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">🌐</span>
+                    <h3 data-i18n="index.feature_knowledge_title">心理知识图谱</h3>
+                    <p data-i18n="index.feature_knowledge_desc">可视化知识关联、个性化学习路径</p>
                     <div class="tags">
-                        <span class="tag" style="background:#D1FAE5;color:#065F46;" data-i18n="index.tag_self_awareness">自我觉察</span>
-                        <span class="tag" style="background:#FCE7F3;color:#9D174D;" data-i18n="index.tag_data_analysis">数据分析</span>
+                        <span class="tag" style="background:#D1FAE5;color:#065F46;" data-i18n="index.tag_systematic">系统学习</span>
+                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.tag_science">科学依据</span>
+                    </div>
+                </a>
+
+                <a href="role.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">🧩</span>
+                    <h3 data-i18n="index.feature_role_title">身份角色探索</h3>
+                    <p data-i18n="index.feature_role_desc">识别多重角色、分析角色冲突</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#E9D5FF;color:#6B21A8;" data-i18n="index.tag_identity">身份认同</span>
+                        <span class="tag" style="background:#FED7AA;color:#9A3412;" data-i18n="index.tag_role_balance">角色平衡</span>
                     </div>
                 </a>
 
@@ -1179,41 +1125,6 @@
             <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--theme-text-light);" data-i18n="index.new_hint">
                 <svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> <span data-i18n="index.new_hint_text">点击左上角的动物伙伴，与它互动并切换场景主题</span>
             </p>
-        </section>
-
-        <!-- 科学依据 -->
-        <section class="science-grid">
-            <div class="section-label fade-in-up" style="animation-delay:0.2s;">
-                <h2 data-i18n="index.science_title">基于科学论文</h2>
-                <p data-i18n="index.science_subtitle">每个功能都有心理学和脑科学的研究支撑</p>
-            </div>
-
-            <div style="display:grid;gap:2rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
-                <div class="science-card">
-                    <span class="icon"><svg class="icon icon--md"><use href="#icon-knowledge"></use></svg></span>
-                    <h3 data-i18n="index.science_mindfulness_title">正念冥想神经科学</h3>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Tang et al. (2015)</p>
-                    <p class="ref" data-i18n="index.science_mindfulness_ref">Nature Reviews Neuroscience</p>
-                </div>
-                <div class="science-card">
-                    <span class="icon"><svg class="icon icon--md"><use href="#icon-heart"></use></svg></span>
-                    <h3 data-i18n="index.science_positive_title">积极心理学</h3>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Seligman (2011)</p>
-                    <p class="ref" data-i18n="index.science_positive_ref">PERMA模型</p>
-                </div>
-                <div class="science-card">
-                    <span class="icon">⚖️</span>
-                    <h3 data-i18n="index.science_regulation_title">情绪调节理论</h3>
-                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.5rem;">Gross (2015)</p>
-                    <p class="ref" data-i18n="index.science_regulation_ref">Psychological Inquiry</p>
-                </div>
-            </div>
-
-            <div style="text-align:center;margin-top:2rem;">
-                <a href="knowledge-graph.html" class="btn btn-ghost" style="text-decoration:none;" data-i18n="index.science_cta">
-                    查看完整知识图谱 →
-                </a>
-            </div>
         </section>
 
         <!-- 快速开始 -->

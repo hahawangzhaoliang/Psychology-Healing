@@ -198,8 +198,7 @@ xinqing-space/
 # 通过 API 触发
 curl "https://your-domain.vercel.app/api/knowledge/cron-update?secret=your-secret"
 
-# 或本地执行
-npm run update-knowledge
+# 或通过 Vercel Cron 每日自动更新（见上方配置）
 ```
 
 ### 数据源
@@ -321,7 +320,7 @@ docker run -d -p 3000:3000 \
 
 ## 📄 开源协议
 
-本项目采用 [MIT](LICENSE) 协议开源。
+本项目采用 [AGPL v3.0](LICENSE) 协议开源，详情见文件顶部版权声明。
 
 ## 🙏 致谢
 

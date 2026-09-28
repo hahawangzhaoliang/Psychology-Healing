@@ -39,10 +39,10 @@ temp/
 
 # 测试覆盖率
 coverage/
+test.js
 
 # 缓存
 .cache/
-
 .vercel
 
 # 内部文档（不发布到GitHub）
@@ -50,6 +50,7 @@ docs/
 deliverables/
 prototype/
 scripts/
+DESIGN.md
 
 # 工具文件夹
 .dumate/

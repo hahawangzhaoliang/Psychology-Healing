@@ -30,6 +30,7 @@
     { key: 'nav.knowledge',  href: 'knowledge-graph.html', label: '知识图谱' },
     { key: 'nav.about',      href: 'about.html',           label: '关于我们' },
     { key: 'nav.companion',  href: 'companion.html',       label: '我的伙伴' },
+    { key: 'nav.help',       href: 'crisis-support.html',  label: '心理求助' },
   ];
 
   // ========== 渲染导航栏 ==========
@@ -187,6 +188,44 @@
       faviconLink.type = 'image/png';
       document.head.appendChild(faviconLink);
     }
+
+    // ---- 轻量匿名埋点（P0）：自动 page_view + 求助入口点击 ----
+    bindAnalytics();
+  }
+
+  // ========== 轻量匿名埋点（P0） ==========
+  // 隐私优先：仅事件类型 + 页面路径，无 Cookie / IP / UA
+  function bindAnalytics() {
+    function ensureAnalytics(cb) {
+      if (window.Analytics) {
+        if (typeof cb === 'function') cb();
+        return;
+      }
+      var s = document.createElement('script');
+      s.src = 'js/analytics.js';
+      s.async = true;
+      s.onload = function () { if (typeof cb === 'function') cb(); };
+      s.onerror = function () { /* 埋点不可用时静默降级，不影响页面 */ };
+      document.head.appendChild(s);
+    }
+
+    // 1. 自动记录页面访问
+    ensureAnalytics(function () {
+      if (window.Analytics) window.Analytics.track('page_view');
+    });
+
+    // 2. 求助入口点击（委托监听，覆盖导航 / 页脚 / 内容中的所有危机页链接）
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      var link = target && target.closest
+        ? target.closest('a[href$="crisis-support.html"], a[href^="tel:"]')
+        : null;
+      if (link && window.Analytics) {
+        var page = '';
+        try { page = location.pathname || ''; } catch (err) { /* ignore */ }
+        window.Analytics.track('help_nav_click', { from: page });
+      }
+    });
   }
 
   // ========== 下拉菜单交互 ==========

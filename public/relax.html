@@ -1144,6 +1144,8 @@
                         breathingCycle++;
                         if (breathingCycle >= 4) {
                             stopBreathing();
+                            /* P0 埋点：呼吸练习完成 */
+                            try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'breathing' }); } catch (e) { /* ignore */ }
                             document.getElementById('breathingInstruction').innerHTML = `
                                 <div style="text-align:center;">
                                     <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">练习完成 🌟</p>
@@ -1207,6 +1209,8 @@
             function updateScan() {
                 if (scanStep >= scanSteps.length) {
                     stopBodyScan();
+                    /* P0 埋点：身体扫描完成 */
+                    try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'body_scan' }); } catch (e) { /* ignore */ }
                     document.getElementById('scanInstruction').innerHTML = `
                         <div style="text-align:center;">
                             <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">扫描完成 🌟</p>
@@ -1297,6 +1301,8 @@
 
                 if (mindfulnessSeconds <= 0) {
                     stopMindfulness();
+                    /* P0 埋点：冥想练习完成 */
+                    try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'mindfulness' }); } catch (e) { /* ignore */ }
                     document.getElementById('mindfulnessInstruction').innerHTML = `
                         <div style="text-align:center;">
                             <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">冥想结束 🌟</p>

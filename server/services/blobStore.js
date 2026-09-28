@@ -33,7 +33,24 @@ const MEDIA_IMAGE_PREFIX = 'media/images/';
 const MEDIA_AUDIO_PREFIX = 'media/audio/';
 
 /**
+ * 判断是否「文件不存在」类错误（确定性状态，不应重试）
+ */
+function isNotFoundError(err) {
+    if (!err) return false;
+    const msg = String(err.message || '').toLowerCase();
+    return (
+        err.status === 404 ||
+        err.statusCode === 404 ||
+        err.code === 'BLOB_NOT_FOUND' ||
+        msg.includes('does not exist') ||
+        msg.includes('not found') ||
+        msg.includes('no such blob')
+    );
+}
+
+/**
  * 读取 JSON 数据文件（从 Blob，降级到本地文件）
+ * 文件不存在时返回 null（确定性状态，不重试）；其他错误最多重试 3 次
  */
 async function readJsonFromBlob(filename) {
     const blob = getBlobClient();
@@ -41,13 +58,23 @@ async function readJsonFromBlob(filename) {
     
     console.log(`[BlobStore] 尝试从 Blob 读取: ${filepath}`);
 
-    // 尝试从 Blob 读取（带重试）
+    let lastError = null;
     for (let attempt = 0; attempt < 3; attempt++) {
         try {
             console.log(`[BlobStore] Blob 读取尝试 ${attempt + 1}/3`);
             
             // v0.27 API: 使用 head 获取文件信息，然后用 downloadUrl 下载
-            const result = await blob.head(filepath);
+            let result;
+            try {
+                result = await blob.head(filepath);
+            } catch (headErr) {
+                // 文件不存在：确定性状态，直接返回 null，不做无意义重试
+                if (isNotFoundError(headErr)) {
+                    console.log(`[BlobStore] Blob 文件不存在（不重试）: ${filepath}`);
+                    return null;
+                }
+                throw headErr;
+            }
             console.log(`[BlobStore] Blob head 成功: ${JSON.stringify({ pathname: result.pathname, size: result.size })}`);
 
             if (result.downloadUrl) {
@@ -64,6 +91,7 @@ async function readJsonFromBlob(filename) {
             }
             throw new Error('downloadUrl 不存在');
         } catch (error) {
+            lastError = error;
             console.log(`[BlobStore] Blob 读取尝试 ${attempt + 1} 失败: ${error.message}`);
             if (attempt < 2) {
                 console.log(`[BlobStore] 等待 1 秒后重试...`);
@@ -74,7 +102,7 @@ async function readJsonFromBlob(filename) {
     
     // 所有重试都失败，抛出错误（不再降级到本地文件）
     console.log(`[BlobStore] ❌ Blob 读取全部失败（3 次重试）`);
-    throw new Error(`Blob 读取失败（3次重试）: ${filename}`);
+    throw new Error(`Blob 读取失败（3次重试）: ${filename} (最后一次: ${lastError ? lastError.message : '未知'})`);
 }
 
 /**
