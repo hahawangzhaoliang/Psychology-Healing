@@ -145,6 +145,23 @@
           ${switcherDesktop}
         </div>
 
+        <!-- 用户档案徽章（P2） -->
+        <div style="position:relative;margin-left:0.5rem;">
+          <button onclick="UserMenu.toggle(event)" style="display:flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-card);color:var(--theme-text);font-size:0.85rem;cursor:pointer;transition:all 0.2s;max-width:11rem;" title="我的档案">
+            <span id="userBadgeEmoji" style="font-size:1rem;">🌟</span>
+            <span id="userBadgeName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">微光旅人</span>
+            <svg style="width:12px;height:12px;flex-shrink:0;color:var(--theme-text-light);" fill="none" stroke="currentColor" viewBox="0 0 12 12"><path d="M3 5l3 3 3-3"/></svg>
+          </button>
+          <div id="userMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--theme-card);border:1px solid var(--theme-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:0.875rem;min-width:13rem;z-index:100;">
+            <div style="font-size:0.8rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="user.menu_title">我的本地档案</div>
+            <div style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.25rem;">
+              <span data-i18n="user.member_since">建立于</span> <span id="userCreatedAt">—</span>
+            </div>
+            <div style="font-size:0.75rem;color:var(--theme-text-light);margin-bottom:0.75rem;font-family:monospace;" id="userUid">—</div>
+            <button onclick="UserMenu.newProfile()" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-bg);color:var(--theme-text);font-size:0.8rem;cursor:pointer;transition:all 0.2s;" data-i18n="user.new_profile">新建档案</button>
+          </div>
+        </div>
+
         <button onclick="toggleMobileMenu()" style="display:flex;padding:0.5rem;color:var(--theme-text-light);background:none;border:none;cursor:pointer;" class="md:hidden" aria-label="打开菜单">
           <svg style="width:24px;height:24px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -155,6 +172,11 @@
       <div id="mobileMenu" class="mobile-menu">
         ${mobileLinks}
         ${switcherMobile}
+        <div style="padding:0.75rem 1.25rem;border-top:1px solid var(--theme-border);display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--theme-text-light);">
+          <span style="font-size:1.1rem;" id="userBadgeEmojiM">🌟</span>
+          <span id="userBadgeNameM">微光旅人</span>
+          <button onclick="UserMenu.newProfile()" style="margin-left:auto;padding:0.25rem 0.625rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:transparent;color:var(--theme-text);font-size:0.75rem;cursor:pointer;" data-i18n="user.new_profile">新建档案</button>
+        </div>
       </div>
     </nav>`;
 
@@ -191,7 +213,64 @@
 
     // ---- 轻量匿名埋点（P0）：自动 page_view + 求助入口点击 ----
     bindAnalytics();
+
+    // ---- 修复：固定导航遮挡内容 —— 同步 body 顶部内边距 ----
+    bindNavbarPadding();
+
+    // ---- 用户档案徽章（P2） ----
+    renderUserBadge();
   }
+
+  // ========== 用户档案徽章（P2） ==========
+  function renderUserBadge() {
+    if (!window.UserStore) return;
+    try {
+      var profile = UserStore.profile();
+      var emojiEl = document.getElementById('userBadgeEmoji');
+      var nameEl = document.getElementById('userBadgeName');
+      if (emojiEl) emojiEl.textContent = profile.emoji || '🌟';
+      if (nameEl) nameEl.textContent = profile.name || '微光旅人';
+      var emojiM = document.getElementById('userBadgeEmojiM');
+      var nameM = document.getElementById('userBadgeNameM');
+      if (emojiM) emojiM.textContent = profile.emoji || '🌟';
+      if (nameM) nameM.textContent = profile.name || '微光旅人';
+      var createdEl = document.getElementById('userCreatedAt');
+      if (createdEl && profile.createdAt) {
+        createdEl.textContent = new Date(profile.createdAt).toLocaleDateString();
+      }
+      var uidEl = document.getElementById('userUid');
+      if (uidEl) uidEl.textContent = 'UID ' + profile.uid.slice(0, 8);
+    } catch (e) { /* ignore */ }
+  }
+
+  // 用户菜单全局接口
+  window.UserMenu = {
+    toggle: function (e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      var menu = document.getElementById('userMenu');
+      if (!menu) return;
+      var show = menu.style.display !== 'block';
+      menu.style.display = show ? 'block' : 'none';
+      if (show) {
+        setTimeout(function () {
+          document.addEventListener('click', UserMenu.hide, { once: true });
+        }, 0);
+      }
+    },
+    hide: function () {
+      var menu = document.getElementById('userMenu');
+      if (menu) menu.style.display = 'none';
+    },
+    newProfile: function () {
+      if (!window.UserStore) return;
+      var ok = confirm(I18N && I18N.currentLocale === 'en'
+        ? 'This will create a new local profile. Your current profile data stays saved on this device. Continue?'
+        : '将开启一个新的本地档案。当前档案的数据仍会保留在本地，不会丢失。确定继续吗？');
+      if (!ok) return;
+      UserStore.newProfile();
+      window.location.reload();
+    }
+  };
 
   // ========== 轻量匿名埋点（P0） ==========
   // 隐私优先：仅事件类型 + 页面路径，无 Cookie / IP / UA
@@ -316,6 +395,9 @@
     const menu = document.getElementById('mobileMenu');
     if (!menu) return;
     menu.classList.toggle('open');
+    // 菜单展开后导航变高，同步 body 顶部内边距，避免内容被遮
+    const navbar = document.getElementById('navbar');
+    if (navbar) document.body.style.paddingTop = navbar.offsetHeight + 'px';
   };
 
   function bindNavbarScroll() {
@@ -330,6 +412,33 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  }
+
+  /**
+   * 修复 fixed 导航遮挡内容：
+   * 导航 position:fixed 脱离文档流，页面内容从视口顶部开始，
+   * 顶部 64px 被导航盖住。这里把导航实际高度同步为 body 的 padding-top，
+   * 使内容整体下移，且移动端菜单展开 / 窗口尺寸变化时自动跟随。
+   */
+  function bindNavbarPadding() {
+    const navbar = document.getElementById('navbar');
+    if (!navbar) return;
+
+    function sync() {
+      document.body.style.paddingTop = navbar.offsetHeight + 'px';
+    }
+
+    sync();
+
+    // 优先用 ResizeObserver：菜单展开收起、字体变化、窗口 resize 都会触发
+    if (typeof ResizeObserver === 'function') {
+      try {
+        const ro = new ResizeObserver(sync);
+        ro.observe(navbar);
+        return;
+      } catch (err) { /* fallback 到 resize 监听 */ }
+    }
+    window.addEventListener('resize', sync, { passive: true });
   }
 
   // ========== 暴露全局 API ==========

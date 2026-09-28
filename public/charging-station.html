@@ -361,6 +361,171 @@
             margin: 0 auto;
         }
 
+        /* ---------- 情绪急救站（P1） ---------- */
+        .firstaid-section {
+            background: var(--theme-card);
+            border-top: 1px solid var(--theme-border);
+            padding: 3rem 1.5rem;
+        }
+        .firstaid-inner {
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+        .firstaid-emotions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0 1.25rem;
+        }
+        .firstaid-emo-btn {
+            background: var(--theme-card);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-xl);
+            padding: 1.25rem 0.75rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--theme-text);
+            cursor: pointer;
+            transition: all var(--duration-normal) var(--ease-spring);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.375rem;
+        }
+        .firstaid-emo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--color-primary-200);
+        }
+        .firstaid-emo-btn.active {
+            background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50));
+            border-color: var(--color-primary-300);
+        }
+        .firstaid-emo-btn .emo-icon { font-size: 1.75rem; }
+        .firstaid-panel {
+            background: var(--theme-card);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-xl);
+            padding: 1.75rem 1.5rem;
+            box-shadow: var(--shadow-sm);
+            animation: fadeSlideIn 0.35s var(--ease-spring);
+        }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .firstaid-panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .firstaid-sym-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .firstaid-chip {
+            background: var(--color-primary-50);
+            color: var(--color-primary-500);
+            border-radius: var(--radius-full);
+            padding: 0.375rem 0.875rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .firstaid-methods {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+        .firstaid-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--theme-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-lg);
+            padding: 0.875rem 1.125rem;
+            flex-wrap: wrap;
+        }
+        .firstaid-method .m-name {
+            font-weight: 600;
+            color: var(--theme-text);
+            flex: 1;
+            min-width: 7rem;
+        }
+        .firstaid-method .m-dur {
+            font-size: 0.75rem;
+            color: var(--color-primary-500);
+            background: var(--color-primary-50);
+            border-radius: var(--radius-full);
+            padding: 0.25rem 0.625rem;
+            white-space: nowrap;
+        }
+        .firstaid-method .m-desc {
+            font-size: 0.85rem;
+            color: var(--theme-text-light);
+            width: 100%;
+            padding-left: 0;
+        }
+        .firstaid-method .m-cta {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: white;
+            background: var(--color-primary-400);
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+            white-space: nowrap;
+        }
+        .firstaid-method .m-cta:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+        .firstaid-help {
+            background: var(--color-warm-50);
+            border: 1px solid var(--color-warm-200);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            font-size: 0.875rem;
+            color: var(--color-warm-600);
+            line-height: 1.8;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        .firstaid-help .btn-help {
+            background: var(--color-warm-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1.125rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all var(--duration-fast) var(--ease-spring);
+            text-decoration: none;
+            display: inline-block;
+        }
+        .firstaid-help .btn-help:hover { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+        .firstaid-close {
+            background: var(--theme-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-full);
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .firstaid-close:hover { background: var(--color-gray-100); }
+        @media (max-width: 640px) {
+            .firstaid-emotions { grid-template-columns: repeat(2, 1fr); }
+        }
+
         /* ---------- 页脚 ---------- */
         .site-footer {
             background: var(--theme-card);
@@ -393,6 +558,7 @@
     <!-- Optional certified CMP: enable "Privacy & messaging" in AdSense; if active it overrides the banner above -->
     <script async src="https://fundingchoicesmessages.google.com/i/ca-pub-6203482765648217?nc=1" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
+<script src="js/user-store.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -931,6 +1097,24 @@
         </button>
     </div>
 
+    <!-- ===== 情绪急救站（P1） ===== -->
+    <section class="firstaid-section" id="firstaidSection">
+        <div class="firstaid-inner">
+            <div style="text-align:center;margin-bottom:1rem;">
+                <h2 style="font-size:1.5rem;font-weight:700;color:var(--theme-text);" data-i18n="firstaid.section_title">⛑️ 情绪急救站</h2>
+                <p style="font-size:0.95rem;color:var(--theme-text-light);margin-top:0.375rem;" data-i18n="firstaid.section_sub">此刻感到难受？先识别情绪，获取即时可用的急救方法</p>
+            </div>
+            <div class="firstaid-emotions" id="firstaidEmotions"></div>
+            <div class="firstaid-panel" id="firstaidPanel" style="display:none;">
+                <div class="firstaid-panel-head">
+                    <h3 id="firstaid-title" style="font-size:1.15rem;font-weight:700;color:var(--theme-text);"></h3>
+                    <button class="firstaid-close" onclick="closeFirstAid()" data-i18n="firstaid.panel_close">✕ 收起</button>
+                </div>
+                <div id="firstaid-content"></div>
+            </div>
+        </div>
+    </section>
+
     <!-- 今日推荐 -->
     <section class="recommend-section">
         <div class="recommend-grid">
@@ -1365,6 +1549,103 @@
 
         /* ========== 移动端菜单 ========== */
 
+        /* ========== 情绪急救站（P1） ========== */
+        const FIRSTAID_EMOTION_MAP = { anxiety: '焦虑', depression: '抑郁', stress: '压力', anger: '愤怒' };
+        const FIRSTAID_LINKS = {
+            '腹式呼吸': 'relax.html', '深呼吸': 'relax.html', '正念冥想': 'relax.html', '正念练习': 'relax.html',
+            '认知重构': 'emotion.html', '渐进式肌肉放松': 'relax.html', '行为激活': 'relax.html',
+            '运动疗愈': 'relax.html', '感恩日记': 'relax.html', '身体扫描': 'relax.html',
+        };
+        let firstAidData = null;
+        let currentFirstAidKey = null;
+
+        async function initFirstAid() {
+            const wrap = document.getElementById('firstaidEmotions');
+            if (!wrap) return;
+            wrap.innerHTML = Object.keys(FIRSTAID_EMOTION_MAP).map(k =>
+                '<button class="firstaid-emo-btn" data-key="' + k + '" onclick="openFirstAid(\'' + k + '\')">' +
+                '<span class="emo-icon">' + ({ anxiety: '😰', depression: '😞', stress: '😩', anger: '😤' })[k] + '</span>' +
+                '<span>' + _t('firstaid.emo_' + k + '_name', FIRSTAID_EMOTION_MAP[k]) + '</span></button>'
+            ).join('');
+            try {
+                firstAidData = await Cache.cachedFetch('/data/regulation.json');
+                const re = document.querySelector('[data-key="' + (currentFirstAidKey || 'anxiety') + '"]');
+                if (re) re.classList.add('active');
+            } catch (e) {
+                firstAidData = null;
+                console.warn('regulation.json 加载失败:', e.message);
+            }
+        }
+
+        function getFirstAidItem(key) {
+            if (!firstAidData) return null;
+            return firstAidData.find(d => d && d.emotion === FIRSTAID_EMOTION_MAP[key]) || null;
+        }
+
+        function openFirstAid(key) {
+            const item = getFirstAidItem(key);
+            if (!item) {
+                showToast(_t('firstaid.toast_loading', '急救内容加载中，请稍候...'), 'info');
+                return;
+            }
+            currentFirstAidKey = key;
+            document.querySelectorAll('.firstaid-emo-btn').forEach(b =>
+                b.classList.toggle('active', b.dataset.key === key));
+
+            const panel = document.getElementById('firstaidPanel');
+            document.getElementById('firstaid-title').textContent = '⛑️ ' + _t('firstaid.emo_' + key + '_name', FIRSTAID_EMOTION_MAP[key]) + ' ' + _t('firstaid.panel_suffix', '急救包');
+
+            let html = '';
+            // 症状
+            html += '<p style="font-size:0.8rem;font-weight:600;color:var(--color-primary-500);margin-bottom:0.5rem;">' + _t('firstaid.sym_title', '你可能正在经历') + '</p>';
+            html += '<div class="firstaid-sym-chips">' + (item.symptoms || []).map((s, i) =>
+                '<span class="firstaid-chip">' + _t('firstaid.sym_' + key + '_' + i, s) + '</span>').join('') + '</div>';
+            // 急救方法
+            html += '<p style="font-size:0.8rem;font-weight:600;color:var(--color-primary-500);margin-bottom:0.5rem;">' + _t('firstaid.methods_title', '即时急救方法') + '</p>';
+            html += '<div class="firstaid-methods">' + (item.methods || []).map((m, i) => {
+                const link = FIRSTAID_LINKS[m.name] || null;
+                return '<div class="firstaid-method">' +
+                    '<span class="m-name">' + _t('firstaid.m_' + key + '_' + i + '_name', m.name) + '</span>' +
+                    '<span class="m-dur">⏱ ' + _t('firstaid.m_' + key + '_' + i + '_duration', m.duration) + '</span>' +
+                    '<span class="m-desc">' + _t('firstaid.m_' + key + '_' + i + '_desc', m.description) + '</span>' +
+                    (link ? '<button class="m-cta" onclick="openFirstAidMethod(\'' + m.name + '\')">' + _t('firstaid.go_practice', '去练习') + ' →</button>' : '') +
+                    '</div>';
+            }).join('') + '</div>';
+            // 生活建议
+            html += '<p style="font-size:0.8rem;font-weight:600;color:var(--color-primary-500);margin-bottom:0.5rem;">' + _t('firstaid.life_title', '日常调节建议') + '</p>';
+            html += '<div style="margin-bottom:1.25rem;line-height:1.9;font-size:0.9rem;color:var(--theme-text-light);">' +
+                (item.lifestyle || []).map((s, i) => '<div>· ' + _t('firstaid.life_' + key + '_' + i, s) + '</div>').join('') + '</div>';
+            // 求助时机
+            html += '<div class="firstaid-help">' +
+                '<span style="font-size:1.1rem;line-height:1.4;">🛟</span>' +
+                '<div style="flex:1;">' +
+                '<div style="font-weight:600;color:var(--color-warm-600);margin-bottom:0.25rem;">' + _t('firstaid.help_title', '何时需要专业帮助') + '</div>' +
+                '<div>' + _t('firstaid.help_' + key, item.whenToSeekHelp) + '</div>' +
+                '</div>' +
+                '<a class="btn-help" href="crisis-support.html">' + _t('firstaid.help_btn', '查看求助资源') + '</a>' +
+                '</div>';
+
+            document.getElementById('firstaid-content').innerHTML = html;
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            /* P1 埋点：急救查看 */
+            try { if (window.Analytics) window.Analytics.track('first_aid_view', { emotion: key }); } catch (e) { /* ignore */ }
+        }
+
+        function openFirstAidMethod(name) {
+            const url = FIRSTAID_LINKS[name];
+            if (!url) return;
+            try { if (window.Analytics) window.Analytics.track('first_aid_method_open', { method: name }); } catch (e) { /* ignore */ }
+            window.location.href = url;
+        }
+
+        function closeFirstAid() {
+            document.getElementById('firstaidPanel').style.display = 'none';
+            document.querySelectorAll('.firstaid-emo-btn').forEach(b => b.classList.remove('active'));
+            currentFirstAidKey = null;
+        }
+
         /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', async () => {
             // 初始化每日内容
@@ -1389,6 +1670,9 @@
 
             /* 初始可视化条为半透明 */
             document.getElementById('musicVisualizer').style.opacity = '0.3';
+
+            /* 情绪急救站初始化 */
+            initFirstAid();
 
             /* 语言切换时刷新动态内容（故事/图片/音乐）译文，不翻动内容 */
             document.addEventListener('localeChanged', () => {

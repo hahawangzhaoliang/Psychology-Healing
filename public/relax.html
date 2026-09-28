@@ -347,6 +347,7 @@
     <!-- Optional certified CMP: enable "Privacy & messaging" in AdSense; if active it overrides the banner above -->
     <script async src="https://fundingchoicesmessages.google.com/i/ca-pub-6203482765648217?nc=1" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
+<script src="js/user-store.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -826,6 +827,41 @@
                 </div>
             </div>
 
+            <!-- 正念行走（P0 · 数据来自知识图谱 MBCT 节点） -->
+            <div class="practice-card" onclick="startWalking()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startWalking()">
+                <div class="practice-icon" style="background:#E0F2FE;">
+                    <svg style="width:28px;height:28px;color:#0369A1;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m2 0a2 2 0 11-2-2m0 0l-3.5 6m2 3l1 5m-5-9l1.5 4.5L10 19m7-5l1 5M9 6a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                </div>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_walking_title">正念行走</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_walking_desc">慢下来，感受每一步脚底的触感，把正念带进身体</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_5min">
+                        <svg style="width:14px;height:14px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        约5分钟
+                    </span>
+                </div>
+            </div>
+
+            <!-- 思维解离（P0 · 数据来自知识图谱 MBCT 节点） -->
+            <div class="practice-card" onclick="startDefusion()" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startDefusion()">
+                <div class="practice-icon" style="background:#F3E8FF;">
+                    <svg style="width:28px;height:28px;color:#7E22CE;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path>
+                    </svg>
+                </div>
+                <div style="flex:1;">
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.exercise_defusion_title">思维解离</h3>
+                    <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="relax.exercise_defusion_desc">像看云朵一样看待想法，观察而不卷入</p>
+                    <span style="display:inline-flex;align-items:center;gap:0.25rem;font-size:0.8rem;color:var(--theme-text-light);" data-i18n="relax.duration_3min">
+                        约3分钟
+                    </span>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -930,6 +966,72 @@
         <div class="science-card" style="background:linear-gradient(135deg,var(--color-calm-50),var(--color-primary-50));">
             <h4 data-i18n="relax.science_neuro_title"><svg class="icon icon--md"><use href="#icon-knowledge"></use></svg> 神经科学发现</h4>
             <p data-i18n="relax.science_neuro_desc">正念练习可降低杏仁核过度活跃，8周系统练习可建立稳定的情绪调节神经通路。如果思绪飘走了，温柔地把注意力带回呼吸就好。</p>
+        </div>
+    </section>
+
+    <!-- ===== 正念行走界面（P0 · MBCT） ===== -->
+    <section id="walkingExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.walking_title">正念行走</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);" data-i18n="relax.walking_subtitle">慢慢走，感受每一步</p>
+        </div>
+
+        <!-- 计时器 -->
+        <div style="margin-bottom:1.5rem;">
+            <div id="walkingTimer" style="font-size:3.5rem;font-weight:300;color:var(--color-primary-500);margin-bottom:1rem;">05:00</div>
+            <div style="height:6px;background:var(--color-primary-100);border-radius:var(--radius-full);overflow:hidden;">
+                <div id="walkingProgress" style="height:100%;background:linear-gradient(90deg,var(--color-primary-300),var(--color-primary-500));border-radius:var(--radius-full);transition:width 1s var(--ease-standard);width:0%;"></div>
+            </div>
+        </div>
+
+        <!-- 引导文字 -->
+        <div class="guide-box" style="margin-bottom:1.5rem;">
+            <p id="walkingInstruction" data-i18n="relax.walking_instruction">站起来，找一个可以慢慢走动几步的空间。点击开始，跟随引导。</p>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;">
+            <button onclick="toggleWalking()" class="btn btn-primary" id="startWalkingBtn" data-i18n="relax.start_practice">开始练习</button>
+            <button onclick="exitExercise()" class="btn btn-secondary" data-i18n="relax.exit">返回</button>
+        </div>
+
+        <!-- 科学依据 -->
+        <div class="science-card">
+            <h4 data-i18n="relax.science_mbct_title"><svg class="icon icon--md"><use href="#icon-journal"></use></svg> 科学依据</h4>
+            <p data-i18n="relax.science_walking_desc">正念行走是 MBCT（正念认知疗法）的经典练习之一，将觉察从静坐延伸到日常行动，帮助建立「觉察-接纳」的神经通路。</p>
+        </div>
+    </section>
+
+    <!-- ===== 思维解离界面（P0 · MBCT） ===== -->
+    <section id="defusionExercise" class="exercise-view hidden">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.375rem;" data-i18n="relax.defusion_title">思维解离</h2>
+            <p style="font-size:0.9rem;color:var(--theme-text-light);" data-i18n="relax.defusion_subtitle">观察想法，而不是被想法带走</p>
+        </div>
+
+        <!-- 计时器 -->
+        <div style="margin-bottom:1.5rem;">
+            <div id="defusionTimer" style="font-size:3.5rem;font-weight:300;color:var(--color-primary-500);margin-bottom:1rem;">03:00</div>
+            <div style="height:6px;background:var(--color-primary-100);border-radius:var(--radius-full);overflow:hidden;">
+                <div id="defusionProgress" style="height:100%;background:linear-gradient(90deg,var(--color-primary-300),var(--color-primary-500));border-radius:var(--radius-full);transition:width 1s var(--ease-standard);width:0%;"></div>
+            </div>
+        </div>
+
+        <!-- 引导文字 -->
+        <div class="guide-box" style="margin-bottom:1.5rem;">
+            <p id="defusionInstruction" data-i18n="relax.defusion_instruction">找个舒服的姿势坐好，轻轻闭上眼睛。点击开始，跟随引导。</p>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1.5rem;">
+            <button onclick="toggleDefusion()" class="btn btn-primary" id="startDefusionBtn" data-i18n="relax.start_practice">开始练习</button>
+            <button onclick="exitExercise()" class="btn btn-secondary" data-i18n="relax.exit">返回</button>
+        </div>
+
+        <!-- 科学依据 -->
+        <div class="science-card">
+            <h4 data-i18n="relax.science_mbct_title"><svg class="icon icon--md"><use href="#icon-journal"></use></svg> 科学依据</h4>
+            <p data-i18n="relax.science_defusion_desc">「想法不是事实」——认知解离帮助你在想法与自我之间拉开距离，是 MBCT 与接纳承诺疗法（ACT）的共同核心机制。</p>
         </div>
     </section>
 
@@ -1058,12 +1160,23 @@
             return I18N.t(key, zhDefault);
         }
 
+        /* ========== P1 习惯闭环：练习完成本地记录（供周报使用） ========== */
+        function recordRelaxPractice(practice) {
+            try {
+                const records = JSON.parse(UserStore.get('relaxRecords') || '[]');
+                records.push({ practice: practice, timestamp: new Date().toISOString() });
+                UserStore.set('relaxRecords', JSON.stringify(records));
+            } catch (e) { /* ignore */ }
+        }
+
         /* ========== 工具函数 ========== */
         function hideAllExercises() {
             document.getElementById('practiceList').classList.add('hidden');
             document.getElementById('breathingExercise').classList.add('hidden');
             document.getElementById('bodyScanExercise').classList.add('hidden');
             document.getElementById('mindfulnessExercise').classList.add('hidden');
+            document.getElementById('walkingExercise').classList.add('hidden');
+            document.getElementById('defusionExercise').classList.add('hidden');
             document.getElementById('fiveSensesExercise').classList.add('hidden');
             document.getElementById('moreExercises').classList.add('hidden');
         }
@@ -1078,6 +1191,8 @@
             stopBreathing();
             stopBodyScan();
             stopMindfulness();
+            stopWalking();
+            stopDefusion();
             showView('practiceList');
             document.getElementById('moreExercises').classList.remove('hidden');
         }
@@ -1146,6 +1261,8 @@
                             stopBreathing();
                             /* P0 埋点：呼吸练习完成 */
                             try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'breathing' }); } catch (e) { /* ignore */ }
+                            /* P1 习惯闭环：本地记录练习完成 */
+                            recordRelaxPractice('breathing');
                             document.getElementById('breathingInstruction').innerHTML = `
                                 <div style="text-align:center;">
                                     <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">练习完成 🌟</p>
@@ -1211,6 +1328,8 @@
                     stopBodyScan();
                     /* P0 埋点：身体扫描完成 */
                     try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'body_scan' }); } catch (e) { /* ignore */ }
+                            /* P1 习惯闭环：本地记录练习完成 */
+                            recordRelaxPractice('body_scan');
                     document.getElementById('scanInstruction').innerHTML = `
                         <div style="text-align:center;">
                             <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">扫描完成 🌟</p>
@@ -1303,6 +1422,8 @@
                     stopMindfulness();
                     /* P0 埋点：冥想练习完成 */
                     try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'mindfulness' }); } catch (e) { /* ignore */ }
+                            /* P1 习惯闭环：本地记录练习完成 */
+                            recordRelaxPractice('mindfulness');
                     document.getElementById('mindfulnessInstruction').innerHTML = `
                         <div style="text-align:center;">
                             <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">冥想结束 🌟</p>
@@ -1502,6 +1623,164 @@
                 _exercisesLoaded = false;
                 tryLoadExercises();
             });
+        }
+
+        /* ========== 正念行走（P0 · 数据来自知识图谱 MBCT 节点） ========== */
+        let walkingInterval = null;
+        let walkingRunning = false;
+        let walkingSeconds = 300;
+
+        function startWalking() {
+            showView('walkingExercise');
+            walkingSeconds = 300;
+            document.getElementById('walkingInstruction').textContent = _t('relax.walking_instruction', '站起来，找一个可以慢慢走动几步的空间。点击开始，跟随引导。');
+            document.getElementById('startWalkingBtn').textContent = _t('relax.start_practice', '开始练习');
+            updateWalkingTimer();
+        }
+
+        function toggleWalking() {
+            if (walkingRunning) stopWalking(); else runWalking();
+        }
+
+        function runWalking() {
+            walkingRunning = true;
+            document.getElementById('startWalkingBtn').textContent = _t('relax.pause', '暂停');
+
+            const instructions = [
+                _t('relax.walking_instr_1', '站起来，找一个可以慢慢走动几步的空间。'),
+                _t('relax.walking_instr_2', '开始慢慢走，比平时更慢一些。'),
+                _t('relax.walking_instr_3', '感受左脚抬起、移动、落下的全过程。'),
+                _t('relax.walking_instr_4', '再感受右脚，每一步都像第一次走路那样新鲜。'),
+                _t('relax.walking_instr_5', '注意到空气拂过皮肤的感觉。'),
+                _t('relax.walking_instr_6', '如果思绪飘走了，温柔地带回脚下的感觉。'),
+                _t('relax.walking_instr_7', '不需要走到哪里去，只是走，感受走本身。'),
+                _t('relax.walking_instr_8', '走了一会儿后，可以停下来，感受身体微微发热的宁静。'),
+            ];
+
+            let instructionIndex = 0;
+
+            function updateWalking() {
+                walkingSeconds--;
+                updateWalkingTimer();
+
+                if (walkingSeconds % 45 === 0 && walkingSeconds > 0) {
+                    instructionIndex = (instructionIndex + 1) % instructions.length;
+                    document.getElementById('walkingInstruction').textContent = instructions[instructionIndex];
+                }
+
+                if (walkingSeconds <= 0) {
+                    stopWalking();
+                    /* P0 埋点：正念行走完成 */
+                    try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'walking' }); } catch (e) { /* ignore */ }
+                            /* P1 习惯闭环：本地记录练习完成 */
+                            recordRelaxPractice('walking');
+                    document.getElementById('walkingInstruction').innerHTML = `
+                        <div style="text-align:center;">
+                            <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">行走练习结束 🌟</p>
+                            <p>停下来的这一刻，感受身体里那份安静的清醒。</p>
+                        </div>
+                    `;
+                }
+            }
+
+            walkingInterval = setInterval(updateWalking, 1000);
+        }
+
+        function updateWalkingTimer() {
+            const m = Math.floor(walkingSeconds / 60);
+            const s = walkingSeconds % 60;
+            document.getElementById('walkingTimer').textContent =
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            const pct = ((300 - walkingSeconds) / 300) * 100;
+            document.getElementById('walkingProgress').style.width = `${pct}%`;
+        }
+
+        function stopWalking() {
+            walkingRunning = false;
+            if (walkingInterval) {
+                clearInterval(walkingInterval);
+                walkingInterval = null;
+            }
+            document.getElementById('startWalkingBtn').textContent = _t('relax.start_practice', '开始练习');
+        }
+
+        /* ========== 思维解离（P0 · 数据来自知识图谱 MBCT 节点） ========== */
+        let defusionInterval = null;
+        let defusionRunning = false;
+        let defusionSeconds = 180;
+
+        function startDefusion() {
+            showView('defusionExercise');
+            defusionSeconds = 180;
+            document.getElementById('defusionInstruction').textContent = _t('relax.defusion_instruction', '找个舒服的姿势坐好，轻轻闭上眼睛。点击开始，跟随引导。');
+            document.getElementById('startDefusionBtn').textContent = _t('relax.start_practice', '开始练习');
+            updateDefusionTimer();
+        }
+
+        function toggleDefusion() {
+            if (defusionRunning) stopDefusion(); else runDefusion();
+        }
+
+        function runDefusion() {
+            defusionRunning = true;
+            document.getElementById('startDefusionBtn').textContent = _t('relax.pause', '暂停');
+
+            const instructions = [
+                _t('relax.defusion_instr_1', '想象你的想法是一片片云朵，飘过天空。'),
+                _t('relax.defusion_instr_2', '你只是天空，云朵来了又走，不黏在你身上。'),
+                _t('relax.defusion_instr_3', '注意到一个想法时，在心里轻轻说：「我有一个想法」。'),
+                _t('relax.defusion_instr_4', '再把它放回云朵里，让它飘走。'),
+                _t('relax.defusion_instr_5', '想法不是事实，它只是大脑的活动。'),
+                _t('relax.defusion_instr_6', '继续观察，不推开、不抓住，只是看着。'),
+                _t('relax.defusion_instr_7', '哪怕是不舒服的想法，也让它像云一样经过。'),
+                _t('relax.defusion_instr_8', '轻轻睁开眼睛，把这份「观察者」的感觉带回生活。'),
+            ];
+
+            let instructionIndex = 0;
+
+            function updateDefusion() {
+                defusionSeconds--;
+                updateDefusionTimer();
+
+                if (defusionSeconds % 30 === 0 && defusionSeconds > 0) {
+                    instructionIndex = (instructionIndex + 1) % instructions.length;
+                    document.getElementById('defusionInstruction').textContent = instructions[instructionIndex];
+                }
+
+                if (defusionSeconds <= 0) {
+                    stopDefusion();
+                    /* P0 埋点：思维解离完成 */
+                    try { if (window.Analytics) window.Analytics.track('relax_practice_complete', { practice: 'defusion' }); } catch (e) { /* ignore */ }
+                            /* P1 习惯闭环：本地记录练习完成 */
+                            recordRelaxPractice('defusion');
+                    document.getElementById('defusionInstruction').innerHTML = `
+                        <div style="text-align:center;">
+                            <p style="color:var(--color-primary-500);font-weight:600;margin-bottom:0.5rem;">解离练习结束 🌟</p>
+                            <p>想法只是路过，你依然在这里，平静而完整。</p>
+                        </div>
+                    `;
+                }
+            }
+
+            defusionInterval = setInterval(updateDefusion, 1000);
+        }
+
+        function updateDefusionTimer() {
+            const m = Math.floor(defusionSeconds / 60);
+            const s = defusionSeconds % 60;
+            document.getElementById('defusionTimer').textContent =
+                `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+            const pct = ((180 - defusionSeconds) / 180) * 100;
+            document.getElementById('defusionProgress').style.width = `${pct}%`;
+        }
+
+        function stopDefusion() {
+            defusionRunning = false;
+            if (defusionInterval) {
+                clearInterval(defusionInterval);
+                defusionInterval = null;
+            }
+            document.getElementById('startDefusionBtn').textContent = _t('relax.start_practice', '开始练习');
         }
 
         // 启动初始化（不依赖 DOMContentLoaded 时机）

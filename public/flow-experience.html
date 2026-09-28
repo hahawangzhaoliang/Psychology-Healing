@@ -1503,6 +1503,7 @@
     <!-- Optional certified CMP: enable "Privacy & messaging" in AdSense; if active it overrides the banner above -->
     <script async src="https://fundingchoicesmessages.google.com/i/ca-pub-6203482765648217?nc=1" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
+<script src="js/user-store.js"></script>
 </head>
 <body>
 <!-- 内联 SVG 图标定义 -->
@@ -3160,9 +3161,9 @@
             };
             
             // 保存到localStorage
-            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            const records = JSON.parse(UserStore.get('flow-records') || '[]');
             records.push(record);
-            localStorage.setItem('flow-records', JSON.stringify(records));
+            UserStore.set('flow-records', JSON.stringify(records));
             
             showToast(_t('flow.toast_assessment_saved', '评估已保存！'), 'success');
             
@@ -3181,7 +3182,7 @@
 
         /* ========== 记录页面 ========== */
         function loadRecords() {
-            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            const records = JSON.parse(UserStore.get('flow-records') || '[]');
 
             // 迁移旧记录：如果有 activity 字段但没有 activityId，尝试查找对应的 activityId
             let needsSave = false;
@@ -3196,7 +3197,7 @@
                 }
             });
             if (needsSave) {
-                localStorage.setItem('flow-records', JSON.stringify(records));
+                UserStore.set('flow-records', JSON.stringify(records));
             }
 
             // 统计
@@ -3535,7 +3536,7 @@
 
         /* ========== Dashboard 统计（动态） ========== */
         function updateDashboardStats() {
-            const records = JSON.parse(localStorage.getItem('flow-records') || '[]');
+            const records = JSON.parse(UserStore.get('flow-records') || '[]');
             const now = new Date();
 
             // 本周心流时长

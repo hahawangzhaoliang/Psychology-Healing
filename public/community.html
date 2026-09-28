@@ -301,6 +301,108 @@
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
 
+        /* ---------- TTM 阶段推荐（P1） ---------- */
+        .ttm-reco {
+            background: var(--theme-card);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-bottom: 1.25rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .ttm-reco-head {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .ttm-reco-stage {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            background: linear-gradient(135deg, var(--color-primary-400), var(--color-primary-500));
+            color: white;
+            border-radius: var(--radius-full);
+            padding: 0.375rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .ttm-reco-strategy {
+            background: var(--color-primary-50);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.125rem;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 0.9rem;
+            color: var(--theme-text);
+        }
+        .ttm-reco-strategy .label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--color-primary-500);
+            margin-bottom: 0.25rem;
+        }
+        .ttm-reco-actions {
+            display: grid;
+            gap: 0.625rem;
+        }
+        .ttm-reco-action {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--theme-bg);
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-lg);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+            text-decoration: none;
+            color: var(--theme-text);
+            font-size: 0.9rem;
+        }
+        .ttm-reco-action:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--color-primary-200);
+        }
+        .ttm-reco-action .a-emoji { font-size: 1.25rem; }
+        .ttm-reco-action .a-text { flex: 1; }
+        .ttm-reco-action .a-arrow { color: var(--color-primary-400); font-weight: 600; }
+        .ttm-reco-empty {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .ttm-reco-empty .e-text { flex: 1; min-width: 12rem; }
+        .ttm-reco-btn {
+            background: var(--color-primary-500);
+            color: white;
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 0.625rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+        }
+        .ttm-reco-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .ttm-reco-retake {
+            background: transparent;
+            border: 1px solid var(--theme-border);
+            border-radius: var(--radius-full);
+            padding: 0.375rem 0.875rem;
+            font-size: 0.8rem;
+            color: var(--theme-text-light);
+            cursor: pointer;
+            transition: all var(--duration-fast) var(--ease-spring);
+        }
+        .ttm-reco-retake:hover { border-color: var(--color-primary-300); color: var(--color-primary-500); }
+
         /* ---------- 打卡日历 ---------- */
         .calendar-grid {
             display: grid;
@@ -600,6 +702,7 @@
             color: var(--theme-text-light);
         }
     </style>
+<script src="js/user-store.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -1023,6 +1126,8 @@
                 <svg style="width:14px;height:14px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                 <span data-i18n="community.privacy_notice">匿名树洞 · 所有帖子均完全匿名，不可追溯，友善互动，禁止评判</span>
             </div>
+            <!-- TTM 阶段推荐（P1） -->
+            <div class="ttm-reco fade-in-up" id="ttmReco" style="animation-delay:0.05s;"></div>
             <!-- 话题筛选 -->
             <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;" id="topic-filters" class="fade-in-up">
                 <button class="topic-filter active" onclick="filterPosts('all')" data-topic="all" data-i18n="community.filter_all">全部</button>
@@ -1313,9 +1418,9 @@
                 replies: 0,
             };
 
-            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            const posts = JSON.parse(UserStore.get('communityPosts') || '[]');
             posts.unshift(post);
-            localStorage.setItem('communityPosts', JSON.stringify(posts));
+            UserStore.set('communityPosts', JSON.stringify(posts));
 
             document.getElementById('post-content').value = '';
             selectedMood = null;
@@ -1337,7 +1442,7 @@
 
         /* ========== 加载帖子 ========== */
         function loadPosts() {
-            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            const posts = JSON.parse(UserStore.get('communityPosts') || '[]');
             // 用户自己发的帖子用真实匿名身份，其他用样本身份
             const currentIdentity = getCurrentAnonIdentity();
             const postsWithIdentity = posts.map((post, idx) => ({
@@ -1426,11 +1531,11 @@
 
         function sendEncourage(type) {
             // 查找并更新点赞数
-            const posts = JSON.parse(localStorage.getItem('communityPosts') || '[]');
+            const posts = JSON.parse(UserStore.get('communityPosts') || '[]');
             const post = posts.find(p => p.id === currentPostId);
             if (post) {
                 post.encouragements++;
-                localStorage.setItem('communityPosts', JSON.stringify(posts));
+                UserStore.set('communityPosts', JSON.stringify(posts));
             }
 
             // 鼓励卡浮动动画
@@ -1500,7 +1605,7 @@
                 timestamp: new Date().toISOString(),
             };
 
-            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            const checkins = JSON.parse(UserStore.get('checkins') || '[]');
             // 检查今天是否已经打过这个主题的卡
             const today = new Date().toISOString().split('T')[0];
             const alreadyCheckedIn = checkins.some(c => c.date === today && c.themeId === currentCheckinTheme.id);
@@ -1512,7 +1617,7 @@
             }
 
             checkins.push(checkin);
-            localStorage.setItem('checkins', JSON.stringify(checkins));
+            UserStore.set('checkins', JSON.stringify(checkins));
 
             closeCheckinModal();
             showToast(_t('community.toast_checkin_success', '打卡成功，感谢记录今天的美好 💝'), 'success');
@@ -1584,7 +1689,7 @@
 
             // 更新按钮文字
             const today = new Date().toISOString().split('T')[0];
-            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            const checkins = JSON.parse(UserStore.get('checkins') || '[]');
             const alreadyDone = checkins.some(c => c.date === today && c.themeId === themeId);
             document.getElementById('checkin-btn').textContent = alreadyDone
                 ? _t('community.toast_checkin_already_done', '✓ 今日已打卡')
@@ -1594,7 +1699,7 @@
 
         /* ========== 加载打卡数据 ========== */
         function loadCheckinData() {
-            const checkins = JSON.parse(localStorage.getItem('checkins') || '[]');
+            const checkins = JSON.parse(UserStore.get('checkins') || '[]');
 
             /* 计算连续天数 */
             let streak = 0;
@@ -1722,9 +1827,103 @@
             }, 2500);
         }
 
+        /* ========== 社区按 TTM 推策略（P1） ========== */
+        const TTM_STAGE_MAP = {
+            'precontemplation': { zh: '前意向期', emoji: '🌱', recoKey: 'community.ttm_strategy_pre', recoZh: '先了解这个行为改变的好处与风险，不必急着行动——光是「开始考虑」就是第一步。', actions: [
+                { emoji: '📖', labelKey: 'community.ttm_act_pre_0', labelZh: '在树洞看看别人改变的故事', href: null, action: 'filterPosts', arg: 'all' },
+                { emoji: '🧭', labelKey: 'community.ttm_act_pre_1', labelZh: '去自测中心了解自己的动机类型', href: 'assessment.html' },
+            ]},
+            'contemplation': { zh: '意向期', emoji: '💭', recoKey: 'community.ttm_strategy_con', recoZh: '做一张决策平衡表：写下改变的好处与代价、不改变的代价，让选择更清晰。', actions: [
+                { emoji: '✍️', labelKey: 'community.ttm_act_con_0', labelZh: '在树洞写下改变的好处与代价', href: null, action: 'focusCompose', arg: null },
+                { emoji: '🌱', labelKey: 'community.ttm_act_con_1', labelZh: '看看是什么在驱动你（动机自测）', href: 'assessment.html' },
+            ]},
+            'preparation': { zh: '准备期', emoji: '🗓️', recoKey: 'community.ttm_strategy_prep', recoZh: '给自己设定一个具体的开始日期，并提前想好第一步怎么做、遇到阻碍怎么办。', actions: [
+                { emoji: '📅', labelKey: 'community.ttm_act_prep_0', labelZh: '选一个打卡主题，立下你的开始日期', href: null, action: 'switchTab', arg: 'checkin' },
+                { emoji: '🧭', labelKey: 'community.ttm_act_prep_1', labelZh: '开始前再确认一次动机类型', href: 'assessment.html' },
+            ]},
+            'action': { zh: '行动期', emoji: '🚀', recoKey: 'community.ttm_strategy_act', recoZh: '使用具体技巧坚持改变：固定时间、减少诱惑、记录进展，每一点进步都值得肯定。', actions: [
+                { emoji: '📅', labelKey: 'community.ttm_act_act_0', labelZh: '每日打卡，记录你的改变进展', href: null, action: 'switchTab', arg: 'checkin' },
+                { emoji: '🆘', labelKey: 'community.ttm_act_act_1', labelZh: '遇到困难时，在树洞向大家求助', href: null, action: 'focusCompose', arg: null },
+            ]},
+            'maintenance': { zh: '维持期', emoji: '🌟', recoKey: 'community.ttm_strategy_main', recoZh: '识别高风险情境（疲惫、压力、社交场合），提前准备应对方案——维持比开始更需要技巧。', actions: [
+                { emoji: '💌', labelKey: 'community.ttm_act_main_0', labelZh: '分享你的改变经验，鼓励同行的人', href: null, action: 'focusCompose', arg: null },
+                { emoji: '📅', labelKey: 'community.ttm_act_main_1', labelZh: '继续打卡，巩固来之不易的习惯', href: null, action: 'switchTab', arg: 'checkin' },
+            ]},
+        };
+
+        function getLatestTtmStage() {
+            try {
+                const list = JSON.parse(UserStore.get('assessmentResults') || '[]');
+                const ttm = list.filter(r => r && r.id === 'ttm').sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+                if (!ttm || !ttm.level) return null;
+                // level 形如「行动期」，映射 stage key
+                for (const k of Object.keys(TTM_STAGE_MAP)) {
+                    if (TTM_STAGE_MAP[k].zh === ttm.level) return { key: k, level: ttm.level, ts: ttm.timestamp };
+                }
+                return null;
+            } catch (e) { return null; }
+        }
+
+        function renderTtmReco() {
+            const wrap = document.getElementById('ttmReco');
+            if (!wrap) return;
+            const stage = getLatestTtmStage();
+
+            if (!stage) {
+                wrap.innerHTML = '<div class="ttm-reco-empty">' +
+                    '<span style="font-size:2rem;">🧭</span>' +
+                    '<div class="e-text">' +
+                    '<div style="font-weight:600;color:var(--theme-text);margin-bottom:0.25rem;">' + _t('community.ttm_empty_title', '社区会按你的改变阶段推荐内容') + '</div>' +
+                    '<div style="font-size:0.85rem;color:var(--theme-text-light);">' + _t('community.ttm_empty_desc', '花 1 分钟完成「改变阶段自测」，社区会为你定制行动建议') + '</div>' +
+                    '</div>' +
+                    '<a class="ttm-reco-btn" href="assessment.html" onclick="trackTtmReco(\'empty\')">' + _t('community.ttm_empty_cta', '去做自测 →') + '</a>' +
+                    '</div>';
+                return;
+            }
+
+            const s = TTM_STAGE_MAP[stage.key];
+            const actions = (s.actions || []).map(a => {
+                const onclk = a.href
+                    ? 'window.location.href=\'' + a.href + '\''
+                    : (a.action === 'filterPosts' ? 'filterPosts(\'' + (a.arg || 'all') + '\')' :
+                       a.action === 'switchTab' ? 'switchTab(\'' + a.arg + '\')' : 'focusCompose()');
+                return '<div class="ttm-reco-action" role="button" tabindex="0" onclick="' + onclk + ';trackTtmReco(\'act\')">' +
+                    '<span class="a-emoji">' + a.emoji + '</span>' +
+                    '<span class="a-text">' + _t(a.labelKey, a.labelZh) + '</span>' +
+                    '<span class="a-arrow">→</span></div>';
+            }).join('');
+
+            wrap.innerHTML = '<div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">' +
+                '<span style="font-size:1.75rem;">🧭</span>' +
+                '<div style="flex:1;min-width:10rem;">' +
+                '<div style="font-size:0.8rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.25rem;">' + _t('community.ttm_reco_label', '根据你的改变阶段为你推荐') + '</div>' +
+                '<div style="font-weight:700;color:var(--theme-text);font-size:1.05rem;">' + _t('community.ttm_reco_title', '你的改变阶段') + '</div>' +
+                '</div>' +
+                '<span class="ttm-reco-stage">' + s.emoji + ' ' + _t('community.ttm_stage_' + stage.key, s.zh) + '</span>' +
+                '<button class="ttm-reco-retake" onclick="window.location.href=\'assessment.html\'">' + _t('community.ttm_retake', '重新自测') + '</button>' +
+                '</div>' +
+                '<div class="ttm-reco-strategy"><div class="label">' + _t('community.ttm_strategy_label', '本阶段最适合的策略') + '</div>' + _t(s.recoKey, s.recoZh) + '</div>' +
+                '<div style="font-size:0.8rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.5rem;">' + _t('community.ttm_actions_label', '在社区可以这样行动') + '</div>' +
+                '<div class="ttm-reco-actions">' + actions + '</div>';
+
+            /* P1 埋点：TTM 推荐展示 */
+            try { if (window.Analytics) window.Analytics.track('community_ttm_reco', { stage: stage.key }); } catch (e) { /* ignore */ }
+        }
+
+        function trackTtmReco(kind) {
+            const stage = getLatestTtmStage();
+            try { if (window.Analytics) window.Analytics.track('community_ttm_reco_click', { kind: kind, stage: stage ? stage.key : 'none' }); } catch (e) { /* ignore */ }
+        }
+
+        function focusCompose() {
+            const ta = document.getElementById('post-content');
+            if (ta) { ta.focus(); ta.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        }
+
         /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', () => {
             initAnonIdentity(); // 初始化匿名身份
+            renderTtmReco();  // 按 TTM 阶段推荐（P1）
             loadPosts();
 
             /* ESC 关闭模态框 */

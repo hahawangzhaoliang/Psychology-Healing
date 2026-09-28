@@ -140,8 +140,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 3rem 1rem;
+            padding: 2.5rem 1rem;
             position: relative;
+            background: radial-gradient(circle at 50% 45%, rgba(255,248,238,0.85), rgba(250,244,233,0.4) 55%, transparent 78%);
         }
         .wheel-container {
             position: relative;
@@ -156,11 +157,11 @@
             position: absolute;
             inset: -30px;
             border-radius: 50%;
-            background: radial-gradient(circle, var(--color-primary-100), transparent 70%);
-            opacity: 0.6;
+            background: radial-gradient(circle, rgba(255,224,196,0.45), rgba(90,154,138,0.10) 45%, transparent 72%);
+            opacity: 0.7;
             pointer-events: none;
-            animation: breatheGlow 6s var(--ease-breathe) infinite;
-            filter: blur(20px);
+            animation: breatheGlow 7s var(--ease-breathe) infinite;
+            filter: blur(22px);
         }
 
         /* ---------- 情绪温度计（优化） ---------- */
@@ -613,6 +614,7 @@
             }
         }
     </style>
+<script src="js/user-store.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -1048,6 +1050,7 @@
                     </div>
                 </div>
                 <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;" data-i18n="emotion.wheel_based_on">情绪轮盘帮助你直观了解自己的情绪</p>
+                <p style="text-align:center;font-size:0.75rem;color:var(--theme-text-light);opacity:0.75;margin-top:0.25rem;" data-i18n="emotion.legend">外圈=温和 · 内圈=强烈</p>
 
                 <!-- 已选情绪展示 -->
                 <div id="selected-emotions" style="display:none;margin-top:2rem;">
@@ -1274,7 +1277,7 @@
             const container = document.getElementById('emotion-wheel-container');
             container.innerHTML = ''; /* 清空旧内容 */
 
-            const size = window.innerWidth < 640 ? 280 : 360;
+            const size = window.innerWidth < 640 ? 300 : 440;
 
             emotionWheel = new EmotionWheel('emotion-wheel-container', {
                 size: size,
@@ -1455,9 +1458,9 @@
             };
 
             try {
-                const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+                const records = JSON.parse(UserStore.get('emotionRecords') || '[]');
                 records.push(record);
-                localStorage.setItem('emotionRecords', JSON.stringify(records));
+                UserStore.set('emotionRecords', JSON.stringify(records));
 
                 showToast(_t('emotion.toast_saved', '记录保存成功') + ' 🌟', 'success');
 
@@ -1486,7 +1489,7 @@
 
         /* ========== 加载情绪分析 ========== */
         function loadAnalysis() {
-            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+            const records = JSON.parse(UserStore.get('emotionRecords') || '[]');
             const emptyEl = document.getElementById('analysis-empty');
             const dataEl = document.getElementById('analysis-data');
 
@@ -1613,7 +1616,7 @@
             };
 
         function loadSuggestions() {
-            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+            const records = JSON.parse(UserStore.get('emotionRecords') || '[]');
             const emptyEl = document.getElementById('suggestions-empty');
             const dataEl = document.getElementById('suggestions-data');
 
@@ -1657,6 +1660,9 @@
             const container = document.getElementById('suggestions-container');
 
             let html = '';
+
+            // P0：认知重构（CBT 思维记录表）——数据来自知识图谱 CBT 节点
+            html += renderCbtSection(records);
 
             // 第一部分：调节建议
             html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 调节建议</h3>`;
@@ -1731,6 +1737,108 @@
             container.innerHTML = html;
         }
 
+        /* ========== P0: 认知重构（CBT 思维记录表） ========== */
+        // 数据来源：知识图谱 CBT 节点（认知扭曲 11 种 + 思维记录表）
+        const COGNITIVE_DISTORTIONS = [
+            { key: 'all_or_nothing',  name: '全或无思维', hint: '非黑即白，没有中间地带' },
+            { key: 'overgeneralization', name: '过度概括', hint: '一件小事就下「总是/从来」的结论' },
+            { key: 'mental_filter',   name: '心理过滤', hint: '只盯着负面，忽略正面' },
+            { key: 'disqualifying',   name: '贬损积极', hint: '把好事当成「本来就应该」或运气' },
+            { key: 'mind_reading',    name: '读心术', hint: '猜测别人怎么想，且认定是负面的' },
+            { key: 'fortune_telling', name: '算命', hint: '预言最坏结果，且深信不疑' },
+            { key: 'catastrophizing', name: '灾难化', hint: '把小事想成灾难' },
+            { key: 'emotional_reasoning', name: '情绪推理', hint: '「我感觉…，所以它就是真的」' },
+            { key: 'should_statements', name: '「应该」陈述', hint: '对自己或他人要求绝对必须' },
+            { key: 'labeling',        name: '贴标签', hint: '用「我就是没用」定义自己' },
+            { key: 'personalization', name: '个人化', hint: '把无关的事都归咎于自己' },
+        ];
+        let cbtSelectedDistortions = [];
+        let cbtIntensityValue = 0;
+
+        function renderCbtSection(records) {
+            cbtSelectedDistortions = [];
+            cbtIntensityValue = 0;
+            const lastRecord = (records && records.length) ? records[records.length - 1] : null;
+            const prefill = (lastRecord && lastRecord.context) ? lastRecord.context : '';
+            const chips = COGNITIVE_DISTORTIONS.map(d =>
+                `<button type="button" class="cbt-chip" data-key="${d.key}" title="${d.hint}" onclick="toggleCbtDistortion('${d.key}', this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:999px;padding:0.35rem 0.75rem;font-size:0.8rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${d.name}</button>`
+            ).join('');
+            const intensityBtns = Array.from({ length: 10 }, (_, i) =>
+                `<button type="button" class="cbt-intensity" data-val="${i + 1}" onclick="selectCbtIntensity(${i + 1}, this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:var(--radius-md);width:2rem;height:2rem;font-size:0.85rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${i + 1}</button>`
+            ).join('');
+            return `
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> ${_t('emotion.cbt_title', '认知重构 · 挑战想法')}</h3>
+                    <div class="suggestion-card" style="display:block;padding:1.25rem;">
+                        <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:1rem;line-height:1.7;">${_t('emotion.cbt_intro', '记录情绪之后，试着挑战那个让你难受的想法——这是认知行为疗法的核心练习。')}</p>
+                        <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">① ${_t('emotion.cbt_thought_label', '自动思维：刚才脑海里闪过的想法')}</label>
+                        <textarea id="cbtThought" rows="2" style="width:100%;box-sizing:border-box;padding:0.75rem;border:1px solid var(--theme-border);border-radius:var(--radius-lg);background:var(--theme-card);color:var(--theme-text);font-size:0.9rem;resize:vertical;margin-bottom:1rem;" placeholder="${_t('emotion.cbt_thought_ph', '例如：他这么久没回我，肯定是不在乎我了')}">${prefill}</textarea>
+                        <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">② ${_t('emotion.cbt_distortion_label', '它属于哪种「想法陷阱」？（可多选）')}</label>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">${chips}</div>
+                        <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">③ ${_t('emotion.cbt_rational_label', '更理性的看法：这个想法有证据支持吗？')}</label>
+                        <textarea id="cbtRational" rows="2" style="width:100%;box-sizing:border-box;padding:0.75rem;border:1px solid var(--theme-border);border-radius:var(--radius-lg);background:var(--theme-card);color:var(--theme-text);font-size:0.9rem;resize:vertical;margin-bottom:1rem;" placeholder="${_t('emotion.cbt_rational_ph', '例如：他可能只是在忙，上次他也很快回复了我')}"></textarea>
+                        <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">④ ${_t('emotion.cbt_intensity_label', '重构后，情绪强度（1-10）')}</label>
+                        <div style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:1rem;">${intensityBtns}</div>
+                        <button type="button" class="btn btn-primary" onclick="saveCbtRecord()">${_t('emotion.cbt_save', '完成认知重构')}</button>
+                    </div>
+                </div>`;
+        }
+
+        function toggleCbtDistortion(key, el) {
+            const idx = cbtSelectedDistortions.indexOf(key);
+            if (idx >= 0) {
+                cbtSelectedDistortions.splice(idx, 1);
+                el.style.background = 'transparent';
+            } else {
+                cbtSelectedDistortions.push(key);
+                el.style.background = 'var(--color-primary-100)';
+                el.style.borderColor = 'var(--color-primary-400)';
+            }
+        }
+
+        function selectCbtIntensity(val, el) {
+            cbtIntensityValue = val;
+            const group = el.parentElement;
+            group.querySelectorAll('.cbt-intensity').forEach(b => {
+                b.style.background = 'transparent';
+                b.style.borderColor = 'var(--theme-border)';
+            });
+            el.style.background = 'var(--color-primary-100)';
+            el.style.borderColor = 'var(--color-primary-400)';
+        }
+
+        function saveCbtRecord() {
+            const thought = (document.getElementById('cbtThought').value || '').trim();
+            if (!thought) {
+                showToast(_t('emotion.cbt_need_thought', '请先写下自动思维'), 'warning');
+                return;
+            }
+            const rational = (document.getElementById('cbtRational').value || '').trim();
+            const record = {
+                automaticThought: thought,
+                distortions: cbtSelectedDistortions.slice(),
+                rationalResponse: rational,
+                newIntensity: cbtIntensityValue || null,
+                timestamp: new Date().toISOString(),
+            };
+            try {
+                const records = JSON.parse(UserStore.get('cbtRecords') || '[]');
+                records.push(record);
+                UserStore.set('cbtRecords', JSON.stringify(records));
+            } catch (e) { /* ignore */ }
+            showToast(_t('emotion.cbt_saved', '认知重构完成 🌟 你刚刚练习了挑战想法'), 'success');
+            /* P0 埋点：认知重构完成（匿名，仅事件计数） */
+            try { if (window.Analytics) window.Analytics.track('cbt_thought_record'); } catch (e) { /* ignore */ }
+            cbtSelectedDistortions = [];
+            cbtIntensityValue = 0;
+            document.getElementById('cbtThought').value = '';
+            document.getElementById('cbtRational').value = '';
+            document.querySelectorAll('#tab-suggestions .cbt-chip').forEach(ch => {
+                ch.style.background = 'transparent';
+                ch.style.borderColor = 'var(--theme-border)';
+            });
+        }
+
         /* ========== Toast 提示 ========== */
         function showToast(message, type = 'info') {
             const colors = {
@@ -1768,7 +1876,7 @@
 
         function loadTrendData(period) {
             const days = period === 'week' ? 7 : 30;
-            const records = JSON.parse(localStorage.getItem('emotionRecords') || '[]');
+            const records = JSON.parse(UserStore.get('emotionRecords') || '[]');
 
             // 准备数据：每天的平均情绪强度
             const labels = [];

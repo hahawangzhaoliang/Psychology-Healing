@@ -74,6 +74,24 @@
         window.addEventListener('scroll', throttle(updateNavbar, 80), { passive: true });
     }
 
+    /**
+     * 兼容旧调用：按 id 或选择器为导航栏绑定滚动效果。
+     * 早期页面（about/crisis/role/article/privacy/report 等）直接调用
+     * NeuroAesthetics.initNavbarScroll('navbar')，此处提供安全实现，
+     * 避免这些页面在 DOMContentLoaded 阶段抛错导致后续逻辑中断。
+     */
+    function initNavbarScroll(selectorOrId) {
+        const navbar = document.querySelector(selectorOrId || '.navbar') || document.querySelector('.navbar');
+        if (!navbar) return;
+
+        function updateNavbar() {
+            navbar.classList.toggle('scrolled', window.scrollY > 20);
+        }
+
+        updateNavbar();
+        window.addEventListener('scroll', throttle(updateNavbar, 80), { passive: true });
+    }
+
     /* ========== 2. 交错入场动画 ========== */
 
     /**
@@ -314,5 +332,6 @@
         prefersReducedMotion,
         throttle,
         initStaggerAnimations,
+        initNavbarScroll,
     };
 })();

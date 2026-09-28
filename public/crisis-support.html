@@ -11,6 +11,7 @@
     <script src="js/i18n.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/icons-custom.css">
+<script src="js/user-store.js"></script>
 </head>
 <body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
     <div id="app-header"></div>
@@ -74,6 +75,31 @@
                 <a href="relax.html" class="cs-link" data-i18n="crisis.breathe_link">前往放松练习 →</a>
             </section>
 
+            <!-- 认知急救：ABCDE 五步（P0 · 数据来自知识图谱 REBT 节点） -->
+            <section class="cs-section" style="background:linear-gradient(135deg,#eef7f4 0%,#f3f7fb 100%);">
+                <h2 class="cs-title" data-i18n="crisis.abcde_title">如果想法在折磨你，试试 ABCDE 五步</h2>
+                <p class="cs-text" style="margin-bottom:1rem;" data-i18n="crisis.abcde_intro">不是事件本身让你难受，而是你对事件的想法让你难受。用这五步，为想法松松绑。</p>
+                <ol style="margin:0 0 1rem;padding-left:1.25rem;color:var(--color-gray-600);line-height:1.9;font-size:0.9375rem;">
+                    <li><b data-i18n="crisis.abcde_a_label">A 事件</b><span data-i18n="crisis.abcde_a_desc"> — 刚刚发生了什么？</span></li>
+                    <li><b data-i18n="crisis.abcde_b_label">B 想法</b><span data-i18n="crisis.abcde_b_desc"> — 我对自己说了什么？</span></li>
+                    <li><b data-i18n="crisis.abcde_c_label">C 感受</b><span data-i18n="crisis.abcde_c_desc"> — 这个想法让我有什么情绪和行为？</span></li>
+                    <li><b data-i18n="crisis.abcde_d_label">D 辩论</b><span data-i18n="crisis.abcde_d_desc"> — 有证据支持吗？有没有更理性的看法？</span></li>
+                    <li><b data-i18n="crisis.abcde_e_label">E 新效果</b><span data-i18n="crisis.abcde_e_desc"> — 换一种想法后，感受会如何变化？</span></li>
+                </ol>
+                <details>
+                    <summary style="cursor:pointer;color:var(--color-primary-500);font-weight:600;font-size:0.9rem;margin-bottom:0.5rem;" data-i18n="crisis.irrational_summary">常见的不合理想法（点击展开）</summary>
+                    <ul class="cs-sign-list">
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_1">「我必须表现得完美，否则我就是失败者」</span></li>
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_2">「别人必须公平地对待我，否则他们就是坏人」</span></li>
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_3">「事情必须按我希望的方式发展，否则我无法忍受」</span></li>
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_4">「如果事情可能出错，那它就一定会出错」</span></li>
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_5">「我对所有坏事都负有责任」</span></li>
+                        <li><span class="cs-sign">●</span><span data-i18n="crisis.irrational_6">「我不该有这些情绪和想法」</span></li>
+                    </ul>
+                </details>
+                <a href="emotion.html" class="cs-link" data-i18n="crisis.abcde_link">去情绪日记完成一次认知重构 →</a>
+            </section>
+
             <!-- 免责说明 -->
             <section class="cs-section" style="background:var(--color-warm-50);">
                 <p class="cs-text" style="font-size:0.8125rem;color:var(--color-gray-500);margin:0;" data-i18n="crisis.note">本页面仅提供资源指引，不构成任何医疗诊断或治疗。如遇紧急危险，请立即拨打上述热线或当地急救电话。本页面不展示广告。</p>
@@ -92,7 +118,7 @@
     <script src="js/components/footer.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            renderHeader({ currentPage: 'about' });
+            renderHeader({ currentPage: 'crisis-support' });
             renderFooter();
             NeuroAesthetics.initStaggerAnimations();
             NeuroAesthetics.initNavbarScroll('navbar');

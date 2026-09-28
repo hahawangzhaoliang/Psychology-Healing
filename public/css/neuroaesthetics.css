@@ -511,6 +511,12 @@ body {
 }
 
 /* ---------- 导航栏（固定） ---------- */
+/* 修复：fixed 导航脱离文档流，body 预留等高校内边距，避免遮挡页面内容。
+   header.js 的 bindNavbarPadding 会按实际高度精确覆盖（含移动端菜单展开）。 */
+body {
+    padding-top: 64px;
+}
+
 .navbar {
     position: fixed;
     top: 0;

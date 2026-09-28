@@ -25,6 +25,14 @@ const ALLOWED_TYPES = new Set([
     'emotion_diary_complete',
     'relax_practice_complete',
     'help_nav_click',
+    'cbt_thought_record',
+    'assessment_start',
+    'assessment_complete',
+    'first_aid_view',
+    'first_aid_method_open',
+    'community_ttm_reco',
+    'community_ttm_reco_click',
+    'user_profile_init',
 ]);
 
 const MAX_EVENTS_PER_REQUEST = 200;

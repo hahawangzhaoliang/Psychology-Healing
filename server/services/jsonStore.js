@@ -24,7 +24,8 @@ let redisClient = null;
 try {
     const redisUrl  = process.env.UPSTASH_REDIS_REST_URL;
     const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-    if (redisUrl && redisToken) {
+    // 本地/内网调试开关：DISABLE_REDIS_CACHE=1 时跳过 Redis（网络不可达时避免 3s 超时堆积导致请求挂起），生产环境不受影响
+    if (process.env.DISABLE_REDIS_CACHE !== '1' && redisUrl && redisToken) {
         redisClient = new Redis({ url: redisUrl, token: redisToken });
         console.log('[JSONStore] Upstash Redis 缓存层已启用');
     } else {

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="assess.page_title">心理自测中心 - 心晴空间</title>
+    <meta name="description" content="六项科学自测：幸福感、坚毅、思维模式、自我效能、动机类型与改变阶段，附个性化建议。" data-i18n="assess.meta_desc">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/icons-custom.css">
+<script src="js/user-store.js"></script>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
+    <div id="app-header"></div>
+
+    <main style="max-width:880px;margin:0 auto;padding:2.5rem 1.25rem 4rem;">
+        <!-- 标题 -->
+        <header style="text-align:center;margin-bottom:2rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--color-primary-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <svg style="width:32px;height:32px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                </svg>
+            </div>
+            <h1 style="font-size:clamp(1.75rem,4vw,2.5rem);font-weight:600;color:var(--color-gray-800);" data-i18n="assess.title">心理自测中心</h1>
+            <p style="font-size:0.9375rem;color:var(--color-gray-500);max-width:34rem;margin:0.5rem auto 0;" data-i18n="assess.subtitle">六项科学自测，帮你更了解自己的内在资源</p>
+        </header>
+
+        <!-- 测评列表 -->
+        <section id="list-view">
+            <div id="assess-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;"></div>
+            <div style="text-align:center;margin-top:1.5rem;">
+                <a href="index.html" class="btn btn-secondary" data-i18n="assess.back_home">← 返回首页</a>
+            </div>
+        </section>
+
+        <!-- 答题视图 -->
+        <section id="quiz-view" style="display:none;">
+            <div style="background:white;border-radius:var(--radius-xl);padding:1.75rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap;">
+                    <button onclick="backToList()" class="btn btn-secondary" style="padding:0.5rem 1rem;font-size:0.85rem;" data-i18n="assess.back_list">← 返回列表</button>
+                    <h2 id="quiz-title" style="font-size:1.25rem;font-weight:700;color:var(--color-gray-800);"></h2>
+                    <span id="quiz-meta" style="font-size:0.8rem;color:var(--color-gray-500);margin-left:auto;"></span>
+                </div>
+                <p id="quiz-desc" style="font-size:0.9rem;color:var(--color-gray-500);margin-bottom:1.5rem;line-height:1.7;"></p>
+                <div id="quiz-body"></div>
+                <div style="text-align:center;margin-top:1.75rem;">
+                    <button onclick="submitQuiz()" class="btn btn-primary" data-i18n="assess.submit">查看结果</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果视图 -->
+        <section id="result-view" style="display:none;">
+            <div style="background:white;border-radius:var(--radius-xl);padding:1.75rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                <div style="text-align:center;margin-bottom:1.5rem;">
+                    <div id="result-icon" style="font-size:2.5rem;margin-bottom:0.5rem;"></div>
+                    <h2 id="result-title" style="font-size:1.35rem;font-weight:700;color:var(--color-gray-800);"></h2>
+                    <p id="result-sub" style="font-size:0.85rem;color:var(--color-gray-500);margin-top:0.25rem;"></p>
+                </div>
+                <div id="result-body" style="color:var(--color-gray-600);line-height:1.9;font-size:0.9375rem;margin-bottom:1.5rem;"></div>
+                <div id="result-advice" style="background:linear-gradient(135deg,#eef7f4 0%,#f3f7fb 100%);border-radius:var(--radius-xl);padding:1.25rem;margin-bottom:1.5rem;">
+                    <div style="font-size:0.85rem;font-weight:600;color:var(--color-primary-500);margin-bottom:0.5rem;" data-i18n="assess.advice_title">给你的小建议</div>
+                    <div id="result-advice-list" style="font-size:0.9375rem;color:var(--color-gray-600);line-height:1.9;"></div>
+                </div>
+                <div style="display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap;">
+                    <button onclick="retakeQuiz()" class="btn btn-secondary" data-i18n="assess.retake">再测一次</button>
+                    <button onclick="backToList()" class="btn btn-primary" data-i18n="assess.done">完成</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="data/assessments.js"></script>
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script>
+        /* ========== i18n 辅助 ========== */
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            return I18N.t(key, zhDefault);
+        }
+
+        /* ========== 状态 ========== */
+        let currentQuiz = null;      // 当前测评对象
+        let currentAnswers = [];     // 答案数组（数值或选项）
+        let currentDomain = null;    // selfefficacy / ttm 的领域选择
+
+        function scaleButtons(qIndex, min, max) {
+            let html = '<div style="display:flex;gap:0.375rem;flex-wrap:wrap;margin-top:0.5rem;">';
+            for (let v = min; v <= max; v++) {
+                html += `<button type="button" class="scale-btn" data-v="${v}" data-q="${qIndex}" onclick="pickScale(${qIndex},${v},this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:var(--radius-md);width:2.25rem;height:2.25rem;font-size:0.85rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${v}</button>`;
+            }
+            html += '</div>';
+            return html;
+        }
+
+        function pickScale(qIndex, val, el) {
+            currentAnswers[qIndex] = val;
+            const group = el.parentElement;
+            group.querySelectorAll('.scale-btn').forEach(b => {
+                b.style.background = 'transparent';
+                b.style.borderColor = 'var(--theme-border)';
+            });
+            el.style.background = 'var(--color-primary-100)';
+            el.style.borderColor = 'var(--color-primary-400)';
+        }
+
+        /* ========== 列表 ========== */
+        function renderList() {
+            const grid = document.getElementById('assess-grid');
+            grid.innerHTML = (window.ASSESSMENTS || []).map(a => {
+                const iconColors = ['#FEF3C7', '#DBEAFE', '#D1FAE5', '#E9D5FF', '#FED7AA', '#CCFBF1'];
+                const idx = (window.ASSESSMENTS || []).indexOf(a);
+                return `
+                <div class="assess-card" onclick="startQuiz('${a.id}')" role="button" tabindex="0" onkeydown="if(event.key==='Enter')startQuiz('${a.id}')" style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);cursor:pointer;transition:all 0.2s var(--ease-spring);">
+                    <div style="width:48px;height:48px;border-radius:50%;background:${iconColors[idx % iconColors.length]};display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:0.875rem;">${a.icon}</div>
+                    <h3 style="font-size:1.05rem;font-weight:700;color:var(--color-gray-800);margin-bottom:0.25rem;">${_t(a.nameKey, a.name)}</h3>
+                    <p style="font-size:0.8rem;color:var(--color-gray-500);margin-bottom:0.5rem;">${_t(a.shortKey, a.short)}</p>
+                    <p style="font-size:0.85rem;color:var(--color-gray-600);line-height:1.7;margin-bottom:0.75rem;">${_t(a.descKey, a.desc)}</p>
+                    <span style="font-size:0.75rem;color:var(--color-gray-400);">${a.questions.length} 题 · 约 ${a.minutes} 分钟</span>
+                </div>`;
+            }).join('');
+        }
+
+        /* ========== 答题 ========== */
+        function startQuiz(id) {
+            const a = (window.ASSESSMENTS || []).find(x => x.id === id);
+            if (!a) return;
+            currentQuiz = a;
+            currentAnswers = new Array(a.questions.length).fill(null);
+            currentDomain = null;
+
+            document.getElementById('list-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'none';
+            document.getElementById('quiz-view').style.display = 'block';
+
+            document.getElementById('quiz-title').textContent = _t(a.nameKey, a.name);
+            document.getElementById('quiz-meta').textContent = a.questions.length + ' ' + _t('assess.q_unit', '题') + ' · ' + _t('assess.about', '约') + ' ' + a.minutes + ' ' + _t('assess.min_unit', '分钟');
+            document.getElementById('quiz-desc').textContent = _t(a.descKey, a.desc);
+            document.getElementById('quiz-desc').style.display = a.type === 'ttm' ? 'none' : 'block';
+
+            let html = '';
+            const scale = a.scale;
+
+            // 领域选择（selfefficacy / ttm）
+            if (a.domainQ) {
+                html += `<div style="margin-bottom:1.5rem;">
+                    <label style="font-size:0.95rem;font-weight:600;color:var(--color-gray-700);display:block;margin-bottom:0.5rem;">${_t(a.domainKey, a.domainQ)}</label>
+                    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">` +
+                    (a.domains || []).map(d =>
+                        `<button type="button" class="domain-btn" data-k="${d.key}" onclick="pickDomain('${d.key}',this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:999px;padding:0.5rem 1rem;font-size:0.875rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${_t(d.labelKey, d.label)}</button>`
+                    ).join('') + `</div></div>`;
+            }
+
+            // 题目
+            a.questions.forEach((q, i) => {
+                if (a.type === 'ttm') {
+                    html += `<div style="margin-bottom:1rem;padding:1rem;border-radius:var(--radius-lg);border:1px solid var(--theme-border);">
+                        <p style="font-size:0.9rem;color:var(--color-gray-600);margin-bottom:0.75rem;">${_t(q.qKey, q.q)}</p>
+                        <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;color:var(--color-gray-600);">
+                            <input type="radio" name="ttm-choice" value="${i}" onchange="currentAnswers[0]=${i}">
+                            ${_t('assess.ttm_this_is_me', '这正是我的状态')}
+                        </label>
+                    </div>`;
+                } else {
+                    const dim = q.dim ? `<span style="font-size:0.75rem;color:var(--color-primary-500);font-weight:600;">${_t(q.dimLabelKey || '', q.dimLabel || '')}</span>` : '';
+                    html += `<div style="margin-bottom:1.25rem;padding:1rem 1.25rem;border-radius:var(--radius-lg);border:1px solid var(--theme-border);">
+                        <p style="font-size:0.925rem;color:var(--color-gray-700);margin-bottom:0.375rem;">${i + 1}. ${dim} ${_t(q.qKey, q.q)}</p>
+                        ${scaleButtons(i, scale.min, scale.max)}
+                    </div>`;
+                }
+            });
+
+            document.getElementById('quiz-body').innerHTML = html;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            /* P1 埋点：测评开始（匿名，仅计数） */
+            try { if (window.Analytics) window.Analytics.track('assessment_start', { assessment: id }); } catch (e) { /* ignore */ }
+        }
+
+        function pickDomain(key, el) {
+            currentDomain = key;
+            el.parentElement.querySelectorAll('.domain-btn').forEach(b => {
+                b.style.background = 'transparent';
+                b.style.borderColor = 'var(--theme-border)';
+            });
+            el.style.background = 'var(--color-primary-100)';
+            el.style.borderColor = 'var(--color-primary-400)';
+        }
+
+        /* ========== 评分 ========== */
+        function computeResult() {
+            const a = currentQuiz;
+            const ans = currentAnswers;
+            if (a.type === 'perma') {
+                const dims = ['P', 'E', 'R', 'M', 'A'];
+                const labels = ['积极情绪', '投入', '关系', '意义', '成就'];
+                const total = ans.reduce((s, v) => s + (v || 0), 0);
+                const low = dims.map((d, i) => ({ d, label: labels[i], v: ans[i] || 0 })).filter(x => x.v < 5);
+                return {
+                    score: total,
+                    max: 50,
+                    level: total > 40 ? '平衡' : (total >= 25 ? '中等' : '需要关注'),
+                    detail: `<p>总分 <b>${total} / 50</b>。${total > 40 ? '你的幸福感各维度较平衡，继续保持这份觉察与投入。' : total >= 25 ? '你的幸福感有一定基础，但还有提升空间。' : '近期的幸福感偏低，请优先照顾自己，可以从下面的小建议开始。'}</p>` +
+                        (low.length ? `<p style="margin-top:0.5rem;">较弱的维度：<b>${low.map(x => x.label).join('、')}</b>——它们是值得投入的方向。</p>` : ''),
+                    advice: low.length
+                        ? low.map(x => {
+                            const map = { P: '每天写下 3 件让你感恩的小事，培养积极情绪。', E: '每天做 1 件让你沉浸其中的事，把注意力交给当下。', R: '每周约 1 位朋友深度聊一次，让关系成为支撑。', M: '为生活增加一点意义感：做一件对他人有帮助的小事。', A: '设定 1 个 SMART 小目标，把大方向拆成可完成的一步。' };
+                            return `<p>· ${_t('assess.perma_dim_' + x.d.toLowerCase(), x.label)}：${_t('assess.advice_' + x.d.toLowerCase(), map[x.d])}</p>`;
+                        }).join('')
+                        : `<p>· ${_t('assess.advice_keep', '保持现状：幸福感来自日积月累的小确幸，继续每天做一点喜欢的事。')}</p>`,
+                };
+            }
+            if (a.type === 'grit') {
+                let total = 0;
+                ans.forEach((v, i) => {
+                    const q = a.questions[i];
+                    total += q.reverse ? (6 - (v || 0)) : (v || 0);
+                });
+                return {
+                    score: total,
+                    max: 40,
+                    level: total >= 30 ? '高坚毅' : (total >= 20 ? '中等坚毅' : '有待提升'),
+                    detail: `<p>总分 <b>${total} / 40</b>。${total >= 30 ? '你对长期目标保持着难得的热情与坚持，这是实现大目标的燃料。' : total >= 20 ? '你有一定的坚持力，但在目标枯竭时容易动摇——这很常见，可以借助策略加固。' : '目前你的坚持力偏弱，别责怪自己：坚毅是可以练习的能力。'}</p>`,
+                    advice: `<p>· ${_t('assess.advice_grit_1', '找到你的「顶层目标」：写下 3-5 年后最想成为的样子，让每次坚持有方向。')}</p>
+                            <p>· ${_t('assess.advice_grit_2', '把大目标分解为可完成的小目标，每完成一步都给自己肯定。')}</p>
+                            <p>· ${_t('assess.advice_grit_3', '建立「不放弃仪式」：固定练习时间 + 5 分钟规则（先做 5 分钟再说）。')}</p>
+                            <p>· ${_t('assess.advice_grit_4', '建立支持系统：让 1-2 个可信的人知道你的目标，在动摇时有人托底。')}</p>`,
+                };
+            }
+            if (a.type === 'mindset') {
+                let fixedSum = 0, growthSum = 0, fixedN = 0, growthN = 0;
+                ans.forEach((v, i) => {
+                    const q = a.questions[i];
+                    if (q.pole === 'fixed') { fixedSum += (v || 0); fixedN++; }
+                    else { growthSum += (v || 0); growthN++; }
+                });
+                const fixedAvg = fixedN ? fixedSum / fixedN : 0;
+                const growthAvg = growthN ? growthSum / growthN : 0;
+                const diff = growthAvg - fixedAvg;
+                let level = diff >= 1 ? '成长型思维' : (diff >= -1 ? '混合型思维' : '固定型思维');
+                return {
+                    score: Math.round(growthAvg * 20),
+                    max: 100,
+                    level: level,
+                    detail: `<p>成长型得分 <b>${growthAvg.toFixed(1)}</b> / 5，固定型得分 <b>${fixedAvg.toFixed(1)}</b> / 5。</p>
+                        <p style="margin-top:0.5rem;">${level === '成长型思维' ? '你相信能力可以通过努力提升，失败对你来说是信息而不是审判。' : level === '固定型思维' ? '你更倾向于认为能力是固定的，失败容易让你怀疑自己——好消息是，思维模式本身也可以成长。' : '你在两种思维之间摇摆，这是大多数人最真实的状态。'}</p>`,
+                    advice: `<p>· ${_t('assess.advice_mindset_1', '觉察触发点：留意哪些情境让你冒出「我不行/我做不到」的想法。')}</p>
+                            <p>· ${_t('assess.advice_mindset_2', '重构内心对话：把「我失败了」改成「我还没掌握」。')}</p>
+                            <p>· ${_t('assess.advice_mindset_3', '使用「尚未」语言：我不是不会，只是尚未学会。')}</p>
+                            <p>· ${_t('assess.advice_mindset_4', '夸努力而非能力：肯定过程，而不是结果。')}</p>`,
+                };
+            }
+            if (a.type === 'selfefficacy') {
+                if (!currentDomain) return null;
+                const sum = ans.reduce((s, v) => s + (v || 0), 0);
+                const avg = ans.length ? sum / ans.length : 0;
+                const domainLabel = (a.domains.find(d => d.key === currentDomain) || {}).label || currentDomain;
+                return {
+                    score: Math.round(avg * 10),
+                    max: 100,
+                    level: avg >= 7 ? '高自我效能' : (avg >= 4 ? '中等自我效能' : '需要提升'),
+                    detail: `<p>在「<b>${domainLabel}</b>」领域，你的自我效能得分为 <b>${avg.toFixed(1)}</b> / 10。</p>
+                        <p style="margin-top:0.5rem;">${avg >= 7 ? '你对自己的能力有稳定的信心，敢于迎接挑战。' : avg >= 4 ? '你有基础信心，但遇到困难时容易自我怀疑——信心是可以训练的。' : '你对这个领域的能力信心偏弱，别急着否定自己，从最小的一步开始。'}</p>`,
+                    advice: `<p>· ${_t('assess.advice_se_1', '创造「掌握经验」：把大任务分解成小步骤，每完成一步都是信心的证据。')}</p>
+                            <p>· ${_t('assess.advice_se_2', '找一个相似的榜样：观察和你起点相似的人如何做到，替代经验同样有效。')}</p>
+                            <p>· ${_t('assess.advice_se_3', '改变自我对话：用「我可以先试一小步」替代「我肯定不行」。')}</p>
+                            <p>· ${_t('assess.advice_se_4', '把紧张重新解读为「我准备好了」，身体的唤醒是资源不是障碍。')}</p>`,
+                };
+            }
+            if (a.type === 'sdt') {
+                const types = { external: 0, introjected: 0, identified: 0, intrinsic: 0 };
+                const counts = { external: 0, introjected: 0, identified: 0, intrinsic: 0 };
+                ans.forEach((v, i) => {
+                    const t = a.questions[i].type4;
+                    types[t] += (v || 0);
+                    counts[t]++;
+                });
+                const avgs = {};
+                Object.keys(types).forEach(k => { avgs[k] = counts[k] ? types[k] / counts[k] : 0; });
+                const sorted = Object.entries(avgs).sort((x, y) => y[1] - x[1]);
+                const dominant = sorted[0][0];
+                const names = {
+                    external: '外部调节（为奖励或避免惩罚）',
+                    introjected: '内摄调节（为面子或避免内疚）',
+                    identified: '认同调节（符合价值观）',
+                    intrinsic: '内在动机（本身有趣）',
+                };
+                const controlled = dominant === 'external' || dominant === 'introjected';
+                return {
+                    score: Math.round(avgs.intrinsic * 20),
+                    max: 100,
+                    level: controlled ? '受控动机主导' : '自主动机主导',
+                    detail: `<p>你最常驱动自己的方式是：<b>${_t('assess.sdt_type_' + dominant, names[dominant])}</b>（${sorted[0][1].toFixed(1)} / 5）。</p>
+                        <p style="margin-top:0.5rem;">${controlled ? '目前你更多靠外部压力或内疚感驱动自己——这种方式短期有效，但容易消耗你。可以尝试把动机「内化」。' : '你的动机更多来自认同与兴趣，这样的坚持更可持续、也更少内耗。'}</p>`,
+                    advice: controlled
+                        ? `<p>· ${_t('assess.advice_sdt_1', '识别受控动机：问自己「我做这件事，是真的想要，还是怕不做会怎样？」')}</p>
+                           <p>· ${_t('assess.advice_sdt_2', '把外部动机内化：把「我必须」改成「我选择，因为我想……」。')}</p>
+                           <p>· ${_t('assess.advice_sdt_3', '满足三个心理需求：给自己选择权（自主）、定够得着的目标（能力）、和朋友一起做（关系）。')}</p>`
+                        : `<p>· ${_t('assess.advice_sdt_4', '保持这份自主：找到事情里真正吸引你的部分，让兴趣继续发酵。')}</p>
+                           <p>· ${_t('assess.advice_sdt_5', '在自主动机中，挑战难度略高于能力时最容易进入心流——去「心流体验室」试试。')}</p>`,
+                };
+            }
+            if (a.type === 'ttm') {
+                const choice = ans[0];
+                if (choice === null || choice === undefined) return null;
+                const stages = [
+                    { key: 'precontemplation', name: '前意向期', adviceKey: 'assess.advice_ttm_0', advice: '先了解这个行为改变的好处与风险，不必急着行动，光是「开始考虑」就是第一步。' },
+                    { key: 'contemplation', name: '意向期', adviceKey: 'assess.advice_ttm_1', advice: '做一张决策平衡表：写下改变的好处与代价、不改变的代价，让选择更清晰。' },
+                    { key: 'preparation', name: '准备期', adviceKey: 'assess.advice_ttm_2', advice: '给自己设定一个具体的开始日期，并提前想好第一步怎么做、遇到阻碍怎么办。' },
+                    { key: 'action', name: '行动期', adviceKey: 'assess.advice_ttm_3', advice: '使用具体技巧坚持改变：固定时间、减少诱惑、记录进展，每一点进步都值得肯定。' },
+                    { key: 'maintenance', name: '维持期', adviceKey: 'assess.advice_ttm_4', advice: '识别高风险情境（疲惫、压力、社交场合），提前准备应对方案，维持比开始更需要技巧。' },
+                ];
+                const stage = stages[choice];
+                return {
+                    score: (choice + 1) * 20,
+                    max: 100,
+                    level: stage.name,
+                    detail: `<p>你目前处于改变的<b>「${stage.name}」</b>。</p><p style="margin-top:0.5rem;">每一个阶段都正常，也没有哪个阶段「更好」——关键是找到适合当下的策略。</p>`,
+                    advice: `<p>· ${_t(stage.adviceKey, stage.advice)}</p>`,
+                };
+            }
+            return null;
+        }
+
+        /* ========== 提交与结果 ========== */
+        function submitQuiz() {
+            if (!currentQuiz) return;
+            // 完整性校验
+            const a = currentQuiz;
+            if (a.domainQ && !currentDomain) { showToast(_t('assess.toast_need_domain', '请先选择一个领域'), 'warning'); return; }
+            const unanswered = a.type === 'ttm'
+                ? (currentAnswers[0] === null || currentAnswers[0] === undefined ? 1 : 0)
+                : currentAnswers.filter(v => v === null || v === undefined).length;
+            if (unanswered > 0) {
+                showToast(_t('assess.toast_unfinished', '还有 ') + unanswered + _t('assess.toast_unfinished_2', ' 题未作答，请完成后再查看结果'), 'warning');
+                return;
+            }
+            const result = computeResult();
+            if (!result) { showToast(_t('assess.toast_error', '请完成作答'), 'warning'); return; }
+
+            // 存储
+            const record = {
+                id: a.id,
+                name: _t(a.nameKey, a.name),
+                score: result.score,
+                max: result.max,
+                level: result.level,
+                timestamp: new Date().toISOString(),
+            };
+            try {
+                const list = JSON.parse(UserStore.get('assessmentResults') || '[]');
+                list.push(record);
+                UserStore.set('assessmentResults', JSON.stringify(list));
+            } catch (e) { /* ignore */ }
+
+            // 埋点
+            try { if (window.Analytics) window.Analytics.track('assessment_complete', { assessment: a.id }); } catch (e) { /* ignore */ }
+
+            // 渲染结果
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'block';
+            document.getElementById('result-icon').textContent = a.icon;
+            document.getElementById('result-title').textContent = _t(a.nameKey, a.name) + ' · ' + result.level;
+            document.getElementById('result-sub').textContent = _t('assess.result_sub', '得分') + ' ' + result.score + ' / ' + result.max;
+            document.getElementById('result-body').innerHTML = result.detail;
+            document.getElementById('result-advice-list').innerHTML = result.advice;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function retakeQuiz() {
+            if (currentQuiz) startQuiz(currentQuiz.id);
+        }
+
+        function backToList() {
+            currentQuiz = null;
+            document.getElementById('quiz-view').style.display = 'none';
+            document.getElementById('result-view').style.display = 'none';
+            document.getElementById('list-view').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showToast(message, type) {
+            const colors = { success: 'var(--color-primary-400)', warning: '#F59E0B', error: '#EF4444' };
+            const toast = document.createElement('div');
+            toast.style.cssText = 'position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:' + (colors[type] || colors.warning) + ';color:white;padding:0.75rem 1.5rem;border-radius:999px;font-size:0.9rem;z-index:9999;box-shadow:var(--shadow-lg);opacity:0;transition:all 0.3s;pointer-events:none;';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            requestAnimationFrame(() => { toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)'; });
+            setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 2400);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderHeader({ currentPage: 'assessment' });
+            renderFooter();
+            NeuroAesthetics.initStaggerAnimations();
+            NeuroAesthetics.initNavbarScroll('navbar');
+            renderList();
+        });
+    </script>
+
+    <style>
+        .btn { display:inline-block;padding:0.625rem 1.25rem;border-radius:999px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:all 0.2s var(--ease-standard);cursor:pointer;border:none; }
+        .btn-primary { background:var(--color-primary-500);color:white; }
+        .btn-primary:hover { transform:translateY(-2px);box-shadow:var(--shadow-md); }
+        .btn-secondary { background:var(--color-gray-100);color:var(--color-gray-600); }
+        .btn-secondary:hover { background:var(--color-gray-200); }
+        .assess-card:hover { transform:translateY(-3px);box-shadow:var(--shadow-md); }
+        @media (max-width:640px) {
+            #assess-grid { grid-template-columns:1fr !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .assess-card, .btn, .scale-btn, .domain-btn { transition:none !important; animation:none !important; }
+        }
+    </style>
+</body>
+</html>

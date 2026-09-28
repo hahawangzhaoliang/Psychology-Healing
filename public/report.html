@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="report.page_title">习惯周报 - 心晴空间</title>
+    <meta name="description" content="一周情绪回顾、连续记录激励与疗愈练习统计，陪伴你把自我关怀变成习惯。" data-i18n="report.meta_desc">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/neuroaesthetics.css">
+    <script src="js/cache.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/icons-custom.css">
+<script src="js/user-store.js"></script>
+</head>
+<body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
+    <div id="app-header"></div>
+
+    <main style="max-width:880px;margin:0 auto;padding:2.5rem 1.25rem 4rem;">
+        <!-- 标题 -->
+        <header style="text-align:center;margin-bottom:2rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--color-primary-100);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+                <svg style="width:32px;height:32px;color:var(--color-primary-400);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+            </div>
+            <h1 style="font-size:clamp(1.75rem,4vw,2.5rem);font-weight:600;color:var(--color-gray-800);" data-i18n="report.title">我的习惯周报</h1>
+            <p style="font-size:0.9375rem;color:var(--color-gray-500);max-width:34rem;margin:0.5rem auto 0;" data-i18n="report.subtitle">看见每一次觉察与练习，它们正在悄悄改变你</p>
+        </header>
+
+        <!-- 空状态（无任何记录时显示） -->
+        <div id="report-empty" style="display:none;text-align:center;padding:3rem 1rem;background:white;border-radius:1.5rem;box-shadow:var(--shadow-sm);border:1px solid rgba(0,0,0,0.04);margin-bottom:1.5rem;">
+            <div style="font-size:3rem;margin-bottom:1rem;">🌱</div>
+            <p style="font-size:1rem;color:var(--color-gray-600);margin-bottom:1.5rem;" data-i18n="report.empty_text">还没有记录。从一次情绪觉察或一次疗愈练习开始，周报会陪你见证变化。</p>
+            <div style="display:flex;justify-content:center;gap:0.75rem;flex-wrap:wrap;">
+                <a href="emotion.html" class="btn btn-primary" data-i18n="report.empty_go_diary">去记录情绪</a>
+                <a href="relax.html" class="btn btn-secondary" data-i18n="report.empty_go_relax">去放松练习</a>
+            </div>
+        </div>
+
+        <div id="report-body" style="display:none;">
+            <!-- 摘要卡 -->
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem;">
+                <div style="background:linear-gradient(135deg,var(--color-primary-50) 0%,var(--color-warm-50) 100%);border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(0,0,0,0.04);">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-primary-500);line-height:1.2;"><span id="stat-streak">0</span><span style="font-size:1rem;font-weight:600;color:var(--color-gray-500);margin-left:0.25rem;" data-i18n="report.stat_streak_unit">天</span></div>
+                    <p style="font-size:0.85rem;color:var(--color-gray-500);margin-top:0.375rem;" data-i18n="report.stat_streak_label">连续记录情绪</p>
+                </div>
+                <div style="background:white;border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-primary-500);line-height:1.2;"><span id="stat-total">0</span><span style="font-size:1rem;font-weight:600;color:var(--color-gray-500);margin-left:0.25rem;" data-i18n="report.stat_total_unit">次</span></div>
+                    <p style="font-size:0.85rem;color:var(--color-gray-500);margin-top:0.375rem;" data-i18n="report.stat_total_label">累计情绪记录</p>
+                </div>
+                <div style="background:white;border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-primary-500);line-height:1.2;"><span id="stat-month">0</span><span style="font-size:1rem;font-weight:600;color:var(--color-gray-500);margin-left:0.25rem;" data-i18n="report.stat_month_unit">天</span></div>
+                    <p style="font-size:0.85rem;color:var(--color-gray-500);margin-top:0.375rem;" data-i18n="report.stat_month_label">本月打卡</p>
+                </div>
+                <div style="background:white;border-radius:var(--radius-xl);padding:1.25rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                    <div style="font-size:2rem;font-weight:700;color:var(--color-primary-500);line-height:1.2;"><span id="stat-relax">0</span><span style="font-size:1rem;font-weight:600;color:var(--color-gray-500);margin-left:0.25rem;" data-i18n="report.stat_relax_unit">次</span></div>
+                    <p style="font-size:0.85rem;color:var(--color-gray-500);margin-top:0.375rem;" data-i18n="report.stat_relax_label">本周疗愈练习</p>
+                </div>
+            </div>
+
+            <!-- 打卡日历 -->
+            <section style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);margin-bottom:1.5rem;">
+                <h2 style="font-size:1.1rem;font-weight:600;color:var(--color-gray-800);margin-bottom:0.25rem;" data-i18n="report.calendar_title">本月打卡日历</h2>
+                <p style="font-size:0.8rem;color:var(--color-gray-500);margin-bottom:1rem;" data-i18n="report.calendar_subtitle">记录情绪、认知重构或完成练习的日子都会被点亮</p>
+                <div id="calendar-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:0.5rem;"></div>
+            </section>
+
+            <!-- 本周情绪趋势 -->
+            <section style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);margin-bottom:1.5rem;">
+                <h2 style="font-size:1.1rem;font-weight:600;color:var(--color-gray-800);margin-bottom:0.25rem;" data-i18n="report.week_title">本周情绪趋势</h2>
+                <p style="font-size:0.8rem;color:var(--color-gray-500);margin-bottom:1rem;" data-i18n="report.week_subtitle">柱高表示当天情绪强度均值</p>
+                <div id="week-chart" style="display:flex;align-items:flex-end;justify-content:space-between;gap:0.75rem;height:10rem;padding:0 0.25rem;"></div>
+            </section>
+
+            <!-- 常见情绪 + 练习统计 -->
+            <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1.5rem;" id="report-split">
+                <section style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                    <h2 style="font-size:1.05rem;font-weight:600;color:var(--color-gray-800);margin-bottom:1rem;" data-i18n="report.emotions_title">常见情绪（近30天）</h2>
+                    <div id="emotion-dist"></div>
+                </section>
+                <section style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                    <h2 style="font-size:1.05rem;font-weight:600;color:var(--color-gray-800);margin-bottom:1rem;" data-i18n="report.actions_title">你的练习与重构</h2>
+                    <div id="action-stats"></div>
+                </section>
+            </div>
+
+            <!-- 周报文案 -->
+            <section id="report-message" style="background:linear-gradient(135deg,#eef7f4 0%,#f3f7fb 100%);border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);margin-bottom:1.5rem;">
+                <div style="display:flex;gap:0.75rem;align-items:flex-start;">
+                    <div style="font-size:1.75rem;line-height:1.4;">💌</div>
+                    <div>
+                        <h2 style="font-size:1.05rem;font-weight:600;color:var(--color-gray-800);margin-bottom:0.5rem;" data-i18n="report.message_title">这一周的悄悄话</h2>
+                        <div id="message-lines" style="color:var(--color-gray-600);line-height:1.9;font-size:0.9375rem;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 徽章 -->
+            <section style="background:white;border-radius:var(--radius-xl);padding:1.5rem;border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow-sm);">
+                <h2 style="font-size:1.05rem;font-weight:600;color:var(--color-gray-800);margin-bottom:0.25rem;" data-i18n="report.badges_title">成长徽章</h2>
+                <p style="font-size:0.8rem;color:var(--color-gray-500);margin-bottom:1rem;" data-i18n="report.badges_subtitle">坚持会留下痕迹</p>
+                <div id="badges-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:0.75rem;"></div>
+            </section>
+        </div>
+
+        <div style="text-align:center;margin-top:1.5rem;">
+            <a href="index.html" class="btn btn-secondary" data-i18n="report.back_home">← 返回首页</a>
+        </div>
+    </main>
+
+    <div id="app-footer"></div>
+
+    <script src="js/neuroaesthetics.js"></script>
+    <script src="js/theme-manager.js"></script>
+    <script src="js/components/header.js"></script>
+    <script src="js/components/footer.js"></script>
+    <script>
+        /* ========== i18n 辅助 ========== */
+        function _t(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            return I18N.t(key, zhDefault);
+        }
+
+        /* ========== 数据读取 ========== */
+        function readJson(key) {
+            try { return JSON.parse(UserStore.get(key) || '[]'); } catch (e) { return []; }
+        }
+
+        function fmtDate(d) {
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+
+        function dateOf(iso) {
+            try { return new Date(iso); } catch (e) { return new Date(); }
+        }
+
+        /* ========== 核心计算 ========== */
+        function computeStreak(days) {
+            // days: Set of 'YYYY-MM-DD'（情绪记录日）
+            if (days.size === 0) return 0;
+            let streak = 0;
+            const cursor = new Date();
+            // 今天未记录时，从昨天开始数（今天不打断）
+            if (!days.has(fmtDate(cursor))) cursor.setDate(cursor.getDate() - 1);
+            while (days.has(fmtDate(cursor))) {
+                streak++;
+                cursor.setDate(cursor.getDate() - 1);
+            }
+            return streak;
+        }
+
+        function topEmotion(dayRecs) {
+            const counts = {};
+            dayRecs.forEach(r => (r.emotions || []).forEach(e => {
+                const name = e.name || '';
+                if (name) counts[name] = (counts[name] || 0) + 1;
+            }));
+            let best = '', bestN = 0;
+            Object.keys(counts).forEach(k => { if (counts[k] > bestN) { bestN = counts[k]; best = k; } });
+            return best;
+        }
+
+        /* ========== 渲染 ========== */
+        function renderCalendar(days) {
+            const now = new Date();
+            const y = now.getFullYear(), m = now.getMonth();
+            const firstWeekday = new Date(y, m, 1).getDay();
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            const weekdays = ['一', '二', '三', '四', '五', '六', '日'];
+            let html = weekdays.map(w => '<div style="text-align:center;font-size:0.75rem;color:var(--color-gray-400);padding-bottom:0.25rem;">' + w + '</div>').join('');
+            for (let i = 0; i < firstWeekday; i++) html += '<div></div>';
+            for (let d = 1; d <= daysInMonth; d++) {
+                const ds = fmtDate(new Date(y, m, d));
+                const isToday = d === now.getDate();
+                const has = days.has(ds);
+                html += '<div style="position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:0.75rem;background:' + (has ? 'var(--color-primary-100)' : (isToday ? 'rgba(251,191,36,0.15)' : 'var(--color-gray-50)')) + ';font-size:0.85rem;color:' + (isToday ? 'var(--color-gray-800)' : 'var(--color-gray-500)') + ';font-weight:' + (isToday ? '700' : '400') + ';">'
+                    + d
+                    + (has ? '<span style="position:absolute;bottom:0.25rem;width:0.35rem;height:0.35rem;border-radius:50%;background:var(--color-primary-500);"></span>' : '')
+                    + '</div>';
+            }
+            document.getElementById('calendar-grid').innerHTML = html;
+        }
+
+        function renderWeekChart(week) {
+            const container = document.getElementById('week-chart');
+            container.innerHTML = week.map(day => {
+                const h = Math.max(day.avg > 0 ? (day.avg / 10) * 100 : 3, 3);
+                const color = day.avg > 0 ? (day.avg >= 7 ? '#F59E0B' : day.avg >= 4 ? 'var(--color-primary-400)' : '#34D399') : 'var(--color-gray-200)';
+                return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:0.375rem;min-width:0;">'
+                    + '<div style="width:100%;display:flex;align-items:flex-end;justify-content:center;height:8rem;">'
+                    + '<div title="' + (day.main || _t('report.no_record', '未记录')) + '" style="width:70%;max-width:2rem;height:' + h + '%;background:' + color + ';border-radius:0.5rem 0.5rem 0.25rem 0.25rem;transition:height 0.5s var(--ease-standard);"></div>'
+                    + '</div>'
+                    + '<div style="font-size:0.7rem;color:var(--color-gray-400);white-space:nowrap;">' + day.label + '</div>'
+                    + (day.main ? '<div style="font-size:0.68rem;color:var(--color-gray-500);white-space:nowrap;max-width:4rem;overflow:hidden;text-overflow:ellipsis;">' + day.main + '</div>' : '<div style="font-size:0.68rem;color:var(--color-gray-300);">·</div>')
+                    + '</div>';
+            }).join('');
+        }
+
+        function renderEmotionDist(counts, max) {
+            const container = document.getElementById('emotion-dist');
+            const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="font-size:0.85rem;color:var(--color-gray-400);">' + _t('report.no_emotion_data', '暂无情绪记录数据') + '</p>';
+                return;
+            }
+            container.innerHTML = entries.map(([name, n]) =>
+                '<div style="margin-bottom:0.75rem;">'
+                + '<div style="display:flex;justify-content:space-between;font-size:0.85rem;color:var(--color-gray-600);margin-bottom:0.25rem;"><span>' + name + '</span><span style="color:var(--color-gray-400);">' + n + '</span></div>'
+                + '<div style="height:0.5rem;background:var(--color-gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:' + Math.round(n / max * 100) + '%;background:linear-gradient(90deg,var(--color-primary-300),var(--color-primary-500));border-radius:999px;"></div></div>'
+                + '</div>'
+            ).join('');
+        }
+
+        function renderActionStats(cbt, relax) {
+            const container = document.getElementById('action-stats');
+            const relaxByType = {};
+            relax.forEach(r => { relaxByType[r.practice] = (relaxByType[r.practice] || 0) + 1; });
+            const typeNames = {
+                breathing: _t('report.practice_breathing', '呼吸练习'),
+                body_scan: _t('report.practice_body_scan', '身体扫描'),
+                mindfulness: _t('report.practice_mindfulness', '正念冥想'),
+                walking: _t('report.practice_walking', '正念行走'),
+                defusion: _t('report.practice_defusion', '思维解离'),
+            };
+            let html = '';
+            html += '<div style="display:flex;justify-content:space-between;font-size:0.9rem;color:var(--color-gray-600);padding:0.5rem 0;border-bottom:1px dashed var(--color-gray-100);"><span data-i18n="report.cbt_count">认知重构</span><span style="font-weight:600;color:var(--color-primary-500);">' + cbt.length + ' <span style="font-size:0.75rem;color:var(--color-gray-400);">' + _t('report.cbt_unit', '次') + '</span></span></div>';
+            Object.keys(typeNames).forEach(k => {
+                const n = relaxByType[k] || 0;
+                if (n > 0) html += '<div style="display:flex;justify-content:space-between;font-size:0.9rem;color:var(--color-gray-600);padding:0.5rem 0;border-bottom:1px dashed var(--color-gray-100);"><span>' + typeNames[k] + '</span><span style="font-weight:600;color:var(--color-primary-500);">' + n + '</span></div>';
+            });
+            if (cbt.length === 0 && relax.length === 0) html += '<p style="font-size:0.85rem;color:var(--color-gray-400);">' + _t('report.no_action_data', '还没有练习记录，去放松练习试试') + '</p>';
+            container.innerHTML = html;
+        }
+
+        function renderMessage(week, streak, cbt, relax, counts) {
+            const lines = [];
+            const weekDays = week.filter(d => d.count > 0).length;
+            const weekCbt = cbt.filter(r => { const d = new Date(); d.setDate(d.getDate() - 7); return dateOf(r.timestamp) >= d; }).length;
+            const weekRelax = relax.filter(r => { const d = new Date(); d.setDate(d.getDate() - 7); return dateOf(r.timestamp) >= d; }).length;
+
+            if (weekDays > 0) lines.push(_t('report.msg_days', '本周你记录了 ') + weekDays + _t('report.msg_days_2', ' 天情绪，这份觉察本身就是照顾。'));
+            if (streak >= 3) lines.push(_t('report.msg_streak', '已经连续 ') + streak + _t('report.msg_streak_2', ' 天坚持记录了，习惯正在悄悄形成。'));
+            const anxiety = (counts['焦虑'] || 0) + (counts['紧张'] || 0) + (counts['害怕'] || 0) + (counts['烦躁'] || 0);
+            const low = (counts['悲伤'] || 0) + (counts['低落'] || 0) + (counts['失望'] || 0) + (counts['孤独'] || 0);
+            const total = Object.values(counts).reduce((s, n) => s + n, 0) || 1;
+            if (anxiety / total >= 0.3) lines.push(_t('report.msg_anxiety', '难受的时候，试试先做一次呼吸练习，让身体慢下来，想法也会慢下来。'));
+            else if (low / total >= 0.3) lines.push(_t('report.msg_low', '低落是过客。试试「正念行走」，或者去「心流体验室」换一个节奏。'));
+            if (weekCbt >= 1) lines.push(_t('report.msg_cbt', '这一周你完成了 ') + weekCbt + _t('report.msg_cbt_2', ' 次认知重构，正在练习不被想法带走，这很了不起。'));
+            if (weekRelax >= 3) lines.push(_t('report.msg_relax', '本周完成了 ') + weekRelax + _t('report.msg_relax_2', ' 次疗愈练习，身体会记住这份照顾。'));
+            if (lines.length === 0) lines.push(_t('report.msg_gentle', '慢慢来。看见情绪、练习觉察，你已经走在这条路上了。'));
+
+            document.getElementById('message-lines').innerHTML = lines.map(l => '<p style="margin:0 0 0.375rem;">' + l + '</p>').join('');
+        }
+
+        function renderBadges(streak, totalRecords) {
+            const badges = [
+                { key: 'b3', icon: '🌱', label: _t('report.badge_3', '连续3天'), need: streak >= 3 },
+                { key: 'b7', icon: '🌿', label: _t('report.badge_7', '连续7天'), need: streak >= 7 },
+                { key: 'b14', icon: '🌳', label: _t('report.badge_14', '连续14天'), need: streak >= 14 },
+                { key: 'b30', icon: '🏆', label: _t('report.badge_30', '连续30天'), need: streak >= 30 },
+                { key: 'b10', icon: '📖', label: _t('report.badge_10', '累计10次'), need: totalRecords >= 10 },
+                { key: 'b50', icon: '💎', label: _t('report.badge_50', '累计50次'), need: totalRecords >= 50 },
+            ];
+            document.getElementById('badges-grid').innerHTML = badges.map(b =>
+                '<div style="text-align:center;padding:0.75rem 0.25rem;border-radius:0.75rem;background:' + (b.need ? 'var(--color-primary-50)' : 'var(--color-gray-50)') + ';border:1px solid ' + (b.need ? 'var(--color-primary-200)' : 'var(--color-gray-100)') + ';opacity:' + (b.need ? '1' : '0.45') + ';">'
+                + '<div style="font-size:1.5rem;margin-bottom:0.25rem;' + (b.need ? '' : 'filter:grayscale(1);') + '">' + b.icon + '</div>'
+                + '<div style="font-size:0.72rem;color:var(--color-gray-600);font-weight:600;">' + b.label + '</div>'
+                + (b.need ? '<div style="font-size:0.65rem;color:var(--color-primary-500);margin-top:0.125rem;">✓</div>' : '')
+                + '</div>'
+            ).join('');
+        }
+
+        /* ========== 主入口 ========== */
+        function loadReport() {
+            const emotions = readJson('emotionRecords');
+            const cbt = readJson('cbtRecords');
+            const relax = readJson('relaxRecords');
+
+            // 有记录的天（情绪/重构/练习任一日）
+            const allDays = new Set();
+            emotions.forEach(r => allDays.add(fmtDate(dateOf(r.timestamp))));
+            cbt.forEach(r => allDays.add(fmtDate(dateOf(r.timestamp))));
+            relax.forEach(r => allDays.add(fmtDate(dateOf(r.timestamp))));
+            // 情绪记录日（用于 streak 与打卡）
+            const emotionDays = new Set();
+            emotions.forEach(r => emotionDays.add(fmtDate(dateOf(r.timestamp))));
+
+            const streak = computeStreak(emotionDays);
+            const totalRecords = emotions.length;
+            const now = new Date();
+            const monthDays = [...allDays].filter(d => d.startsWith(fmtDate(now).slice(0, 7))).length;
+            const weekStart = new Date(); weekStart.setDate(weekStart.getDate() - 6);
+            const weekRelax = relax.filter(r => dateOf(r.timestamp) >= weekStart).length;
+
+            if (emotions.length === 0 && cbt.length === 0 && relax.length === 0) {
+                document.getElementById('report-empty').style.display = 'block';
+                document.getElementById('report-body').style.display = 'none';
+                return;
+            }
+            document.getElementById('report-empty').style.display = 'none';
+            document.getElementById('report-body').style.display = 'block';
+
+            document.getElementById('stat-streak').textContent = streak;
+            document.getElementById('stat-total').textContent = totalRecords;
+            document.getElementById('stat-month').textContent = monthDays;
+            document.getElementById('stat-relax').textContent = weekRelax;
+
+            renderCalendar(allDays);
+
+            const week = [];
+            for (let i = 6; i >= 0; i--) {
+                const dt = new Date(); dt.setDate(dt.getDate() - i);
+                const ds = fmtDate(dt);
+                const dayRecs = emotions.filter(r => fmtDate(dateOf(r.timestamp)) === ds);
+                const avg = dayRecs.length ? Math.round(dayRecs.reduce((s, r) => s + (r.intensity || 5), 0) / dayRecs.length) : 0;
+                week.push({ label: (dt.getMonth() + 1) + '/' + dt.getDate(), count: dayRecs.length, avg: avg, main: topEmotion(dayRecs) });
+            }
+            renderWeekChart(week);
+
+            const counts = {};
+            emotions.forEach(r => (r.emotions || []).forEach(e => {
+                const name = e.name || '';
+                if (name) counts[name] = (counts[name] || 0) + 1;
+            }));
+            renderEmotionDist(counts, Math.max(...Object.values(counts), 1));
+
+            renderActionStats(cbt, relax);
+            renderMessage(week, streak, cbt, relax, counts);
+            renderBadges(streak, totalRecords);
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            renderHeader({ currentPage: 'report' });
+            renderFooter();
+            NeuroAesthetics.initStaggerAnimations();
+            NeuroAesthetics.initNavbarScroll('navbar');
+            loadReport();
+        });
+    </script>
+
+    <style>
+        .btn { display:inline-block;padding:0.625rem 1.25rem;border-radius:999px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:all 0.2s var(--ease-standard);cursor:pointer;border:none; }
+        .btn-primary { background:var(--color-primary-500);color:white; }
+        .btn-primary:hover { transform:translateY(-2px);box-shadow:var(--shadow-md); }
+        .btn-secondary { background:var(--color-gray-100);color:var(--color-gray-600); }
+        .btn-secondary:hover { background:var(--color-gray-200); }
+        @media (max-width:640px) {
+            #report-split { grid-template-columns:1fr !important; }
+            #badges-grid { grid-template-columns:repeat(3,1fr) !important; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            #calendar-grid div, #week-chart div { transition:none !important; animation:none !important; }
+        }
+    </style>
+</body>
+</html>
