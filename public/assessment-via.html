@@ -703,6 +703,16 @@
             function _showResults() {
                 const report = VIAInventory.generateReport(state.answers);
                 _renderSignatureStrengths(report.signatureStrengths);
+                // 持久化 VIA 结果（供心流活动推荐读取）
+                try {
+                    const top = (report.signatureStrengths || []).slice(0, 3).map(s => s.name);
+                    const viaStore = { names: top, date: new Date().toISOString() };
+                    if (typeof UserStore !== 'undefined' && UserStore.set) {
+                        UserStore.set('via_card', JSON.stringify(viaStore));
+                    } else {
+                        localStorage.setItem('via_card', JSON.stringify(viaStore));
+                    }
+                } catch (e) { /* 静默 */ }
                 _showStep('step-result');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }

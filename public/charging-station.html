@@ -559,6 +559,7 @@
     <script async src="https://fundingchoicesmessages.google.com/i/ca-pub-6203482765648217?nc=1" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
 <script src="js/user-store.js"></script>
+<script src="js/i18n.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -1058,14 +1059,14 @@
 
             <!-- 环境音选择 -->
             <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--theme-border);">
-                <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.75rem;">🌿 环境音</p>
+                <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="charging_station.ambient_label">🌿 环境音</p>
                 <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="ambientSelector">
-                    <button class="ambient-btn active" data-ambient="none" onclick="selectAmbient('none')">无</button>
-                    <button class="ambient-btn" data-ambient="rain" onclick="selectAmbient('rain')">细雨</button>
-                    <button class="ambient-btn" data-ambient="ocean" onclick="selectAmbient('ocean')">海浪</button>
-                    <button class="ambient-btn" data-ambient="forest" onclick="selectAmbient('forest')">森林</button>
-                    <button class="ambient-btn" data-ambient="wind" onclick="selectAmbient('wind')">风声</button>
-                    <button class="ambient-btn" data-ambient="fireplace" onclick="selectAmbient('fireplace')">壁炉</button>
+                    <button class="ambient-btn active" data-ambient="none" onclick="selectAmbient('none')" data-i18n="charging_station.ambient_none">无</button>
+                    <button class="ambient-btn" data-ambient="rain" onclick="selectAmbient('rain')" data-i18n="charging_station.ambient_rain">细雨</button>
+                    <button class="ambient-btn" data-ambient="ocean" onclick="selectAmbient('ocean')" data-i18n="charging_station.ambient_ocean">海浪</button>
+                    <button class="ambient-btn" data-ambient="forest" onclick="selectAmbient('forest')" data-i18n="charging_station.ambient_forest">森林</button>
+                    <button class="ambient-btn" data-ambient="wind" onclick="selectAmbient('wind')" data-i18n="charging_station.ambient_wind">风声</button>
+                    <button class="ambient-btn" data-ambient="fireplace" onclick="selectAmbient('fireplace')" data-i18n="charging_station.ambient_fireplace">壁炉</button>
                 </div>
             </div>
         </div>
@@ -1084,7 +1085,7 @@
             <p id="story-content" class="story-content"></p>
             <p id="story-moral" style="font-size:0.85rem;color:var(--color-warm-500);margin-top:0.75rem;font-style:italic;padding-top:0.75rem;border-top:1px solid var(--theme-border);"></p>
             <div class="story-meta">
-                <span class="story-time" id="story-time">阅读时间：约3分钟</span>
+                <span class="story-time" id="story-time" data-i18n="charging_station.story_time_static">阅读时间：约3分钟</span>
                 <button class="share-btn" onclick="shareStory()" data-i18n="charging_station.btn_share_story">分享故事</button>
             </div>
         </div>
@@ -1160,7 +1161,9 @@
         function _t(key, zhDefault) {
             if (!window.I18N) return zhDefault || key;
             if (I18N.currentLocale === "zh-CN") return zhDefault || key;
-            return I18N.t(key) || zhDefault || key;
+            if (!I18N.enTranslations) return zhDefault || key;
+            const v = I18N.t(key);
+            return (v && v !== key) ? v : (zhDefault || key);
         }
 
         /* ========== 图片资源池（按场景分类）========== */
@@ -1674,8 +1677,8 @@
             /* 情绪急救站初始化 */
             initFirstAid();
 
-            /* 语言切换时刷新动态内容（故事/图片/音乐）译文，不翻动内容 */
-            document.addEventListener('localeChanged', () => {
+            /* 语言切换/就绪时刷新动态内容（故事/图片/音乐）译文，不翻动内容 */
+            function refreshDynamicContent() {
                 // 图片说明
                 const images = imagePool[currentScenario] || imagePool.morning;
                 const img = images[currentImageIndex];
@@ -1693,7 +1696,13 @@
                 }
                 // 音乐
                 updateMusicDisplay();
-            });
+            }
+            document.addEventListener('localeChanged', refreshDynamicContent);
+            document.addEventListener('i18n:ready', refreshDynamicContent);
+            // 若 i18n 已就绪（事件早于本监听注册），主动补一次刷新
+            if (window.I18N && I18N.enTranslations && I18N.currentLocale === 'en') {
+                refreshDynamicContent();
+            }
         });
     </script>
 

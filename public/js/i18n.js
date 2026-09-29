@@ -45,7 +45,7 @@
         basePath: 'i18n',
 
         // 语言包版本号（修改 en.json 后请 +1，防止浏览器缓存旧版）
-        langPackVersion: '20260929-1',
+        langPackVersion: '20260929-6',
 
         /**
          * 初始化 i18n
@@ -79,6 +79,11 @@
 
             // 7. 监听 DOM 变化（SPA 场景）
             this.observeMutations();
+
+            // 8. 派发就绪事件（供 JS 模板渲染页面补渲染，避免首屏竞态）
+            document.dispatchEvent(new CustomEvent('i18n:ready', {
+                detail: { locale: this.currentLocale },
+            }));
 
             return this;
         },
@@ -315,6 +320,8 @@
             // 保存选择
             localStorage.setItem('xinqing_locale', newLocale);
             this.currentLocale = newLocale;
+            // 同步 <html lang>（页面内 locale 判断依赖它）
+            document.documentElement.lang = newLocale === 'en' ? 'en' : 'zh-CN';
 
             // 加载英文语言包（如果需要）
             if (newLocale === 'en' && !this.enTranslations) {

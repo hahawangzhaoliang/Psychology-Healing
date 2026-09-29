@@ -404,6 +404,12 @@
             NeuroAesthetics.initNavbarScroll('navbar');
             renderList();
         });
+        document.addEventListener('localeChanged', () => {
+            if (document.getElementById('list-view').style.display !== 'none') renderList();
+        });
+        document.addEventListener('i18n:ready', () => {
+            if (document.getElementById('list-view').style.display !== 'none') renderList();
+        });
     </script>
 
     <style>

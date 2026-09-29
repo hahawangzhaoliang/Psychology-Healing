@@ -703,6 +703,7 @@
         }
     </style>
 <script src="js/user-store.js"></script>
+<script src="js/i18n.js"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -1266,10 +1267,19 @@
     <script src="js/companion-widget.js"></script>
     <script>
         /* ========== i18n 辅助函数 ========== */
+        function _tStable(key, zhDefault) {
+            if (!window.I18N) return zhDefault || key;
+            if (I18N.currentLocale === "zh-CN") return zhDefault || key;
+            if (!I18N.enTranslations) return zhDefault || key;
+            const v = I18N.t(key);
+            return (v && v !== key) ? v : (zhDefault || key);
+        }
         function _t(key, zhDefault) {
             if (!window.I18N) return zhDefault || key;
             if (I18N.currentLocale === 'zh-CN') return zhDefault || key;
-            return I18N.t(key) || zhDefault || key;
+            if (!I18N.enTranslations) return zhDefault || key;
+            const v = I18N.t(key);
+            return (v && v !== key) ? v : (zhDefault || key);
         }
 
         /* ========== 状态 ========== */
@@ -1310,24 +1320,29 @@
             localStorage.setItem('anonIdentity', nextIdx.toString());
             const next = ANON_IDENTITIES[nextIdx];
             document.getElementById('anon-emoji').textContent = next.emoji;
-            document.getElementById('anon-name').textContent = _t(next.nameKey, next.nameZh);
+            document.getElementById('anon-name').textContent = _tStable(next.nameKey, next.nameZh);
             document.getElementById('compose-avatar').textContent = next.emoji;
         }
 
+        function initAnonIdentitySafe() {
+            if (!window.I18N || !I18N.enTranslations) return;
+            initAnonIdentity();
+            if (typeof renderPosts === 'function') renderPosts();
+        }
         function initAnonIdentity() {
             const identity = getCurrentAnonIdentity();
             document.getElementById('anon-emoji').textContent = identity.emoji;
-            document.getElementById('anon-name').textContent = _t(identity.nameKey, identity.nameZh);
+            document.getElementById('anon-name').textContent = _tStable(identity.nameKey, identity.nameZh);
             document.getElementById('compose-avatar').textContent = identity.emoji;
         }
 
         /* ========== 示例帖子数据 ========== */
         const samplePosts = [
-            { id: 1, content: '今天工作压力很大，但是下班后看到了美丽的晚霞，突然觉得一切都值得了。', mood: 'calm', timestamp: new Date(Date.now() - 3600000).toISOString(), encouragements: 12, replies: 3 },
-            { id: 2, content: '终于完成了那个困扰我很久的项目，虽然过程很艰难，但是成长了很多。', mood: 'joy', timestamp: new Date(Date.now() - 7200000).toISOString(), encouragements: 8, replies: 2 },
-            { id: 3, content: '有时候觉得自己很渺小，但是想到还有人在默默支持我，就觉得很温暖。', mood: 'anxious', timestamp: new Date(Date.now() - 10800000).toISOString(), encouragements: 15, replies: 5 },
-            { id: 4, content: '今天和家人吃了一顿很久没吃的团圆饭，聊了很多以前的事，感觉心里暖暖的。', mood: 'grateful', timestamp: new Date(Date.now() - 14400000).toISOString(), encouragements: 22, replies: 7 },
-            { id: 5, content: '最近有点迷茫，不知道自己想要什么。但至少今天好好吃了一顿饭，善待了自己。', mood: 'sad', timestamp: new Date(Date.now() - 18000000).toISOString(), encouragements: 18, replies: 4 },
+            { id: 1, content: '今天工作压力很大，但是下班后看到了美丽的晚霞，突然觉得一切都值得了。', contentKey: 'community.sample_1', mood: 'calm', timestamp: new Date(Date.now() - 3600000).toISOString(), encouragements: 12, replies: 3 },
+            { id: 2, content: '终于完成了那个困扰我很久的项目，虽然过程很艰难，但是成长了很多。', contentKey: 'community.sample_2', mood: 'joy', timestamp: new Date(Date.now() - 7200000).toISOString(), encouragements: 8, replies: 2 },
+            { id: 3, content: '有时候觉得自己很渺小，但是想到还有人在默默支持我，就觉得很温暖。', contentKey: 'community.sample_3', mood: 'anxious', timestamp: new Date(Date.now() - 10800000).toISOString(), encouragements: 15, replies: 5 },
+            { id: 4, content: '今天和家人吃了一顿很久没吃的团圆饭，聊了很多以前的事，感觉心里暖暖的。', contentKey: 'community.sample_4', mood: 'grateful', timestamp: new Date(Date.now() - 14400000).toISOString(), encouragements: 22, replies: 7 },
+            { id: 5, content: '最近有点迷茫，不知道自己想要什么。但至少今天好好吃了一顿饭，善待了自己。', contentKey: 'community.sample_5', mood: 'sad', timestamp: new Date(Date.now() - 18000000).toISOString(), encouragements: 18, replies: 4 },
         ];
 
         const moodConfig = {
@@ -1376,14 +1391,14 @@
                 b.style.background = c.bg || '';
                 b.style.color = c.color || '';
                 if (m) {
-                    b.innerHTML = c.emoji ? `${c.emoji} ${_t(c.tagKey, c.tagZh)}` : b.innerText;
+                    b.innerHTML = c.emoji ? _tStable(c.tagKey, c.tagZh) : b.innerText;
                 }
             });
 
             /* 高亮选中按钮 */
             btn.style.background = config.bg;
             btn.style.color = 'white';
-            btn.innerHTML = config.emoji + _t('community.mood_selected', ' 已选');
+            btn.innerHTML = config.emoji + _tStable('community.mood_selected', ' 已选');
 
             /* 前缀文本（不重复添加） */
             const tagPrefix = _t(config.tagKey, config.tagZh);
@@ -1432,7 +1447,7 @@
                 b.style.background = c.bg || '';
                 b.style.color = c.color || '';
                 if (m) {
-                    b.innerHTML = c.emoji ? `${c.emoji} ${_t(c.tagKey, c.tagZh)}` : b.innerText;
+                    b.innerHTML = c.emoji ? _tStable(c.tagKey, c.tagZh) : b.innerText;
                 }
             });
 
@@ -1490,12 +1505,12 @@
                         <div class="post-header">
                             <div class="avatar" style="background:linear-gradient(135deg,${mood.bg},${mood.color}30);font-size:1.1rem;">${identity.emoji}</div>
                             <div class="post-meta">
-                                <div class="post-author">${_t(identity.nameKey, identity.nameZh)}</div>
+                                <div class="post-author">${_tStable(identity.nameKey, identity.nameZh)}</div>
                                 <div class="post-time">${getTimeAgo(post.timestamp)}</div>
                             </div>
                             <span class="post-topic-tag" style="background:${mood.bg}20;color:${mood.color};">${topicLabels[post.mood] || post.mood}</span>
                         </div>
-                        <p class="post-content">${escapeHtml(post.content)}</p>
+                        <p class="post-content">${escapeHtml(_tStable(post.contentKey, post.content))}</p>
                         <div class="post-actions">
                             <button class="action-btn encourage" onclick="showEncourageModal(${post.id})">
                                 <span>💝</span>
@@ -1653,7 +1668,7 @@
                 if (m === (typeof selectedMood !== 'undefined' ? selectedMood : null)) {
                     b.innerHTML = (c.emoji || '') + _t('community.mood_selected', ' 已选');
                 } else {
-                    b.innerHTML = c.emoji ? c.emoji + ' ' + _t(c.tagKey, c.tagZh) : b.innerText;
+                    b.innerHTML = c.emoji ? _t(c.tagKey, c.tagZh) : b.innerText;
                 }
             });
             // 若打卡弹窗打开，刷新弹窗文案
@@ -1672,6 +1687,7 @@
             }
         }
         document.addEventListener('localeChanged', refreshCommunityI18n);
+        document.addEventListener('i18n:ready', () => { initAnonIdentitySafe(); refreshCommunityI18n(); });
 
         function selectCheckinTheme(themeId) {
             const theme = CHECKIN_THEMES.find(t => t.id === themeId);
@@ -1925,6 +1941,10 @@
             initAnonIdentity(); // 初始化匿名身份
             renderTtmReco();  // 按 TTM 阶段推荐（P1）
             loadPosts();
+            // 若 i18n 已就绪（事件早于监听注册），主动补一次语言渲染
+            if (window.I18N && I18N.enTranslations && I18N.currentLocale === 'en') {
+                refreshCommunityI18n();
+            }
 
             /* ESC 关闭模态框 */
             document.addEventListener('keydown', (e) => {

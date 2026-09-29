@@ -527,7 +527,9 @@
     function _t(key, zhDefault) {
         if (!window.I18N) return zhDefault || key;
         if (I18N.currentLocale === "zh-CN") return zhDefault || key;
-        return I18N.t(key) || zhDefault || key;
+        if (!I18N.enTranslations) return zhDefault || key;
+        const v = I18N.t(key);
+        return (v && v !== key) ? v : (zhDefault || key);
     }
 
         // 加载统计数据
@@ -675,6 +677,8 @@
         // 页面加载时执行
         document.title = _t('growth_statistics.page_title', '成长统计 - 心晴空间');
         document.addEventListener('DOMContentLoaded', loadStatistics);
+        document.addEventListener('localeChanged', loadStatistics);
+        document.addEventListener('i18n:ready', loadStatistics);
     </script>
 
     <!-- 通用导航栏组件 -->

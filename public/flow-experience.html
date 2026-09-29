@@ -2271,27 +2271,33 @@
                     <div class="duration-options">
                         <div class="duration-option" onclick="selectDuration(15)" data-touch-feedback>
                             <div class="duration-value">15</div>
-                            <div class="duration-unit">分钟</div>
+                            <div class="duration-unit" data-i18n="flow.unit_minutes">分钟</div>
                         </div>
                         <div class="duration-option selected" onclick="selectDuration(30)" data-touch-feedback>
                             <div class="duration-value">30</div>
-                            <div class="duration-unit">分钟</div>
+                            <div class="duration-unit" data-i18n="flow.unit_minutes">分钟</div>
                         </div>
                         <div class="duration-option" onclick="selectDuration(45)" data-touch-feedback>
                             <div class="duration-value">45</div>
-                            <div class="duration-unit">分钟</div>
+                            <div class="duration-unit" data-i18n="flow.unit_minutes">分钟</div>
                         </div>
                         <div class="duration-option" onclick="selectDuration(60)" data-touch-feedback>
                             <div class="duration-value">60</div>
-                            <div class="duration-unit">分钟</div>
+                            <div class="duration-unit" data-i18n="flow.unit_minutes">分钟</div>
                         </div>
                     </div>
 
                     <h3 style="font-size: 1rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.75rem;" data-i18n="flow.set_goal_input">设定目标</h3>
                     <input type="text" class="goal-input" placeholder="例如：完成线稿上色" id="goal-input" >
+
+                    <!-- 微里程碑建议（P0-2） -->
+                    <div id="milestone-prep" class="preparation-tip" style="display:none;flex-direction:column;align-items:stretch;margin-top:1rem;">
+                        <div class="tip-label" data-i18n="flow.milestone_tip">🎯 微里程碑（可选）：把目标拆成 3 个小步，更容易保持专注</div>
+                        <div id="milestone-prep-list" style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.6rem;"></div>
+                    </div>
                     
                     <div class="preparation-tip-flow">
-                        <div class="tip-label">💡 心流小知识</div>
+                        <div class="tip-label" data-i18n="flow.tip_knowledge">💡 心流小知识</div>
                         <div data-i18n-html="flow.step1_tip">有明确的目标，是进入心流的前提条件之一。当你清楚地知道要做什么、做到什么程度时，大脑会自动进入「任务模式」，注意力更容易聚焦。</div>
                     </div>
                     <div class="preparation-tip">
@@ -2308,13 +2314,13 @@
                 <!-- 步骤2: 评估挑战 -->
                 <div                 <!-- 步骤2: 感受挑战度（趣味隐喻版） -->
                 <div id="step-2" class="preparation-card hidden">
-                    <h2 class="preparation-title">如果给这件事的「挑战感」画个样子……</h2>
-                    <p class="preparation-desc">不用打分，只是感受一下：它看起来像什么？</p>
+                    <h2 class="preparation-title" data-i18n="flow.challenge_feel_title">如果给这件事的「挑战感」画个样子……</h2>
+                    <p class="preparation-desc" data-i18n="flow.challenge_feel_desc">不用打分，只是感受一下：它看起来像什么？</p>
 
                     <!-- 挑战-技能平衡小图示 -->
                     <div style="background: linear-gradient(135deg, #f0fdfa 0%, #fef9c3 100%); border-radius: 12px; padding: 0.75rem 1rem; margin-bottom: 1rem; font-size: 0.85rem; color: var(--theme-text); line-height: 1.6;">
-                        <span style="font-weight: 600; font-size: 0.82rem; color: var(--color-primary-600);">💡 心流发生在「挑战」与「技能」刚好匹配的时候</span><br>
-                        太简单 → 无聊　·　太难 → 焦虑　·　<span style="color: var(--color-primary-500); font-weight: 600;">刚刚好 → 🌿 心流</span>
+                        <span style="font-weight: 600; font-size: 0.82rem; color: var(--color-primary-600);" data-i18n="flow.challenge_match_hint">💡 心流发生在「挑战」与「技能」刚好匹配的时候</span><br>
+                        <span data-i18n="flow.challenge_scale">太简单 → 无聊　·　太难 → 焦虑　·　</span><span style="color: var(--color-primary-500); font-weight: 600;" data-i18n="flow.challenge_scale_flow">刚刚好 → 🌿 心流</span>
                     </div>
 
                     <div class="challenge-metaphors">
@@ -2343,11 +2349,17 @@
                     <!-- 动态提示 -->
                     <div id="challenge-feedback" class="preparation-tip" style="display:block; margin-top:1rem;">
                         <span class="tip-icon">💡</span>
-                        <span class="tip-text" id="challenge-feedback-text">「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿</span>
+                        <span class="tip-text" id="challenge-feedback-text" data-i18n="flow.feedback_just_right">「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿</span>
+                    </div>
+
+                    <!-- 挑战调节策略（P0-1） -->
+                    <div id="challenge-adjust" class="preparation-tip-flow" style="margin-top:1rem; display:none;">
+                        <div class="tip-label" data-i18n="flow.adjust_challenge_title">⚖️ 调整挑战水平</div>
+                        <div id="challenge-adjust-actions" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.6rem;"></div>
                     </div>
 
                     <div class="preparation-tip-flow">
-                        <div class="tip-label">💡 心流小知识</div>
+                        <div class="tip-label" data-i18n="flow.tip_knowledge">💡 心流小知识</div>
                         <div data-i18n-html="flow.step2_tip">心流研究发现：当挑战略高于技能时，人们最容易进入心流状态。如果这件事对你来说太简单，可以主动增加一点难度。</div>
                     </div>
 
@@ -2383,7 +2395,7 @@
 
 
                     <div class="preparation-tip-flow">
-                        <div class="tip-label">💡 心流小知识</div>
+                        <div class="tip-label" data-i18n="flow.tip_knowledge">💡 心流小知识</div>
                         <div data-i18n-html="flow.step3_tip">消除干扰不是「准备工作」，而是心流体验的一部分。当你的空间变得安静、整洁，大脑会接收到「现在是专注时间」的信号。</div>
                     </div>
 
@@ -2415,17 +2427,20 @@
                 
                 <!-- 步骤4: 心理准备 -->
                 <div id="step-4" class="preparation-card hidden">
-                    <h2 class="preparation-title" data-i18n="flow.mental_preparation">心理准备</h2>
-                    <p class="preparation-desc" data-i18n="flow.breathing_exercise">进行1分钟呼吸练习，让自己进入专注状态</p>
+                    <h2 class="preparation-title" data-i18n="flow.ritual_title">心流前奏仪式</h2>
+                    <p class="preparation-desc" data-i18n="flow.ritual_desc">30 秒的呼吸仪式，让大脑切换到「只属于此刻」的专注模式</p>
 
                     <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, var(--color-primary-50), var(--color-warm-50)); border-radius: var(--radius-xl); margin-bottom: 1.5rem;">
-                        <div style="font-size: 4rem; margin-bottom: 1rem; animation: breathe 8s var(--ease-breathe) infinite;">🌬️</div>
-                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.5rem;" data-i18n="flow.deep_breath">深呼吸</div>
+                        <div style="font-size: 4rem; margin-bottom: 0.5rem; animation: breathe 8s var(--ease-breathe) infinite;">🌬️</div>
+                        <div style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.25rem;" data-i18n="flow.ritual_name">跟随呼吸，进入心流</div>
                         <div style="font-size: 1rem; color: var(--theme-text-light);" data-i18n="flow.breath_guide">吸气 4 秒 → 屏息 4 秒 → 呼气 4 秒</div>
+                        <div id="ritual-countdown" style="font-size: 2.5rem; font-weight: 800; color: var(--color-primary-500); margin-top: 0.5rem; line-height: 1.1;">30</div>
+                        <div id="ritual-affirmation" style="font-size: 0.95rem; font-weight: 500; color: var(--theme-text); margin-top: 0.25rem;" data-i18n="flow.ritual_affirmation">接下来这段时间，只属于我</div>
+                        <div id="ritual-done" style="display:none; font-size: 1rem; font-weight: 600; color: var(--color-success); margin-top: 0.5rem;" data-i18n="flow.ritual_done">仪式完成，准备开始 ✨</div>
                     </div>
 
                     <div class="preparation-tip-flow">
-                        <div class="tip-label">💡 心流小知识</div>
+                        <div class="tip-label" data-i18n="flow.tip_knowledge">💡 心流小知识</div>
                         <div data-i18n-html="flow.step4_tip">深呼吸能激活副交感神经，帮助大脑从「分散模式」切换到「专注模式」。给自己一个小小的仪式感——比如三次深呼吸——告诉大脑：现在，我要进入我的心流时间了。</div>
                     </div>
 
@@ -2452,6 +2467,10 @@
         <!-- 专注模式 -->
         <div id="focus-mode" class="focus-mode hidden">
             <div class="focus-activity-name" id="focus-activity-name" data-i18n="flow.focus_activity">🎨 数字油画</div>
+
+            <div id="focus-challenge-bar" style="display:none;align-items:center;gap:0.5rem;padding:0.55rem 1.1rem;border-radius:var(--radius-full);background:var(--color-primary-50);margin-bottom:1.25rem;font-size:0.8rem;color:var(--theme-text);">
+                <span id="focus-challenge-label"></span>
+            </div>
             
             <div class="focus-timer">
                 <span class="focus-time" id="focus-time">00:00</span>
@@ -2469,6 +2488,7 @@
                     <circle class="progress-ring-bg" cx="140" cy="140" r="120"></circle>
                     <circle class="progress-ring-progress" cx="140" cy="140" r="120" 
                             stroke-dasharray="754" stroke-dashoffset="754" id="progress-circle"></circle>
+                    <circle cx="140" cy="140" r="104" fill="none" stroke="var(--color-warm-400)" stroke-width="10" stroke-linecap="round" stroke-dasharray="653" stroke-dashoffset="653" id="milestone-circle" style="opacity:0.9;"></circle>
                 </svg>
                 <div class="progress-ring-text">
                     <div class="progress-percentage" id="progress-percentage">0%</div>
@@ -2479,6 +2499,11 @@
             <div class="focus-goal">
                 <span class="goal-icon">💡</span>
                 <span class="goal-text" id="focus-goal-text" data-i18n="flow.current_goal">当前目标：完成线稿上色</span>
+            </div>
+
+            <div id="focus-milestones" style="display:none;width:100%;max-width:26rem;margin-bottom:1.25rem;text-align:left;background:var(--theme-card);border:1px solid var(--theme-border);border-radius:var(--radius-lg);padding:1rem 1.25rem;">
+                <div style="font-size:0.85rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="flow.milestone_title">🎯 微里程碑</div>
+                <div id="focus-milestones-list" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
             </div>
 
             <div class="focus-sound">
@@ -2563,6 +2588,12 @@
                     <textarea class="diary-textarea" data-i18n-placeholder="flow.diary_placeholder" placeholder="记录这次心流体验的感受、收获或想法..." id="diary-text"></textarea>
                 </div>
 
+                <!-- 复盘即时建议（P1-1） -->
+                <div class="card" id="advice-cards" style="display:none;">
+                    <h2 class="assessment-title" data-i18n="flow.advice_title">💡 本次心流复盘</h2>
+                    <div id="advice-list" style="display:flex;flex-direction:column;gap:0.6rem;"></div>
+                </div>
+
                 <div class="assessment-actions">
                     <button class="btn btn-secondary" onclick="skipAssessment()" data-i18n="flow.btn_skip">跳过</button>
                     <button class="btn btn-primary" onclick="saveAssessment()" data-i18n="flow.btn_save_stats">保存并查看统计</button>
@@ -2576,6 +2607,12 @@
             
             <div class="dashboard-grid" style="margin-bottom: 2rem;" id="records-stats">
                 <!-- 动态加载统计数据 -->
+            </div>
+
+            <div class="card">
+                <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--theme-text); margin-bottom: 0.25rem;" data-i18n="flow.balance_title">⚖️ 挑战-技能平衡曲线</h3>
+                <p style="font-size: 0.8rem; color: var(--theme-text-light); margin-bottom: 1rem;" data-i18n="flow.balance_desc">每个点是一次心流体验；越靠近中间的金色通道，越接近理想心流状态</p>
+                <div id="flow-balance-chart" style="width:100%;"></div>
             </div>
 
             <div class="card">
@@ -2662,13 +2699,75 @@
         let sessionStartTime = null;
         let isPaused = false;
         let scores = {};
+        let currentChallengeFeel = 'just-right';
+        let currentAssistMode = false;
+        let currentMilestones = [];
+        let currentMilestoneDone = [false, false, false];
 
         // i18n helper for dynamic text
         function _t(key, zhText) {
             if (window.I18N && I18N.currentLocale === 'en') {
-                return I18N.t(key) || zhText;
+                // 把中文兜底传给 I18N.t：语言包未加载完成时回退中文，而非显示原始 key
+                return I18N.t(key, zhText) || zhText;
             }
             return zhText;
+        }
+
+        /* ========== 微里程碑模板（P0-2，按活动类型生成） ========== */
+        var MILESTONE_TEMPLATES = {
+            'reading': [
+                ['读完第 1 章', 'Finish Chapter 1'],
+                ['做 5 条读书笔记', 'Write 5 reading notes'],
+                ['写下 1 句感悟', 'Write down 1 insight']
+            ],
+            'writing': [
+                ['写出开头 100 字', 'Write the first 100 words'],
+                ['完成 300 字正文', 'Reach 300 words'],
+                ['回读并润色一遍', 'Reread and polish once']
+            ],
+            'painting': [
+                ['完成构图草稿', 'Complete the composition'],
+                ['铺第一层颜色', 'Apply the first color layer'],
+                ['添加细节收尾', 'Add details and finish']
+            ],
+            'coding': [
+                ['理清需求与思路', 'Clarify the requirement'],
+                ['完成核心逻辑', 'Implement core logic'],
+                ['测试运行一次', 'Test and run once']
+            ],
+            'yoga': [
+                ['热身 2 分钟', 'Warm up for 2 minutes'],
+                ['完成 3 个体式', 'Complete 3 poses'],
+                ['放松呼吸 1 分钟', 'Cool down with breathing for 1 min']
+            ]
+        };
+        function getMilestoneTemplate(activityId) {
+            return MILESTONE_TEMPLATES[activityId] || [
+                ['开始并进入状态', 'Start and settle in'],
+                ['完成一半目标', 'Reach halfway'],
+                ['完成全部目标', 'Complete the goal']
+            ];
+        }
+        function isEnLocale() {
+            return !!(window.I18N && I18N.currentLocale === 'en') ||
+                   document.documentElement.lang === 'en' ||
+                   localStorage.getItem('xinqing_locale') === 'en';
+        }
+        function updateMilestonePrep() {
+            var box = document.getElementById('milestone-prep');
+            var list = document.getElementById('milestone-prep-list');
+            if (!box || !list || !currentActivity) { if (box) box.style.display = 'none'; return; }
+            var en = isEnLocale();
+            var tpl = getMilestoneTemplate(currentActivity.id);
+            currentMilestones = tpl.map(function (pair) { return en ? pair[1] : pair[0]; });
+            list.innerHTML = currentMilestones.map(function (m, i) {
+                return '<div style="display:flex;align-items:center;gap:0.5rem;padding:0.5rem 0.75rem;background:var(--theme-card);border:1px solid var(--theme-border);border-radius:var(--radius-md);font-size:0.82rem;color:var(--theme-text);">' +
+                    '<span style="font-weight:600;color:var(--color-primary-500);">' + (i + 1) + '</span>' +
+                    '<span style="flex:1;">' + m + '</span>' +
+                    '<span style="font-size:0.75rem;color:var(--theme-text-light);">' + (i === 0 ? _t('flow.milestone_start', '开始') : i === currentMilestones.length - 1 ? _t('flow.milestone_end', '完成') : _t('flow.milestone_mid', '中途')) + '</span>' +
+                '</div>';
+            }).join('');
+            box.style.display = 'flex';
         }
 
         /* ========== 动态占位符（根据活动更新目标输入框提示） ========== */
@@ -2679,6 +2778,7 @@
                 ? (activity.goalExampleEn || 'Set a specific, achievable goal')
                 : (activity.goalExample || '设定一个具体可完成的目标');
             input.placeholder = example;
+            updateMilestonePrep();
         }
 
         function refreshGoalPlaceholder() {
@@ -2736,6 +2836,20 @@
         });
 
         /* ========== 监听语言切换事件 ========== */
+        // 初始加载竞态：语言包就绪后，若用户已停在某 tab，重渲染该 tab
+        document.addEventListener('i18n:ready', () => {
+            const activeTab = document.querySelector('.page-tab.active');
+            if (!activeTab) return;
+            const targetTab = activeTab.dataset.tab;
+            if (targetTab === 'discover') {
+                const activeFilter = document.querySelector('.filter-btn.active');
+                const category = activeFilter ? activeFilter.dataset.category || 'all' : 'all';
+                loadActivities(category);
+            } else if (targetTab === 'records') {
+                loadRecords();
+            }
+        });
+
         document.addEventListener('localeChanged', (e) => {
             const activeTab = document.querySelector('.page-tab.active');
             if (activeTab) {
@@ -2753,10 +2867,45 @@
         });
 
         /* ========== 活动发现 ========== */
+        function computeActivityStats() {
+            const stats = {};
+            const records = JSON.parse(UserStore.get('flow-records') || '[]');
+            records.forEach(r => {
+                const key = r.activityId || r.activity || 'unknown';
+                if (!stats[key]) stats[key] = { count: 0, sum: 0, n: 0, lastFeel: null };
+                stats[key].count++;
+                if (r.scores && r.scores.enjoy && r.scores.focus) {
+                    stats[key].sum += (r.scores.enjoy + r.scores.focus) / 2;
+                    stats[key].n++;
+                }
+                if (r.challengeFeel) stats[key].lastFeel = r.challengeFeel;
+            });
+            Object.keys(stats).forEach(k => { stats[k].avg = stats[k].n ? (stats[k].sum / stats[k].n).toFixed(1) : null; });
+            return stats;
+        }
+
+        function getViaTopActivities() {
+            // 读 VIA 优势（若测评过）：弱映射到活动 tag
+            try {
+                const via = JSON.parse(UserStore.get('via_card') || 'null');
+                if (!via || !via.names || !via.names.length) return [];
+                const map = [];
+                (via.names || []).forEach(n => {
+                    if (/创造|创意|Creat|imagin/i.test(n)) map.push('creative');
+                    if (/学习|好奇|Learn|Curios/i.test(n)) map.push('learning');
+                    if (/活力|热情|Vital|Zest/i.test(n)) map.push('physical');
+                    if (/灵性|感恩|审美|Spirit|Gratitude|Appreci/i.test(n)) map.push('contemplative');
+                });
+                return map;
+            } catch (e) { return []; }
+        }
+
         function loadActivities(category) {
             const grid = document.getElementById('activity-grid');
             grid.innerHTML = '';
             
+            const activityStats = computeActivityStats();
+            const viaCats = getViaTopActivities();
             const allActivities = getActivities();
             const filtered = category === 'all' ? allActivities : 
                             allActivities.filter(a => {
@@ -2767,11 +2916,34 @@
                                 return true;
                             });
             
+            // P1-2 排序：历史心流质量高的活动靠前（无记录保持原序）
+            filtered.sort((a, b) => {
+                const sa = activityStats[a.id], sb = activityStats[b.id];
+                const va = sa && sa.avg ? parseFloat(sa.avg) : -1;
+                const vb = sb && sb.avg ? parseFloat(sb.avg) : -1;
+                return vb - va;
+            });
+
             filtered.forEach((activity, index) => {
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.style.setProperty('--stagger-index', index);
                 card.style.animationDelay = `${index * 80}ms`;
+                // P1-2 状态徽标
+                const st = activityStats[activity.id] || null;
+                const badges = [];
+                if (viaCats.length && activity.tags.some(t => viaCats.some(v => t.toLowerCase().includes(v) || (v === 'creative' && /创造性|艺术|Creative|Art/i.test(t)) || (v === 'learning' && /学习|Learning/i.test(t)) || (v === 'physical' && /运动|身体|Physical|Mind-Body/i.test(t)) || (v === 'contemplative' && /专注|安静|Focus|Quiet/i.test(t))))) {
+                    badges.push('<span class="badge" style="background:var(--color-warm-100);color:var(--color-warm-600);">🎯 ' + _t('flow.badge_via', '为你推荐') + '</span>');
+                }
+                if (st && st.avg && parseFloat(st.avg) >= 4) {
+                    badges.push('<span class="badge" style="background:#FEF3C7;color:#92400E;">⭐ ' + _t('flow.badge_best', '最佳心流') + '</span>');
+                }
+                if (st && st.count >= 3) {
+                    badges.push('<span class="badge" style="background:var(--color-primary-100);color:var(--color-primary-600);">🔥 ' + _t('flow.badge_tried', '尝试过') + ' ' + st.count + ' ' + _t('flow.unit_sessions_short', '次') + '</span>');
+                }
+                if (st && st.lastFeel === 'too-hard') {
+                    badges.push('<span class="badge" style="background:#FEE2E2;color:#991B1B;">⚠️ ' + _t('flow.badge_hard', '挑战偏高建议调低') + '</span>');
+                }
                 card.innerHTML = `
                     <div class="activity-card-header">
                         <div class="activity-icon">${activity.icon}</div>
@@ -2779,6 +2951,7 @@
                             ${'⭐'.repeat(activity.difficulty)}${'☆'.repeat(5 - activity.difficulty)}
                         </div>
                     </div>
+                    ${badges.length ? '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.5rem;">' + badges.join('') + '</div>' : ''}
                     <div class="activity-name">${activity.name}</div>
                     <div class="activity-desc">${activity.description}</div>
                     <div class="activity-tags">
@@ -2910,6 +3083,31 @@
             });
         }
 
+        let ritualTimer = null;
+        function startRitual() {
+            if (ritualTimer) return;
+            const countdown = document.getElementById('ritual-countdown');
+            const done = document.getElementById('ritual-done');
+            const affirmation = document.getElementById('ritual-affirmation');
+            if (!countdown) return;
+            let left = 30;
+            countdown.textContent = left;
+            done.style.display = 'none';
+            affirmation.style.opacity = '1';
+            ritualTimer = setInterval(() => {
+                left--;
+                if (left <= 0) {
+                    clearInterval(ritualTimer);
+                    ritualTimer = null;
+                    countdown.textContent = '0';
+                    done.style.display = 'block';
+                    affirmation.style.opacity = '0.55';
+                } else {
+                    countdown.textContent = left;
+                }
+            }, 1000);
+        }
+
         function nextStep(step) {
             // 验证当前步骤
             if (step === 2) {
@@ -2930,11 +3128,12 @@
             document.getElementById(`step-${step}`).classList.remove('hidden');
             document.querySelector(`.progress-step[data-step="${step}"]`).classList.add('active');
             
-            // 更新摘要
+            // 更新摘要 + 启动心流仪式
             if (step === 4) {
                 const unit = _t('flow.unit_minutes', '分钟');
                 document.getElementById('summary-duration').textContent = `${currentDuration}${unit}`;
                 document.getElementById('summary-goal').textContent = currentGoal;
+                startRitual();
             }
         }
 
@@ -2944,6 +3143,7 @@
 
         function selectChallengeFeel(feel, el) {
             // feel: 'easy' | 'just-right' | 'stretch' | 'too-hard'
+            currentChallengeFeel = feel;
             // 同步到原变量
             var mapping = { 'easy': [3, 2], 'just-right': [3, 3], 'stretch': [3, 4], 'too-hard': [2, 5] };
             if (mapping[feel]) {
@@ -2957,16 +3157,72 @@
             });
             if (el) el.classList.add('selected');
 
-            // 动态反馈文案
+            // 动态反馈文案（双语）
             var feedbackTexts = {
-                'easy': '有点简单？没关系～心流也可以在放松的状态里出现。你也可以试试稍微提高一点挑战 🌱',
-                'just-right': '「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿',
-                'stretch': '需要努力，但你相信自己可以——这种「稍微紧张但期待」的感觉，正是心流的前奏 🌳',
-                'too-hard': '有点紧张？不如我们把目标调小一点点，让难度刚刚好 🏔️'
+                'easy': _t('flow.feedback_easy', '有点简单？没关系～心流也可以在放松的状态里出现。你也可以试试稍微提高一点挑战 🌱'),
+                'just-right': _t('flow.feedback_just_right', '「香草」是最容易进入心流的状态——有点挑战，但你在掌控中 🌿'),
+                'stretch': _t('flow.feedback_stretch', '需要努力，但你相信自己可以——这种「稍微紧张但期待」的感觉，正是心流的前奏 🌳'),
+                'too-hard': _t('flow.feedback_too_hard', '有点紧张？不如我们把目标调小一点点，让难度刚刚好 🏔️')
             };
             var feedbackEl = document.getElementById('challenge-feedback-text');
             if (feedbackEl && feedbackTexts[feel]) {
                 feedbackEl.textContent = feedbackTexts[feel];
+            }
+            renderChallengeAdjust(feel);
+        }
+
+        /* ========== 挑战平衡调节器（P0-1） ========== */
+        function renderChallengeAdjust(feel) {
+            var box = document.getElementById('challenge-adjust');
+            var actions = document.getElementById('challenge-adjust-actions');
+            if (!box || !actions) return;
+            var strategy = {
+                'easy': [{ key: 'boost', label: _t('flow.strategy_boost', '增加一点难度：把目标调大') }],
+                'just-right': [{ key: 'keep', label: _t('flow.strategy_keep', '保持平衡，进入心流 🎯') }],
+                'stretch': [{ key: 'keep', label: _t('flow.strategy_keep', '保持平衡，进入心流 🎯') }],
+                'too-hard': [
+                    { key: 'shrink', label: _t('flow.strategy_shrink_goal', '拆小目标：先完成一半') },
+                    { key: 'easier', label: _t('flow.strategy_easier', '换个更低难度的活动') },
+                    { key: 'assist', label: _t('flow.strategy_assist', '开启辅助模式：更细的步骤提示') }
+                ]
+            }[feel] || [];
+            box.style.display = strategy.length ? 'flex' : 'none';
+            actions.innerHTML = strategy.map(function (s) {
+                return '<button class="btn btn-sm" style="border-radius:var(--radius-full);" onclick="applyChallengeStrategy(\'' + s.key + '\')" data-touch-feedback>' + s.label + '</button>';
+            }).join('');
+        }
+
+        function applyChallengeStrategy(key) {
+            var input = document.getElementById('goal-input');
+            var goal = (input && input.value) || currentGoal;
+            switch (key) {
+                case 'shrink':
+                    if (goal) {
+                        if (input) input.value = _t('flow.strategy_shrink_prefix', '前半段：') + goal;
+                        currentGoal = input ? input.value : goal;
+                    }
+                    showToast(_t('flow.strategy_applied_shrink', '目标已拆小——完成前半段就是一个里程碑'), 'success');
+                    break;
+                case 'boost':
+                    if (goal) {
+                        if (input) input.value = goal + _t('flow.strategy_boost_suffix', '，再多完成 1/3');
+                        currentGoal = input ? input.value : goal;
+                    }
+                    showToast(_t('flow.strategy_applied_boost', '挑战已增加——超额完成更接近心流'), 'success');
+                    break;
+                case 'keep':
+                    showToast(_t('flow.strategy_applied_keep', '保持这个平衡，准备进入心流 🌿'), 'success');
+                    break;
+                case 'easier':
+                    currentChallengeFeel = 'just-right';
+                    currentSkillLevel = 3;
+                    currentChallengeLevel = 3;
+                    showToast(_t('flow.strategy_easier_hint', '已把挑战调到平衡档。建议下次选择难度更低的 1⭐ 活动'), 'info');
+                    break;
+                case 'assist':
+                    currentAssistMode = true;
+                    showToast(_t('flow.strategy_applied_assist', '辅助模式已开启：专注时会显示更细的步骤提示'), 'success');
+                    break;
             }
         }
 
@@ -3029,6 +3285,22 @@
             const goalPrefix = _t('flow.goal_prefix', '当前目标：');
             document.getElementById('focus-goal-text').textContent = `${goalPrefix}${currentGoal}`;
             
+            // 渲染挑战-技能指示条（P0-1）
+            const chBar = document.getElementById('focus-challenge-bar');
+            const chLabel = document.getElementById('focus-challenge-label');
+            if (chBar && chLabel) {
+                const zoneText = {
+                    'easy': _t('flow.challenge_zone_low', '低挑战区：试试增加一点难度'),
+                    'just-right': _t('flow.challenge_zone_balance', '心流区 🎯 挑战与技能刚刚好'),
+                    'stretch': _t('flow.challenge_zone_balance', '心流区 🎯 挑战与技能刚刚好'),
+                    'too-hard': _t('flow.challenge_zone_high', '高挑战区：目标已帮你拆小')
+                }[currentChallengeFeel || 'just-right'] || _t('flow.challenge_zone_balance', '心流区 🎯 挑战与技能刚刚好');
+                chLabel.textContent = '⚖️ ' + _t('flow.challenge_bar_label', '挑战-技能平衡：') + zoneText;
+                chBar.style.display = 'flex';
+            }
+            // 渲染微里程碑（P0-2）
+            renderFocusMilestones();
+
             // 更新目标时间
             const targetMinutes = Math.floor(currentDuration);
             const targetSeconds = targetMinutes * 60;
@@ -3054,6 +3326,32 @@
             }, 1000);
         }
 
+        /* ========== 微里程碑（P0-2） ========== */
+        function renderFocusMilestones() {
+            const box = document.getElementById('focus-milestones');
+            const list = document.getElementById('focus-milestones-list');
+            if (!box || !list) return;
+            if (!currentMilestones || !currentMilestones.length) { box.style.display = 'none'; return; }
+            box.style.display = 'block';
+            currentMilestoneDone = currentMilestones.map(function () { return false; });
+            list.innerHTML = currentMilestones.map(function (m, i) {
+                return '<label style="display:flex;align-items:center;gap:0.6rem;padding:0.5rem 0.6rem;border-radius:var(--radius-md);background:var(--color-primary-50);cursor:pointer;font-size:0.82rem;color:var(--theme-text);">' +
+                    '<input type="checkbox" onchange="markMilestoneDone(' + i + ', this.checked)" style="accent-color:var(--color-primary-500);width:1rem;height:1rem;">' +
+                    '<span id="milestone-item-' + i + '">' + m + '</span>' +
+                '</label>';
+            }).join('');
+        }
+
+        function markMilestoneDone(idx, done) {
+            currentMilestoneDone[idx] = done;
+            const item = document.getElementById('milestone-item-' + idx);
+            if (item) item.style.textDecoration = done ? 'line-through' : 'none';
+            updateFocusDisplay();
+            if (done && currentMilestones.length && currentMilestoneDone.every(Boolean)) {
+                showToast(_t('flow.milestone_all_done', '🎉 微里程碑全部完成！这就是心流的节奏'), 'success');
+            }
+        }
+
         function updateFocusDisplay() {
             const minutes = Math.floor(focusSeconds / 60);
             const seconds = focusSeconds % 60;
@@ -3069,6 +3367,15 @@
             
             // 更新百分比
             document.getElementById('progress-percentage').textContent = `${Math.round(progress * 100)}%`;
+
+            // 微里程碑目标环（P0-2）
+            const mc = document.getElementById('milestone-circle');
+            if (mc) {
+                const doneCount = currentMilestoneDone ? currentMilestoneDone.filter(Boolean).length : 0;
+                const mTotal = currentMilestones ? currentMilestones.length : 0;
+                const mProgress = mTotal ? doneCount / mTotal : 0;
+                mc.style.strokeDashoffset = 653 * (1 - mProgress);
+            }
         }
 
         function togglePause() {
@@ -3143,8 +3450,38 @@
             });
         }
 
+        function buildAdvice() {
+            const a = [];
+            if (scores.challenge && scores.challenge < 3) a.push({ icon: '⚖️', key: 'advice_challenge_low' });
+            if (scores.focus && scores.focus < 3) a.push({ icon: '🧘', key: 'advice_focus_low' });
+            if (scores.enjoy >= 4 && scores.focus >= 4) a.push({ icon: '⭐', key: 'advice_best' });
+            if (scores.enjoy >= 4 && scores.focus >= 3 && a.length === 0) a.push({ icon: '✨', key: 'advice_enjoy_high' });
+            return a;
+        }
+
+        function renderAdvice() {
+            const advice = buildAdvice();
+            const box = document.getElementById('advice-cards');
+            const list = document.getElementById('advice-list');
+            if (!box || !list) return;
+            if (advice.length === 0) {
+                list.innerHTML = '<div style="font-size:0.9rem;color:var(--theme-text-light);">' + _t('flow.advice_none', '状态不错，继续保持这个节奏 ✨') + '</div>';
+            } else {
+                list.innerHTML = advice.map(a =>
+                    '<div style="display:flex;align-items:flex-start;gap:0.6rem;padding:0.75rem 1rem;background:var(--color-primary-50);border-radius:var(--radius-lg);font-size:0.875rem;color:var(--theme-text);">' +
+                    '<span style="font-size:1.1rem;flex-shrink:0;">' + a.icon + '</span>' +
+                    '<span>' + _t('flow.' + a.key, a.key) + '</span></div>'
+                ).join('');
+            }
+            box.style.display = 'block';
+        }
+
         function saveAssessment() {
             const diary = document.getElementById('diary-text').value;
+            
+            // P1-1 复盘即时建议
+            const advice = buildAdvice();
+            renderAdvice();
             
             // 这里可以保存到localStorage或发送到服务器
             const record = {
@@ -3153,7 +3490,14 @@
                 activityName: currentActivity ? currentActivity.name : _t('flow.unknown_activity', '未知活动'),
                 duration: focusSeconds,
                 goal: currentGoal,
+                challengeFeel: currentChallengeFeel || null,
+                milestones: {
+                    total: currentMilestones ? currentMilestones.length : 0,
+                    done: currentMilestoneDone ? currentMilestoneDone.filter(Boolean).length : 0
+                },
+                assistMode: !!currentAssistMode,
                 scores: scores,
+                advice: advice,
                 diary: diary,
                 startTime: sessionStartTime,
                 endTime: new Date().toISOString(),
@@ -3167,10 +3511,10 @@
             
             showToast(_t('flow.toast_assessment_saved', '评估已保存！'), 'success');
             
-            // 返回首页
+            // 返回首页（留时间查看复盘建议）
             setTimeout(() => {
                 location.reload();
-            }, 1500);
+            }, 3200);
         }
 
         function skipAssessment() {
@@ -3181,6 +3525,57 @@
         }
 
         /* ========== 记录页面 ========== */
+        function renderFlowBalanceChart(records) {
+            const box = document.getElementById('flow-balance-chart');
+            if (!box) return;
+            const pts = records.filter(r => r.scores && r.scores.focus && r.scores.challenge);
+            if (pts.length === 0) {
+                box.innerHTML = '<div style="text-align:center;padding:2.5rem 1rem;color:var(--theme-text-light);font-size:0.875rem;">' + _t('flow.balance_empty', '完成几次心流体验后，这里会显示你的挑战-技能平衡曲线') + '</div>';
+                return;
+            }
+            const W = 520, H = 420, M = { l: 52, r: 24, t: 24, b: 48 };
+            const PW = W - M.l - M.r, PH = H - M.t - M.b;
+            const sx = v => M.l + (v - 1) / 4 * PW;
+            const sy = v => M.t + PH - (v - 1) / 4 * PH;
+            const isEn = window.I18N && I18N.currentLocale === 'en';
+            const axX = isEn ? 'Skill' : '技能';
+            const axY = isEn ? 'Challenge' : '挑战';
+            const grid = [];
+            for (let i = 1; i <= 5; i++) {
+                grid.push(`<line x1="${sx(i)}" y1="${M.t}" x2="${sx(i)}" y2="${M.t + PH}" stroke="#E5E7EB" stroke-width="1"/>`);
+                grid.push(`<line x1="${M.l}" y1="${sy(i)}" x2="${M.l + PW}" y2="${sy(i)}" stroke="#E5E7EB" stroke-width="1"/>`);
+            }
+            // 心流通道（|skill-challenge|<=1 平衡带）金色半透明
+            let band = '';
+            for (let i = 1; i <= 5; i++) {
+                const x0 = sx(Math.max(1, i - 1)), x1 = sx(Math.min(5, i + 1));
+                band += `<polygon points="${x0},${sy(i)} ${x1},${sy(i)} ${x1},${sy(i + 0.35)} ${x0},${sy(i + 0.35)}" fill="#F59E0B" fill-opacity="0.14"/>`;
+            }
+            // 对角线参考线
+            const diag = `<line x1="${sx(1)}" y1="${sy(1)}" x2="${sx(5)}" y2="${sy(5)}" stroke="#F59E0B" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+            // 数据点
+            const dots = pts.map(r => {
+                const f = r.scores.focus, ch = r.scores.challenge;
+                const inZone = Math.abs(ch - f) <= 1;
+                const color = inZone ? '#F59E0B' : '#94A3B8';
+                const label = (r.activityName || r.activity || '') + ' · ' + (isEn ? 'S' : '技能') + f + '/' + (isEn ? 'C' : '挑战') + ch;
+                return `<circle cx="${sx(f)}" cy="${sy(ch)}" r="7" fill="${color}" stroke="#fff" stroke-width="1.5">
+                    <title>${label}</title></circle>`;
+            }).join('');
+            const labels = [1, 2, 3, 4, 5].map(i =>
+                `<text x="${sx(i)}" y="${M.t + PH + 22}" text-anchor="middle" font-size="11" fill="#9CA3AF">${i}</text>` +
+                `<text x="${M.l - 14}" y="${sy(i) + 4}" text-anchor="end" font-size="11" fill="#9CA3AF">${i}</text>`).join('');
+            const axTxt = `<text x="${M.l + PW / 2}" y="${H - 8}" text-anchor="middle" font-size="12" fill="#6B7280" font-weight="600">${axX} →</text>
+                <text x="18" y="${M.t + PH / 2}" text-anchor="middle" font-size="12" fill="#6B7280" font-weight="600" transform="rotate(-90 18 ${M.t + PH / 2})">${axY} →</text>`;
+            const legend = `<div style="display:flex;gap:1.25rem;justify-content:center;margin-top:0.5rem;font-size:0.8rem;color:var(--theme-text-light);">
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#F59E0B;margin-right:0.35rem;"></span>${_t('flow.balance_zone', '心流区')}</span>
+                <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#94A3B8;margin-right:0.35rem;"></span>${_t('flow.balance_off', '偏离区')}</span></div>`;
+            box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:520px;display:block;margin:0 auto;" role="img" aria-label="${_t('flow.balance_title', '挑战-技能平衡曲线')}">
+                <rect x="${M.l}" y="${M.t}" width="${PW}" height="${PH}" fill="#FDFBF7" rx="8"/>
+                ${grid.join('')}${band}${diag}${dots}${labels}${axTxt}
+                </svg>${legend}`;
+        }
+
         function loadRecords() {
             const records = JSON.parse(UserStore.get('flow-records') || '[]');
 
@@ -3206,6 +3601,10 @@
             const avgQuality = records.length > 0 ?
                 (records.reduce((sum, r) => sum + (r.scores.focus || 0), 0) / records.length).toFixed(1) : 0;
 
+            // P1-3 心流区占比（香草/大树 = 平衡区）
+            const zoneRecords = records.filter(r => r.challengeFeel === 'just-right' || r.challengeFeel === 'stretch');
+            const zoneRatio = records.length > 0 ? Math.round(zoneRecords.length / records.length * 100) : 0;
+
             document.getElementById('records-stats').innerHTML = `
                 <div class="stat-card">
                     <div class="stat-label">${_t('flow.stat_total_duration', '总心流时长')}</div>
@@ -3222,6 +3621,10 @@
                 <div class="stat-card">
                     <div class="stat-label">${_t('flow.stat_longest', '最长单次')}</div>
                     <div class="stat-value">${Math.round(Math.max(...records.map(r => r.duration)) / 60)}<span class="stat-unit">${_t('flow.unit_minutes', '分钟')}</span></div>
+                </div>
+                <div class="stat-card" title="${_t('flow.stat_zone_hint', '处于香草/大树平衡区的体验占比')}">
+                    <div class="stat-label">${_t('flow.stat_flow_zone', '心流区占比')}</div>
+                    <div class="stat-value">${zoneRatio}<span class="stat-unit">%</span></div>
                 </div>
             `;
 
@@ -3255,6 +3658,8 @@
             const recentRecords = records.slice(-10).reverse();
             const locale = (window.I18N && I18N.currentLocale) || 'zh-CN';
             const dateLocale = locale === 'en' ? 'en-US' : 'zh-CN';
+            renderFlowBalanceChart(records);
+
             document.getElementById('records-history').innerHTML = recentRecords.map(r => {
                 const activity = r.activityId ? getActivityById(r.activityId) : null;
                 const activityName = activity ? activity.name : (r.activityName || r.activity || _t('flow.unknown_activity', '未知活动'));
@@ -3264,7 +3669,8 @@
                         <div style="font-weight: 600; color: var(--theme-text);">${activityName}</div>
                         <div style="font-size: 0.875rem; color: var(--theme-text-light);">${Math.round(r.duration / 60)} ${_t('flow.unit_minutes', '分钟')}</div>
                     </div>
-                    <div style="font-size: 0.875rem; color: var(--theme-text-light);">${_t('flow.goal_label', '目标')}：${r.goal}</div>
+                    <div style="font-size: 0.875rem; color: var(--theme-text-light);">${_t('flow.goal_label', '目标')}${(window.I18N && I18N.currentLocale === 'en') ? ': ' : '：'}${r.goal}</div>
+                    ${(r.advice && r.advice.length) ? '<div style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.5rem;">' + r.advice.map(a => '<span style="padding:0.25rem 0.6rem;background:var(--color-warm-50);border-radius:var(--radius-full);font-size:0.75rem;color:var(--color-warm-600);">' + a.icon + ' ' + _t('flow.' + a.key, a.key) + '</span>').join('') + '</div>' : ''}
                     <div style="font-size: 0.75rem; color: var(--theme-text-light); margin-top: 0.5rem;">${new Date(r.date).toLocaleDateString(dateLocale)}</div>
                 </div>
                 `;
