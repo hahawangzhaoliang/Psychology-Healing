@@ -158,7 +158,8 @@
               <span data-i18n="user.member_since">建立于</span> <span id="userCreatedAt">—</span>
             </div>
             <div style="font-size:0.75rem;color:var(--theme-text-light);margin-bottom:0.75rem;font-family:monospace;" id="userUid">—</div>
-            <button onclick="UserMenu.newProfile()" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-bg);color:var(--theme-text);font-size:0.8rem;cursor:pointer;transition:all 0.2s;" data-i18n="user.new_profile">新建档案</button>
+            <button onclick="UserMenu.newProfile()" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-bg);color:var(--theme-text);font-size:0.8rem;cursor:pointer;transition:all 0.2s;margin-bottom:0.375rem;" data-i18n="user.new_profile">新建档案</button>
+            <button onclick="UserMenu.openManager()" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:none;background:var(--color-primary-100);color:var(--color-primary-700);font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.2s;" data-i18n="user.manage_profile">档案管理</button>
           </div>
         </div>
 
@@ -175,12 +176,14 @@
         <div style="padding:0.75rem 1.25rem;border-top:1px solid var(--theme-border);display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--theme-text-light);">
           <span style="font-size:1.1rem;" id="userBadgeEmojiM">🌟</span>
           <span id="userBadgeNameM">微光旅人</span>
+          <button onclick="UserMenu.openManager()" style="margin-left:0.5rem;padding:0.25rem 0.625rem;border-radius:var(--radius-full);border:1px solid var(--color-primary-300);background:var(--color-primary-100);color:var(--color-primary-700);font-size:0.75rem;font-weight:600;cursor:pointer;" data-i18n="user.manage_profile">档案管理</button>
           <button onclick="UserMenu.newProfile()" style="margin-left:auto;padding:0.25rem 0.625rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:transparent;color:var(--theme-text);font-size:0.75rem;cursor:pointer;" data-i18n="user.new_profile">新建档案</button>
         </div>
       </div>
     </nav>`;
 
     mount.innerHTML = html;
+    mountProfileModal();
 
     // ---- 如果 i18n 已就绪，存储原文并渲染切换器 ----
     if (window.I18N && typeof window.I18N.storeOriginals === 'function') {
@@ -226,14 +229,17 @@
     if (!window.UserStore) return;
     try {
       var profile = UserStore.profile();
+      var isEn = !!(I18N && I18N.currentLocale === 'en');
+      var displayName = profile.name || '微光旅人';
+      if (isEn && displayName === '微光旅人') displayName = 'Wanderer';
       var emojiEl = document.getElementById('userBadgeEmoji');
       var nameEl = document.getElementById('userBadgeName');
       if (emojiEl) emojiEl.textContent = profile.emoji || '🌟';
-      if (nameEl) nameEl.textContent = profile.name || '微光旅人';
+      if (nameEl) nameEl.textContent = displayName;
       var emojiM = document.getElementById('userBadgeEmojiM');
       var nameM = document.getElementById('userBadgeNameM');
       if (emojiM) emojiM.textContent = profile.emoji || '🌟';
-      if (nameM) nameM.textContent = profile.name || '微光旅人';
+      if (nameM) nameM.textContent = displayName;
       var createdEl = document.getElementById('userCreatedAt');
       if (createdEl && profile.createdAt) {
         createdEl.textContent = new Date(profile.createdAt).toLocaleDateString();
@@ -242,6 +248,41 @@
       if (uidEl) uidEl.textContent = 'UID ' + profile.uid.slice(0, 8);
     } catch (e) { /* ignore */ }
   }
+
+  // 档案管理弹层（单例，挂载到 body）
+  function mountProfileModal() {
+    if (document.getElementById('profileModal')) return;
+    var modal = document.createElement('div');
+    modal.id = 'profileModal';
+    modal.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(60,50,40,0.28);backdrop-filter:blur(2px);z-index:9999;align-items:center;justify-content:center;padding:1rem;';
+    modal.innerHTML = '' +
+      '<div style="background:var(--theme-card);border:1px solid var(--theme-border);border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);width:100%;max-width:26rem;max-height:86vh;overflow:auto;padding:1.25rem;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">' +
+          '<div style="font-size:1rem;font-weight:700;color:var(--theme-text);" data-i18n="user.manage_profile">档案管理</div>' +
+          '<button onclick="UserMenu.closeManager()" style="border:none;background:none;color:var(--theme-text-light);font-size:1.2rem;cursor:pointer;padding:0.25rem 0.5rem;" aria-label="关闭">✕</button>' +
+        '</div>' +
+        '<div style="margin-bottom:1.25rem;">' +
+          '<div style="font-size:0.85rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="user.edit_self">编辑当前档案</div>' +
+          '<input id="profileNameInput" type="text" maxlength="20" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-lg);border:1px solid var(--theme-border);background:var(--theme-bg);color:var(--theme-text);font-size:0.9rem;box-sizing:border-box;margin-bottom:0.5rem;" placeholder="昵称">' +
+          '<div style="font-size:0.75rem;color:var(--theme-text-light);margin-bottom:0.375rem;" data-i18n="user.choose_emoji">选择头像</div>' +
+          '<div id="profileEmojiPicker" style="display:flex;flex-wrap:wrap;gap:0.375rem;margin-bottom:0.625rem;"></div>' +
+          '<button onclick="UserMenu.saveEdit()" style="width:100%;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:none;background:var(--color-primary-500);color:#fff;font-size:0.85rem;font-weight:600;cursor:pointer;" data-i18n="user.save">保存</button>' +
+        '</div>' +
+        '<div style="border-top:1px solid var(--theme-border);padding-top:0.875rem;">' +
+          '<div style="font-size:0.85rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="user.profile_list">本机档案</div>' +
+          '<div id="profileList" style="display:flex;flex-direction:column;gap:0.5rem;"></div>' +
+          '<button onclick="UserMenu.newProfile()" style="width:100%;margin-top:0.75rem;padding:0.5rem 0.75rem;border-radius:var(--radius-full);border:1px dashed var(--color-primary-300);background:transparent;color:var(--color-primary-600);font-size:0.85rem;font-weight:600;cursor:pointer;" data-i18n="user.new_profile">＋ 新建档案</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+    // 动态挂载的元素不会被页面初始化时的 i18n 扫描覆盖，mount 后立即应用一次
+    if (window.I18N && I18N.currentLocale === 'en' && typeof I18N.applyTranslations === 'function') {
+      I18N.applyTranslations();
+    }
+  }
+
+  var EMOJI_OPTIONS = ['🌟', '🌙', '🌸', '🍀', '🦋', '🐰', '☁️', '🌈', '⭐', '🍃', '🐱', '💧'];
+  var _profileEmoji = '🌟';
 
   // 用户菜单全局接口
   window.UserMenu = {
@@ -269,8 +310,81 @@
       if (!ok) return;
       UserStore.newProfile();
       window.location.reload();
-    }
+    },
+    openManager: function () {
+      if (!window.UserStore) return;
+      mountProfileModal();
+      var cur = UserStore.profile();
+      var nameEl = document.getElementById('profileNameInput');
+      if (nameEl) nameEl.value = cur.name || '微光旅人';
+      _profileEmoji = cur.emoji || '🌟';
+      renderEmojiPicker();
+      renderProfiles();
+      var modal = document.getElementById('profileModal');
+      modal.style.display = 'flex';
+    },
+    closeManager: function () {
+      var modal = document.getElementById('profileModal');
+      if (modal) modal.style.display = 'none';
+    },
+    saveEdit: function () {
+      if (!window.UserStore) return;
+      var nameEl = document.getElementById('profileNameInput');
+      var name = nameEl ? nameEl.value : '';
+      UserStore.updateProfile(name, _profileEmoji);
+      renderUserBadge();
+      renderProfiles();
+      var saved = document.getElementById('profileNameInput');
+      if (saved) saved.blur();
+      alert(I18N && I18N.currentLocale === 'en' ? 'Profile updated.' : '档案已更新');
+    },
+    switchTo: function (uid) {
+      if (!window.UserStore) return;
+      var changed = UserStore.switchProfile(uid);
+      if (changed) window.location.reload();
+    },
+    pickEmoji: function (emoji) {
+      _profileEmoji = emoji;
+      renderEmojiPicker();
+    },
+    // 供外部（如设置页切语言）刷新徽章显示
+    refreshBadge: function () { renderUserBadge(); }
   };
+
+  function renderEmojiPicker() {
+    var box = document.getElementById('profileEmojiPicker');
+    if (!box) return;
+    box.innerHTML = EMOJI_OPTIONS.map(function (e) {
+      var active = e === _profileEmoji;
+      return '<button onclick="UserMenu.pickEmoji(\'' + e + '\')" style="font-size:1.25rem;width:2.5rem;height:2.5rem;border-radius:var(--radius-full);border:1px solid ' + (active ? 'var(--color-primary-400)' : 'var(--theme-border)') + ';background:' + (active ? 'var(--color-primary-100)' : 'var(--theme-bg)') + ';cursor:pointer;transition:all 0.15s;line-height:1;">' + e + '</button>';
+    }).join('');
+  }
+
+  function renderProfiles() {
+    var box = document.getElementById('profileList');
+    if (!box || !window.UserStore) return;
+    var cur = UserStore.profile();
+    var list = UserStore.listProfiles();
+    var isEn = !!(I18N && I18N.currentLocale === 'en');
+    var currentLabel = isEn ? ' Current' : ' 当前';
+    var switchLabel = isEn ? 'Switch' : '切换';
+    box.innerHTML = list.map(function (p) {
+      var isCur = p.uid === cur.uid;
+      var created = p.createdAt
+        ? new Date(p.createdAt).toLocaleDateString(isEn ? 'en-US' : 'zh-CN')
+        : '—';
+      var countLabel = p.recordCount + (isEn ? ' records' : ' 条记录');
+      var displayName = (isEn && p.name === '微光旅人') ? 'Wanderer' : p.name;
+      return '<div style="display:flex;align-items:center;gap:0.625rem;padding:0.625rem 0.75rem;border-radius:var(--radius-lg);border:1px solid ' + (isCur ? 'var(--color-primary-300)' : 'var(--theme-border)') + ';background:' + (isCur ? 'var(--color-primary-100)' : 'var(--theme-card)') + ';">' +
+        '<span style="font-size:1.4rem;">' + p.emoji + '</span>' +
+        '<div style="flex:1;min-width:0;">' +
+          '<div style="font-size:0.85rem;font-weight:600;color:var(--theme-text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + displayName + (isCur ? ' <span style="color:var(--color-primary-600);font-weight:700;">' + currentLabel + '</span>' : '') + '</div>' +
+          '<div style="font-size:0.7rem;color:var(--theme-text-light);">' + created + ' · ' + countLabel + '</div>' +
+        '</div>' +
+        (isCur ? '' : '<button onclick="UserMenu.switchTo(\'' + p.uid + '\')" style="padding:0.3rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--color-primary-300);background:var(--theme-card);color:var(--color-primary-600);font-size:0.75rem;cursor:pointer;">' + switchLabel + '</button>') +
+      '</div>';
+    }).join('');
+  }
 
   // ========== 轻量匿名埋点（P0） ==========
   // 隐私优先：仅事件类型 + 页面路径，无 Cookie / IP / UA

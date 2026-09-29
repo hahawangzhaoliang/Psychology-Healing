@@ -754,7 +754,7 @@
                 el.checked = localStorage.getItem('settings-animations') !== 'off';
                 el.addEventListener('change', function () {
                     localStorage.setItem('settings-animations', el.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
+                    showToast(tt('settings.saved', '设置已保存'), 'success');
                 });
             }
 
@@ -766,7 +766,7 @@
                 rem.addEventListener('change', function () {
                     localStorage.setItem('settings-reminder', rem.checked ? 'on' : 'off');
                     if (row) row.style.display = rem.checked ? '' : 'none';
-                    showToast('设置已保存', 'success');
+                    showToast(tt('settings.saved', '设置已保存'), 'success');
                 });
             }
 
@@ -775,7 +775,7 @@
                 wk.checked = localStorage.getItem('settings-weekly') === 'on';
                 wk.addEventListener('change', function () {
                     localStorage.setItem('settings-weekly', wk.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
+                    showToast(tt('settings.saved', '设置已保存'), 'success');
                 });
             }
 
@@ -784,7 +784,7 @@
                 syn.checked = localStorage.getItem('settings-sync') === 'on';
                 syn.addEventListener('change', function () {
                     localStorage.setItem('settings-sync', syn.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
+                    showToast(tt('settings.saved', '设置已保存'), 'success');
                 });
             }
 
@@ -793,7 +793,7 @@
                 anon.checked = localStorage.getItem('settings-anonymous') !== 'off';
                 anon.addEventListener('change', function () {
                     localStorage.setItem('settings-anonymous', anon.checked ? 'on' : 'off');
-                    showToast('设置已保存', 'success');
+                    showToast(tt('settings.saved', '设置已保存'), 'success');
                 });
             }
         }
@@ -802,11 +802,16 @@
         function initThemeButtons() {
             var container = document.getElementById('setting-theme-btns');
             if (!container) return;
+            // i18n 翻译表异步加载，en 模式首屏渲染时可能未就绪 → 延迟重试
+            if (window.I18N && I18N.currentLocale === 'en' && !I18N.enTranslations) {
+                setTimeout(initThemeButtons, 150);
+                return;
+            }
 
             var themes = [
-                { key: 'warm',   label: '暖色调',  color: '#d97757' },
-                { key: 'cool',   label: '冷色调',  color: '#3b82f6' },
-                { key: 'creative', label: '创意紫',  color: '#c026d3' },
+                { key: 'warm',   label: tt('settings.theme_warm', '暖色调'),  color: '#d97757' },
+                { key: 'cool',   label: tt('settings.theme_cool', '冷色调'),  color: '#3b82f6' },
+                { key: 'creative', label: tt('settings.theme_creative', '创意紫'),  color: '#c026d3' },
             ];
 
             var current = localStorage.getItem('theme-preference') || 'warm';
@@ -823,7 +828,7 @@
             document.body.setAttribute('data-theme', key);
             localStorage.setItem('theme-preference', key);
             initThemeButtons();
-            showToast('主题已切换', 'success');
+            showToast(tt('settings.theme_switched', '主题已切换'), 'success');
         };
 
         // ========== 语言按钮 ==========
@@ -840,42 +845,80 @@
         }
 
         window.__setLang = function (locale) {
-            if (window.I18N && I18N.setLocale) {
-                I18N.setLocale(locale);
+            if (window.I18N && I18N.switchLocale) {
+                I18N.switchLocale(locale);
             }
             initLangButtons();
-            showToast('语言已切换', 'success');
+            // 联动刷新：主题按钮文案与用户徽章跟随语言重渲染
+            initThemeButtons();
+            if (window.UserMenu && UserMenu.refreshBadge) UserMenu.refreshBadge();
+            showToast(tt('settings.lang_switched', '语言已切换'), 'success');
         };
 
         // ========== 操作处理 ==========
+        function doExportData() {
+            try {
+                if (!window.UserStore) {
+                    showToast(tt('settings.export_fail', '导出失败，请重试'), 'error');
+                    return;
+                }
+                var profile = UserStore.profile();
+                var DATA_KEYS = ['emotionRecords', 'cbtRecords', 'relaxRecords', 'assessmentResults', 'communityPosts', 'checkins', 'flow-records', 'userRoles'];
+                var data = {
+                    platform: 'xinqing',
+                    exportedAt: new Date().toISOString(),
+                    profile: profile
+                };
+                DATA_KEYS.forEach(function (k) {
+                    var v = UserStore.get(k);
+                    if (v !== null) {
+                        try { data[k] = JSON.parse(v); }
+                        catch (e) { data[k] = v; }
+                    }
+                });
+                try {
+                    var cur = (UserStore.listProfiles && UserStore.listProfiles().filter(function (p) { return p.uid === profile.uid; })[0]) || {};
+                    data.summary = { recordCount: cur.recordCount || 0 };
+                } catch (e) { /* 概览为可选信息 */ }
+                var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                var a = document.createElement('a');
+                a.href = URL.createObjectURL(blob);
+                a.download = 'xinqing-data-' + profile.uid.slice(0, 8) + '-' + new Date().toISOString().slice(0, 10) + '.json';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                URL.revokeObjectURL(a.href);
+                showToast(tt('settings.export_done', '数据已导出'), 'success');
+            } catch (e) {
+                showToast(tt('settings.export_fail', '导出失败，请重试'), 'error');
+            }
+        }
+
         function handleExportData() {
             if (window.Modals && Modals.confirm) {
                 Modals.confirm({
-                    title: '导出数据',
-                    message: '将导出你的所有练习记录、情绪日记和设置数据。是否继续？',
-                    confirmText: '确认导出',
-                    cancelText: '取消',
+                    title: tt('settings.export_title', '导出数据'),
+                    message: tt('settings.export_msg', '将导出你的所有练习记录、情绪日记和设置数据。是否继续？'),
+                    confirmText: tt('settings.export_confirm', '确认导出'),
+                    cancelText: tt('settings.export_cancel', '取消'),
                     variant: 'primary',
-                    dataI18n: 'settings',
-                    onConfirm: function () {
-                        showToast('数据导出功能开发中…', 'info');
-                    }
+                    onConfirm: function () { doExportData(); }
                 });
             } else {
-                showToast('数据导出功能开发中…', 'info');
+                doExportData();
             }
         }
 
         function handleDeleteAccount() {
             if (window.Modals && Modals.confirm) {
                 Modals.confirm({
-                    title: '删除账户',
-                    message: '此操作将永久删除你的账户和所有数据，且不可撤销。请输入"DELETE"以确认。',
-                    confirmText: '确认删除',
-                    cancelText: '取消',
+                    title: tt('settings.delete_title', '删除账户'),
+                    message: tt('settings.delete_msg', '此操作将永久删除你的账户和所有数据，且不可撤销。请输入"DELETE"以确认。'),
+                    confirmText: tt('settings.delete_confirm', '确认删除'),
+                    cancelText: tt('settings.delete_cancel', '取消'),
                     variant: 'danger',
                     onConfirm: function () {
-                        showToast('账户删除功能开发中…', 'info');
+                        showToast(tt('settings.delete_wip', '账户删除功能开发中…'), 'info');
                     }
                 });
             }
@@ -932,7 +975,7 @@
                             Buttons.renderButton('feedback-submit', {
                                 text: '提交反馈',
                                 variant: 'primary',
-                                onclick: function() { showToast('感谢你的反馈！', 'success'); Modals.hide('modal-feedback'); },
+                                onclick: function() { showToast(tt('settings.feedback_thanks', '感谢你的反馈！'), 'success'); Modals.hide('modal-feedback'); },
                             });
                         }
                     }
@@ -941,6 +984,13 @@
         }
 
         // ========== Toast 提示 ==========
+        function tt(key, fallback) {
+            if (window.I18N && I18N.currentLocale === 'en') {
+                return I18N.t(key) || fallback;
+            }
+            return fallback;
+        }
+
         function showToast(message, type) {
             if (window.Modals && Modals.toast) {
                 Modals.toast(message, type || 'info', 3000);

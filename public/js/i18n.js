@@ -45,7 +45,7 @@
         basePath: 'i18n',
 
         // 语言包版本号（修改 en.json 后请 +1，防止浏览器缓存旧版）
-        langPackVersion: '20260710-1',
+        langPackVersion: '20260929-1',
 
         /**
          * 初始化 i18n

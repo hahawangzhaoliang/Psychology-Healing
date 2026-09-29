@@ -26,6 +26,8 @@
     'flow-records', 'userRoles'
   ];
   var MIGRATED_FLAG_PREFIX = 'xinqing_migrated:';
+  var PROFILES_KEY = 'xinqing_profiles'; // 档案元信息库 { uid: {name, emoji, createdAt} }
+  var DATA_KEYS_FOR_COUNT = ['emotionRecords', 'cbtRecords', 'relaxRecords', 'assessmentResults', 'communityPosts', 'checkins', 'flow-records', 'userRoles'];
 
   // ---------- 工具 ----------
   function genUid() {
@@ -50,6 +52,24 @@
     } catch (e) { /* ignore */ }
   }
 
+  // ---------- 档案元信息库 ----------
+  function readProfilesMap() {
+    var m = tryParse(localStorage.getItem(PROFILES_KEY), {});
+    return (m && typeof m === 'object' && !Array.isArray(m)) ? m : {};
+  }
+  function saveProfileMeta(profile) {
+    if (!profile || !profile.uid) return;
+    try {
+      var m = readProfilesMap();
+      m[profile.uid] = {
+        name: profile.name || '微光旅人',
+        emoji: profile.emoji || '🌟',
+        createdAt: profile.createdAt || new Date().toISOString()
+      };
+      localStorage.setItem(PROFILES_KEY, JSON.stringify(m));
+    } catch (e) { /* ignore */ }
+  }
+
   // ---------- 档案 ----------
   function ensureProfile() {
     var saved = tryParse(localStorage.getItem(PROFILE_KEY), null);
@@ -63,6 +83,7 @@
     };
     try {
       localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      saveProfileMeta(profile);
       // 埋点：档案初始化（匿名，仅计数；Analytics 未就绪则入队）
       emitAnalytics('user_profile_init');
     } catch (e) { /* ignore */ }
@@ -111,15 +132,90 @@
     },
     /** 新建档案（生成新 uid；旧数据保留在原档案名下，不会丢失） */
     newProfile: function () {
+      // 先把当前档案元信息入库（避免新建后旧档案信息丢失）
+      saveProfileMeta(ensureProfile());
       var profile = {
         uid: genUid(),
         name: '微光旅人',
         emoji: '🌟',
         createdAt: new Date().toISOString()
       };
-      try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (e) { /* ignore */ }
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+        saveProfileMeta(profile);
+      } catch (e) { /* ignore */ }
       emitAnalytics('user_profile_init');
       return profile;
+    },
+    /** 列出本机全部档案（含元信息 + 数据条数概览） */
+    listProfiles: function () {
+      var map = readProfilesMap();
+      var uidSet = {};
+      // 当前档案兜底
+      var cur = tryParse(localStorage.getItem(PROFILE_KEY), null);
+      if (cur && cur.uid) uidSet[cur.uid] = true;
+      // 元信息库中的档案（即使暂无数据也要列出，保证档案列表完整）
+      Object.keys(map).forEach(function (uid) { if (uid) uidSet[uid] = true; });
+      // 扫描数据键前缀收集所有 uid
+      try {
+        for (var i = 0; i < localStorage.length; i++) {
+          var k = localStorage.key(i) || '';
+          if (k.indexOf(PREFIX) === 0) {
+            var uid = k.slice(PREFIX.length).split(':')[0];
+            if (uid) uidSet[uid] = true;
+          }
+        }
+      } catch (e) { /* ignore */ }
+      var out = [];
+      Object.keys(uidSet).forEach(function (uid) {
+        var meta = map[uid] || {};
+        var count = 0;
+        DATA_KEYS_FOR_COUNT.forEach(function (dk) {
+          try {
+            var raw = localStorage.getItem(PREFIX + uid + ':' + dk);
+            if (!raw) return;
+            var arr = tryParse(raw, null);
+            if (Array.isArray(arr)) count += arr.length;
+          } catch (e) { /* ignore */ }
+        });
+        out.push({
+          uid: uid,
+          name: meta.name || '微光旅人',
+          emoji: meta.emoji || '🌟',
+          createdAt: meta.createdAt || null,
+          recordCount: count
+        });
+      });
+      return out;
+    },
+    /** 切换到指定档案（当前档案指针切换，数据天然按 uid 隔离） */
+    switchProfile: function (uid) {
+      if (!uid) return false;
+      var cur = tryParse(localStorage.getItem(PROFILE_KEY), null);
+      if (cur && cur.uid === uid) return false;
+      var map = readProfilesMap();
+      var meta = map[uid];
+      var profile = {
+        uid: uid,
+        name: meta ? meta.name : '微光旅人',
+        emoji: meta ? meta.emoji : '🌟',
+        createdAt: meta ? meta.createdAt : new Date().toISOString()
+      };
+      try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch (e) { /* ignore */ }
+      emitAnalytics('profile_switch');
+      return true;
+    },
+    /** 更新当前档案昵称/头像 */
+    updateProfile: function (name, emoji) {
+      var cur = ensureProfile();
+      if (name !== undefined && name !== null && name.trim() !== '') cur.name = name.trim().slice(0, 20);
+      if (emoji !== undefined && emoji !== null && emoji.trim() !== '') cur.emoji = emoji.trim();
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(cur));
+        saveProfileMeta(cur);
+      } catch (e) { /* ignore */ }
+      emitAnalytics('profile_update');
+      return cur;
     },
     /** 手动触发旧数据迁移（幂等；正常情况下加载即自动执行） */
     migrateLegacy: function () {

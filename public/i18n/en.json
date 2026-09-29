@@ -136,7 +136,8 @@
     "loading": "Loading content...",
     "read_more": "Read More",
     "key_points": "Key Points",
-    "source_prefix": "Source: "
+    "source_prefix": "Source: ",
+    "page_title": "Healing Library - Mind Clear Space"
   },
   "hero": {
     "title": "Accompany You Every Moment",
@@ -955,7 +956,8 @@
     "stage2_title": "Stage 2: Deeper Understanding",
     "stage2_desc": "Go deeper into core theories and start noticing your own patterns",
     "stage3_title": "Stage 3: Applied Practice",
-    "stage3_desc": "Master complex theories and integrate them into daily life"
+    "stage3_desc": "Master complex theories and integrate them into daily life",
+    "page_title": "Psychology Knowledge Map"
   },
   "relax": {
     "page_title": "Relaxation Exercises",
@@ -1256,7 +1258,7 @@
     "theme_label": "Theme",
     "theme_warm": "Warm",
     "theme_cool": "Cool",
-    "theme_creative": "Creative",
+    "theme_creative": "Creative purple",
     "sound_label": "Sound Effects",
     "sound_on": "On",
     "sound_off": "Off",
@@ -1294,7 +1296,23 @@
     "delete_account_desc": "Permanently delete your account and all data. This action cannot be undone.",
     "version_value": "v2.0.0",
     "feedback_label": "Feedback",
-    "footer": "Mind Clear Space © 2024 - Warming every heart with technology"
+    "footer": "Mind Clear Space © 2024 - Warming every heart with technology",
+    "saved": "Settings saved",
+    "theme_switched": "Theme switched",
+    "lang_switched": "Language switched",
+    "export_wip": "Data export is under development…",
+    "delete_wip": "Account deletion is under development…",
+    "feedback_thanks": "Thanks for your feedback!",
+    "export_done": "Data exported",
+    "export_fail": "Export failed, please try again",
+    "export_title": "Export data",
+    "export_msg": "This will export all your practice records, emotion diaries and settings data. Continue?",
+    "export_confirm": "Confirm export",
+    "export_cancel": "Cancel",
+    "delete_title": "Delete account",
+    "delete_msg": "This will permanently delete your account and all data. This cannot be undone. Type \"DELETE\" to confirm.",
+    "delete_confirm": "Confirm deletion",
+    "delete_cancel": "Cancel"
   },
   "via": {
     "page_title": "VIA Character Strengths Assessment - Mind Clear Space",
@@ -1668,6 +1686,20 @@
   "user": {
     "menu_title": "My local profile",
     "member_since": "Since",
-    "new_profile": "New profile"
+    "new_profile": "New profile",
+    "manage_profile": "Manage profile",
+    "edit_self": "Edit current profile",
+    "choose_emoji": "Choose avatar",
+    "save": "Save",
+    "profile_list": "Profiles on this device",
+    "current": "Current",
+    "switch": "Switch",
+    "name_placeholder": "Nickname"
+  },
+  "admin": {
+    "page_title": "Xinqing Space · Admin"
+  },
+  "icons": {
+    "page_title": "Icon Preview"
   }
 }

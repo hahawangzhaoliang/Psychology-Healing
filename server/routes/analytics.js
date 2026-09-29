@@ -33,6 +33,8 @@ const ALLOWED_TYPES = new Set([
     'community_ttm_reco',
     'community_ttm_reco_click',
     'user_profile_init',
+    'profile_switch',
+    'profile_update',
 ]);
 
 const MAX_EVENTS_PER_REQUEST = 200;
