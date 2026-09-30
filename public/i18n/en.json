@@ -663,7 +663,7 @@
     "sound_change": "Change",
     "summary_text": "You are about to start <strong id=\"summary-duration\">30min</strong> of flow experience<br><span id=\"summary-activity-container\" style=\"display:none;\">Activity: <strong id=\"summary-activity\"></strong><br></span>Goal: <strong id=\"summary-goal\">Complete the coloring</strong>",
     "celebration_title": "Great job!",
-    "celebration_desc": "You just completed",
+    "celebration_desc": "You just completed <span id=\"completed-duration\">30</span> minutes of flow",
     "btn_start_experience": "Start Experience",
     "btn_pause": "Pause",
     "btn_stop": "Finish",

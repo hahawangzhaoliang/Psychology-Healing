@@ -45,7 +45,7 @@
         basePath: 'i18n',
 
         // 语言包版本号（修改 en.json 后请 +1，防止浏览器缓存旧版）
-        langPackVersion: '20260929-6',
+        langPackVersion: '20260929-7',
 
         /**
          * 初始化 i18n
@@ -296,8 +296,12 @@
                 // 只有文本，直接替换
                 textNodes[0].textContent = text;
             } else if (textNodes.length > 0) {
-                // 有文本节点也有子元素：只替换第一个文本节点（通常是 before elements）
-                textNodes[0].textContent = text;
+                // 有文本节点也有子元素：替换"有意义的文本节点"，并删除多余文本节点，
+                // 避免「换行文本节点被替换、末尾真实文本残留」导致的重复混排（如"约5分钟 约5分钟"）
+                const meaningful = textNodes.filter(n => n.textContent.trim().length > 0);
+                const target = meaningful.length > 0 ? meaningful[0] : textNodes[0];
+                textNodes.forEach(n => { if (n !== target) n.parentNode && n.parentNode.removeChild(n); });
+                target.textContent = text;
             } else {
                 // 没有文本节点：找到第一个现有文本位置或插入
                 const firstChild = el.firstChild;
