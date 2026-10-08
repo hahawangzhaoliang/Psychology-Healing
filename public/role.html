@@ -8,7 +8,7 @@
     <meta name="description" content="理解你的不同角色，更好地平衡它们">
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
-    <script src="js/i18n.js"></script>
+    <script src="js/i18n.js?v=20260929-11"></script>
     <script>
         // i18n 辅助函数
         function _t(key, zhDefault) {
@@ -18,16 +18,16 @@
         }
         function _tt(key, zhTemplate, vars) {
             const template = _t(key, zhTemplate);
-            return template.replace(/\$\{(w+)\}/g, (m, v) => vars[v] != null ? vars[v] : m);
+            return template.replace(/\$\{(\w+)\}/g, (m, v) => vars[v] != null ? vars[v] : m);
         }
 function getName(key) {
             const map = { child:'子女', partner:'伴侣', parent:'父母', sibling:'兄弟姐妹', student:'学生', employee:'职场人', freelancer:'自由职业者', entrepreneur:'创业者', learner:'学习者', creator:'创造者', volunteer:'志愿者', explorer:'探索者' };
             const enMap = { child:'Child', partner:'Partner', parent:'Parent', sibling:'Sibling', student:'Student', employee:'Employee', freelancer:'Freelancer', entrepreneur:'Entrepreneur', learner:'Learner', creator:'Creator', volunteer:'Volunteer', explorer:'Explorer' };
-            if (window.I18N && window.I18N.currentLocale === 'en') return enMap[key] || map[key];
+            const nameEnMap = { '子女':'Child', '伴侣':'Partner', '父母':'Parent', '兄弟姐妹':'Sibling', '学生':'Student', '职场人':'Employee', '自由职业者':'Freelancer', '创业者':'Entrepreneur', '学习者':'Learner', '创造者':'Creator', '志愿者':'Volunteer', '探索者':'Explorer' };
+            if (window.I18N && window.I18N.currentLocale === 'en') return enMap[key] || nameEnMap[key] || map[key] || key;
             return map[key] || key;
         }
 
-    </script>        }
     </script>
     <script src="js/cache.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -460,32 +460,32 @@ function getName(key) {
         <div class="step-progress-wrapper stagger-child" style="--stagger-index: 0">
             <div class="step-progress">
                 <div class="step-track">
-                    <div class="step-dot active" id="step-1" data-step="1">
+                    <div class="step-dot active" id="step-1" data-step="1" tabindex="0" role="button" onclick="jumpToStep(1)">
                         <div class="step-ring">
                             <span class="step-number">1</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label" data-i18n="role.step1_label">认识角色</span>/span>
+                        <span class="step-label" data-i18n="role.step1_label">认识角色</span>
                     </div>
                     <div class="step-line" id="line-1-2"></div>
-                    <div class="step-dot" id="step-2" data-step="2">
+                    <div class="step-dot" id="step-2" data-step="2" tabindex="0" role="button" onclick="jumpToStep(2)">
                         <div class="step-ring">
                             <span class="step-number">2</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label" data-i18n="role.step2_label">探索冲突</span>/span>
+                        <span class="step-label" data-i18n="role.step2_label">探索冲突</span>
                     </div>
                     <div class="step-line" id="line-2-3"></div>
-                    <div class="step-dot" id="step-3" data-step="3">
+                    <div class="step-dot" id="step-3" data-step="3" tabindex="0" role="button" onclick="jumpToStep(3)">
                         <div class="step-ring">
                             <span class="step-number">3</span>
                             <svg class="step-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                         </div>
-                        <span class="step-label" data-i18n="role.step3_label">找到平衡</span>/span>
+                        <span class="step-label" data-i18n="role.step3_label">找到平衡</span>
                     </div>
                 </div>
             </div>
-            <p class="step-hint" data-i18n="role.step_hint">✨ 这里没有对错，只是帮助你更了解自己</p>/p>
+            <p class="step-hint" data-i18n="role.step_hint">✨ 这里没有对错，只是帮助你更了解自己</p>
         </div>
 
         <!-- 步骤1：角色识别 -->
@@ -496,19 +496,19 @@ function getName(key) {
                         <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title" data-i18n="role.step1_title">你在这个世界上，扮演着许多美好的角色</h2>/h2>
-                        <p class="step-subtitle" data-i18n="role.step1_subtitle">每一种身份都是你被需要、被爱的证明。轻轻点击那些属于你的角色吧 💚</p>/p>
+                        <h2 class="step-title" data-i18n="role.step1_title">你在这个世界上，扮演着许多美好的角色</h2>
+                        <p class="step-subtitle" data-i18n="role.step1_subtitle">每一种身份都是你被需要、被爱的证明。轻轻点击那些属于你的角色吧 💚</p>
                     </div>
                 </div>
                 
                 <!-- 家庭角色 -->
                 <div class="role-section">
-                    <h3 class="role-section-title">
+                    <h3 class="role-section-title" data-i18n="role.section_family">
                         <span class="role-section-icon">🏠</span>
                         家庭角色
                     </h3>
                     <div class="role-grid" data-category="family">
-                        <div class="role-item" onclick="toggleRole(this, 'child')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'child')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="child">
                             <div class="role-item-icon">👨‍👩‍👧</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_child">子女</h4>
@@ -518,7 +518,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'partner')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'partner')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="partner">
                             <div class="role-item-icon">💑</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_partner">伴侣</h4>
@@ -528,7 +528,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'parent')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'parent')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="parent">
                             <div class="role-item-icon">👶</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_parent">父母</h4>
@@ -538,7 +538,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'sibling')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'sibling')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="sibling">
                             <div class="role-item-icon">👨‍👩‍👧‍👦</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_sibling">兄弟姐妹</h4>
@@ -553,12 +553,12 @@ function getName(key) {
 
                 <!-- 社会角色 -->
                 <div class="role-section">
-                    <h3 class="role-section-title">
+                    <h3 class="role-section-title" data-i18n="role.section_social">
                         <span class="role-section-icon">💼</span>
                         社会角色
                     </h3>
                     <div class="role-grid" data-category="social">
-                        <div class="role-item" onclick="toggleRole(this, 'student')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'student')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="student">
                             <div class="role-item-icon">📚</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_student">学生</h4>
@@ -568,7 +568,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'employee')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'employee')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="employee">
                             <div class="role-item-icon">💻</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_employee">职场人</h4>
@@ -578,7 +578,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'freelancer')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'freelancer')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="freelancer">
                             <div class="role-item-icon">🎨</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_freelancer">自由职业者</h4>
@@ -588,7 +588,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'entrepreneur')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'entrepreneur')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="entrepreneur">
                             <div class="role-item-icon">🚀</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_entrepreneur">创业者</h4>
@@ -603,12 +603,12 @@ function getName(key) {
 
                 <!-- 自我角色 -->
                 <div class="role-section">
-                    <h3 class="role-section-title">
+                    <h3 class="role-section-title" data-i18n="role.section_self">
                         <span class="role-section-icon">✨</span>
                         自我角色
                     </h3>
                     <div class="role-grid" data-category="self">
-                        <div class="role-item" onclick="toggleRole(this, 'learner')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'learner')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="learner">
                             <div class="role-item-icon">📖</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_learner">学习者</h4>
@@ -618,7 +618,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'creator')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'creator')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="creator">
                             <div class="role-item-icon">🎭</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_creator">创造者</h4>
@@ -628,7 +628,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'volunteer')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'volunteer')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="volunteer">
                             <div class="role-item-icon">🤝</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_volunteer">志愿者</h4>
@@ -638,7 +638,7 @@ function getName(key) {
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             </div>
                         </div>
-                        <div class="role-item" onclick="toggleRole(this, 'explorer')" data-touch-feedback>
+                        <div class="role-item" onclick="toggleRole(this, 'explorer')" data-touch-feedback tabindex="0" role="button" aria-pressed="false" data-role-key="explorer">
                             <div class="role-item-icon">🌟</div>
                             <div class="role-item-info">
                                 <h4 data-i18n="role.name_explorer">探索者</h4>
@@ -651,7 +651,7 @@ function getName(key) {
                     </div>
                 </div>
 
-                <button onclick="nextStep(2)" class="step-btn-primary" data-touch-feedback>
+                <button onclick="nextStep(2)" class="step-btn-primary" data-touch-feedback data-i18n="role.btn_next">
                     下一步
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
@@ -666,19 +666,19 @@ function getName(key) {
                         <svg class="w-6 h-6 text-accent-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title" data-i18n="role.step2_title">有时候，角色之间会有些小摩擦</h2>/h2>
-                        <p class="step-subtitle" data-i18n="role.step2_subtitle">别担心，这不是你的问题。现代生活本就充满多重身份的挑战 🌱</p>/p>
+                        <h2 class="step-title" data-i18n="role.step2_title">有时候，角色之间会有些小摩擦</h2>
+                        <p class="step-subtitle" data-i18n="role.step2_subtitle">别担心，这不是你的问题。现代生活本就充满多重身份的挑战 🌱</p>
                     </div>
                 </div>
                 
                 <div id="conflict-analysis" class="conflict-list"></div>
 
                 <div class="step-btn-group">
-                    <button onclick="prevStep(1)" class="step-btn-secondary" data-touch-feedback>
+                    <button onclick="prevStep(1)" class="step-btn-secondary" data-touch-feedback data-i18n="role.btn_prev">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         上一步
                     </button>
-                    <button onclick="nextStep(3)" class="step-btn-primary" data-touch-feedback>
+                    <button onclick="nextStep(3)" class="step-btn-primary" data-touch-feedback data-i18n="role.btn_analyze">
                         查看建议
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                     </button>
@@ -694,19 +694,19 @@ function getName(key) {
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </div>
                     <div>
-                        <h2 class="step-title" data-i18n="role.step3_title">你已经很棒了，这里有一些温柔的建议</h2>/h2>
-                        <p class="step-subtitle" data-i18n="role.step3_subtitle">平衡不是完美，而是让每个角色都有被照顾到的时刻 🕊️</p>/p>
+                        <h2 class="step-title" data-i18n="role.step3_title">你已经很棒了，这里有一些温柔的建议</h2>
+                        <p class="step-subtitle" data-i18n="role.step3_subtitle">平衡不是完美，而是让每个角色都有被照顾到的时刻 🕊️</p>
                     </div>
                 </div>
                 
                 <div id="balance-suggestions" class="suggestion-grid"></div>
 
                 <div class="step-btn-group">
-                    <button onclick="prevStep(2)" class="step-btn-secondary" data-touch-feedback>
+                    <button onclick="prevStep(2)" class="step-btn-secondary" data-touch-feedback data-i18n="role.btn_prev">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                         上一步
                     </button>
-                    <button onclick="saveAndFinish()" class="step-btn-primary" data-touch-feedback>
+                    <button onclick="saveAndFinish()" class="step-btn-primary" data-touch-feedback data-i18n="role.btn_finish">
                         完成
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </button>
@@ -715,13 +715,29 @@ function getName(key) {
         </div>
     </main>
 
+    <!-- 保存成功面板 -->
+    <div id="save-panel" class="save-panel hidden" role="dialog" aria-modal="true" aria-labelledby="save-panel-title">
+        <div class="save-panel-card">
+            <div class="save-icon">🌿</div>
+            <h2 class="save-title" id="save-panel-title" data-i18n="role.save_title">角色探索完成！</h2>
+            <p class="save-subtitle" data-i18n="role.save_subtitle">你的角色地图已保存，愿每一重身份都被温柔对待</p>
+            <div id="save-role-map" class="save-role-map"></div>
+            <div class="save-actions">
+                <button onclick="goGrowthStats()" class="step-btn-primary save-btn-primary" data-i18n="role.btn_view_growth">查看成长记录</button>
+                <button onclick="goHomePage()" class="step-btn-secondary save-btn-secondary" data-i18n="role.btn_home">回到首页</button>
+                <button onclick="closeSavePanel()" class="save-stay" data-i18n="role.btn_stay">留在本页</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/neuroaesthetics.js"></script>
     <script src="js/resource-loader.js"></script>
-    <script src="js/theme-manager.js?v=20260510"></script>
+    <script src="js/theme-manager.js?v=20260929-12"></script>
     <script src="js/companion-widget.js"></script>
     <script>
         let selectedRoles = [];
         let currentStep = 1;
+        let maxReachedStep = 1;
 
         const roleInfo = {
             child: { name: '子女', category: '家庭', emoji: '👨‍👩‍👧' },
@@ -802,12 +818,24 @@ function getName(key) {
             NeuroAesthetics.initNavbarScroll('mainNav');
             // 初始化步骤1为可见状态
             document.getElementById('step-1-content').classList.add('visible');
+            // 初始步骤指示器状态（含未解锁步骤置灰）
+            updateStepIndicator(currentStep);
+
+            /* 键盘可达：Enter/Space 触发角色选择与步骤跳转 */
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter' && e.key !== ' ') return;
+                const card = e.target.closest ? e.target.closest('.role-item') : null;
+                if (card) { e.preventDefault(); card.click(); return; }
+                const dot = e.target.closest ? e.target.closest('.step-dot') : null;
+                if (dot && !dot.classList.contains('locked')) { e.preventDefault(); dot.click(); }
+            });
 
             /* 语言切换时刷新角色冲突分析与平衡建议译文 */
             document.addEventListener('localeChanged', () => {
                 if (selectedRoles.length > 0) {
                     generateConflictAnalysis();
                     generateBalanceSuggestions();
+                    renderSaveMap();
                 }
             });
         });
@@ -816,9 +844,14 @@ function getName(key) {
             if (selectedRoles.includes(role)) {
                 selectedRoles = selectedRoles.filter(r => r !== role);
                 card.classList.remove('selected');
+                card.setAttribute('aria-pressed', 'false');
             } else {
                 selectedRoles.push(role);
                 card.classList.add('selected');
+                card.setAttribute('aria-pressed', 'true');
+                if (selectedRoles.length === 6) {
+                    showToast(_tt('role.toast_role_hint', '你已经选择了 ${count} 个角色——请选择当下最真实承担的角色就好', { count: 6 }), 'info');
+                }
                 // 微妙的选中确认动画
                 card.style.transform = 'scale(0.97)';
                 setTimeout(() => { card.style.transform = ''; }, 120);
@@ -843,38 +876,83 @@ function getName(key) {
             const line23 = document.getElementById('line-2-3');
             if (line12) line12.classList.toggle('completed', step >= 2);
             if (line23) line23.classList.toggle('completed', step >= 3);
+            // 未解锁步骤置灰（仅当前步骤及已到达步骤可点）
+            for (let i = 1; i <= 3; i++) {
+                const dot = document.getElementById(`step-${i}`);
+                if (dot) dot.classList.toggle('locked', i > maxReachedStep);
+            }
         }
 
-        function nextStep(step) {
-            if (step === 2 && selectedRoles.length === 0) {
+        function jumpToStep(n) {
+            if (n === currentStep) return;
+            if (n > maxReachedStep) return;
+            if (n === 2 && selectedRoles.length === 0) {
                 showToast(_t('role.toast_select_role', '请至少选择一个角色'), 'warning');
                 return;
             }
-            currentStep = step;
-            updateStepIndicator(step);
+            currentStep = n;
+            updateStepIndicator(n);
             document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById(`step-${step}-content`);
+            const target = document.getElementById(`step-${n}-content`);
             target.classList.remove('hidden');
             void target.offsetWidth;
             target.classList.add('visible');
-            if (step === 2) generateConflictAnalysis();
-            else if (step === 3) generateBalanceSuggestions();
+            if (n === 2) generateConflictAnalysis();
+            else if (n === 3) generateBalanceSuggestions();
+        }
+
+        function nextStep(step) {
+            maxReachedStep = Math.max(maxReachedStep, step);
+            jumpToStep(step);
         }
 
         function prevStep(step) {
-            currentStep = step;
-            updateStepIndicator(step);
-            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById(`step-${step}-content`);
-            target.classList.remove('hidden');
-            void target.offsetWidth;
-            target.classList.add('visible');
+            maxReachedStep = Math.max(maxReachedStep, step);
+            jumpToStep(step);
+        }
+
+        function renderRoleInsight() {
+            const cats = { '家庭': 0, '社会': 0, '自我': 0 };
+            selectedRoles.forEach(r => { const c = roleInfo[r].category; if (cats[c] !== undefined) cats[c]++; });
+            const total = selectedRoles.length;
+            if (!total) return '';
+            const maxCat = Object.keys(cats).reduce((a, b) => cats[a] >= cats[b] ? a : b);
+            const zhMap = {
+                'role.insight_family': '你的角色重心在家庭领域——记得也给「自己」留出时间和空间',
+                'role.insight_social': '你的角色重心在社会领域——忙碌之余，别忘了照顾内心的自己',
+                'role.insight_self': '你把很多精力留给了自我成长——也试着把这份力量带到与他人的连接中',
+                'role.insight_balanced': '你在家庭、社会与自我之间保持着可贵的平衡——每一种身份都值得被温柔以待'
+            };
+            let key;
+            if (total >= 2 && cats[maxCat] / total >= 0.6) {
+                const keyMap = { '家庭': 'role.insight_family', '社会': 'role.insight_social', '自我': 'role.insight_self' };
+                key = keyMap[maxCat];
+            } else {
+                key = 'role.insight_balanced';
+            }
+            return `<div class="role-insight" data-i18n="role.insight_title">
+                <span class="role-insight-icon">🌿</span>
+                <p class="role-insight-text">${_t(key, zhMap[key])}</p>
+            </div>`;
+        }
+
+        function toggleConflictExpand(btn) {
+            const wrap = btn.closest('.conflict-wrap');
+            if (!wrap) return;
+            const extra = wrap.querySelector('.conflict-extra');
+            const isOpen = btn.dataset.expanded === 'true';
+            if (extra) extra.classList.toggle('hidden', isOpen);
+            btn.dataset.expanded = String(!isOpen);
+            btn.textContent = isOpen
+                ? _tt('role.expand_conflicts', '展开其余 ${n} 个冲突', { n: btn.dataset.count || 0 })
+                : _t('role.collapse_conflicts', '收起');
         }
 
         function generateConflictAnalysis() {
             const container = document.getElementById('conflict-analysis');
             let html = '';
-            const items = [];
+            const conflictsArr = [];
+            const harmoniesArr = [];
 
             selectedRoles.forEach((role1, i) => {
                 selectedRoles.slice(i + 1).forEach(role2 => {
@@ -883,16 +961,14 @@ function getName(key) {
                     const conflict = conflicts[key1] || conflicts[key2];
                     if (conflict) {
                         const usedKey = conflicts[key1] ? key1 : key2;
-                        items.push({
-                            type: 'conflict',
+                        conflictsArr.push({
                             key: usedKey,
                             roles: conflict.roles,
                             description: conflict.description,
                             suggestion: conflict.suggestion
                         });
                     } else {
-                        items.push({
-                            type: 'harmony',
+                        harmoniesArr.push({
                             roles: [getName(role1), getName(role2)],
                             emoji1: roleInfo[role1].emoji,
                             emoji2: roleInfo[role2].emoji,
@@ -902,31 +978,53 @@ function getName(key) {
                 });
             });
 
-            if (items.length === 0) {
+            if (conflictsArr.length === 0 && harmoniesArr.length === 0) {
                 html = `<div class="conflict-empty">
                     <div class="conflict-empty-icon">✨</div>
-                    <h3 class="conflict-empty-title" data-i18n="role.conflict_empty_title">你选择了 ${selectedRoles.length} 个角色</h3>/h3>
-                    <p class="conflict-empty-text" data-i18n="role.conflict_empty_text">每一个角色都是你的一部分，它们共同构成了完整的你</p>/p>
+                    <h3 class="conflict-empty-title" data-i18n="role.conflict_empty_title">你选择了 ${selectedRoles.length} 个角色</h3>
+                    <p class="conflict-empty-text" data-i18n="role.conflict_empty_text">每一个角色都是你的一部分，它们共同构成了完整的你</p>
                 </div>`;
             } else {
-                items.forEach((item, i) => {
-                    if (item.type === 'conflict') {
+                // 角色分布洞察
+                html += renderRoleInsight();
+
+                // 冲突区：Top 5 + 展开其余
+                if (conflictsArr.length > 0) {
+                    html += '<div class="conflict-wrap">';
+                    conflictsArr.slice(0, 5).forEach((item, i) => {
                         html += `<div class="conflict-item" style="animation-delay:${i * 0.1}s">
                             <div class="conflict-badge">${getName(item.roles[0])} × ${getName(item.roles[1])}</div>
                             <p class="conflict-desc">${_t('role.' + item.key + '_desc', item.description)}</p>
                             <p class="conflict-suggestion">💡 ${_t('role.' + item.key + '_sug', item.suggestion)}</p>
                         </div>`;
-                    } else {
-                        html += `<div class="harmony-item" style="animation-delay:${i * 0.1}s">
+                    });
+                    if (conflictsArr.length > 5) {
+                        const extraCount = conflictsArr.length - 5;
+                        html += `<div class="conflict-extra hidden">${conflictsArr.slice(5).map((item, j) => `
+                            <div class="conflict-item" style="animation-delay:${j * 0.1}s">
+                                <div class="conflict-badge">${getName(item.roles[0])} × ${getName(item.roles[1])}</div>
+                                <p class="conflict-desc">${_t('role.' + item.key + '_desc', item.description)}</p>
+                                <p class="conflict-suggestion">💡 ${_t('role.' + item.key + '_sug', item.suggestion)}</p>
+                            </div>`).join('')}</div>`;
+                        html += `<button class="expand-btn" onclick="toggleConflictExpand(this)" data-expanded="false" data-count="${extraCount}">${_tt('role.expand_conflicts', '展开其余 ${n} 个冲突', { n: extraCount })}</button>`;
+                    }
+                    html += '</div>';
+                }
+
+                // 和谐区：弱化呈现
+                if (harmoniesArr.length > 0) {
+                    html += `<div class="harmony-section">
+                        <h4 class="harmony-section-title" data-i18n="role.harmony_title">和谐的组合</h4>
+                        ${harmoniesArr.map((item, i) => `<div class="harmony-item" style="animation-delay:${i * 0.08}s">
                             <div class="harmony-emojis">${item.emoji1} ${item.emoji2}</div>
                             <p class="harmony-text">${item.text}</p>
-                        </div>`;
-                    }
-                });
+                        </div>`).join('')}
+                    </div>`;
+                }
             }
 
             html += `<div class="role-map">
-                <h3 class="role-map-title" data-i18n="role.role_map_title">你的角色地图</h3>/h3>
+                <h3 class="role-map-title" data-i18n="role.role_map_title">你的角色地图</h3>
                 <div class="role-map-tags">${selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${getName(r)}</span>`).join('')}</div>
             </div>`;
 
@@ -941,6 +1039,10 @@ function getName(key) {
         function generateHarmonyText(role1, role2) {
             const cat1 = roleInfo[role1].category;
             const cat2 = roleInfo[role2].category;
+            const catEn = { '家庭':'family', '社会':'society', '自我':'self' };
+            const isEn = window.I18N && window.I18N.currentLocale === 'en';
+            const cat1d = isEn ? (catEn[cat1] || cat1) : cat1;
+            const cat2d = isEn ? (catEn[cat2] || cat2) : cat2;
             const name1 = getName(role1);
             const name2 = getName(role2);
             const emoji1 = roleInfo[role1].emoji;
@@ -964,7 +1066,7 @@ function getName(key) {
                 const pool = msgs[cat1] || [_tt('role.harmony_generic', '${name1}和${name2}，都是你的一部分', { name1, name2 })];
                 return pool[0];
             }
-            return _tt('role.harmony_cross', '${emoji1} ${name1}（来自${cat1}）和${emoji2} ${name2}（来自${cat2}）共同构成了你丰富的生活——能同时扮演好它们，你真的很了不起', { emoji1, name1, cat1, emoji2, name2, cat2 });
+            return _tt('role.harmony_cross', '${emoji1} ${name1}（来自${cat1}）和${emoji2} ${name2}（来自${cat2}）共同构成了你丰富的生活——能同时扮演好它们，你真的很了不起', { emoji1, name1, cat1: cat1d, emoji2, name2, cat2: cat2d });
         }
 
         function generateBalanceSuggestions() {
@@ -987,11 +1089,30 @@ function getName(key) {
             });
         }
 
+        function renderSaveMap() {
+            const mapEl = document.getElementById('save-role-map');
+            if (mapEl) mapEl.innerHTML = selectedRoles.map(r => `<span class="role-map-tag">${roleInfo[r].emoji} ${getName(r)}</span>`).join('');
+        }
+
         function saveAndFinish() {
             UserStore.set('userRoles', JSON.stringify(selectedRoles));
+            renderSaveMap();
+            const panel = document.getElementById('save-panel');
+            if (panel) {
+                panel.classList.remove('hidden');
+                void panel.offsetWidth;
+                panel.classList.add('show');
+            }
             showToast(_t('role.toast_done', '角色探索完成！'), 'success');
-            setTimeout(() => { window.location.href = 'index.html'; }, 1500);
         }
+
+        function closeSavePanel() {
+            const panel = document.getElementById('save-panel');
+            if (panel) { panel.classList.add('hidden'); panel.classList.remove('show'); }
+        }
+
+        function goGrowthStats() { window.location.href = 'growth-statistics.html'; }
+        function goHomePage() { window.location.href = 'index.html'; }
     </script>
 
     <style>
@@ -1021,8 +1142,11 @@ function getName(key) {
             flex-direction: column;
             align-items: center;
             gap: 0.5rem;
-            cursor: default;
+            cursor: pointer;
+            outline: none;
         }
+        .step-dot.locked { cursor: default; opacity: 0.45; }
+        .step-dot:focus-visible .step-ring { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
         .step-ring {
             width: 44px;
             height: 44px;
@@ -1173,8 +1297,10 @@ function getName(key) {
             border-radius: var(--radius-xl);
             cursor: pointer;
             transition: all 0.2s var(--ease-spring);
+            outline: none;
         }
         .role-item:hover { border-color: var(--color-primary-300); background: var(--color-primary-50); }
+        .role-item:focus-visible { outline: 2px solid var(--color-primary-400); outline-offset: 2px; }
         .role-item.selected { border-color: var(--color-primary-400); background: var(--color-primary-50); }
         .role-item-icon { font-size: 1.5rem; flex-shrink: 0; }
         .role-item-info { flex: 1; min-width: 0; }
@@ -1233,28 +1359,74 @@ function getName(key) {
         }
         .conflict-desc { font-weight: 500; color: var(--color-gray-700); margin-bottom: 0.25rem; }
         .conflict-suggestion { font-size: 0.875rem; color: var(--color-gray-600); }
-        /* 和谐观察卡片 */
+        /* 和谐观察区：弱化呈现（小字、浅色、无阴影，不抢冲突项焦点） */
+        .harmony-section {
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px dashed rgba(90, 154, 138, 0.25);
+        }
+        .harmony-section-title {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--color-gray-500);
+            letter-spacing: 0.04em;
+            margin-bottom: 0.75rem;
+        }
         .harmony-item {
-            background: linear-gradient(135deg, var(--color-primary-50) 0%, var(--color-calm-50) 100%);
-            padding: 1.25rem;
-            border-radius: var(--radius-lg);
-            margin-bottom: 1rem;
-            box-shadow: var(--shadow-xs);
+            display: flex;
+            align-items: flex-start;
+            gap: 0.625rem;
+            padding: 0.5rem 0;
             opacity: 0;
-            transform: translateY(8px);
+            transform: translateY(6px);
             transition: all 0.4s var(--ease-spring);
-            border: 1px solid rgba(90, 154, 138, 0.08);
         }
         .harmony-item.visible { opacity: 1; transform: translateY(0); }
         .harmony-emojis {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.25rem;
+            font-size: 1.125rem;
+            line-height: 1.5;
+            flex-shrink: 0;
         }
         .harmony-text {
+            font-size: 0.875rem;
+            color: var(--color-gray-500);
+            line-height: 1.6;
+        }
+        /* 冲突展开按钮 */
+        .expand-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            background: rgba(244, 114, 182, 0.08);
+            color: var(--color-accent-coral);
+            border: 1px solid rgba(244, 114, 182, 0.2);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 0.25rem;
+        }
+        .expand-btn:hover { background: rgba(244, 114, 182, 0.14); }
+        .conflict-extra { margin-top: 0.75rem; }
+        /* 角色分布洞察 */
+        .role-insight {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            background: linear-gradient(135deg, #d1fae5 0%, #ccfbf1 100%);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            border-radius: var(--radius-lg);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .role-insight-icon { font-size: 1.25rem; flex-shrink: 0; }
+        .role-insight-text {
             font-size: 0.9375rem;
             color: var(--color-gray-700);
             line-height: 1.6;
+            margin: 0;
         }
         .role-map {
             background: var(--color-primary-50);
@@ -1334,6 +1506,37 @@ function getName(key) {
             .step-content, .conflict-item, .suggestion-card { transition: none; animation: none !important; }
             .step-content, .conflict-item, .suggestion-card { opacity: 1; transform: none; }
         }
+        /* 保存成功面板 */
+        .save-panel {
+            position: fixed; inset: 0; z-index: 9999;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(17,24,39,0.35); backdrop-filter: blur(6px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s var(--ease-out);
+            padding: 1.5rem;
+        }
+        .save-panel.show { opacity: 1; pointer-events: auto; }
+        .save-panel-card {
+            background: linear-gradient(160deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 28px; padding: 2.5rem 2rem; max-width: 440px; width: 100%;
+            box-shadow: 0 24px 64px rgba(17,24,39,0.18); border: 1px solid rgba(255,255,255,0.8);
+            text-align: center; transform: translateY(16px) scale(0.97);
+            transition: transform 0.4s var(--ease-spring);
+        }
+        .save-panel.show .save-panel-card { transform: none; }
+        .save-icon {
+            width: 64px; height: 64px; margin: 0 auto 1rem; border-radius: 50%;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.75rem; box-shadow: 0 8px 24px rgba(110, 231, 183, 0.35);
+        }
+        .save-title { font-size: 1.375rem; font-weight: 700; color: var(--color-gray-800); margin-bottom: 0.5rem; }
+        .save-subtitle { font-size: 0.9375rem; color: var(--color-gray-500); line-height: 1.6; margin-bottom: 1.5rem; }
+        .save-role-map { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 1.75rem; min-height: 2.25rem; }
+        .save-actions { display: flex; flex-direction: column; gap: 0.75rem; }
+        .save-actions button { width: 100%; justify-content: center; }
+        .save-stay { background: transparent; border: none; color: var(--color-gray-400); font-size: 0.875rem; cursor: pointer; padding: 0.375rem; transition: color 0.3s; }
+        .save-stay:hover { color: var(--color-gray-600); }
     </style>
 
     <!-- 通用导航栏组件 -->

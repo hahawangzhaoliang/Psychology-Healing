@@ -123,7 +123,7 @@ class ThemeManager {
     async loadTextData() {
         // 加载情绪数据
         try {
-            const res = await fetch('data/emotions.json');
+            const res = await fetch('data/emotions.json?v=' + ((window.I18N && I18N.langPackVersion) || Date.now()));
             const emotions = await res.json();
             this.emotionData = emotions.emotions || {};
             console.log('[ThemeManager] emotions.json 加载成功');
@@ -133,15 +133,20 @@ class ThemeManager {
 
         // 加载宠物数据
         try {
-            const res = await fetch('data/companions.json');
+            const res = await fetch('data/companions.json?v=' + ((window.I18N && I18N.langPackVersion) || Date.now()));
             const companions = await res.json();
             if (companions.companions) {
                 this.petNames     = companions.companions.map(c => c.name);
+                this.petNamesRaw  = companions.companions.map(c => c.name);
                 this.petEmojis    = companions.companions.map(c => c.emoji);
                 this.petMoodTexts = companions.companions.map(c => c.mood);
                 this.petGreetings = companions.companions.map(c => c.greeting);
+                this.petNamesEn     = companions.companions.map(c => c.nameEn || c.name);
+                this.petMoodTextsEn = companions.companions.map(c => c.moodEn || c.mood);
+                this.petGreetingsEn = companions.companions.map(c => c.greetingEn || c.greeting);
             }
             this.petInteractions = companions.interactions || {};
+            this.petInteractionsEn = (companions.interactions && companions.interactions.en) || {};
             console.log('[ThemeManager] companions.json 加载成功');
         } catch (e) {
             console.warn('[ThemeManager] companions.json 加载失败:', e.message);
@@ -149,7 +154,7 @@ class ThemeManager {
 
         // 加载知识库
         try {
-            const res = await fetch('data/knowledge.json');
+            const res = await fetch('data/knowledge.json?v=' + ((window.I18N && I18N.langPackVersion) || Date.now()));
             const knowledge = await res.json();
             this.knowledgeLibrary = {};
             if (Array.isArray(knowledge)) {
@@ -390,47 +395,47 @@ class ThemeManager {
             <div class="home-toolbar">
                 <div class="tool-btn tool-knowledge" onclick="themeManager.toggleKnowledge()">
                     <span class="icon">📖</span>
-                    <span class="tooltip">疗愈知识</span>
+                    <span class="tooltip" data-i18n="widget.knowledge_tooltip">疗愈知识</span>
                 </div>
                 <div class="tool-btn tool-pet" onclick="themeManager.togglePet()">
                     <span class="icon">🐰</span>
-                    <span class="tooltip">宠物伙伴</span>
+                    <span class="tooltip" data-i18n="widget.pet_tooltip">宠物伙伴</span>
                 </div>
             </div>
             <div class="popup-overlay" id="popupOverlay" onclick="themeManager.closePopup()"></div>
             <div class="popup-card" id="knowledgePopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
-                <h3>📖 疗愈知识</h3>
+                <h3 data-i18n="widget.knowledge_title">📖 疗愈知识</h3>
                 <div class="knowledge-grid">
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('breathing')">
                         <div class="emoji">🌬️</div>
-                        <div class="title">呼吸放松</div>
-                        <div class="desc">4-7-8呼吸法<br>平复焦虑</div>
+                        <div class="title" data-i18n="widget.k_breathing_t">呼吸放松</div>
+                        <div class="desc" data-i18n-html="widget.k_breathing_d">4-7-8呼吸法<br>平复焦虑</div>
                     </div>
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('gratitude')">
                         <div class="emoji">🙏</div>
-                        <div class="title">感恩练习</div>
-                        <div class="desc">每日三件好事<br>提升幸福感</div>
+                        <div class="title" data-i18n="widget.k_gratitude_t">感恩练习</div>
+                        <div class="desc" data-i18n-html="widget.k_gratitude_d">每日三件好事<br>提升幸福感</div>
                     </div>
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('body-scan')">
                         <div class="emoji">🧘</div>
-                        <div class="title">身体扫描</div>
-                        <div class="desc">觉察身体感受<br>释放紧绷</div>
+                        <div class="title" data-i18n="widget.k_body_t">身体扫描</div>
+                        <div class="desc" data-i18n-html="widget.k_body_d">觉察身体感受<br>释放紧绷</div>
                     </div>
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('self-compassion')">
                         <div class="emoji">💕</div>
-                        <div class="title">自我慈悲</div>
-                        <div class="desc">善待自己<br>像朋友般关怀</div>
+                        <div class="title" data-i18n="widget.k_compassion_t">自我慈悲</div>
+                        <div class="desc" data-i18n-html="widget.k_compassion_d">善待自己<br>像朋友般关怀</div>
                     </div>
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('grounding')">
                         <div class="emoji">🌱</div>
-                        <div class="title">5-4-3-2-1</div>
-                        <div class="desc">感官接地法<br>应对恐慌</div>
+                        <div class="title" data-i18n="widget.k_grounding_t">5-4-3-2-1</div>
+                        <div class="desc" data-i18n-html="widget.k_grounding_d">感官接地法<br>应对恐慌</div>
                     </div>
                     <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('positive')">
                         <div class="emoji">✨</div>
-                        <div class="title">积极日记</div>
-                        <div class="desc">记录美好瞬间<br>重塑思维</div>
+                        <div class="title" data-i18n="widget.k_positive_t">积极日记</div>
+                        <div class="desc" data-i18n-html="widget.k_positive_d">记录美好瞬间<br>重塑思维</div>
                     </div>
                 </div>
             </div>
@@ -443,9 +448,9 @@ class ThemeManager {
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
                 <div class="emotion-display">
                     <div class="icon" id="cardIcon">😊</div>
-                    <div class="title" id="cardTitle">幸福感</div>
-                    <div class="quote" id="cardQuote">幸福不是拥有最好的一切，而是把当下的一切都变得最好。</div>
-                    <button onclick="themeManager.closePopup()">我知道了</button>
+                    <div class="title" id="cardTitle" data-i18n="widget.emotion_title">幸福感</div>
+                    <div class="quote" id="cardQuote" data-i18n="widget.emotion_quote">幸福不是拥有最好的一切，而是把当下的一切都变得最好。</div>
+                    <button onclick="themeManager.closePopup()" data-i18n="widget.got_it">我知道了</button>
                 </div>
             </div>
             <div class="popup-card" id="petPopup">
@@ -457,11 +462,11 @@ class ThemeManager {
                     </div>
                     <div class="pet-name" id="petName">爱心兔兔</div>
                     <div class="pet-mood" id="petMood">✨ 心情愉悦</div>
-                    <div class="pet-msg" id="petMsg">嗨～看到你真开心！今天过得怎么样？</div>
+                    <div class="pet-msg" id="petMsg" data-i18n="widget.pet_greeting_init">嗨～看到你真开心！今天过得怎么样？</div>
                     <div class="pet-actions">
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('pat')">👋 打招呼</button>
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('hug')">🤗 抱抱</button>
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('play')">🎾 玩耍</button>
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('pat')" data-i18n="widget.pet_pat">👋 打招呼</button>
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('hug')" data-i18n="widget.pet_hug">🤗 抱抱</button>
+                        <button class="pet-action-btn" onclick="themeManager.petInteract('play')" data-i18n="widget.pet_play">🎾 玩耍</button>
                     </div>
                 </div>
             </div>
@@ -493,23 +498,25 @@ class ThemeManager {
 
     /* ===== 切换宠物弹窗 ===== */
     togglePet() {
+        const isEn = window.I18N && window.I18N.currentLocale === 'en';
         const petIdx = Math.floor(Math.random() * this.petNames.length);
-        const petName = this.petNames[petIdx] || '爱心兔兔';
+        const petRawName = this.petNamesRaw[petIdx] || '爱心兔兔';
+        const petName = isEn ? (this.petNamesEn[petIdx] || petRawName) : (this.petNames[petIdx] || petRawName);
         const petEmoji = this.petEmojis[petIdx] || '🐰';
-        const petMood = this.petMoodTexts[petIdx] || '✨ 心情愉悦';
-        const petMsg = this.petGreetings[petIdx] || '嗨～看到你真开心！';
+        const petMood = isEn ? (this.petMoodTextsEn[petIdx] || '✨ Warm') : (this.petMoodTexts[petIdx] || '✨ 心情愉悦');
+        const petMsg = isEn ? (this.petGreetingsEn[petIdx] || 'Hi~ so glad to see you!') : (this.petGreetings[petIdx] || '嗨～看到你真开心！');
         
         document.getElementById('petName').textContent = petName;
         document.getElementById('petMood').textContent = petMood;
         document.getElementById('petMsg').textContent = petMsg;
         
-        // 更新宠物头像
+        // 更新宠物头像（图片路径始终用原始中文名）
         const petAvatar = document.querySelector('#petPopup .pet-avatar');
         if (petAvatar) {
             const img = petAvatar.querySelector('img');
             const action = petAvatar.querySelector('.pet-action');
             if (img) {
-                img.src = `assets/images/companions/${petName}.png`;
+                img.src = `assets/images/companions/${petRawName}.png`;
                 img.alt = petName;
             }
             if (action) action.textContent = petEmoji;
@@ -520,7 +527,8 @@ class ThemeManager {
 
     /* ===== 宠物互动 ===== */
     petInteract(action) {
-        const data = this.petInteractions[action];
+        const isEn = window.I18N && window.I18N.currentLocale === 'en';
+        const data = isEn ? (this.petInteractionsEn[action] || this.petInteractions[action]) : this.petInteractions[action];
         if (!data || !data.messages) return;
         const msg = data.messages[Math.floor(Math.random() * data.messages.length)];
         document.getElementById('petMsg').textContent = msg;
