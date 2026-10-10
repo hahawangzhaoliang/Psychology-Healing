@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <script src="js/cache.js"></script>
-    <script src="js/i18n.js?v=20260929-15"></script>
+    <script src="js/i18n.js?v=20260929-16"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/icons-custom.css">
 <script src="js/user-store.js"></script>
@@ -33,21 +33,29 @@
             <section class="cs-section">
                 <h2 class="cs-title" data-i18n="crisis.hotlines_title">可随时拨打的热线</h2>
                 <div class="cs-grid">
+                    <a href="tel:12356" class="cs-card" style="border:2px solid var(--color-primary-300);background:linear-gradient(135deg,var(--color-primary-50),#F0FDFA);" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h5">全国统一心理援助热线</p><p class="cs-time" data-i18n="crisis.t5">国家卫生健康委设立 · 全国统一号码</p><p class="cs-src" data-i18n="crisis.src5">官方渠道 · 每日 18 小时以上服务</p></div>
+                        <div class="cs-number">12356</div>
+                    </a>
                     <a href="tel:4001619995" class="cs-card" data-touch-feedback>
-                        <div><p class="cs-name" data-i18n="crisis.h1">全国心理援助热线</p><p class="cs-time" data-i18n="crisis.t1">24小时免费服务</p></div>
+                        <div><p class="cs-name" data-i18n="crisis.h1">希望 24 热线</p><p class="cs-time" data-i18n="crisis.t1">24小时免费 · 学生专线按1 · 抑郁与自伤专线按2 · 生命热线按3</p><p class="cs-src" data-i18n="crisis.src1">生命教育与危机干预中心（公益组织）</p></div>
                         <div class="cs-number">400-161-9995</div>
                     </a>
                     <a href="tel:01082951332" class="cs-card" data-touch-feedback>
-                        <div><p class="cs-name" data-i18n="crisis.h2">北京危机干预热线</p><p class="cs-time" data-i18n="crisis.t2">24小时服务</p></div>
+                        <div><p class="cs-name" data-i18n="crisis.h2">北京心理危机研究与干预中心</p><p class="cs-time" data-i18n="crisis.t2">24小时服务</p><p class="cs-src" data-i18n="crisis.src2">官方机构 · 北京市心理援助热线</p></div>
                         <div class="cs-number">010-82951332</div>
                     </a>
                     <a href="tel:4008211215" class="cs-card" data-touch-feedback>
-                        <div><p class="cs-name" data-i18n="crisis.h3">生命热线</p><p class="cs-time" data-i18n="crisis.t3">每天 10:00-22:00</p></div>
+                        <div><p class="cs-name" data-i18n="crisis.h3">Lifeline 中国生命热线</p><p class="cs-time" data-i18n="crisis.t3">每天 10:00-22:00 · 免费、保密、匿名</p><p class="cs-src" data-i18n="crisis.src3">国际公益组织 · 面向在华人士</p></div>
                         <div class="cs-number">400-821-1215</div>
                     </a>
                     <a href="tel:12355" class="cs-card" data-touch-feedback>
-                        <div><p class="cs-name" data-i18n="crisis.h4">青少年心理咨询热线</p><p class="cs-time">12355</p></div>
+                        <div><p class="cs-name" data-i18n="crisis.h4">12355 青少年服务台</p><p class="cs-time" data-i18n="crisis.t4">共青团中央设立 · 青少年心理与权益服务</p><p class="cs-src" data-i18n="crisis.src4">官方渠道</p></div>
                         <div class="cs-number">12355</div>
+                    </a>
+                    <a href="tel:4009678920" class="cs-card" data-touch-feedback>
+                        <div><p class="cs-name" data-i18n="crisis.h6">教育部华中师范大学心理援助热线</p><p class="cs-time" data-i18n="crisis.t6">面向全国 · 免费心理支持</p><p class="cs-src" data-i18n="crisis.src6">教育部指导 · 高校官方平台</p></div>
+                        <div class="cs-number">400-967-8920</div>
                     </a>
                 </div>
                 <div class="cs-encourage">
@@ -102,7 +110,7 @@
 
             <!-- 免责说明 -->
             <section class="cs-section" style="background:var(--color-warm-50);">
-                <p class="cs-text" style="font-size:0.8125rem;color:var(--color-gray-500);margin:0;" data-i18n="crisis.note">本页面仅提供资源指引，不构成任何医疗诊断或治疗。如遇紧急危险，请立即拨打上述热线或当地急救电话。本页面不展示广告。</p>
+                <p class="cs-text" style="font-size:0.8125rem;color:var(--color-gray-500);margin:0;" data-i18n="crisis.note">本页面仅提供资源指引，不构成任何医疗诊断或治疗。如遇紧急危险，请立即拨打上述热线或当地急救电话。各热线的号码与开放时间如有调整，请以官方最新发布为准。本页面不展示广告。</p>
             </section>
 
             <div style="text-align:center;margin-top:0.5rem;">
@@ -160,6 +168,11 @@
         }
         .cs-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
         .cs-name { font-weight: 600; color: var(--color-gray-800); font-size: 0.9375rem; }
+        .cs-src {
+            font-size: 0.72rem;
+            color: var(--color-gray-400);
+            margin-top: 0.2rem;
+        }
         .cs-time { font-size: 0.75rem; color: var(--color-gray-500); margin-top: 0.125rem; }
         .cs-number { font-size: 1.125rem; font-weight: 700; color: var(--color-primary-500); white-space: nowrap; }
         .cs-encourage {
