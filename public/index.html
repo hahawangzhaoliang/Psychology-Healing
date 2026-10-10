@@ -11,7 +11,7 @@
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link rel="stylesheet" href="css/icons-custom.css">
-    <script src="js/i18n.js?v=20260929-12"></script>
+    <script src="js/i18n.js?v=20260929-15"></script>
     <script src="js/cache.js"></script>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -399,6 +399,13 @@
         }
 
         /* ---------- 求助横幅 ---------- */
+        .home-group-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--theme-text-light);
+            letter-spacing: 0.02em;
+            margin: 0 0 1rem 0.25rem;
+        }
         .help-banner {
             background: linear-gradient(135deg, var(--color-primary-50), var(--color-calm-100));
             padding: 4rem 1.5rem;
@@ -983,7 +990,7 @@
                     碎片化<span class="highlight">疗愈</span><br>陪伴你的每一刻
                 </h1>
                 <p class="hero-subtitle" data-i18n="hero.subtitle">
-                    1-7分钟快速放松，在工作学习的间隙照顾自己
+                    1-7 分钟快速放松，在工作学习的间隙照顾自己——不需要完整的时间，只需要一点点温柔
                 </p>
                 <div class="hero-cta">
                     <a href="relax.html" class="btn btn-primary btn-lg" style="text-decoration:none;" data-i18n="hero.cta_primary">
@@ -1015,9 +1022,10 @@
                         <div style="flex:1;">
                             <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_diary_title">情绪日记</h3>
                             <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_diary_desc">记录此刻的感受，看见自己的情绪模式，获得温和的调节建议</p>
-                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_self_awareness"><span style="color:var(--color-primary-400);">✓</span> 自我觉察</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_data_analysis"><span style="color:var(--color-primary-400);">✓</span> 数据分析</span>
+                            <div style="display:flex;flex-wrap:wrap;gap:0.75rem 1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;">⏱<span data-i18n="index.tag_duration_diary">1-3 分钟</span></span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span><span data-i18n="index.tag_self_awareness">自我觉察</span></span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span><span data-i18n="index.tag_data_analysis">数据分析</span></span>
                             </div>
                         </div>
                     </div>
@@ -1034,28 +1042,27 @@
                         <div style="flex:1;">
                             <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_relax_title">放松练习</h3>
                             <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_relax_desc">1-7分钟的呼吸觉察、身体扫描与正念冥想，随时为自己充电</p>
-                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_science"><span style="color:var(--color-primary-400);">✓</span> 科学依据</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.tag_instant"><span style="color:var(--color-primary-400);">✓</span> 即时效果</span>
+                            <div style="display:flex;flex-wrap:wrap;gap:0.75rem 1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;">⏱<span data-i18n="index.tag_duration_relax">1-7 分钟</span></span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span><span data-i18n="index.tag_science">科学依据</span></span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span><span data-i18n="index.tag_instant">即时效果</span></span>
                             </div>
                         </div>
                     </div>
                 </a>
 
-                <!-- 主入口：求助导航 -->
-                <a href="crisis-support.html" class="card" style="text-decoration:none;display:block;position:relative;" data-touch-feedback>
+                <!-- 主入口：5分钟充电站 -->
+                <a href="charging-station.html" class="card" style="text-decoration:none;display:block;position:relative;" data-touch-feedback>
                     <div style="display:flex;align-items:flex-start;gap:1rem;">
-                        <div class="feature-icon" style="background:var(--color-primary-50);">
-                            <svg style="width:28px;height:28px;color:var(--color-primary-500);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h2.28a1 1 0 01.95.68l1.2 3.6a1 1 0 01-.44 1.16l-1.57 1.05a13.5 13.5 0 006.88 6.88l1.05-1.57a1 1 0 011.16-.44l3.6 1.2a1 1 0 01.68.95V19a2 2 0 01-2 2h-1C9.72 21 3 14.28 3 6V5z"></path>
-                            </svg>
+                        <div class="feature-icon" style="background:var(--color-calm-100);">
+                            <span style="font-size:1.6rem;line-height:1;">🎐</span>
                         </div>
                         <div style="flex:1;">
-                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_help_title">求助导航</h3>
-                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_help_desc">心理援助热线与危机支持资源，需要时随时可用</p>
-                            <div style="display:flex;gap:1rem;font-size:0.8rem;color:var(--theme-text-light);">
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="crisis.h1"><span style="color:var(--color-primary-400);">✓</span> 全国心理援助热线</span>
-                                <span style="display:flex;align-items:center;gap:0.25rem;" data-i18n="index.helpline_note"><span style="color:var(--color-primary-400);">✓</span> 24小时免费服务</span>
+                            <h3 style="font-size:1.15rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="index.primary_charging_title">5分钟充电站</h3>
+                            <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="index.primary_charging_desc">治愈图片、神经音乐与微故事，在忙碌中为自己充一小会儿电</p>
+                            <div style="display:flex;flex-wrap:wrap;gap:0.75rem 1rem;font-size:0.8rem;color:var(--theme-text-light);">
+                                <span style="display:flex;align-items:center;gap:0.25rem;">⏱<span data-i18n="index.primary_charging_tag1">1-5 分钟</span></span>
+                                <span style="display:flex;align-items:center;gap:0.25rem;"><span style="color:var(--color-primary-400);">✓</span><span data-i18n="index.primary_charging_tag2">随时随地</span></span>
                             </div>
                         </div>
                     </div>
@@ -1070,32 +1077,22 @@
                 <p data-i18n="index.tools_subtitle">探索更多温暖陪伴的方式</p>
             </div>
 
-            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
+            <h3 class="home-group-title" data-i18n="index.group_deep">🧭 深度探索</h3>
+            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-2" data-stagger="fade-in-up">
                 <a href="flow-experience.html" class="new-feature-card" style="position:relative;border:2px solid #FDBA74;" data-touch-feedback>
                     <span class="emoji">⚡</span>
                     <h3 data-i18n="index.new_flow_title">心流体验室</h3>
-                    <p data-i18n="index.new_flow_desc">发现热爱 · 深度投入 · 心流成长</p>
+                    <p data-i18n="index.new_flow_desc">在热爱的事情里深度投入，体验忘我的心流成长</p>
                     <div class="tags">
                         <span class="tag" style="background:#FED7AA;color:#9A3412;" data-i18n="index.new_flow_tag1">15-60分钟</span>
                         <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_flow_tag2">50+活动</span>
                     </div>
                 </a>
 
-                <a href="charging-station.html" class="new-feature-card" data-touch-feedback>
-                    <span class="emoji">🎐</span>
-                    <h3 data-i18n="index.new_charging_title">5分钟充电站</h3>
-                    <p data-i18n="index.new_charging_desc">治愈图片 + 神经音乐 + 微故事</p>
-                    <div class="tags">
-                        <span class="tag" style="background:#FEF3C7;color:#92400E;" data-i18n="index.new_charging_tag1">晨起</span>
-                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_charging_tag2">午休</span>
-                        <span class="tag" style="background:#E9D5FF;color:#6B21A8;" data-i18n="index.new_charging_tag3">睡前</span>
-                    </div>
-                </a>
-
                 <a href="knowledge-graph.html" class="new-feature-card" data-touch-feedback>
                     <span class="emoji">🌐</span>
                     <h3 data-i18n="index.feature_knowledge_title">心理知识图谱</h3>
-                    <p data-i18n="index.feature_knowledge_desc">可视化知识关联、个性化学习路径</p>
+                    <p data-i18n="index.feature_knowledge_desc">可视化知识之间的关联，走出个性化的学习路径</p>
                     <div class="tags">
                         <span class="tag" style="background:#D1FAE5;color:#065F46;" data-i18n="index.tag_systematic">系统学习</span>
                         <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.tag_science">科学依据</span>
@@ -1105,17 +1102,41 @@
                 <a href="role.html" class="new-feature-card" data-touch-feedback>
                     <span class="emoji">🧩</span>
                     <h3 data-i18n="index.feature_role_title">身份角色探索</h3>
-                    <p data-i18n="index.feature_role_desc">识别多重角色、分析角色冲突</p>
+                    <p data-i18n="index.feature_role_desc">识别你承担的多重角色，理解其中的冲突与平衡</p>
                     <div class="tags">
                         <span class="tag" style="background:#E9D5FF;color:#6B21A8;" data-i18n="index.tag_identity">身份认同</span>
                         <span class="tag" style="background:#FED7AA;color:#9A3412;" data-i18n="index.tag_role_balance">角色平衡</span>
                     </div>
                 </a>
 
+                <a href="assessment.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">🧠</span>
+                    <h3 data-i18n="index.new_assess_title">心理自测中心</h3>
+                    <p data-i18n="index.new_assess_desc">完成六项科学自测，获得个性化的自我探索建议</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#CCFBF1;color:#0F766E;" data-i18n="index.new_assess_tag1">自我探索</span>
+                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_assess_tag2">科学依据</span>
+                    </div>
+                </a>
+            </div>
+
+            <h3 class="home-group-title" data-i18n="index.group_care" style="margin-top:2.5rem;">🌱 记录与陪伴</h3>
+            <div style="display:grid;gap:1.5rem;" class="md:grid-cols-3" data-stagger="fade-in-up">
+                <a href="charging-station.html" class="new-feature-card" data-touch-feedback>
+                    <span class="emoji">🎐</span>
+                    <h3 data-i18n="index.new_charging_title">5分钟充电站</h3>
+                    <p data-i18n="index.new_charging_desc">用治愈图片与神经音乐，在碎片时间里为自己充一小会儿电</p>
+                    <div class="tags">
+                        <span class="tag" style="background:#FEF3C7;color:#92400E;" data-i18n="index.new_charging_tag1">晨起</span>
+                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_charging_tag2">午休</span>
+                        <span class="tag" style="background:#E9D5FF;color:#6B21A8;" data-i18n="index.new_charging_tag3">睡前</span>
+                    </div>
+                </a>
+
                 <a href="community.html" class="new-feature-card" data-touch-feedback>
                     <span class="emoji">✨</span>
                     <h3 data-i18n="index.new_community_title">微光社区</h3>
-                    <p data-i18n="index.new_community_desc">匿名树洞 + 主题打卡 + 鼓励卡片</p>
+                    <p data-i18n="index.new_community_desc">匿名倾诉心事，参与主题打卡，收获温暖的鼓励</p>
                     <div class="tags">
                         <span class="tag" style="background:#E9D5FF;color:#6B21A8;" data-i18n="index.new_community_tag1">温暖陪伴</span>
                         <span class="tag" style="background:#FED7AA;color:#9A3412;" data-i18n="index.new_community_tag2">打卡习惯</span>
@@ -1125,25 +1146,15 @@
                 <a href="report.html" class="new-feature-card" data-touch-feedback>
                     <span class="emoji">📊</span>
                     <h3 data-i18n="index.new_report_title">习惯周报</h3>
-                    <p data-i18n="index.new_report_desc">一周情绪回顾 · 连续记录与成长徽章</p>
+                    <p data-i18n="index.new_report_desc">回顾一周的情绪变化，看见连续记录与成长徽章</p>
                     <div class="tags">
                         <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_report_tag1">每周回顾</span>
                         <span class="tag" style="background:#D1FAE5;color:#065F46;" data-i18n="index.new_report_tag2">习惯养成</span>
                     </div>
                 </a>
-
-                <a href="assessment.html" class="new-feature-card" data-touch-feedback>
-                    <span class="emoji">🧠</span>
-                    <h3 data-i18n="index.new_assess_title">心理自测中心</h3>
-                    <p data-i18n="index.new_assess_desc">六项科学自测 · 附个性化建议</p>
-                    <div class="tags">
-                        <span class="tag" style="background:#CCFBF1;color:#0F766E;" data-i18n="index.new_assess_tag1">自我探索</span>
-                        <span class="tag" style="background:#DBEAFE;color:#1E40AF;" data-i18n="index.new_assess_tag2">科学依据</span>
-                    </div>
-                </a>
             </div>
 
-            <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--theme-text-light);" data-i18n="index.new_hint">
+            <p style="text-align:center;margin-top:2rem;font-size:0.875rem;color:var(--theme-text-light);">
                 <svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> <span data-i18n="index.new_hint_text">点击左上角的动物伙伴，与它互动并切换场景主题</span>
             </p>
         </section>
