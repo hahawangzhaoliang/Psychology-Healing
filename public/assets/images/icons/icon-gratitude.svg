@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="感恩">
+  <title>感恩</title>
+  <path d="M24 26 C20 22 17 19 17 15.5 C17 12.5 19 11 21 11 C22.4 11 23.5 12 24 13 C24.5 12 25.6 11 27 11 C29 11 31 12.5 31 15.5 C31 19 28 22 24 26 Z"
+            fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M10 31 Q10 42 24 42 Q38 42 38 31" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <path d="M15 33 Q24 37 33 33" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+</svg>

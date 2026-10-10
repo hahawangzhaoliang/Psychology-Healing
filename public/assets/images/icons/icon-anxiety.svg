@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="焦虑">
+  <title>焦虑</title>
+  <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.22"/>
+      <path d="M14 17 Q24 9 33 16 Q42 23 33 31 Q24 39 15 32 Q8 26 15 21 Q22 16 29 22 Q35 27 29 32"
+            fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+</svg>

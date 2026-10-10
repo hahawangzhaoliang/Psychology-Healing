@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="静心茶">
+  <title>静心茶</title>
+  <path d="M10 22 L36 22 L33 38 Q32.5 41 29 41 L17 41 Q13.5 41 13 38 Z"
+            fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+      <path d="M36 25 Q42 26 42 30.5 Q42 35 36 35.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M19 17 Q17 14 19 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+      <path d="M25 17 Q23 13.5 25 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+      <path d="M31 17 Q29 14 31 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+</svg>

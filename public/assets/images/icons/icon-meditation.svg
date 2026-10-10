@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="冥想">
+  <title>冥想</title>
+  <circle cx="24" cy="12" r="4.6" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M18.5 34 Q17 22 24 21 Q31 22 29.5 34 Z"
+            fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M18 25 Q12.5 28 11.5 33" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M30 25 Q35.5 28 36.5 33" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M10 36 Q24 30 38 36 Q24 42 10 36 Z"
+            fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+</svg>

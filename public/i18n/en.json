@@ -1002,7 +1002,8 @@
     "src5": "Official channel · 18+ hours daily service",
     "h6": "MOE CCNU Psychological Assistance Hotline",
     "t6": "Nationwide · free psychological support",
-    "src6": "Guided by the Ministry of Education · official university platform"
+    "src6": "Guided by the Ministry of Education · official university platform",
+    "garden_tagline": "Heart Garden · May your inner garden keep growing"
   },
   "knowledge_graph": {
     "hero_subtitle": "Explore positive psychology and cognitive psychology, from beginner to advanced. Visualize knowledge connections and find your learning path.",
@@ -1840,5 +1841,31 @@
     "pet_pat": "👋 Greet",
     "pet_hug": "🤗 Hug",
     "pet_play": "🎾 Play"
+  },
+  "icon": {
+    "name_calm": "Calm",
+    "name_anxiety": "Anxiety",
+    "name_sadness": "Sadness",
+    "name_gratitude": "Gratitude",
+    "name_hope": "Hope",
+    "name_meditation": "Meditation",
+    "name_mindfulness": "Mindfulness",
+    "name_sleep": "Sleep",
+    "name_music": "Healing Music",
+    "name_tea": "Calming Tea",
+    "name_water": "Hydration",
+    "name_hug": "Hug",
+    "name_listen": "Listening",
+    "name_selfcare": "Self-care",
+    "name_safety": "Safety",
+    "name_charge": "Recharge"
+  },
+  "illustration": {
+    "name_home-calm": "Morning Calm",
+    "name_emotion-diary": "Emotion Diary",
+    "name_relax-breathing": "Relax & Breathe",
+    "name_companion-warmth": "Warm Companionship",
+    "name_recharge": "Recharge",
+    "name_growth-path": "Path of Growth"
   }
 }

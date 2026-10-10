@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updated": "2026-05-11",
+  "updated": "2026-10-10",
   "license": "CC BY 3.0 (Kevin MacLeod)",
   "images": {
     "companions": [
@@ -150,8 +150,328 @@
       }
     ],
     "scenes": [],
-    "icons": [],
-    "illustrations": []
+    "icons": [
+      {
+        "id": "calm",
+        "name": "平静",
+        "nameKey": "icon.name_calm",
+        "emoji": "😌",
+        "file": "icon-calm.png",
+        "svg": "icon-calm.svg",
+        "group": "emotion",
+        "tags": [
+          "平静",
+          "安详",
+          "觉察"
+        ],
+        "description": "安详闭目的脸，代表内在的平静"
+      },
+      {
+        "id": "anxiety",
+        "name": "焦虑",
+        "nameKey": "icon.name_anxiety",
+        "emoji": "😰",
+        "file": "icon-anxiety.png",
+        "svg": "icon-anxiety.svg",
+        "group": "emotion",
+        "tags": [
+          "焦虑",
+          "紧张",
+          "觉察"
+        ],
+        "description": "缠绕的线团，代表纷乱的思绪"
+      },
+      {
+        "id": "sadness",
+        "name": "悲伤",
+        "nameKey": "icon.name_sadness",
+        "emoji": "😢",
+        "file": "icon-sadness.png",
+        "svg": "icon-sadness.svg",
+        "group": "emotion",
+        "tags": [
+          "悲伤",
+          "低落",
+          "接纳"
+        ],
+        "description": "落雨的云，代表悲伤情绪的流淌"
+      },
+      {
+        "id": "gratitude",
+        "name": "感恩",
+        "nameKey": "icon.name_gratitude",
+        "emoji": "🙏",
+        "file": "icon-gratitude.png",
+        "svg": "icon-gratitude.svg",
+        "group": "emotion",
+        "tags": [
+          "感恩",
+          "珍惜",
+          "温暖"
+        ],
+        "description": "双手捧心，代表感恩之心"
+      },
+      {
+        "id": "hope",
+        "name": "希望",
+        "nameKey": "icon.name_hope",
+        "emoji": "🌱",
+        "file": "icon-hope.png",
+        "svg": "icon-hope.svg",
+        "group": "emotion",
+        "tags": [
+          "希望",
+          "新生",
+          "成长"
+        ],
+        "description": "破土新芽，代表希望与新生"
+      },
+      {
+        "id": "meditation",
+        "name": "冥想",
+        "nameKey": "icon.name_meditation",
+        "emoji": "🧘",
+        "file": "icon-meditation.png",
+        "svg": "icon-meditation.svg",
+        "group": "practice",
+        "tags": [
+          "冥想",
+          "练习",
+          "专注"
+        ],
+        "description": "盘坐人形，代表冥想练习"
+      },
+      {
+        "id": "mindfulness",
+        "name": "正念",
+        "nameKey": "icon.name_mindfulness",
+        "emoji": "🔔",
+        "file": "icon-mindfulness.png",
+        "svg": "icon-mindfulness.svg",
+        "group": "practice",
+        "tags": [
+          "正念",
+          "觉察",
+          "当下"
+        ],
+        "description": "正念铃，提醒回到当下"
+      },
+      {
+        "id": "sleep",
+        "name": "睡眠",
+        "nameKey": "icon.name_sleep",
+        "emoji": "🌙",
+        "file": "icon-sleep.png",
+        "svg": "icon-sleep.svg",
+        "group": "practice",
+        "tags": [
+          "睡眠",
+          "休息",
+          "夜晚"
+        ],
+        "description": "月牙与睡意，代表安然入眠"
+      },
+      {
+        "id": "music",
+        "name": "疗愈音乐",
+        "nameKey": "icon.name_music",
+        "emoji": "🎵",
+        "file": "icon-music.png",
+        "svg": "icon-music.svg",
+        "group": "practice",
+        "tags": [
+          "音乐",
+          "疗愈",
+          "放松"
+        ],
+        "description": "双音符，代表音乐疗愈"
+      },
+      {
+        "id": "tea",
+        "name": "静心茶",
+        "nameKey": "icon.name_tea",
+        "emoji": "🍵",
+        "file": "icon-tea.png",
+        "svg": "icon-tea.svg",
+        "group": "practice",
+        "tags": [
+          "茶",
+          "静心",
+          "仪式"
+        ],
+        "description": "一杯热茶，代表静心时刻"
+      },
+      {
+        "id": "water",
+        "name": "补水",
+        "nameKey": "icon.name_water",
+        "emoji": "💧",
+        "file": "icon-water.png",
+        "svg": "icon-water.svg",
+        "group": "practice",
+        "tags": [
+          "补水",
+          "身体",
+          "照顾"
+        ],
+        "description": "水滴，提醒照顾身体"
+      },
+      {
+        "id": "hug",
+        "name": "拥抱",
+        "nameKey": "icon.name_hug",
+        "emoji": "🤗",
+        "file": "icon-hug.png",
+        "svg": "icon-hug.svg",
+        "group": "support",
+        "tags": [
+          "拥抱",
+          "温暖",
+          "连接"
+        ],
+        "description": "相拥的两个人，代表温暖连接"
+      },
+      {
+        "id": "listen",
+        "name": "倾听",
+        "nameKey": "icon.name_listen",
+        "emoji": "👂",
+        "file": "icon-listen.png",
+        "svg": "icon-listen.svg",
+        "group": "support",
+        "tags": [
+          "倾听",
+          "陪伴",
+          "理解"
+        ],
+        "description": "耳朵与声波，代表被倾听"
+      },
+      {
+        "id": "selfcare",
+        "name": "自我关怀",
+        "nameKey": "icon.name_selfcare",
+        "emoji": "💗",
+        "file": "icon-selfcare.png",
+        "svg": "icon-selfcare.svg",
+        "group": "support",
+        "tags": [
+          "自我关怀",
+          "温柔",
+          "爱自己"
+        ],
+        "description": "心与微光，代表善待自己"
+      },
+      {
+        "id": "safety",
+        "name": "安全感",
+        "nameKey": "icon.name_safety",
+        "emoji": "🛡️",
+        "file": "icon-safety.png",
+        "svg": "icon-safety.svg",
+        "group": "support",
+        "tags": [
+          "安全感",
+          "保护",
+          "安心"
+        ],
+        "description": "护盾与心，代表被保护的安全感"
+      },
+      {
+        "id": "charge",
+        "name": "充电",
+        "nameKey": "icon.name_charge",
+        "emoji": "🔋",
+        "file": "icon-charge.png",
+        "svg": "icon-charge.svg",
+        "group": "support",
+        "tags": [
+          "充电",
+          "能量",
+          "恢复"
+        ],
+        "description": "装有爱心的电池，代表能量恢复"
+      }
+    ],
+    "illustrations": [
+      {
+        "id": "home-calm",
+        "name": "晨光呼吸",
+        "nameKey": "illustration.name_home-calm",
+        "emoji": "🌄",
+        "file": "home-calm.png",
+        "tags": [
+          "首页",
+          "晨光",
+          "平静"
+        ],
+        "description": "一个人在晨光中的山丘上深呼吸，层叠圆润的山峦与新芽般的一天"
+      },
+      {
+        "id": "emotion-diary",
+        "name": "情绪日记",
+        "nameKey": "illustration.name_emotion-diary",
+        "emoji": "📔",
+        "file": "emotion-diary.png",
+        "tags": [
+          "情绪",
+          "记录",
+          "觉察"
+        ],
+        "description": "摊开的笔记本上升起柔和的情绪气泡，代表情绪的觉察与接纳"
+      },
+      {
+        "id": "relax-breathing",
+        "name": "放松呼吸",
+        "nameKey": "illustration.name_relax-breathing",
+        "emoji": "🧘",
+        "file": "relax-breathing.png",
+        "tags": [
+          "呼吸",
+          "冥想",
+          "放松"
+        ],
+        "description": "静坐冥想的人物与向外扩散的呼吸波纹，代表放松练习"
+      },
+      {
+        "id": "companion-warmth",
+        "name": "温暖陪伴",
+        "nameKey": "illustration.name_companion-warmth",
+        "emoji": "🤝",
+        "file": "companion-warmth.png",
+        "tags": [
+          "陪伴",
+          "温暖",
+          "连接"
+        ],
+        "description": "人与动物伙伴依偎在一起，代表被陪伴的温暖与安全"
+      },
+      {
+        "id": "recharge",
+        "name": "充电恢复",
+        "nameKey": "illustration.name_recharge",
+        "emoji": "🔋",
+        "file": "recharge.png",
+        "tags": [
+          "充电",
+          "能量",
+          "休息"
+        ],
+        "description": "在暖光下安然休息，光粒上浮，代表能量的恢复与补充"
+      },
+      {
+        "id": "growth-path",
+        "name": "成长小径",
+        "nameKey": "illustration.name_growth-path",
+        "emoji": "🌱",
+        "file": "growth-path.png",
+        "tags": [
+          "成长",
+          "希望",
+          "新生"
+        ],
+        "description": "通向远方的蜿蜒小径与破土新芽，代表成长与新的开始"
+      }
+    ]
   },
   "audio": {
     "bgm": [

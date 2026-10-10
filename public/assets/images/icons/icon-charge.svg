@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="充电">
+  <title>充电</title>
+  <rect x="8" y="16" width="28" height="18" rx="5" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2.2"/>
+      <rect x="37" y="21" width="4" height="8" rx="2" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M22 29 C18.6 26.8 17 24.6 17 22.6 C17 20.8 18.4 19.8 19.7 19.8 C20.6 19.8 21.5 20.3 22 21.2 C22.5 20.3 23.4 19.8 24.3 19.8 C25.6 19.8 27 20.8 27 22.6 C27 24.6 25.4 26.8 22 29 Z"
+            fill="currentColor" fill-opacity="0.4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+</svg>

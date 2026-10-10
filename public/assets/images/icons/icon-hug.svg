@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" color="#5cb8a8" role="img" aria-label="拥抱">
+  <title>拥抱</title>
+  <circle cx="18" cy="17" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <circle cx="30" cy="17" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M9 40 Q9 30 18 28 Q24 27 24 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M39 40 Q39 30 30 28 Q24 27 24 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M18 30 Q24 25.5 30 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+      <path d="M24 10.5 C22.6 9.2 21.8 8.1 21.8 7 C21.8 6 22.5 5.4 23.2 5.4 C23.6 5.4 23.9 5.6 24 6 C24.1 5.6 24.4 5.4 24.8 5.4 C25.5 5.4 26.2 6 26.2 7 C26.2 8.1 25.4 9.2 24 10.5 Z"
+            fill="currentColor" fill-opacity="0.5"/>
+</svg>

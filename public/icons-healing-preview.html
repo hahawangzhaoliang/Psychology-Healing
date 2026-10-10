@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title data-i18n="icons.page_title">疗愈图标集预览 — 心晴空间</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      background: #f0f7f5;
+      color: #2d3436;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    svg.sprite-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+    .page-header { text-align: center; margin-bottom: 2rem; }
+    .page-header h1 { font-size: 1.6rem; font-weight: 700; color: #2d6a4f; margin-bottom: 0.4rem; }
+    .page-header p { font-size: 0.9rem; color: #6b9a9a; }
+
+    .controls {
+      display: flex; justify-content: center; align-items: center; gap: 1.5rem;
+      flex-wrap: wrap; margin-bottom: 2rem; padding: 1rem 1.5rem;
+      background: white; border-radius: 16px; box-shadow: 0 2px 12px rgba(92,184,168,0.12);
+    }
+    .control-group { display: flex; align-items: center; gap: 0.5rem; }
+    .control-group label { font-size: 0.85rem; color: #6b9a9a; font-weight: 500; }
+    .control-group input[type="range"] { width: 120px; accent-color: #5cb8a8; }
+    .control-group span { font-size: 0.85rem; font-weight: 600; color: #2d6a4f; min-width: 3.4rem; text-align: center; }
+    .color-btn {
+      width: 32px; height: 32px; border-radius: 50%; border: 2.5px solid white;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s;
+    }
+    .color-btn:hover { transform: scale(1.15); }
+    .color-btn.active { border-color: #2d6a4f; transform: scale(1.15); }
+
+    .section-title {
+      font-size: 1.05rem; font-weight: 600; color: #2d6a4f;
+      margin: 2rem 0 1rem; padding-left: 0.5rem; border-left: 4px solid #5cb8a8;
+    }
+    .section-title small { font-weight: 400; font-size: 0.8rem; color: #6b9a9a; margin-left: 0.5rem; }
+
+    .icons-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem; margin-bottom: 1.5rem;
+    }
+
+    .icon-card {
+      background: white; border-radius: 16px; padding: 1.5rem 1rem 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      box-shadow: 0 2px 12px rgba(92,184,168,0.10);
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
+      cursor: pointer; position: relative;
+    }
+    .icon-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 8px 24px rgba(92,184,168,0.22); }
+    .icon-card:active { transform: translateY(-2px) scale(1.01); }
+    .icon-card svg { display: block; transition: color 0.3s; }
+
+    .icon-name { font-size: 0.78rem; color: #6b9a9a; text-align: center; word-break: break-all; line-height: 1.3; }
+    .icon-label { font-size: 0.72rem; color: #8fb3ad; text-align: center; }
+
+    .icon-card .copy-toast {
+      position: absolute; top: 8px; right: 8px; background: #2d6a4f; color: white;
+      font-size: 0.7rem; padding: 2px 8px; border-radius: 8px;
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .icon-card .copy-toast.show { opacity: 1; }
+
+    .usage-section {
+      background: white; border-radius: 16px; padding: 1.5rem 2rem;
+      margin-top: 2rem; box-shadow: 0 2px 12px rgba(92,184,168,0.10);
+    }
+    .usage-section h3 { font-size: 1rem; color: #2d6a4f; margin-bottom: 0.8rem; }
+    .usage-section code { background: #e8f6f3; padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; color: #2d6a4f; }
+    .usage-section pre {
+      background: #f0f7f5; padding: 1rem 1.2rem; border-radius: 10px;
+      font-size: 0.82rem; line-height: 1.6; color: #2d3436; overflow-x: auto; margin-top: 0.5rem;
+    }
+    .usage-section p { font-size: 0.88rem; color: #4a5d5a; line-height: 1.7; margin-bottom: 0.6rem; }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .icons-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.8rem; }
+      .page-header h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== SVG 精灵（与 css/icons-healing.svg 同源，内联以便本地直接打开预览） ========== -->
+  <svg class="sprite-defs" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-calm" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="17" fill="none" stroke="currentColor" stroke-width="2.2"/>
+    <path d="M15 21 Q18.5 24 22 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M26 21 Q29.5 24 33 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M19 30 Q24 34 29 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="icon-anxiety" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="16" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.22"/>
+    <path d="M14 17 Q24 9 33 16 Q42 23 33 31 Q24 39 15 32 Q8 26 15 21 Q22 16 29 22 Q35 27 29 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="icon-sadness" viewBox="0 0 48 48">
+    <path d="M15 27 Q9 27 9 21.5 Q9 15.5 15 15.5 Q17 9.5 24 9.5 Q31 9.5 33 15.5 Q39 15 39 21.5 Q39 27 33 27 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M18 32 L16 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+    <path d="M24 32 L22 38" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M30 32 L28 37" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.75"/>
+  </symbol>
+  <symbol id="icon-gratitude" viewBox="0 0 48 48">
+    <path d="M24 26 C20 22 17 19 17 15.5 C17 12.5 19 11 21 11 C22.4 11 23.5 12 24 13 C24.5 12 25.6 11 27 11 C29 11 31 12.5 31 15.5 C31 19 28 22 24 26 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M10 31 Q10 42 24 42 Q38 42 38 31" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M15 33 Q24 37 33 33" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+  </symbol>
+  <symbol id="icon-hope" viewBox="0 0 48 48">
+    <path d="M24 41 Q23 34 24 27" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M24 32 Q17.5 30.5 15 24.5 Q22 23.5 24 29.5 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M24 27 Q30.5 25 33 19 Q26 18.5 24 24 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M12 41 Q24 36 36 41" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+  <symbol id="icon-meditation" viewBox="0 0 48 48">
+    <circle cx="24" cy="12" r="4.6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M18.5 34 Q17 22 24 21 Q31 22 29.5 34 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M18 25 Q12.5 28 11.5 33" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M30 25 Q35.5 28 36.5 33" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M10 36 Q24 30 38 36 Q24 42 10 36 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="icon-mindfulness" viewBox="0 0 48 48">
+    <circle cx="24" cy="11.5" r="2.6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M16 32 Q16 19 24 18 Q32 19 32 32 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M12 32 Q24 36 36 32" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+    <path d="M21.5 32 Q24 29 26.5 32" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="24" cy="36.5" r="2" fill="currentColor" fill-opacity="0.45"/>
+  </symbol>
+  <symbol id="icon-sleep" viewBox="0 0 48 48">
+    <path d="M30.15 20.71 A10.35 10.35 0 1 1 18.89 9.45 A8.05 8.05 0 0 0 30.15 20.71 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M31 10 L39 10 L31 18 L39 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M33 22.5 L39.5 22.5 L33 29 L39.5 29" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/>
+  </symbol>
+  <symbol id="icon-music" viewBox="0 0 48 48">
+    <path d="M20 34 L20 14 L34 11 L34 31" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <ellipse cx="16" cy="34" rx="4.6" ry="3.6" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+    <ellipse cx="30" cy="31" rx="4.6" ry="3.6" fill="currentColor" fill-opacity="0.12" stroke="currentColor" stroke-width="2"/>
+  </symbol>
+  <symbol id="icon-tea" viewBox="0 0 48 48">
+    <path d="M10 22 L36 22 L33 38 Q32.5 41 29 41 L17 41 Q13.5 41 13 38 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M36 25 Q42 26 42 30.5 Q42 35 36 35.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M19 17 Q17 14 19 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+    <path d="M25 17 Q23 13.5 25 10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+    <path d="M31 17 Q29 14 31 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.35"/>
+  </symbol>
+  <symbol id="icon-water" viewBox="0 0 48 48">
+    <path d="M24 7 Q36 22 36 30 Q36 39.5 24 39.5 Q12 39.5 12 30 Q12 22 24 7 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M18.5 29 Q18.5 33.5 23 34.8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.5"/>
+  </symbol>
+  <symbol id="icon-hug" viewBox="0 0 48 48">
+    <circle cx="18" cy="17" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <circle cx="30" cy="17" r="5" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M9 40 Q9 30 18 28 Q24 27 24 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M39 40 Q39 30 30 28 Q24 27 24 33" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    <path d="M18 30 Q24 25.5 30 30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity="0.55"/>
+    <path d="M24 10.5 C22.6 9.2 21.8 8.1 21.8 7 C21.8 6 22.5 5.4 23.2 5.4 C23.6 5.4 23.9 5.6 24 6 C24.1 5.6 24.4 5.4 24.8 5.4 C25.5 5.4 26.2 6 26.2 7 C26.2 8.1 25.4 9.2 24 10.5 Z" fill="currentColor" fill-opacity="0.5"/>
+  </symbol>
+  <symbol id="icon-listen" viewBox="0 0 48 48">
+    <path d="M29 10 Q18 10 17 21.5 Q16.6 27.5 20 29.5 Q22.6 31 22.6 34.5 Q22.6 39 27 39 Q31 39 31 35" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M27 16 Q21.5 16 21 21.5 Q20.6 25.5 24 27 Q26.5 28 26.5 31.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+    <path d="M35 17 Q38 21.5 35 26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+    <path d="M38.5 14 Q43 21.5 38.5 29" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/>
+  </symbol>
+  <symbol id="icon-selfcare" viewBox="0 0 48 48">
+    <path d="M24 40 C15 33 11 27.5 11 21.5 C11 16 15 13.5 18.5 13.5 C21 13.5 23 15 24 17 C25 15 27 13.5 29.5 13.5 C33 13.5 37 16 37 21.5 C37 27.5 33 33 24 40 Z" fill="currentColor" fill-opacity="0.10" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M37 7 L38.4 10.6 L42 12 L38.4 13.4 L37 17 L35.6 13.4 L32 12 L35.6 10.6 Z" fill="currentColor" fill-opacity="0.4"/>
+  </symbol>
+  <symbol id="icon-safety" viewBox="0 0 48 48">
+    <path d="M24 6 L38 12 L38 23 Q38 34.5 24 42 Q10 34.5 10 23 L10 12 Z" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
+    <path d="M24 31 C20.4 28.4 18.6 26 18.6 23.6 C18.6 21.4 20.2 20.2 21.8 20.2 C22.9 20.2 23.7 20.9 24 21.9 C24.3 20.9 25.1 20.2 26.2 20.2 C27.8 20.2 29.4 21.4 29.4 23.6 C29.4 26 27.6 28.4 24 31 Z" fill="currentColor" fill-opacity="0.45"/>
+  </symbol>
+  <symbol id="icon-charge" viewBox="0 0 48 48">
+    <rect x="8" y="16" width="28" height="18" rx="5" fill="currentColor" fill-opacity="0.06" stroke="currentColor" stroke-width="2.2"/>
+    <rect x="37" y="21" width="4" height="8" rx="2" fill="currentColor" fill-opacity="0.35" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M22 29 C18.6 26.8 17 24.6 17 22.6 C17 20.8 18.4 19.8 19.7 19.8 C20.6 19.8 21.5 20.3 22 21.2 C22.5 20.3 23.4 19.8 24.3 19.8 C25.6 19.8 27 20.8 27 22.6 C27 24.6 25.4 26.8 22 29 Z" fill="currentColor" fill-opacity="0.4" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+  </symbol>
+  </svg>
+
+  <div class="page-header">
+    <h1>疗愈图标集</h1>
+    <p>心晴空间 · 16 枚 · 情绪觉察 / 疗愈练习 / 支持与关怀 · 点击图标复制使用代码</p>
+  </div>
+
+  <div class="controls">
+    <div class="control-group">
+      <label>大小</label>
+      <input type="range" id="size-slider" min="24" max="96" value="48" oninput="updateAllIcons()">
+      <span id="size-label">48px</span>
+    </div>
+    <div class="control-group">
+      <label>颜色</label>
+      <button class="color-btn active" style="background:#5cb8a8" data-color="#5cb8a8" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#3a7a6a" data-color="#3a7a6a" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#c9a8e8" data-color="#c9a8e8" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#e8a87c" data-color="#e8a87c" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#6b9a9a" data-color="#6b9a9a" onclick="setColor(this)"></button>
+      <button class="color-btn" style="background:#374151" data-color="#374151" onclick="setColor(this)"></button>
+    </div>
+  </div>
+
+  <div id="icons-container"></div>
+
+  <div class="usage-section">
+    <h3>使用方式</h3>
+    <p>这套图标与主图标集同源同风格，既可以单独使用，也能和 <code>css/icons-custom.svg</code> 一起加载。</p>
+    <pre>&lt;!-- 1) 在页面底部加载精灵（可与主图标集并存） --&gt;
+&lt;script src="js/svg-loader.js" data-svg-sprite="css/icons-healing.svg"&gt;&lt;/script&gt;
+
+&lt;!-- 2) 在页面任意位置使用 --&gt;
+&lt;svg class="icon icon--md"&gt;&lt;use href="#icon-calm"&gt;&lt;/use&gt;&lt;/svg&gt;
+
+&lt;!-- 3) 颜色继承父级 color，尺寸由 CSS 决定 --&gt;
+&lt;style&gt;
+  .icon     { width: 24px; height: 24px; }
+  .icon--md { width: 20px; height: 20px; }
+  .icon--lg { width: 32px; height: 32px; }
+&lt;/style&gt;</pre>
+  </div>
+
+  <script>
+    const ICON_GROUPS = [
+      {
+        title: '情绪与状态',
+        hint: '可用于情绪日记、状态标签',
+        ids: [
+          ['icon-calm', '平静'], ['icon-anxiety', '焦虑'], ['icon-sadness', '悲伤'],
+          ['icon-gratitude', '感恩'], ['icon-hope', '希望']
+        ]
+      },
+      {
+        title: '疗愈练习',
+        hint: '可用于放松、冥想、习惯打卡',
+        ids: [
+          ['icon-meditation', '冥想'], ['icon-mindfulness', '正念'], ['icon-sleep', '睡眠'],
+          ['icon-music', '疗愈音乐'], ['icon-tea', '静心茶'], ['icon-water', '补水']
+        ]
+      },
+      {
+        title: '支持与关怀',
+        hint: '可用于陪伴、社区、求助入口',
+        ids: [
+          ['icon-hug', '拥抱'], ['icon-listen', '倾听'], ['icon-selfcare', '自我关怀'],
+          ['icon-safety', '安全感'], ['icon-charge', '充电']
+        ]
+      }
+    ];
+
+    let currentColor = '#5cb8a8';
+    let currentSize = 48;
+
+    function renderIcons() {
+      const container = document.getElementById('icons-container');
+      container.innerHTML = '';
+
+      ICON_GROUPS.forEach(group => {
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.innerHTML = group.title + ' <small>' + group.hint + '</small>';
+        container.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'icons-grid';
+
+        group.ids.forEach(pair => {
+          const id = pair[0], label = pair[1];
+          const card = document.createElement('div');
+          card.className = 'icon-card';
+          card.addEventListener('click', function () { copyCode(id, card); });
+
+          const svgNS = 'http://www.w3.org/2000/svg';
+          const svg = document.createElementNS(svgNS, 'svg');
+          svg.setAttribute('width', currentSize);
+          svg.setAttribute('height', currentSize);
+          svg.style.color = currentColor;
+
+          const use = document.createElementNS(svgNS, 'use');
+          use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', '#' + id);
+          svg.appendChild(use);
+
+          const name = document.createElement('div');
+          name.className = 'icon-name';
+          name.textContent = label;
+
+          const sub = document.createElement('div');
+          sub.className = 'icon-label';
+          sub.textContent = id.replace('icon-', '');
+
+          const toast = document.createElement('div');
+          toast.className = 'copy-toast';
+          toast.textContent = '已复制!';
+
+          card.appendChild(svg);
+          card.appendChild(name);
+          card.appendChild(sub);
+          card.appendChild(toast);
+          grid.appendChild(card);
+        });
+
+        container.appendChild(grid);
+      });
+    }
+
+    function updateAllIcons() {
+      currentSize = parseInt(document.getElementById('size-slider').value);
+      document.getElementById('size-label').textContent = currentSize + 'px';
+      document.querySelectorAll('.icon-card svg').forEach(svg => {
+        svg.setAttribute('width', currentSize);
+        svg.setAttribute('height', currentSize);
+      });
+    }
+
+    function setColor(btn) {
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentColor = btn.dataset.color;
+      document.querySelectorAll('.icon-card svg').forEach(svg => { svg.style.color = currentColor; });
+    }
+
+    function copyCode(id, card) {
+      const code = '<svg class="icon icon--md" style="color:inherit">\n  <use href="#' + id + '"></use>\n</svg>';
+      navigator.clipboard.writeText(code).then(() => {
+        const toast = card.querySelector('.copy-toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1200);
+      }).catch(() => { prompt('复制以下代码：', code); });
+    }
+
+    renderIcons();
+  </script>
+</body>
+</html>
