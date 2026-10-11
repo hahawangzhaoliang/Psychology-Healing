@@ -1840,7 +1840,8 @@
     "pet_greeting_init": "Hi~ so glad to see you! How's your day going?",
     "pet_pat": "👋 Greet",
     "pet_hug": "🤗 Hug",
-    "pet_play": "🎾 Play"
+    "pet_play": "🎾 Play",
+    "knowledge_themes": "📚 Theme Library"
   },
   "icon": {
     "name_calm": "Calm",

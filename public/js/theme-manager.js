@@ -174,6 +174,7 @@ class ThemeManager {
                 this.knowledgeCategories[cat].push({ key, ...item });
             });
             console.log('[ThemeManager] knowledge.json 加载成功');
+            this.renderThemeLibrary();
         } catch (e) {
             console.warn('[ThemeManager] knowledge.json 加载失败:', e.message);
         }
@@ -406,37 +407,9 @@ class ThemeManager {
             <div class="popup-card" id="knowledgePopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
                 <h3 data-i18n="widget.knowledge_title">📖 疗愈知识</h3>
-                <div class="knowledge-grid">
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('breathing')">
-                        <div class="emoji">🌬️</div>
-                        <div class="title" data-i18n="widget.k_breathing_t">呼吸放松</div>
-                        <div class="desc" data-i18n-html="widget.k_breathing_d">4-7-8呼吸法<br>平复焦虑</div>
-                    </div>
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('gratitude')">
-                        <div class="emoji">🙏</div>
-                        <div class="title" data-i18n="widget.k_gratitude_t">感恩练习</div>
-                        <div class="desc" data-i18n-html="widget.k_gratitude_d">每日三件好事<br>提升幸福感</div>
-                    </div>
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('body-scan')">
-                        <div class="emoji">🧘</div>
-                        <div class="title" data-i18n="widget.k_body_t">身体扫描</div>
-                        <div class="desc" data-i18n-html="widget.k_body_d">觉察身体感受<br>释放紧绷</div>
-                    </div>
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('self-compassion')">
-                        <div class="emoji">💕</div>
-                        <div class="title" data-i18n="widget.k_compassion_t">自我慈悲</div>
-                        <div class="desc" data-i18n-html="widget.k_compassion_d">善待自己<br>像朋友般关怀</div>
-                    </div>
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('grounding')">
-                        <div class="emoji">🌱</div>
-                        <div class="title" data-i18n="widget.k_grounding_t">5-4-3-2-1</div>
-                        <div class="desc" data-i18n-html="widget.k_grounding_d">感官接地法<br>应对恐慌</div>
-                    </div>
-                    <div class="knowledge-card" onclick="themeManager.showKnowledgeDetail('positive')">
-                        <div class="emoji">✨</div>
-                        <div class="title" data-i18n="widget.k_positive_t">积极日记</div>
-                        <div class="desc" data-i18n-html="widget.k_positive_d">记录美好瞬间<br>重塑思维</div>
-                    </div>
+                <div class="theme-library" id="themeLibraryWrap" style="display:none;margin-top:0.75rem;">
+                    <div class="theme-library-title" style="font-size:0.9rem;font-weight:600;color:var(--color-gray-600);margin:0.25rem 0 0.5rem;" data-i18n="widget.knowledge_themes">📚 主题书库</div>
+                    <div id="themeLibraryGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;"></div>
                 </div>
             </div>
             <div class="popup-card" id="knowledgeDetailPopup">
@@ -478,6 +451,38 @@ class ThemeManager {
     toggleKnowledge() {
         document.getElementById('knowledgePopup')?.classList.add('show');
         document.getElementById('popupOverlay')?.classList.add('show');
+    }
+
+    /* ===== 渲染主题书库（家庭主题书籍） ===== */
+    renderThemeLibrary() {
+        const wrap = document.getElementById('themeLibraryWrap');
+        const grid = document.getElementById('themeLibraryGrid');
+        if (!wrap || !grid) return;
+        const isEn = window.I18N && I18N.currentLocale === 'en';
+        // 主题组展示顺序与名称（后续主题可在此扩展）
+        const order = ['家庭'];
+        const names = {
+            '家庭': isEn ? '🏡 Family & Intimacy' : '🏡 家庭 · 亲密关系与家人'
+        };
+        let html = '';
+        order.forEach(cat => {
+            const items = this.knowledgeCategories[cat] || [];
+            if (!items.length) return;
+            html += `<div style="grid-column:1 / -1;font-size:0.78rem;font-weight:600;color:var(--color-gray-400);margin:0.5rem 0 0.1rem;">${names[cat] || cat}</div>`;
+            items.forEach(item => {
+                const rawDesc = (item.keyPoints && item.keyPoints.length) ? item.keyPoints[0] : '';
+                const desc = rawDesc.length > 26 ? rawDesc.slice(0, 26) + '…' : rawDesc;
+                html += `<div class="knowledge-card theme-card" onclick="themeManager.showKnowledgeDetail('${item.key}')">
+                            <div class="emoji">📖</div>
+                            <div class="title">${item.title}</div>
+                            <div class="desc">${desc}</div>
+                        </div>`;
+            });
+        });
+        if (html) {
+            grid.innerHTML = html;
+            wrap.style.display = 'block';
+        }
     }
 
     /* ===== 显示知识详情 ===== */
