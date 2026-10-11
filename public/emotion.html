@@ -11,7 +11,7 @@
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link rel="stylesheet" href="css/icons-custom.css">
-    <script src="js/i18n.js?v=20260929-18"></script>
+    <script src="js/i18n.js?v=20260929-26"></script>
     <script src="js/cache.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -230,6 +230,17 @@
         }
 
         /* ---------- 情绪标签 ---------- */
+        .record-dc {
+            border: 1px solid var(--theme-border);
+            background: transparent;
+            border-radius: 999px;
+            padding: 0.35rem 0.75rem;
+            font-size: 0.8rem;
+            color: var(--theme-text);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-standard);
+        }
+        .record-dc:hover { border-color: var(--color-primary-400); }
         .emotion-tag {
             display: inline-flex;
             align-items: center;
@@ -1046,17 +1057,12 @@
         <div class="tab-content active" id="tab-record">
             <div class="form-card fade-in-up" style="animation-delay:0.2s;">
                 <h2 style="font-size:1.25rem;font-weight:700;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="emotion.select_emotion">选择你的情绪</h2>
-                <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:1.5rem;" data-i18n="emotion.select_emotion_desc">点击轮盘选择情绪，最多可选2个相邻情绪。悬停在扇区上可预览，点击确认选择。</p>
+                <p style="font-size:0.9rem;color:var(--theme-text-light);margin-bottom:1.5rem;" data-i18n="emotion.select_emotion_desc">今天，是哪个情绪小伙伴在陪着你？点击角色选择情绪，最多选 2 个。</p>
 
-                <!-- 情绪轮盘 -->
-                <div class="wheel-wrapper">
-                    <div class="wheel-glow"></div>
-                    <div class="wheel-container" id="emotion-wheel-container">
-                        <!-- Canvas 由 emotion-wheel.js 插入 -->
-                    </div>
+                <!-- 情绪角色选择器（头脑特工队风格，替代原情绪轮盘） -->
+                <div class="character-picker" id="emotion-character-picker">
+                    <!-- 角色网格由 emotion-characters.js 渲染 -->
                 </div>
-                <p style="text-align:center;font-size:0.8rem;color:var(--theme-text-light);margin-top:1rem;" data-i18n="emotion.wheel_based_on">情绪轮盘帮助你直观了解自己的情绪</p>
-                <p style="text-align:center;font-size:0.75rem;color:var(--theme-text-light);opacity:0.75;margin-top:0.25rem;" data-i18n="emotion.legend">外圈=温和 · 内圈=强烈</p>
 
                 <!-- 已选情绪展示 -->
                 <div id="selected-emotions" style="display:none;margin-top:2rem;">
@@ -1096,6 +1102,32 @@
                     <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.what_happened">发生了什么？</h3>
                     <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.what_happened_desc">记录一下发生了什么，帮助你更好地理解情绪（可选）</p>
                     <textarea id="context" class="text-area" rows="3" placeholder="今天发生了什么让你有这种感觉？" data-i18n-placeholder="emotion.context_placeholder"></textarea>
+                </div>
+
+                <!-- 自动化想法（伯恩斯 CBT 认知三角） -->
+                <div style="margin-top:2.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.thought_label">此刻你脑中在想什么？</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.thought_desc">情绪不会凭空出现，背后常常有一个想法。试着把它写下来（可选）</p>
+                    <textarea id="thoughtInput" class="text-area" rows="2" placeholder="例如：他这么久没回我，肯定是不在乎我了" data-i18n-placeholder="emotion.thought_ph"></textarea>
+                </div>
+
+                <!-- 认知扭曲识别（伯恩斯十种思维陷阱） -->
+                <div style="margin-top:2.5rem;">
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.distortion_label">你认出了哪个「思维小把戏」？（可多选）</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.distortion_desc">来自认知行为疗法：识别思维陷阱，是情绪自由的第一步（没认出也没关系，留空即可）</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="record-distortion-chips">
+                        <button type="button" class="record-dc" data-key="all_or_nothing" title="非黑即白，没有中间地带" onclick="toggleRecordDistortion('all_or_nothing', this)" data-i18n="emotion.dist_all_or_nothing">全或无思维</button>
+                        <button type="button" class="record-dc" data-key="overgeneralization" title="一件小事就下「总是/从来」的结论" onclick="toggleRecordDistortion('overgeneralization', this)" data-i18n="emotion.dist_overgeneralization">过度概括</button>
+                        <button type="button" class="record-dc" data-key="mental_filter" title="只盯着负面，忽略正面" onclick="toggleRecordDistortion('mental_filter', this)" data-i18n="emotion.dist_mental_filter">心理过滤</button>
+                        <button type="button" class="record-dc" data-key="disqualifying" title="把好事当成「本来就应该」或运气" onclick="toggleRecordDistortion('disqualifying', this)" data-i18n="emotion.dist_disqualifying">贬损积极</button>
+                        <button type="button" class="record-dc" data-key="mind_reading" title="猜测别人怎么想，且认定是负面的" onclick="toggleRecordDistortion('mind_reading', this)" data-i18n="emotion.dist_mind_reading">读心术</button>
+                        <button type="button" class="record-dc" data-key="fortune_telling" title="预言最坏结果，且深信不疑" onclick="toggleRecordDistortion('fortune_telling', this)" data-i18n="emotion.dist_fortune_telling">算命</button>
+                        <button type="button" class="record-dc" data-key="catastrophizing" title="把小事想成灾难" onclick="toggleRecordDistortion('catastrophizing', this)" data-i18n="emotion.dist_catastrophizing">灾难化</button>
+                        <button type="button" class="record-dc" data-key="emotional_reasoning" title="「我感觉…，所以它就是真的」" onclick="toggleRecordDistortion('emotional_reasoning', this)" data-i18n="emotion.dist_emotional_reasoning">情绪推理</button>
+                        <button type="button" class="record-dc" data-key="should_statements" title="对自己或他人要求绝对必须" onclick="toggleRecordDistortion('should_statements', this)" data-i18n="emotion.dist_should_statements">「应该」陈述</button>
+                        <button type="button" class="record-dc" data-key="labeling" title="用「我就是没用」定义自己" onclick="toggleRecordDistortion('labeling', this)" data-i18n="emotion.dist_labeling">贴标签</button>
+                        <button type="button" class="record-dc" data-key="personalization" title="把无关的事都归咎于自己" onclick="toggleRecordDistortion('personalization', this)" data-i18n="emotion.dist_personalization">个人化</button>
+                    </div>
                 </div>
 
                 <!-- 标签选择 -->
@@ -1151,6 +1183,15 @@
                     </div>
                 </div>
 
+                <!-- 思维小把戏 Top 榜（伯恩斯认知扭曲洞察） -->
+                <div class="analysis-card fade-in-up" style="animation-delay:0.25s;">
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="emotion.distortion_insight_title">我的思维小把戏 Top 榜</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.25rem;" data-i18n="emotion.distortion_insight_desc">看见自己常常掉进的思维陷阱，是松绑的第一步</p>
+                    <div id="distortion-insight">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+
                 <!-- 情绪趋势图 -->
                 <div class="analysis-card fade-in-up" style="animation-delay:0.3s;">
                     <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:1.25rem;" data-i18n="emotion.trend_title">情绪变化曲线</h3>
@@ -1186,15 +1227,15 @@
     <!-- 情绪曲线绘制工具 -->
     <script src="js/emotion-chart.js"></script>
     <!-- 内容库 -->
-    <script src="data/papers.js"></script>
+    <script src="data/papers.js?v=20260929-22"></script>
     <script src="data/music.js"></script>
     <script src="data/stories.js"></script>
     <!-- 引入情绪轮盘组件 -->
-    <script src="js/emotion-wheel.js"></script>
+    <script src="js/emotion-characters.js?v=20260929-23"></script>
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
     <!-- 主题管理器 -->
-    <script src="js/theme-manager.js?v=20260929-19"></script>
+    <script src="js/theme-manager.js?v=20260929-21"></script>
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
     <script>
@@ -1278,15 +1319,12 @@
             return levels[value];
         }
 
-        /* ========== 初始化情绪轮盘 ========== */
+        /* ========== 初始化情绪角色选择器（替代情绪轮盘） ========== */
         function initEmotionWheel() {
-            const container = document.getElementById('emotion-wheel-container');
+            const container = document.getElementById('emotion-character-picker');
             container.innerHTML = ''; /* 清空旧内容 */
 
-            const size = window.innerWidth < 640 ? 300 : 440;
-
-            emotionWheel = new EmotionWheel('emotion-wheel-container', {
-                size: size,
+            emotionWheel = new EmotionCharacterPicker('emotion-character-picker', {
                 onEmotionSelect: (selection) => {
                     selectedEmotions = selection.emotions;
                     updateSelectedEmotionsDisplay(selection);
@@ -1439,6 +1477,20 @@
         }
 
         /* ========== 保存情绪记录 ========== */
+        let recordDistortions = [];
+        function toggleRecordDistortion(key, el) {
+            const idx = recordDistortions.indexOf(key);
+            if (idx >= 0) {
+                recordDistortions.splice(idx, 1);
+                el.style.background = 'transparent';
+                el.style.borderColor = 'var(--theme-border)';
+            } else {
+                recordDistortions.push(key);
+                el.style.background = 'var(--color-primary-100)';
+                el.style.borderColor = 'var(--color-primary-400)';
+            }
+        }
+
         async function saveEmotion() {
             if (selectedEmotions.length === 0) {
                 showToast(_t('emotion.toast_select_first', '请先在轮盘上选择至少一个情绪'), 'warning');
@@ -1446,6 +1498,7 @@
             }
 
             const context = document.getElementById('context').value;
+            const thought = (document.getElementById('thoughtInput').value || '').trim();
 
             const record = {
                 emotions: selectedEmotions.map(e => ({
@@ -1459,6 +1512,8 @@
                 combination: emotionWheel ? emotionWheel.getSelection().combination : null,
                 intensity: selectedIntensity,
                 context: context,
+                thought: thought || null,               // 自动化想法（伯恩斯认知三角）
+                distortions: recordDistortions.slice(), // 认知扭曲识别
                 tags: [...selectedTags, ...customTags],
                 timestamp: new Date().toISOString(),
             };
@@ -1480,6 +1535,12 @@
                 customTags = [];
                 selectedSubEmotions = [];
                 document.getElementById('context').value = '';
+                document.getElementById('thoughtInput').value = '';
+                recordDistortions = [];
+                document.querySelectorAll('#record-distortion-chips .record-dc').forEach(b => {
+                    b.style.background = 'transparent';
+                    b.style.borderColor = 'var(--theme-border)';
+                });
                 updateThermometer(5);
                 if (emotionWheel) emotionWheel.reset();
                 const container = document.getElementById('selected-emotions');
@@ -1491,6 +1552,145 @@
                 console.error('保存失败:', error);
                 showToast(_t('emotion.toast_save_failed', '保存失败，请重试'), 'error');
             }
+        }
+
+        /* ========== P2: 疗愈层（激进接纳 RAIN / 伯恩斯行为激活 / 情绪急救） ========== */
+        const RAIN_STEPS = [
+            { key: 'r', title: '识别', text: '注意到此刻身体和心里发生了什么——「我现在感到…」' },
+            { key: 'a', title: '允许', text: '让这个感受待一会儿，不推开、不评判——「可以，我允许它在这里」' },
+            { key: 'i', title: '探究', text: '带着好奇轻轻靠近——「这份感受想告诉我什么？它在我身体的哪里？」' },
+            { key: 'n', title: '滋养', text: '像安抚朋友一样把手放在心上——「此刻的我，不需要先变好才值得被善待」' },
+        ];
+        const ACTIVATION_TIPS = [
+            '给自己倒一杯温水，慢慢喝完',
+            '拉开窗帘，让光照进来一分钟',
+            '把一件拖延的小事，只做开头五分钟',
+            '换上舒服的衣服，出门走五十步',
+        ];
+        const EMOTION_FIRST_AID = {
+            sadness: '反刍切割：把「为什么是我」换成「接下来我能做什么」，切断反刍循环',
+            fear: '担忧拆解：把担忧写下来，标出「可控」与「不可控」，只握紧可控的那部分',
+            anger: '情绪降温：先离开现场 20 分钟，给情绪降温，再决定要说什么',
+            disgust: '边界重建：把让你不适的事轻轻放下，允许自己说「不」',
+            joy: '感恩锚定：把此刻的快乐写下来，它是你情绪银行里的存款',
+            trust: '关系滋养：给值得的人发一句真心话，让连接流动起来',
+            surprise: '经验整合：给这次意外一个名字，把它放进你的故事里',
+            anticipation: '目标拆解：把期待拆成今天能做的第一小步',
+        };
+
+        /* RAIN 温柔入口：高强度或自我批判类情绪时优先「先停一停」 */
+        function renderRainCard(records) {
+            const last = records && records.length ? records[records.length - 1] : null;
+            if (!last) return '';
+            const highIntensity = (last.intensity || 0) >= 7;
+            const hardEmotion = (last.emotions || []).some(e => ['sadness', 'fear', 'anger'].includes(e.key));
+            if (!highIntensity && !hardEmotion) return '';
+            const steps = RAIN_STEPS.map((s, i) => `
+                <div style="display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.55rem;">
+                    <span style="flex:none;width:1.45rem;height:1.45rem;border-radius:50%;background:#B58FB3;color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;">${s.key.toUpperCase()}</span>
+                    <p style="margin:0;font-size:0.82rem;color:var(--theme-text);line-height:1.6;"><strong>${_t('emotion.rain_' + s.key + '_title', s.title)}</strong> · ${_t('emotion.rain_' + s.key + '_text', s.text)}</p>
+                </div>`).join('');
+            return `
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-breathe"></use></svg> ${_t('emotion.rain_title', '先停一停 · RAIN 四步')}</h3>
+                    <div class="suggestion-card" style="display:block;padding:1.25rem;background:linear-gradient(135deg, rgba(181,143,179,0.08), rgba(217,167,192,0.05));">
+                        <p style="font-size:0.88rem;color:#7A6A8F;margin-bottom:1rem;line-height:1.7;">${_t('emotion.rain_desc', '在改变任何事之前，先停止对自己开枪——让此刻的感受被温柔看见。')}</p>
+                        ${steps}
+                        <p style="margin:0.75rem 0 0;font-size:0.78rem;color:var(--theme-text-light);line-height:1.6;">${_t('emotion.rain_src', '来自《激进接纳》· 塔拉·布拉赫')}</p>
+                    </div>
+                </div>`;
+        }
+
+        /* 行为激活：低落时给最小一步行动（动力是行动的结果） */
+        function renderActivationCard(records) {
+            const last = records && records.length ? records[records.length - 1] : null;
+            if (!last) return '';
+            const low = (last.emotions || []).some(e => e.key === 'sadness');
+            if (!low) return '';
+            const tips = ACTIVATION_TIPS.map((t, i) => `
+                <div style="display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.5rem;">
+                    <span style="flex:none;color:var(--color-primary-400);font-weight:700;">${i + 1}.</span>
+                    <p style="margin:0;font-size:0.82rem;color:var(--theme-text);line-height:1.6;">${_t('emotion.act_tip' + (i + 1), t)}</p>
+                </div>`).join('');
+            return `
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-flow"></use></svg> ${_t('emotion.act_title', '最小一步行动')}</h3>
+                    <div class="suggestion-card" style="display:block;padding:1.25rem;">
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:0.9rem;line-height:1.7;">${_t('emotion.act_desc', '动力是行动的结果，不是行动的前提——先迈出最小的一步。')}</p>
+                        ${tips}
+                    </div>
+                </div>`;
+        }
+
+        /* 情绪急救箱：按主要情绪映射急救动作（小伤口也要处理） */
+        function renderFirstAidCard(primaryKey) {
+            const tip = EMOTION_FIRST_AID[primaryKey] || EMOTION_FIRST_AID.sadness;
+            return `
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-heart"></use></svg> ${_t('emotion.fa_title', '你的情绪急救箱')}</h3>
+                    <div class="suggestion-card" style="display:block;padding:1.25rem;">
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:0.9rem;line-height:1.7;">${_t('emotion.fa_desc', '心理的小伤口也需要处理，才不会慢慢变成大病。')}</p>
+                        <p style="margin:0;font-size:0.88rem;color:var(--theme-text);line-height:1.7;padding-left:0.75rem;border-left:3px solid var(--color-primary-400);">${_t('emotion.fa_' + primaryKey, tip)}</p>
+                    </div>
+                </div>`;
+        }
+
+        /* ========== P1: 思维小把戏 Top 榜（伯恩斯认知扭曲洞察） ========== */
+        const DISTORTION_RATIONAL_HINTS = {
+            all_or_nothing: '有没有中间地带？试着把「全有或全无」换成更贴近事实的百分比。',
+            overgeneralization: '把「总是/从来」换成「这一次/有时」，句子会更接近真实吗？',
+            mental_filter: '今天也有被忽略的正面部分吗？把它们也一起写进来。',
+            disqualifying: '如果朋友完成了同样的事，你也会说「只是运气」吗？',
+            mind_reading: '你有什么证据？有没有另一种更善意的可能？',
+            fortune_telling: '最坏的结果真的会发生吗？你以前也这样预言过，结果如何？',
+            catastrophizing: '这件事最坏的可能与最可能的结果之间，隔着几步？',
+            emotional_reasoning: '感觉不等于事实——有没有证据支持这个想法？',
+            should_statements: '把「应该」换成「希望」或「可以」，感受一下有什么不同。',
+            labeling: '一次行为不等于整个人——把「我就是X」换成「这一次我做了X」。',
+            personalization: '这件事里，有多少是真正由你决定的？把不属于你的部分轻轻放回去。',
+        };
+
+        function renderDistortionInsight(records) {
+            const container = document.getElementById('distortion-insight');
+            if (!container) return;
+
+            const counts = {};
+            records.forEach(record => {
+                (record.distortions || []).forEach(k => { counts[k] = (counts[k] || 0) + 1; });
+            });
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+
+            if (total === 0) {
+                container.innerHTML = `
+                    <div style="padding:1rem;background:var(--theme-card);border:1px dashed var(--theme-border);border-radius:var(--radius-lg);">
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);line-height:1.7;" data-i18n="emotion.distortion_insight_empty">记录情绪时写下脑中的想法、识别「思维小把戏」，这里会生成你的思维模式洞察</p>
+                    </div>`;
+                return;
+            }
+
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+            const top = sorted.slice(0, 5);
+            container.innerHTML = top.map(([key, count], i) => {
+                const pct = Math.round((count / total) * 100);
+                const d = COGNITIVE_DISTORTIONS.find(x => x.key === key);
+                const name = _t('emotion.dist_' + key, d ? d.name : key);
+                const hint = d ? d.hint : '';
+                return `
+                    <div class="emotion-bar-row" style="animation-delay:${i * 70}ms;">
+                        <span class="emotion-bar-label" title="${hint}" style="cursor:help;">${name}</span>
+                        <div class="emotion-bar-track">
+                            <div class="emotion-bar-fill" data-width="${pct}" style="background:linear-gradient(90deg,#B58FB3,#D9A7C0);"></div>
+                        </div>
+                        <span class="emotion-bar-pct">${pct}%</span>
+                    </div>
+                `;
+            }).join('');
+
+            requestAnimationFrame(() => {
+                document.querySelectorAll('#distortion-insight .emotion-bar-fill').forEach(el => {
+                    el.style.width = el.dataset.width + '%';
+                });
+            });
         }
 
         /* ========== 加载情绪分析 ========== */
@@ -1545,6 +1745,9 @@
                     el.style.width = el.dataset.width + '%';
                 });
             });
+
+            /* P1：渲染思维小把戏 Top 榜 */
+            renderDistortionInsight(records);
 
             /* 渲染触发因素（聚合所有记录） */
             const trigEl = document.getElementById('trigger-factors');
@@ -1670,6 +1873,11 @@
             // P0：认知重构（CBT 思维记录表）——数据来自知识图谱 CBT 节点
             html += renderCbtSection(records);
 
+            // P2：疗愈层 —— RAIN 温柔入口 / 行为激活 / 情绪急救箱
+            html += renderRainCard(records);
+            html += renderActivationCard(records);
+            html += renderFirstAidCard(primaryEmotion);
+
             // 第一部分：调节建议
             html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 调节建议</h3>`;
             practiceList.forEach((s, i) => {
@@ -1765,9 +1973,19 @@
             cbtSelectedDistortions = [];
             cbtIntensityValue = 0;
             const lastRecord = (records && records.length) ? records[records.length - 1] : null;
-            const prefill = (lastRecord && lastRecord.context) ? lastRecord.context : '';
+            const prefill = (lastRecord && lastRecord.thought) ? lastRecord.thought
+                : ((lastRecord && lastRecord.context) ? lastRecord.context : '');
+            const rhKeys = (lastRecord && lastRecord.distortions) ? lastRecord.distortions.slice(0, 2) : [];
+            const rhHtml = rhKeys.length ? `
+                <div style="margin-bottom:0.75rem;padding:0.75rem 1rem;background:rgba(150,140,200,0.07);border-left:3px solid #B58FB3;border-radius:0 12px 12px 0;">
+                    <p style="font-size:0.78rem;font-weight:600;color:#8A7BA8;margin-bottom:0.35rem;">${_t('emotion.rational_hint_title', '💡 温和的理性回应参考')}</p>
+                    <p style="font-size:0.8rem;color:var(--theme-text-light);line-height:1.7;margin-bottom:0.35rem;">${_t('emotion.rational_hint_desc', '把想法放在事实面前——不必强迫自己乐观，只需要更完整。')}</p>
+                    <ul style="margin:0;padding-left:1.1rem;font-size:0.8rem;color:var(--theme-text-light);line-height:1.7;">
+                        ${rhKeys.map(k => `<li>${_t('emotion.rh_' + k, DISTORTION_RATIONAL_HINTS[k] || '')}</li>`).join('')}
+                    </ul>
+                </div>` : '';
             const chips = COGNITIVE_DISTORTIONS.map(d =>
-                `<button type="button" class="cbt-chip" data-key="${d.key}" title="${d.hint}" onclick="toggleCbtDistortion('${d.key}', this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:999px;padding:0.35rem 0.75rem;font-size:0.8rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${d.name}</button>`
+                `<button type="button" class="cbt-chip" data-key="${d.key}" title="${d.hint}" onclick="toggleCbtDistortion('${d.key}', this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:999px;padding:0.35rem 0.75rem;font-size:0.8rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${_t('emotion.dist_' + d.key, d.name)}</button>`
             ).join('');
             const intensityBtns = Array.from({ length: 10 }, (_, i) =>
                 `<button type="button" class="cbt-intensity" data-val="${i + 1}" onclick="selectCbtIntensity(${i + 1}, this)" style="border:1px solid var(--theme-border);background:transparent;border-radius:var(--radius-md);width:2rem;height:2rem;font-size:0.85rem;color:var(--theme-text);cursor:pointer;transition:all 0.2s var(--ease-standard);">${i + 1}</button>`
@@ -1779,6 +1997,7 @@
                         <p style="font-size:0.875rem;color:var(--theme-text-light);margin-bottom:1rem;line-height:1.7;">${_t('emotion.cbt_intro', '记录情绪之后，试着挑战那个让你难受的想法——这是认知行为疗法的核心练习。')}</p>
                         <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">① ${_t('emotion.cbt_thought_label', '自动思维：刚才脑海里闪过的想法')}</label>
                         <textarea id="cbtThought" rows="2" style="width:100%;box-sizing:border-box;padding:0.75rem;border:1px solid var(--theme-border);border-radius:var(--radius-lg);background:var(--theme-card);color:var(--theme-text);font-size:0.9rem;resize:vertical;margin-bottom:1rem;" placeholder="${_t('emotion.cbt_thought_ph', '例如：他这么久没回我，肯定是不在乎我了')}">${prefill}</textarea>
+                        ${rhHtml}
                         <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">② ${_t('emotion.cbt_distortion_label', '它属于哪种「想法陷阱」？（可多选）')}</label>
                         <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">${chips}</div>
                         <label style="font-size:0.85rem;font-weight:600;color:var(--theme-text);display:block;margin-bottom:0.375rem;">③ ${_t('emotion.cbt_rational_label', '更理性的看法：这个想法有证据支持吗？')}</label>
@@ -2033,7 +2252,14 @@
 
         /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', () => {
-            initEmotionWheel();
+            /* 角色选择器名称依赖 i18n 词典，等待词典就绪后再初始化 */
+            const startWheel = () => initEmotionWheel();
+            if (window.I18N && I18N.currentLocale && I18N.enTranslations) {
+                startWheel();
+            } else {
+                document.addEventListener('i18n:ready', startWheel, { once: true });
+                setTimeout(() => { if (typeof emotionWheel === 'undefined') startWheel(); }, 1500);
+            }
             initTabs();
             initTagButtons();
 
@@ -2047,24 +2273,23 @@
                 document.addEventListener('i18n:ready', startSlider, { once: true });
             }
 
-            /* 语言切换时：刷新温度计、重绘轮盘画布、刷新已选情绪标签与二级情绪面板 */
+            /* 语言切换时：刷新温度计、重绘角色选择器、刷新已选情绪标签与二级情绪面板 */
             document.addEventListener('localeChanged', () => {
                 updateThermometer(selectedIntensity);
                 if (typeof emotionWheel !== 'undefined' && emotionWheel) {
-                    emotionWheel.draw();
+                    if (typeof emotionWheel.refresh === 'function') emotionWheel.refresh();
                     const sel = emotionWheel.getSelection();
                     updateSelectedEmotionsDisplay(sel);
                 }
             });
 
-            /* 窗口大小变化时重新初始化轮盘 */
+            /* 窗口大小变化：角色选择器为响应式网格（auto-fit），无需重建；
+               保留防抖监听以兼容未来可能的自适应逻辑 */
             let resizeTimer;
             window.addEventListener('resize', () => {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    if (emotionWheel) {
-                        const container = document.getElementById('emotion-wheel-container');
-                        container.innerHTML = '';
+                    if (emotionWheel && !document.getElementById('emotion-character-picker')) {
                         initEmotionWheel();
                     }
                 }, 250);

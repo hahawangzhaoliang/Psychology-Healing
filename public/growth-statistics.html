@@ -76,7 +76,7 @@
             color: var(--theme-text-light);
         }
     </style>
-    <script src="js/i18n.js?v=20260929-18"></script>
+    <script src="js/i18n.js?v=20260929-26"></script>
     <link rel="stylesheet" href="css/icons-custom.css">
           <!-- Consent Mode v2 (Google AdSense CMP signalling; default-denied for EEA/UK/CH) -->
     <script>
@@ -538,21 +538,25 @@
         return (v && v !== key) ? v : (zhDefault || key);
     }
 
-        // 加载统计数据
+        // 加载统计数据（心流 + 充电仪式）
         function loadStatistics() {
+            // 词典异步加载竞态：英文模式词典未就绪时跳过首渲染，等 i18n:ready 重跑
+            if (window.I18N && I18N.currentLocale === 'en' && !I18N.enTranslations) return;
             const records = JSON.parse(UserStore.get('flow-records') || '[]');
+            const charging = JSON.parse(UserStore.get('chargingRecords') || '[]');
             
-            if (records.length === 0) {
+            if (records.length === 0 && charging.length === 0) {
                 showNoData();
                 return;
             }
             
-            renderSummaryCards(records);
-            renderQualityChart(records);
-            renderActivityChart(records);
-            renderRecordsList(records);
+            renderSummaryCards(records, charging);
+            if (records.length > 0) {
+                renderQualityChart(records);
+                renderActivityChart(records);
+            }
+            renderRecordsList(records, charging);
         }
-        
         // 显示无数据状态
         function showNoData() {
             document.getElementById('summary-cards').innerHTML = `
@@ -564,7 +568,7 @@
         }
         
         // 渲染统计卡片
-        function renderSummaryCards(records) {
+        function renderSummaryCards(records, charging) {
             const totalSessions = records.length;
             const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
             const totalMinutes = Math.round(totalDuration / 60);
@@ -572,22 +576,37 @@
                 ? (records.reduce((sum, r) => sum + (r.scores?.focus || 0), 0) / records.length).toFixed(1)
                 : 0;
             
+            // 充电统计（方案 B：微疗愈仪式记录）
+            const chargeCount = charging.length;
+            const chargeMinutes = Math.round((charging.reduce((sum, r) => sum + (r.durationSec || 0), 0)) / 60);
+            
+            const chargeCards = chargeCount > 0 ? `
+                <div class="card stat-card">
+                    <div class="stat-number">⚡ ${chargeCount}</div>
+                    <p>${_t('growth_statistics.charging_energy', '充电能量')}</p>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">${chargeMinutes} ${_t('growth_statistics.unit_minutes', '分钟')}</div>
+                    <p>${_t('growth_statistics.charging_minutes', '充电时长')}</p>
+                </div>
+            ` : '';
+            
             document.getElementById('summary-cards').innerHTML = `
                 <div class="card stat-card">
                     <div class="stat-number">${totalSessions}</div>
                     <p>${_t('growth_statistics.stat_sessions', '心流次数')}</p>
                 </div>
                 <div class="card stat-card">
-                    <div class="stat-number">${totalMinutes}${_t('growth_statistics.unit_hours', 'h')}</div>
+                    <div class="stat-number">${totalMinutes} ${_t('growth_statistics.unit_minutes', '分钟')}</div>
                     <p>${_t('growth_statistics.stat_duration', '累计时长')}</p>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-number">${avgQuality}</div>
                     <p>${_t('growth_statistics.stat_quality', '平均质量')}</p>
                 </div>
+                ${chargeCards}
             `;
         }
-        
         // 渲染质量趋势图
         function renderQualityChart(records) {
             const ctx = document.getElementById('quality-chart').getContext('2d');
@@ -657,29 +676,51 @@
             });
         }
         
-        // 渲染记录列表
-        function renderRecordsList(records) {
+        // 渲染记录列表（心流 + 充电仪式融合，按时间倒序）
+        function renderRecordsList(records, charging) {
             const container = document.getElementById('records-container');
-            const recentRecords = records.slice(-10).reverse();
             
-            if (recentRecords.length === 0) {
+            // 充电场景名（复用充电站 i18n key）
+            const chargeName = (scenario) => _t('charging_station.ritual_' + scenario + '_name', 
+                ({ morning: '晨起 · 光呼吸', noon: '午休 · 正念补水', evening: '黄昏 · 情绪卸货', sleep: '睡前 · 身体扫描' })[scenario] || scenario);
+            const dateFmt = (d) => new Date(d).toLocaleDateString(window.I18N?.currentLocale === 'en' ? 'en-US' : 'zh-CN');
+            
+            const items = [
+                ...records.map(r => ({
+                    t: r.timestamp || Date.parse(r.date) || 0,
+                    html: `
+                        <div class="record-item">
+                            <div>
+                                <div class="record-activity">${r.activity || _t('growth_statistics.unknown_activity', '未知活动')}</div>
+                                <div class="record-meta">${dateFmt(r.date)}</div>
+                            </div>
+                            <div class="record-meta">
+                                ${Math.round((r.duration || 0) / 60)} ${_t('growth_statistics.unit_minutes', '分钟')}
+                            </div>
+                        </div>`
+                })),
+                ...charging.map(r => ({
+                    t: Date.parse(r.completedAt) || 0,
+                    html: `
+                        <div class="record-item">
+                            <div>
+                                <div class="record-activity">⚡ ${chargeName(r.scenario)}</div>
+                                <div class="record-meta">${dateFmt(r.completedAt)}</div>
+                            </div>
+                            <div class="record-meta">
+                                ${Math.round((r.durationSec || 0) / 60)} ${_t('growth_statistics.unit_minutes', '分钟')}
+                            </div>
+                        </div>`
+                })),
+            ].sort((a, b) => b.t - a.t).slice(0, 10);
+            
+            if (items.length === 0) {
                 container.innerHTML = '<div class="no-data">' + _t('growth_statistics.no_records', '暂无记录') + '</div>';
                 return;
             }
             
-            container.innerHTML = recentRecords.map(r => `
-                <div class="record-item">
-                    <div>
-                        <div class="record-activity">${r.activity || _t('growth_statistics.unknown_activity', '未知活动')}</div>
-                        <div class="record-meta">${new Date(r.date).toLocaleDateString(window.I18N?.currentLocale === 'en' ? 'en-US' : 'zh-CN')}</div>
-                    </div>
-                    <div class="record-meta">
-                        ${Math.round((r.duration || 0) / 60)} ${_t('growth_statistics.unit_minutes', '分钟')}
-                    </div>
-                </div>
-            `).join('');
+            container.innerHTML = items.map(it => it.html).join('');
         }
-        
         // 页面加载时执行
         document.title = _t('growth_statistics.page_title', '成长统计 - 心晴空间');
         document.addEventListener('DOMContentLoaded', loadStatistics);

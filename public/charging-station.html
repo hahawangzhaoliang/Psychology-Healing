@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="charging_station.page_title">5分钟充电站 — 心晴空间</title>
 
-    <meta name="description" content="治愈图片、神经音乐、微故事，随时随地给自己一个能量补给。">
+    <meta name="description" content="场景化引导式微疗愈练习，5 分钟给自己一次能量补给。">
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- 神经美学设计系统 -->
@@ -559,7 +559,7 @@
     <script async src="https://fundingchoicesmessages.google.com/i/ca-pub-6203482765648217?nc=1" crossorigin="anonymous"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6203482765648217" crossorigin="anonymous"></script>
 <script src="js/user-store.js"></script>
-<script src="js/i18n.js?v=20260929-18"></script>
+<script src="js/i18n.js?v=20260929-26"></script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -983,127 +983,26 @@
         </div>
     </section>
 
-    <!-- ===== 内容网格 ===== -->
+    <!-- ===== 今日充电仪式（方案 B） ===== -->
     <div class="content-grid" id="contentPack">
-        <!-- 治愈图片 -->
-        <div class="content-card" id="imageCard" style="transition-delay:0.05s;">
+        <div class="content-card" id="ritualCard" style="transition-delay:0.05s;">
             <div class="card-header">
-                <h2 class="card-title" data-i18n="charging_station.card_healing_img">📸 治愈图片</h2>
-                <button class="refresh-btn" onclick="refreshImage()" title="换一张" data-i18n-title="charging_station.btn_refresh_img">
-                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                </button>
+                <h2 class="card-title" data-i18n="charging_station.ritual_title">🌱 今日充电仪式</h2>
             </div>
-            <div class="image-container">
-                <img id="healing-image" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=450&fit=crop" alt="治愈图片">
-            </div>
-            <p id="image-caption" class="image-caption">山间的清晨，宁静而美好</p>
-        </div>
-
-        <!-- 神经音乐 + 环境音 -->
-        <div class="content-card" id="musicCard" style="transition-delay:0.15s;">
-            <div class="card-header">
-                <h2 class="card-title" data-i18n="charging_station.card_neuro_music">🎵 神经音乐</h2>
-                <button class="refresh-btn" onclick="refreshMusic()" title="换一首" data-i18n-title="charging_station.btn_refresh_music">
-                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- BGM 播放器 -->
-            <div class="music-visualizer" id="musicVisualizer">
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-                <div class="audio-bar"></div>
-            </div>
-
-            <div class="music-info">
-                <p id="music-title" class="music-title">晨间冥想</p>
-                <p id="music-desc" class="music-desc">—</p>
-                <p id="music-meta" style="font-size:0.75rem;color:var(--theme-text-light);margin-top:0.25rem;"></p>
-            </div>
-
-            <!-- 进度条 -->
-            <div style="margin-bottom:1rem;">
-                <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--theme-text-light);margin-bottom:0.25rem;">
-                    <span id="currentTime">0:00</span>
-                    <span id="totalTime">0:00</span>
-                </div>
-                <div style="height:4px;background:var(--theme-border);border-radius:2px;cursor:pointer;" id="progressBar" onclick="seekAudio(event)">
-                    <div id="progressFill" style="height:100%;background:linear-gradient(90deg,var(--color-primary-400),var(--color-primary-500));border-radius:2px;width:0%;transition:width 0.1s linear;"></div>
-                </div>
-            </div>
-
-            <div class="music-controls">
-                <button class="ctrl-btn" onclick="prevTrack()" title="上一首">
-                    <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
-                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/>
-                    </svg>
-                </button>
-                <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()" title="播放/暂停">
-                    <svg id="playIcon" style="width:22px;height:22px;fill:currentColor;" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
-                    </svg>
-                </button>
-                <button class="ctrl-btn" onclick="nextTrack()" title="下一首">
-                    <svg style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
-                        <path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/>
-                    </svg>
-                </button>
-                <!-- 音量控制 -->
-                <button class="ctrl-btn" onclick="toggleMute()" title="静音" id="muteBtn">
-                    <svg id="volumeIcon" style="width:18px;height:18px;fill:currentColor;" viewBox="0 0 24 24">
-                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- 环境音选择 -->
-            <div style="margin-top:1.25rem;padding-top:1rem;border-top:1px solid var(--theme-border);">
-                <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.75rem;" data-i18n="charging_station.ambient_label">🌿 环境音</p>
-                <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="ambientSelector">
-                    <button class="ambient-btn active" data-ambient="none" onclick="selectAmbient('none')" data-i18n="charging_station.ambient_none">无</button>
-                    <button class="ambient-btn" data-ambient="rain" onclick="selectAmbient('rain')" data-i18n="charging_station.ambient_rain">细雨</button>
-                    <button class="ambient-btn" data-ambient="ocean" onclick="selectAmbient('ocean')" data-i18n="charging_station.ambient_ocean">海浪</button>
-                    <button class="ambient-btn" data-ambient="forest" onclick="selectAmbient('forest')" data-i18n="charging_station.ambient_forest">森林</button>
-                    <button class="ambient-btn" data-ambient="wind" onclick="selectAmbient('wind')" data-i18n="charging_station.ambient_wind">风声</button>
-                    <button class="ambient-btn" data-ambient="fireplace" onclick="selectAmbient('fireplace')" data-i18n="charging_station.ambient_fireplace">壁炉</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- 微故事 -->
-        <div class="content-card" id="storyCard" style="transition-delay:0.25s;">
-            <div class="card-header">
-                <h2 class="card-title" data-i18n="charging_station.card_story">📖 微故事</h2>
-                <button class="refresh-btn" onclick="refreshStory()" title="换一个">
-                    <svg style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                    </svg>
-                </button>
-            </div>
-            <p id="story-theme" style="font-size:0.75rem;color:var(--color-primary-500);margin-bottom:0.75rem;font-weight:500;"></p>
-            <p id="story-content" class="story-content"></p>
-            <p id="story-moral" style="font-size:0.85rem;color:var(--color-warm-500);margin-top:0.75rem;font-style:italic;padding-top:0.75rem;border-top:1px solid var(--theme-border);"></p>
-            <div class="story-meta">
-                <span class="story-time" id="story-time" data-i18n="charging_station.story_time_static">阅读时间：约3分钟</span>
-                <button class="share-btn" onclick="shareStory()" data-i18n="charging_station.btn_share_story">分享故事</button>
-            </div>
+            <!-- 仪式预览（介绍 + 步骤列表 + 开始） -->
+            <div id="ritual-preview"></div>
+            <!-- 引导流程（步骤/倒计时/进度） -->
+            <div id="ritual-guide" style="display:none;"></div>
+            <!-- 完成面板 -->
+            <div id="ritual-complete" style="display:none;"></div>
         </div>
     </div>
 
     <!-- 快速行动 -->
     <div class="quick-action">
-        <button class="charge-btn" onclick="startQuickCharge()" data-i18n="charging_station.btn_start_charge">
-            开始5分钟充电 ⚡
-        </button>
-    </div>
+        <button class="charge-btn" id="startRitualBtn" onclick="chargingRitual.startRitual()" data-i18n="charging_station.ritual_start">
+            开始 5 分钟充电 ⚡
+        </button></div>
 
     <!-- ===== 情绪急救站（P1） ===== -->
     <section class="firstaid-section" id="firstaidSection">
@@ -1150,21 +1049,11 @@
 
     <div id="app-footer"></div>
 
-    <!-- 神经美学交互引擎 -->
-    <script src="js/neuroaesthetics.js"></script>
-    <script src="js/theme-manager.js?v=20260929-19"></script>
+    <script src="js/theme-manager.js?v=20260929-21"></script>
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
-    <!-- 资源加载器 -->
-    <script src="js/resource-loader.js"></script>
-    <!-- 环境音生成器 -->
-    <script src="js/noise-generator.js"></script>
-    <!-- 音频管理器 -->
-    <script src="js/audio-manager.js"></script>
-    <!-- 内容库 -->
-    <script src="data/music.js"></script>
-    <script src="data/stories.js"></script>
-    <script>
+    <!-- 5分钟微疗愈仪式模块（方案 B） -->
+    <script src="js/charging-ritual.js?v=20261011-3"></script>    <script>
         function _t(key, zhDefault) {
             if (!window.I18N) return zhDefault || key;
             if (I18N.currentLocale === "zh-CN") return zhDefault || key;
@@ -1173,388 +1062,13 @@
             return (v && v !== key) ? v : (zhDefault || key);
         }
 
-        /* ========== 图片资源池（按场景分类）========== */
-        const imagePool = {
-            morning: [
-                { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=450&fit=crop', caption: '山间的清晨，宁静而美好',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=600&h=450&fit=crop', caption: '第一缕阳光，温柔而充满希望',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=600&h=450&fit=crop', caption: '城市的早晨，新的开始',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=600&h=450&fit=crop', caption: '清晨田野，露珠闪耀着光芒',
-                        captionKey: 'charging_station.img_morning_0' },
-            ],
-            noon: [
-                { url: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600&h=450&fit=crop', caption: '午后的湖面，平静如镜',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&h=450&fit=crop', caption: '海边的午后，悠然自得',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&h=450&fit=crop', caption: '森林的午后，清新自然',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=600&h=450&fit=crop', caption: '午后的咖啡馆，慵懒时光',
-                        captionKey: 'charging_station.img_morning_0' },
-            ],
-            evening: [
-                { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=450&fit=crop', caption: '星空下的夜晚，宁静深邃',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=450&fit=crop', caption: '月光下的城市，安静祥和',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&h=450&fit=crop', caption: '海边的夜晚，星空璀璨',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1495616811223-4d98c6e9c869?w=600&h=450&fit=crop', caption: '黄昏的海面，金光闪闪',
-                        captionKey: 'charging_station.img_morning_0' },
-            ],
-            sleep: [
-                { url: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=600&h=450&fit=crop', caption: '星空下的夜晚，宁静深邃',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1507400492013-162706c8c05e?w=600&h=450&fit=crop', caption: '月光如水，温柔洒落',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=600&h=450&fit=crop', caption: '夜晚的森林，静谧安详',
-                        captionKey: 'charging_station.img_morning_0' },
-                { url: 'https://images.unsplash.com/photo-1511295742362-92c96b1cf484?w=600&h=450&fit=crop', caption: '月色朦胧，如梦似幻',
-                        captionKey: 'charging_station.img_morning_0' },
-            ],
-        };
-
-        /* ========== 每日刷新机制 ========== */
-        function getDailySeed() {
-            const today = new Date().toISOString().split('T')[0];
-            const saved = localStorage.getItem('chargingStationSeed');
-            if (saved) {
-                const data = JSON.parse(saved);
-                if (data.date === today) return data;
-            }
-            const seed = {
-                date: today,
-                // 每天生成固定的随机索引（基于日期种子，保证同一内容整天不变）
-                morning: { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 1 + today.charCodeAt(1) * 2 + today.charCodeAt(3) * 3 + today.charCodeAt(5) * 4)) * imagePool.morning.length) % imagePool.morning.length },
-                noon:    { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 2 + today.charCodeAt(1) * 3 + today.charCodeAt(3) * 4 + today.charCodeAt(5) * 5)) * imagePool.noon.length) % imagePool.noon.length },
-                evening: { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 3 + today.charCodeAt(1) * 4 + today.charCodeAt(3) * 5 + today.charCodeAt(5) * 6)) * imagePool.evening.length) % imagePool.evening.length },
-                sleep:   { image: Math.floor(Math.abs(Math.sin(today.charCodeAt(0) * 4 + today.charCodeAt(1) * 5 + today.charCodeAt(3) * 6 + today.charCodeAt(5) * 7)) * imagePool.sleep.length) % imagePool.sleep.length },
-            };
-            localStorage.setItem('chargingStationSeed', JSON.stringify(seed));
-            return seed;
+        /* ========== 5分钟微疗愈仪式（方案 B） ==========
+        逻辑在 js/charging-ritual.js；此处仅保留内联桥接 */
+        function selectScenario(s) {
+            window.chargingRitual.selectScenario(s);
         }
-
-        const dailySeed = getDailySeed();
-
-        /* ========== 场景内容管理 ========== */
-        let currentScenario = 'morning';
-        let currentImageIndex = 0;
-        let currentMusicIndex = 0;
-        let currentStoryIndex = 0;
-        let isPlaying = false;
-        let bgmList = []; // 从 manifest 加载的 BGM 列表
-
-        /* ========== 音频初始化 ========== */
-        async function initAudio() {
-            try {
-                await resourceLoader.init();
-                bgmList = resourceLoader.getAudioByCategory('bgm') || [];
-                if (bgmList.length > 0) {
-                    // 使用每日种子选择音乐
-                    const musicSeed = Math.floor(Math.abs(Math.sin(todaySeed() * 2.5)) * bgmList.length) % bgmList.length;
-                    currentMusicIndex = musicSeed;
-                    updateMusicDisplay();
-                }
-                console.log(`[充电站] 加载 ${bgmList.length} 首背景音乐`);
-            } catch (e) {
-                console.warn('[充电站] 音频初始化失败:', e);
-            }
-        }
-
-        function todaySeed() {
-            const today = new Date().toISOString().split('T')[0];
-            return today.charCodeAt(0) + today.charCodeAt(1) * 3 + today.charCodeAt(3) * 7 + today.charCodeAt(5) * 11;
-        }
-
-        /* 更新音乐显示（对接 manifest）*/
-        function updateMusicDisplay() {
-            if (bgmList.length === 0) {
-                document.getElementById('music-title').textContent = _t('charging_station.music_loading', '加载中...');
-                document.getElementById('music-desc').textContent = _t('charging_station.music_artist_none', '—');
-                document.getElementById('music-meta').textContent = '';
-                return;
-            }
-
-            const track = bgmList[currentMusicIndex % bgmList.length];
-            document.getElementById('music-title').textContent = track.name;
-            document.getElementById('music-desc').textContent = track.artist;
-            document.getElementById('music-meta').textContent = `${track.license} · ${formatDuration(track.duration)}`;
-            document.getElementById('totalTime').textContent = formatDuration(track.duration);
-        }
-
-        function formatDuration(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        /* 场景对应的音乐和故事 */
-        function getScenarioStory(scenario, idx) {
-            const stories = getStoriesByScenario(scenario, 3);
-            return stories[idx % stories.length];
-        }
-
-        /* ========== 场景选择 ========== */
-        function selectScenario(scenario) {
-            if (scenario === currentScenario) return;
-            currentScenario = scenario;
-
-            /* 更新按钮状态 */
-            document.querySelectorAll('.scenario-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-scenario="${scenario}"]`).classList.add('active');
-
-            /* 停止播放 */
-            if (isPlaying) togglePlay();
-
-            /* 使用每日种子的图片索引 */
-            const seed = dailySeed[scenario];
-            const images = imagePool[scenario] || imagePool.morning;
-            currentImageIndex = seed.image;
-            const img = images[currentImageIndex];
-            document.getElementById('healing-image').src = img.url;
-            document.getElementById('image-caption').textContent = _t(img.captionKey || 'charging_station.img_default', img.caption);
-
-            /* 重置索引 */
-            currentMusicIndex = Math.floor(Math.abs(Math.sin(todaySeed() * (scenario.charCodeAt(0)))) * bgmList.length) % bgmList.length;
-            currentStoryIndex = 0;
-
-            /* 刷新音乐和故事 */
-            updateMusicDisplay();
-            refreshStory();
-
-            /* 隐藏内容卡片 */
-            const cards = document.querySelectorAll('.content-card');
-            cards.forEach(c => c.classList.remove('visible'));
-
-            /* 延迟显示卡片（流体效果） */
-            cards.forEach((card, i) => {
-                setTimeout(() => card.classList.add('visible'), 50 + i * 100);
-            });
-        }
-
-        /* ========== 刷新图片 ========== */
-        function refreshImage() {
-            const images = imagePool[currentScenario] || imagePool.morning;
-            currentImageIndex = (currentImageIndex + 1) % images.length;
-            const img = images[currentImageIndex];
-
-            const imgEl = document.getElementById('healing-image');
-            imgEl.style.opacity = '0';
-            imgEl.style.transform = 'scale(0.95)';
-
-            setTimeout(() => {
-                imgEl.src = img.url;
-                imgEl.alt = img.caption;
-                document.getElementById('image-caption').textContent = _t(img.captionKey || 'charging_station.img_default', img.caption);
-                imgEl.style.opacity = '1';
-                imgEl.style.transform = 'scale(1)';
-            }, 200);
-        }
-
-        /* ========== 刷新音乐（对接 manifest）========== */
-        function refreshMusic() {
-            if (bgmList.length === 0) return;
-            currentMusicIndex = (currentMusicIndex + 1) % bgmList.length;
-            updateMusicDisplay();
-            // 如果正在播放，自动切换到新曲目
-            if (isPlaying) {
-                playCurrentTrack();
-            }
-        }
-
-        /* ========== 刷新故事（对接内容库）========== */
-        function refreshStory() {
-            currentStoryIndex = (currentStoryIndex + 1) % 3;
-            const story = getScenarioStory(currentScenario, currentStoryIndex);
-
-            const storyEl = document.getElementById('story-content');
-            const themeEl = document.getElementById('story-theme');
-            const moralEl = document.getElementById('story-moral');
-            const timeEl = document.getElementById('story-time');
-
-            storyEl.style.opacity = '0';
-            storyEl.style.transform = 'translateY(8px)';
-
-            setTimeout(() => {
-                themeEl.textContent = '📌 ' + _t('charging_station.story_theme_' + story.id, story.theme) + ' · ' + story.tags.slice(0,2).join(' · ');
-                storyEl.textContent = story.content;
-                moralEl.textContent = '💬 ' + _t('charging_station.story_moral_' + story.id, story.moral);
-                timeEl.textContent = _t('charging_station.story_time', '阅读时间：约') + story.duration + _t('charging_station.story_minute', '分钟');
-                storyEl.style.opacity = '1';
-                storyEl.style.transform = 'translateY(0)';
-            }, 200);
-        }
-
-        /* ========== 初始化每日内容 ========== */
-        function initDailyContent() {
-            // 使用每日种子初始化内容
-            const seed = dailySeed[currentScenario];
-            currentImageIndex = seed.image;
-            const images = imagePool[currentScenario] || imagePool.morning;
-            const img = images[currentImageIndex];
-            document.getElementById('healing-image').src = img.url;
-            document.getElementById('image-caption').textContent = _t(img.captionKey || 'charging_station.img_default', img.caption);
-
-            // 初始化故事
-            currentStoryIndex = Math.floor(Math.random() * 3);
-            refreshStory();
-        }
-
-        /* ========== 播放控制 ========== */
-        function playCurrentTrack() {
-            if (bgmList.length === 0) {
-                showToast(_t('charging_station.toast_loading_audio', '音频加载中，请稍候...'), 'info');
-                return;
-            }
-            const track = bgmList[currentMusicIndex % bgmList.length];
-            audioManager.playBGM(track.id, 0.6);
-        }
-
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playBtn');
-            const icon = document.getElementById('playIcon');
-            const visualizer = document.getElementById('musicVisualizer');
-
-            if (isPlaying) {
-                btn.classList.add('playing');
-                icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
-                visualizer.style.opacity = '1';
-                playCurrentTrack();
-                startProgressUpdate();
-            } else {
-                btn.classList.remove('playing');
-                icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
-                visualizer.style.opacity = '0.3';
-                audioManager.stopBGM();
-                stopProgressUpdate();
-            }
-        }
-
-        function prevTrack() {
-            if (bgmList.length === 0) return;
-            currentMusicIndex = (currentMusicIndex - 1 + bgmList.length) % bgmList.length;
-            updateMusicDisplay();
-            if (isPlaying) {
-                playCurrentTrack();
-            }
-        }
-
-        function nextTrack() {
-            refreshMusic();
-        }
-
-        /* ========== 进度条控制 ========== */
-        let progressInterval = null;
-
-        function startProgressUpdate() {
-            stopProgressUpdate();
-            const track = bgmList[currentMusicIndex % bgmList.length];
-            if (!track) return;
-
-            const audio = audioManager.bgmElement;
-            if (!audio) return;
-
-            progressInterval = setInterval(() => {
-                if (audio.duration) {
-                    const progress = (audio.currentTime / audio.duration) * 100;
-                    document.getElementById('progressFill').style.width = `${progress}%`;
-                    document.getElementById('currentTime').textContent = formatDuration(audio.currentTime);
-                }
-            }, 100);
-        }
-
-        function stopProgressUpdate() {
-            if (progressInterval) {
-                clearInterval(progressInterval);
-                progressInterval = null;
-            }
-            document.getElementById('progressFill').style.width = '0%';
-            document.getElementById('currentTime').textContent = '0:00';
-        }
-
-        function seekAudio(event) {
-            if (bgmList.length === 0) return;
-            const track = bgmList[currentMusicIndex % bgmList.length];
-            const audio = audioManager.bgmElement;
-            if (!audio || !audio.duration) return;
-
-            const bar = document.getElementById('progressBar');
-            const rect = bar.getBoundingClientRect();
-            const percent = (event.clientX - rect.left) / rect.width;
-            audio.currentTime = percent * audio.duration;
-        }
-
-        /* ========== 静音控制 ========== */
-        function toggleMute() {
-            const muted = !audioManager.isMuted;
-            audioManager.setMuted(muted);
-            updateMuteIcon();
-        }
-
-        function updateMuteIcon() {
-            const icon = document.getElementById('volumeIcon');
-            const muted = audioManager.isMuted;
-            if (muted) {
-                icon.innerHTML = '<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>';
-            } else {
-                icon.innerHTML = '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>';
-            }
-        }
-
-        /* ========== 环境音控制 ========== */
-        function selectAmbient(ambientId) {
-            // 更新按钮状态
-            document.querySelectorAll('.ambient-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.ambient === ambientId);
-            });
-
-            if (ambientId === 'none') {
-                audioManager.stopAmbient();
-            } else {
-                audioManager.playAmbient(ambientId, 0.3);
-            }
-        }
-
-        /* ========== 分享故事 ========== */
-        function shareStory() {
-            const story = document.getElementById('story-content').textContent;
-            if (navigator.share) {
-                navigator.share({ title: '心晴空间 · 微故事', text: story });
-            } else {
-                navigator.clipboard.writeText(story).then(() => {
-                    showToast(_t('charging_station.toast_story_copied', '故事已复制到剪贴板 📋'), 'success');
-                });
-            }
-        }
-
-        /* ========== 开始快速充电 ========== */
         function startQuickCharge() {
-            showToast(_t('charging_station.toast_start_charge', '即将开始5分钟充电体验...'), 'info');
-            setTimeout(() => { window.location.href = 'relax.html'; }, 1500);
-        }
-
-        /* ========== Toast ========== */
-        function showToast(message, type = 'info') {
-            const colors = { success: 'var(--color-primary-400)', info: 'var(--color-primary-500)', warning: '#F59E0B', error: '#EF4444' };
-            const toast = document.createElement('div');
-            toast.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:${colors[type] || colors.info};color:white;padding:0.75rem 1.5rem;border-radius:9999px;font-size:0.95rem;z-index:9999;box-shadow:var(--shadow-lg);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;white-space:nowrap;`;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            requestAnimationFrame(() => {
-                toast.style.opacity = '1';
-                toast.style.transform = 'translateX(-50%) translateY(0)';
-            });
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-                setTimeout(() => toast.remove(), 300);
-            }, 2500);
+            window.chargingRitual.startRitual();
         }
 
         /* ========== 移动端菜单 ========== */
@@ -1658,12 +1172,6 @@
 
         /* ========== 初始化 ========== */
         document.addEventListener('DOMContentLoaded', async () => {
-            // 初始化每日内容
-            initDailyContent();
-
-            // 初始化音频（异步）
-            await initAudio();
-
             /* 初始显示卡片 */
             setTimeout(() => {
                 document.querySelectorAll('.content-card').forEach((card, i) => {
@@ -1671,42 +1179,8 @@
                 });
             }, 300);
 
-            /* 图片过渡样式 */
-            document.getElementById('healing-image').style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-            document.getElementById('story-content').style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-
-            /* 初始化音量图标 */
-            updateMuteIcon();
-
-            /* 初始可视化条为半透明 */
-            document.getElementById('musicVisualizer').style.opacity = '0.3';
-
             /* 情绪急救站初始化 */
             initFirstAid();
-
-            /* 语言切换/就绪时刷新动态内容（故事/图片/音乐）译文，不翻动内容 */
-            function refreshDynamicContent() {
-                // 图片说明
-                const images = imagePool[currentScenario] || imagePool.morning;
-                const img = images[currentImageIndex];
-                const capEl = document.getElementById('image-caption');
-                if (img && capEl) capEl.textContent = _t(img.captionKey || 'charging_station.img_default', img.caption);
-                // 故事
-                const story = getScenarioStory(currentScenario, currentStoryIndex);
-                const themeEl = document.getElementById('story-theme');
-                const moralEl = document.getElementById('story-moral');
-                const timeEl = document.getElementById('story-time');
-                if (story && themeEl) {
-                    themeEl.textContent = '📌 ' + _t('charging_station.story_theme_' + story.id, story.theme) + ' · ' + story.tags.slice(0, 2).join(' · ');
-                    moralEl.textContent = '💬 ' + _t('charging_station.story_moral_' + story.id, story.moral);
-                    timeEl.textContent = _t('charging_station.story_time', '阅读时间：约') + story.duration + _t('charging_station.story_minute', '分钟');
-                }
-                // 音乐
-                updateMusicDisplay();
-            }
-            document.addEventListener('localeChanged', refreshDynamicContent);
-            document.addEventListener('i18n:ready', refreshDynamicContent);
-            // 若 i18n 已就绪（事件早于本监听注册），主动补一次刷新
             if (window.I18N && I18N.enTranslations && I18N.currentLocale === 'en') {
                 refreshDynamicContent();
             }

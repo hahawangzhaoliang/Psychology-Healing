@@ -34,7 +34,7 @@ const PAPERS = [
   { id: 'p020', title: '音乐节拍同步的运动表现提升', author: 'Terry et al.', year: 2022, journal: 'Sports Medicine', abstract: '与运动节奏同步的音乐（节奏锁定效应）可减少运动感知用力程度（RPE）达10%，延长耐力运动时间。最佳节拍为每分钟120-140次（快走/慢跑节奏）。', tags: ['节奏锁定', '运动', '内啡肽'], application: '运动激励音乐推荐' },
 
   // ===== 睡眠与放松 =====
-  { id: 'p021', title: '渐进性肌肉放松对失眠症状的改善', author: 【Tur], [Morin et al.]}, year: 2021, journal: 'Sleep Medicine Reviews', abstract: '渐进性肌肉放松（PMR）训练8周后，失眠患者的睡眠效率和主观睡眠质量显著改善。机制涉及主动肌肉紧张-放松循环打破交感神经过度激活状态。', tags: ['PMR', '失眠', '睡眠'], application: '睡前放松练习内容' },
+  { id: 'p021', title: '渐进性肌肉放松对失眠症状的改善', author: 'Tur, Morin et al.', year: 2021, journal: 'Sleep Medicine Reviews', abstract: '渐进性肌肉放松（PMR）训练8周后，失眠患者的睡眠效率和主观睡眠质量显著改善。机制涉及主动肌肉紧张-放松循环打破交感神经过度激活状态。', tags: ['PMR', '失眠', '睡眠'], application: '睡前放松练习内容' },
   { id: 'p022', title: '昼夜节律光照疗法对抑郁的疗效', author: 'Golden et al.', year: 2021, journal: 'American Journal of Psychiatry', abstract: '晨间明亮光疗（10000勒克斯，30分钟）对季节性抑郁（ SAD）和非季节性抑郁均有显著疗效，效应量与抗抑郁药物相当。机制涉及视交叉上核对昼夜节律的调节。', tags: ['光疗', '昼夜节律', '抑郁'], application: '晨起场景的光照设计' },
   { id: 'p023', title: '睡眠卫生教育对睡眠质量的一线干预', author: 'Irish et al.', year: 2022, journal: 'Sleep Medicine Clinics', abstract: '睡眠卫生教育（固定作息、限制咖啡因、屏幕时间管理）是改善睡眠质量的基础干预，配合认知行为疗法效果最佳。单纯睡眠卫生教育可改善约20%的轻度失眠。', tags: ['睡眠卫生', '行为干预', '一级预防'], application: '睡前场景的内容设计' },
   { id: 'p024', title: '午睡对认知功能和情绪的恢复性影响', author: 'Lovato et al.', year: 2019, journal: 'Sleep Medicine', abstract: '10-20分钟的午睡（"咖啡小憩"）可显著改善下午的警觉性、反应速度和情绪状态，且不产生睡眠惯性。超过30分钟的午睡则可能出现认知恢复延迟。', tags: ['午睡', '认知', '警觉性'], application: '午休场景的内容时长设计' },
@@ -55,8 +55,8 @@ const PAPERS = [
   { id: 'p035', title: '自我同情与心理健康的正相关关系', author: 'Neff, K.D.', year: 2021, journal: 'Self and Identity', abstract: '自我同情（对自己表达温暖而非批评）比自尊更能预测积极情绪稳定性。高自我同情者在失败后恢复速度更快，且不会因社会比较失败而自我价值受损。', tags: ['自我同情', '自我关怀', '心理恢复力'], application: '情绪低落时的自我关怀练习' },
 
   // ===== 压力与焦虑 =====
-  { id: 'p036', title: '5-4-3-2-1接地技术对急性焦虑的缓解', author: 【H Woo】}, year: 2022, journal: 'Journal of Anxiety Disorders', abstract: '5-4-3-2-1技术（依次识别5样所见、4样所触、3样所听、2样所闻、1样所尝）通过感官锚定快速打断焦虑螺旋，3分钟内可显著降低焦虑量表得分，效果在公众演讲前测试中已验证。', tags: ['接地技术', '急性焦虑', '感官聚焦'], application: '焦虑发作时的快速干预工具' },
-  { id: 'p037', title: '心率变异性（HRV）生物反馈对焦虑的治疗', author: 【G Bl】，【Gerton】}, year: 2021, journal: 'Biofeedback', abstract: 'HRV生物反馈训练（呼气延长至6秒/次）可有效提升迷走神经张力，降低基础焦虑水平。8周训练后，社交焦虑患者的焦虑量表得分平均降低25%。', tags: ['HRV', '生物反馈', '迷走神经'], application: '呼吸练习的科学依据' },
+  { id: 'p036', title: '5-4-3-2-1接地技术对急性焦虑的缓解', author: 'H Woo', year: 2022, journal: 'Journal of Anxiety Disorders', abstract: '5-4-3-2-1技术（依次识别5样所见、4样所触、3样所听、2样所闻、1样所尝）通过感官锚定快速打断焦虑螺旋，3分钟内可显著降低焦虑量表得分，效果在公众演讲前测试中已验证。', tags: ['接地技术', '急性焦虑', '感官聚焦'], application: '焦虑发作时的快速干预工具' },
+  { id: 'p037', title: '心率变异性（HRV）生物反馈对焦虑的治疗', author: ['G Bl', 'Gerton'], year: 2021, journal: 'Biofeedback', abstract: 'HRV生物反馈训练（呼气延长至6秒/次）可有效提升迷走神经张力，降低基础焦虑水平。8周训练后，社交焦虑患者的焦虑量表得分平均降低25%。', tags: ['HRV', '生物反馈', '迷走神经'], application: '呼吸练习的科学依据' },
   { id: 'p038', title: '压力知觉对免疫功能的抑制作用', author: 'Segerstrom & Miller', year: 2024, journal: 'Psychological Bulletin', abstract: '元分析表明，长期心理压力知觉与免疫功能指标（NK细胞活性、免疫球蛋白A）显著负相关。慢性压力者的上呼吸道感染风险增加约50%。', tags: ['压力', '免疫', '身心健康'], application: '压力管理的健康警示说明' },
   { id: 'p039', title: '工作压力的元分析：风险因素和保护因素', author: 'Houdmont & Cox', year: 2023, journal: 'Work & Stress', abstract: '元分析表明，工作需求-控制模型中，高需求+低控制是工作压力的最强风险因素。保护因素包括：上级支持、团队凝聚力、工作自主性和充足的休息时间。', tags: ['工作压力', '需求-控制模型', '职业健康'], application: '角色探索中的工作场景' },
   { id: 'p040', title: '考试焦虑的认知行为干预效果', author: 'Hembree, R.', year: 2020, journal: 'Journal of Counseling Psychology', abstract: 'CBT干预（认知重构+系统脱敏）对考试焦虑的效应量达d=0.87，远优于单纯放松训练（d=0.36）。焦虑信念的改变是改善的核心机制，而非仅仅是生理放松。', tags: ['考试焦虑', 'CBT', '认知重构'], application: '学业压力场景的内容' },

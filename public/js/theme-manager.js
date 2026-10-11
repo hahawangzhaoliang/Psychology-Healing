@@ -318,6 +318,16 @@ class ThemeManager {
                 .knowledge-card .emoji { font-size:36px; margin-bottom:10px; }
                 .knowledge-card .title { font-size:14px; font-weight:700; color:#4A4A4A; margin-bottom:6px; }
                 .knowledge-card .desc { font-size:11px; color:#8B7355; line-height:1.5; }
+                .theme-card { background:linear-gradient(135deg,#F3FBF6,#E8F5EC) !important; text-align:left; padding:14px; }
+                .theme-card .title { font-size:13px; }
+                .theme-card .desc { font-size:11px; color:#6B8F7C; }
+                .kp-source { font-size:12px; color:#8B7355; margin-bottom:10px; }
+                .kp-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+                .kp-item { display:flex; gap:8px; font-size:13px; color:#4A4A4A; line-height:1.6; background:#F5FBF7; border-radius:10px; padding:10px 12px; border-left:3px solid #A8D5BA; }
+                .kp-icon { flex-shrink:0; }
+                .kp-body { font-size:13px; color:#5A5A5A; line-height:1.75; margin-bottom:12px; }
+                .kp-tags { display:flex; flex-wrap:wrap; gap:6px; }
+                .kp-tag { font-size:11px; color:#6B8F7C; background:#EAF6EF; border-radius:999px; padding:3px 10px; }
                 .knowledge-card:nth-child(1){background:linear-gradient(135deg,#FFF8E1,#FFE4B5);}
                 .knowledge-card:nth-child(2){background:linear-gradient(135deg,#E8F5E9,#C8E6C9);}
                 .knowledge-card:nth-child(3){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);}
@@ -396,7 +406,7 @@ class ThemeManager {
             <div class="home-toolbar">
                 <div class="tool-btn tool-knowledge" onclick="themeManager.toggleKnowledge()">
                     <span class="icon">📖</span>
-                    <span class="tooltip" data-i18n="widget.knowledge_tooltip">疗愈知识</span>
+                    <span class="tooltip" data-i18n="widget.knowledge_tooltip">主题书库</span>
                 </div>
                 <div class="tool-btn tool-pet" onclick="themeManager.togglePet()">
                     <span class="icon">🐰</span>
@@ -406,7 +416,7 @@ class ThemeManager {
             <div class="popup-overlay" id="popupOverlay" onclick="themeManager.closePopup()"></div>
             <div class="popup-card" id="knowledgePopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
-                <h3 data-i18n="widget.knowledge_title">📖 疗愈知识</h3>
+                <h3 data-i18n="widget.knowledge_title">📖 主题书库</h3>
                 <div class="theme-library" id="themeLibraryWrap" style="display:none;margin-top:0.75rem;">
                     <div class="theme-library-title" style="font-size:0.9rem;font-weight:600;color:var(--color-gray-600);margin:0.25rem 0 0.5rem;" data-i18n="widget.knowledge_themes">📚 主题书库</div>
                     <div id="themeLibraryGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;"></div>
@@ -490,7 +500,14 @@ class ThemeManager {
         const data = this.knowledgeLibrary[key];
         if (!data) return;
         document.getElementById('knowledgeTitle').innerHTML = data.title;
-        document.getElementById('knowledgeContent').innerHTML = data.content;
+        const src = data.source ? `<div class="kp-source">📖 ${data.source}</div>` : '';
+        const kp = (Array.isArray(data.keyPoints) && data.keyPoints.length)
+            ? `<div class="kp-list">${data.keyPoints.map(p => `<div class="kp-item"><span class="kp-icon">🌱</span><span>${p}</span></div>`).join('')}</div>`
+            : '';
+        const tags = (Array.isArray(data.tags) && data.tags.length)
+            ? `<div class="kp-tags">${data.tags.map(t => `<span class="kp-tag">${t}</span>`).join('')}</div>`
+            : '';
+        document.getElementById('knowledgeContent').innerHTML = src + kp + `<div class="kp-body">${data.content || ''}</div>` + tags;
         document.getElementById('knowledgePopup')?.classList.remove('show');
         document.getElementById('knowledgeDetailPopup')?.classList.add('show');
     }
