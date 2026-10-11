@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "updated": "2026-10-10",
+  "updated": "2026-10-11",
   "license": "CC BY 3.0 (Kevin MacLeod)",
   "images": {
     "companions": [
@@ -404,7 +404,8 @@
           "晨光",
           "平静"
         ],
-        "description": "一个人在晨光中的山丘上深呼吸，层叠圆润的山峦与新芽般的一天"
+        "description": "一个人在晨光中的山丘上深呼吸，层叠圆润的山峦与新芽般的一天",
+        "webp": "home-calm.webp"
       },
       {
         "id": "emotion-diary",
@@ -417,7 +418,8 @@
           "记录",
           "觉察"
         ],
-        "description": "摊开的笔记本上升起柔和的情绪气泡，代表情绪的觉察与接纳"
+        "description": "摊开的笔记本上升起柔和的情绪气泡，代表情绪的觉察与接纳",
+        "webp": "emotion-diary.webp"
       },
       {
         "id": "relax-breathing",
@@ -430,7 +432,8 @@
           "冥想",
           "放松"
         ],
-        "description": "静坐冥想的人物与向外扩散的呼吸波纹，代表放松练习"
+        "description": "静坐冥想的人物与向外扩散的呼吸波纹，代表放松练习",
+        "webp": "relax-breathing.webp"
       },
       {
         "id": "companion-warmth",
@@ -443,7 +446,8 @@
           "温暖",
           "连接"
         ],
-        "description": "人与动物伙伴依偎在一起，代表被陪伴的温暖与安全"
+        "description": "人与动物伙伴依偎在一起，代表被陪伴的温暖与安全",
+        "webp": "companion-warmth.webp"
       },
       {
         "id": "recharge",
@@ -456,7 +460,8 @@
           "能量",
           "休息"
         ],
-        "description": "在暖光下安然休息，光粒上浮，代表能量的恢复与补充"
+        "description": "在暖光下安然休息，光粒上浮，代表能量的恢复与补充",
+        "webp": "recharge.webp"
       },
       {
         "id": "growth-path",
@@ -469,7 +474,8 @@
           "希望",
           "新生"
         ],
-        "description": "通向远方的蜿蜒小径与破土新芽，代表成长与新的开始"
+        "description": "通向远方的蜿蜒小径与破土新芽，代表成长与新的开始",
+        "webp": "growth-path.webp"
       }
     ]
   },

@@ -1051,6 +1051,28 @@ body {
     transform: scale(0.95);
 }
 
+/* ---------- 插画展示组件（illustrations 资源） ---------- */
+/* 用于 hero / page-hero 区块的疗愈插画；<picture> 提供 webp 优先 + png 回退 */
+.page-illustration {
+    max-width: 42rem;
+    width: 100%;
+    margin: var(--space-6) auto 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: var(--color-primary-50);
+    box-shadow: var(--shadow-md);
+}
+.page-illustration img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 640px) {
+    .page-illustration {
+        border-radius: var(--radius-lg);
+    }
+}
+
 /* ---------- 沉浸式深色主题（DESIGN.md §3.2） ---------- */
 /* 用于专注 / 冥想 / 助眠场景；深中性底 + 单一平静绿光，避免纯黑眩光 */
 [data-theme="dark"] {
