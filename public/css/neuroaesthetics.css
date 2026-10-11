@@ -1052,15 +1052,17 @@ body {
 }
 
 /* ---------- 插画展示组件（illustrations 资源） ---------- */
-/* 用于 hero / page-hero 区块的疗愈插画；<picture> 提供 webp 优先 + png 回退 */
+/* 用于 hero / page-hero 区块的疗愈插画；作为「点缀」而非主体，尺寸保持克制 */
+/* <picture> 提供 webp 优先 + png 回退 */
 .page-illustration {
-    max-width: 42rem;
+    max-width: 24rem; /* 384px —— 点缀尺度，避免喧宾夺主 */
     width: 100%;
     margin: var(--space-6) auto 0;
     border-radius: var(--radius-xl);
     overflow: hidden;
     background: var(--color-primary-50);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm);
+    opacity: 0.96;
 }
 .page-illustration img {
     display: block;
@@ -1069,6 +1071,7 @@ body {
 }
 @media (max-width: 640px) {
     .page-illustration {
+        max-width: 20rem; /* 320px —— 小屏进一步收敛 */
         border-radius: var(--radius-lg);
     }
 }
