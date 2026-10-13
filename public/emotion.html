@@ -11,7 +11,7 @@
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link rel="stylesheet" href="css/icons-custom.css">
-    <script src="js/i18n.js?v=20260929-26"></script>
+    <script src="js/i18n.js?v=20260929-28"></script>
     <script src="js/cache.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -1106,27 +1106,27 @@
 
                 <!-- 自动化想法（伯恩斯 CBT 认知三角） -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.thought_label">此刻你脑中在想什么？</h3>
-                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.thought_desc">情绪不会凭空出现，背后常常有一个想法。试着把它写下来（可选）</p>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.thought_label">心里冒出来的第一个念头是什么？</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.thought_desc">情绪背后常藏着一个念头，轻轻写下来就好（可选）</p>
                     <textarea id="thoughtInput" class="text-area" rows="2" placeholder="例如：他这么久没回我，肯定是不在乎我了" data-i18n-placeholder="emotion.thought_ph"></textarea>
                 </div>
 
                 <!-- 认知扭曲识别（伯恩斯十种思维陷阱） -->
                 <div style="margin-top:2.5rem;">
-                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.distortion_label">你认出了哪个「思维小把戏」？（可多选）</h3>
-                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.distortion_desc">来自认知行为疗法：识别思维陷阱，是情绪自由的第一步（没认出也没关系，留空即可）</p>
+                    <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.75rem;" data-i18n="emotion.distortion_label">这句话，像不像你心里的声音？（可以多选）</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;" data-i18n="emotion.distortion_desc">念头有时会悄悄放大情绪。看看哪几句听起来熟悉？（没找到也没关系，留空就好）</p>
                     <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="record-distortion-chips">
-                        <button type="button" class="record-dc" data-key="all_or_nothing" title="非黑即白，没有中间地带" onclick="toggleRecordDistortion('all_or_nothing', this)" data-i18n="emotion.dist_all_or_nothing">全或无思维</button>
-                        <button type="button" class="record-dc" data-key="overgeneralization" title="一件小事就下「总是/从来」的结论" onclick="toggleRecordDistortion('overgeneralization', this)" data-i18n="emotion.dist_overgeneralization">过度概括</button>
-                        <button type="button" class="record-dc" data-key="mental_filter" title="只盯着负面，忽略正面" onclick="toggleRecordDistortion('mental_filter', this)" data-i18n="emotion.dist_mental_filter">心理过滤</button>
-                        <button type="button" class="record-dc" data-key="disqualifying" title="把好事当成「本来就应该」或运气" onclick="toggleRecordDistortion('disqualifying', this)" data-i18n="emotion.dist_disqualifying">贬损积极</button>
-                        <button type="button" class="record-dc" data-key="mind_reading" title="猜测别人怎么想，且认定是负面的" onclick="toggleRecordDistortion('mind_reading', this)" data-i18n="emotion.dist_mind_reading">读心术</button>
-                        <button type="button" class="record-dc" data-key="fortune_telling" title="预言最坏结果，且深信不疑" onclick="toggleRecordDistortion('fortune_telling', this)" data-i18n="emotion.dist_fortune_telling">算命</button>
-                        <button type="button" class="record-dc" data-key="catastrophizing" title="把小事想成灾难" onclick="toggleRecordDistortion('catastrophizing', this)" data-i18n="emotion.dist_catastrophizing">灾难化</button>
-                        <button type="button" class="record-dc" data-key="emotional_reasoning" title="「我感觉…，所以它就是真的」" onclick="toggleRecordDistortion('emotional_reasoning', this)" data-i18n="emotion.dist_emotional_reasoning">情绪推理</button>
-                        <button type="button" class="record-dc" data-key="should_statements" title="对自己或他人要求绝对必须" onclick="toggleRecordDistortion('should_statements', this)" data-i18n="emotion.dist_should_statements">「应该」陈述</button>
-                        <button type="button" class="record-dc" data-key="labeling" title="用「我就是没用」定义自己" onclick="toggleRecordDistortion('labeling', this)" data-i18n="emotion.dist_labeling">贴标签</button>
-                        <button type="button" class="record-dc" data-key="personalization" title="把无关的事都归咎于自己" onclick="toggleRecordDistortion('personalization', this)" data-i18n="emotion.dist_personalization">个人化</button>
+                        <button type="button" class="record-dc" data-key="all_or_nothing" title="没做到完美，就觉得整个都失败了" onclick="toggleRecordDistortion('all_or_nothing', this)" data-i18n="emotion.dist_all_or_nothing">要么全好，要么全坏</button>
+                        <button type="button" class="record-dc" data-key="overgeneralization" title="一件小事就下「总是/从来」的结论" onclick="toggleRecordDistortion('overgeneralization', this)" data-i18n="emotion.dist_overgeneralization">一次不好，就以为永远不好</button>
+                        <button type="button" class="record-dc" data-key="mental_filter" title="只盯着负面，忽略正面" onclick="toggleRecordDistortion('mental_filter', this)" data-i18n="emotion.dist_mental_filter">只看得见坏的那一面</button>
+                        <button type="button" class="record-dc" data-key="disqualifying" title="把好事当成「本来就应该」或运气" onclick="toggleRecordDistortion('disqualifying', this)" data-i18n="emotion.dist_disqualifying">好事，觉得不算数</button>
+                        <button type="button" class="record-dc" data-key="mind_reading" title="猜测别人怎么想，且认定是负面的" onclick="toggleRecordDistortion('mind_reading', this)" data-i18n="emotion.dist_mind_reading">猜别人的心思，还猜成坏的</button>
+                        <button type="button" class="record-dc" data-key="fortune_telling" title="预言最坏结果，且深信不疑" onclick="toggleRecordDistortion('fortune_telling', this)" data-i18n="emotion.dist_fortune_telling">提前认定结果会很糟</button>
+                        <button type="button" class="record-dc" data-key="catastrophizing" title="把小事想成灾难" onclick="toggleRecordDistortion('catastrophizing', this)" data-i18n="emotion.dist_catastrophizing">小事，越想越像天塌了</button>
+                        <button type="button" class="record-dc" data-key="emotional_reasoning" title="「我感觉…，所以它就是真的」" onclick="toggleRecordDistortion('emotional_reasoning', this)" data-i18n="emotion.dist_emotional_reasoning">感觉是真的，就当作是真的</button>
+                        <button type="button" class="record-dc" data-key="should_statements" title="对自己或他人要求绝对必须" onclick="toggleRecordDistortion('should_statements', this)" data-i18n="emotion.dist_should_statements">总对自己说「必须」「应该」</button>
+                        <button type="button" class="record-dc" data-key="labeling" title="用「我就是没用」定义自己" onclick="toggleRecordDistortion('labeling', this)" data-i18n="emotion.dist_labeling">用一句话把自己定义死</button>
+                        <button type="button" class="record-dc" data-key="personalization" title="把无关的事都归咎于自己" onclick="toggleRecordDistortion('personalization', this)" data-i18n="emotion.dist_personalization">什么都怪到自己头上</button>
                     </div>
                 </div>
 
@@ -1151,6 +1151,9 @@
                     <!-- 自定义标签展示 -->
                     <div id="custom-tags" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.5rem;"></div>
                 </div>
+
+                <!-- 温柔收尾引导 -->
+                <div style="margin-top:2.5rem;padding:1rem 1.25rem;background:linear-gradient(135deg, rgba(181,143,179,0.07), rgba(217,167,192,0.04));border-radius:var(--radius-lg);border:1px dashed var(--color-primary-200);text-align:center;" data-i18n="emotion.save_gentle">看见它、写下它，就已经是照顾自己了。保存吧 🌿</div>
 
                 <!-- 保存按钮 -->
                 <button onclick="saveEmotion()" class="btn btn-primary" style="width:100%;margin-top:2rem;font-size:1rem;" data-i18n="emotion.save_record">
@@ -1185,8 +1188,8 @@
 
                 <!-- 思维小把戏 Top 榜（伯恩斯认知扭曲洞察） -->
                 <div class="analysis-card fade-in-up" style="animation-delay:0.25s;">
-                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="emotion.distortion_insight_title">我的思维小把戏 Top 榜</h3>
-                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.25rem;" data-i18n="emotion.distortion_insight_desc">看见自己常常掉进的思维陷阱，是松绑的第一步</p>
+                    <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;" data-i18n="emotion.distortion_insight_title">我常掉进的念头陷阱</h3>
+                    <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1.25rem;" data-i18n="emotion.distortion_insight_desc">熟悉自己的念头模式，下次就能更快认出它</p>
                     <div id="distortion-insight">
                         <!-- 动态生成 -->
                     </div>
@@ -1663,7 +1666,7 @@
             if (total === 0) {
                 container.innerHTML = `
                     <div style="padding:1rem;background:var(--theme-card);border:1px dashed var(--theme-border);border-radius:var(--radius-lg);">
-                        <p style="font-size:0.85rem;color:var(--theme-text-light);line-height:1.7;" data-i18n="emotion.distortion_insight_empty">记录情绪时写下脑中的想法、识别「思维小把戏」，这里会生成你的思维模式洞察</p>
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);line-height:1.7;" data-i18n="emotion.distortion_insight_empty">记录情绪时写下心里的念头，这里会慢慢浮现你的念头模式</p>
                     </div>`;
                 return;
             }
@@ -1848,14 +1851,59 @@
             });
             const topKey = Object.entries(emotionCounts).sort((a, b) => b[1] - a[1])[0];
             const primaryEmotion = topKey ? topKey[0] : 'fear';
-
-
-
-
-
             const mappedEmotion = emotionContentMap[primaryEmotion] || 'anxiety';
 
-            // 获取推荐内容
+            const lastRecord = records[records.length - 1] || null;
+            const container = document.getElementById('suggestions-container');
+
+            /* 一主三藏：此刻的建议（1 个主动作）+ 更多调节方式（折叠，功能零损失） */
+            container.innerHTML = renderNowCard(lastRecord, primaryEmotion)
+                + renderMoreSection(records, primaryEmotion, mappedEmotion);
+        }
+
+        /* ========== 此刻的建议：只给一件事（参考知识库情绪调节书目） ========== */
+        const NOW_ACTIONS = {
+            high: { title: 'emotion.now_high_title', zhTitle: '先停一停', desc: 'emotion.now_high_desc', zhDesc: '此刻先不改变什么，让这个感受被温柔看见', s: ['emotion.now_high_s1', 'emotion.now_high_s2', 'emotion.now_high_s3'], zhS: ['把手放在心上，做三次深呼吸，让身体先落地', '轻轻说：「可以，我允许它在这里」——不推开、不评判', '问问自己：「这份感受想告诉我什么？」'], src: 'emotion.now_high_src', zhSrc: '《激进接纳》' },
+            sadness: { title: 'emotion.now_sad_title', zhTitle: '反刍切割', desc: 'emotion.now_sad_desc', zhDesc: '把「为什么是我」换成「接下来我能做什么」', s: ['emotion.now_sad_s1', 'emotion.now_sad_s2', 'emotion.now_sad_s3'], zhS: ['把「为什么是我」写下来，划掉它', '换成「接下来我能做什么」，写下最小的一件', '去做那件最小的事'], src: 'emotion.now_sad_src', zhSrc: '《情绪急救》' },
+            fear: { title: 'emotion.now_fear_title', zhTitle: '担忧拆解', desc: 'emotion.now_fear_desc', zhDesc: '把担忧写下来，标出可控与不可控', s: ['emotion.now_fear_s1', 'emotion.now_fear_s2', 'emotion.now_fear_s3'], zhS: ['把担忧写下来，一条一条', '在每条旁标「可控」或「不可控」', '只握紧可控的那部分，放掉不可控的'], src: 'emotion.now_fear_src', zhSrc: '《情绪急救》' },
+            anger: { title: 'emotion.now_anger_title', zhTitle: '情绪降温', desc: 'emotion.now_anger_desc', zhDesc: '先离开现场，再决定要说什么', s: ['emotion.now_anger_s1', 'emotion.now_anger_s2', 'emotion.now_anger_s3'], zhS: ['先离开现场 20 分钟（去倒杯水、走一走）', '做几次深长的呼气，让身体降温', '冷静后，再决定要说什么'], src: 'emotion.now_anger_src', zhSrc: '《你可以不生气》' },
+            self: { title: 'emotion.now_self_title', zhTitle: '善待自己', desc: 'emotion.now_self_desc', zhDesc: '像对朋友一样，对自己说话', s: ['emotion.now_self_s1', 'emotion.now_self_s2', 'emotion.now_self_s3'], zhS: ['想象这是最好的朋友在对你说话', '用你安慰朋友的语气，对自己说三句话', '把手放在心上，感受那份温柔'], src: 'emotion.now_self_src', zhSrc: '《自我同情的力量》' },
+            disgust: { title: 'emotion.now_disgust_title', zhTitle: '边界重建', desc: 'emotion.now_disgust_desc', zhDesc: '把让你不适的事轻轻放下', s: ['emotion.now_disgust_s1', 'emotion.now_disgust_s2', 'emotion.now_disgust_s3'], zhS: ['把让你不适的事轻轻放下来', '对自己说：「我可以说不」', '尊重自己的感受，不勉强'], src: 'emotion.now_disgust_src', zhSrc: '《自我同情的力量》' },
+            surprise: { title: 'emotion.now_surprise_title', zhTitle: '经验整合', desc: 'emotion.now_surprise_desc', zhDesc: '给这次意外一个名字，放进你的故事', s: ['emotion.now_surprise_s1', 'emotion.now_surprise_s2', 'emotion.now_surprise_s3'], zhS: ['给这次意外起一个名字（如「那场转折」）', '说说它在你故事里的位置', '接纳它成为你的一部分'], src: 'emotion.now_surprise_src', zhSrc: '《叙事疗法》' },
+            anticipation: { title: 'emotion.now_anticipation_title', zhTitle: '最小一步', desc: 'emotion.now_anticipation_desc', zhDesc: '把期待拆成今天能做的第一小步', s: ['emotion.now_anticipation_s1', 'emotion.now_anticipation_s2', 'emotion.now_anticipation_s3'], zhS: ['把期待的事写下来', '拆成今天能做的第一小步', '只做那一小步，就够了'], src: 'emotion.now_anticipation_src', zhSrc: '《原子习惯》' },
+            trust: { title: 'emotion.now_trust_title', zhTitle: '关系滋养', desc: 'emotion.now_trust_desc', zhDesc: '给值得的人发一句真心话', s: ['emotion.now_trust_s1', 'emotion.now_trust_s2', 'emotion.now_trust_s3'], zhS: ['想一个值得信任的人', '给对方发一句真心话（或写在纸上）', '让连接流动起来'], src: 'emotion.now_trust_src', zhSrc: '《他人的力量》' },
+            joy: { title: 'emotion.now_joy_title', zhTitle: '感恩锚定', desc: 'emotion.now_joy_desc', zhDesc: '写下此刻 3 件值得感恩的事', s: ['emotion.now_joy_s1', 'emotion.now_joy_s2', 'emotion.now_joy_s3'], zhS: ['写下此刻 3 件让你感恩的事', '慢慢读一遍，感受它们', '告诉一个人（或记在心里）'], src: 'emotion.now_joy_src', zhSrc: '《感恩的力量》' },
+        };
+
+        /* 主卡：情绪 + 强度 + 想法 三重条件选一个动作 */
+        function renderNowCard(lastRecord, primaryEmotion) {
+            const intensity = (lastRecord && lastRecord.intensity) || 0;
+            const hasThought = lastRecord && (lastRecord.thought || '').trim();
+            const hasDistortion = lastRecord && (lastRecord.distortions || []).length > 0;
+            let key = primaryEmotion;
+            if (intensity >= 7) key = 'high';
+            else if (hasThought && hasDistortion && ['sadness', 'fear', 'anger', 'disgust'].includes(primaryEmotion)) key = 'self';
+            const act = NOW_ACTIONS[key] || NOW_ACTIONS.fear;
+            const t = (k, zh) => _t(k, zh);
+            const steps = [1, 2, 3].map(i => `
+                <div style="display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.5rem;">
+                    <span style="flex:none;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--color-primary-400);color:#fff;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;">${i}</span>
+                    <p style="margin:0;font-size:0.85rem;color:var(--theme-text);line-height:1.65;">${t(act.s[i - 1], act.zhS[i - 1])}</p>
+                </div>`).join('');
+            return `
+                <div style="margin-bottom:1.5rem;">
+                    <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-heart"></use></svg> ${_t('emotion.now_title', '此刻的建议')}</h3>
+                    <div class="suggestion-card" style="display:block;padding:1.25rem;border:1px dashed var(--color-primary-200);background:linear-gradient(135deg, rgba(181,143,179,0.08), rgba(217,167,192,0.04));">
+                        <h3 style="font-size:1.1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.35rem;">${t(act.title, act.zhTitle)}</h3>
+                        <p style="font-size:0.85rem;color:var(--theme-text-light);margin-bottom:1rem;line-height:1.7;">${t(act.desc, act.zhDesc)}</p>
+                        ${steps}
+                        <p style="margin:0.85rem 0 0;font-size:0.78rem;color:var(--color-warm-500);font-style:italic;">${t(act.src, act.zhSrc)}</p>
+                    </div>
+                </div>`;
+        }
+
+        /* ========== 更多调节方式：折叠区（全部原有功能保留） ========== */
+        function renderMoreSection(records, primaryEmotion, mappedEmotion) {
             const recMusic = getMusicByEmotion(mappedEmotion, 2);
             const recStories = getStoriesByEmotion(mappedEmotion, 1);
             const recPapers = PAPERS.filter(p =>
@@ -1866,20 +1914,15 @@
             ).slice(0, 1);
 
             const practiceList = practiceSuggestions[primaryEmotion] || practiceSuggestions.fear;
-            const container = document.getElementById('suggestions-container');
-
             let html = '';
 
-            // P0：认知重构（CBT 思维记录表）——数据来自知识图谱 CBT 节点
+            // 完整练习：CBT 认知重构 / RAIN / 行为激活
             html += renderCbtSection(records);
-
-            // P2：疗愈层 —— RAIN 温柔入口 / 行为激活 / 情绪急救箱
             html += renderRainCard(records);
             html += renderActivationCard(records);
-            html += renderFirstAidCard(primaryEmotion);
 
-            // 第一部分：调节建议
-            html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> 调节建议</h3>`;
+            // 调节建议卡列表
+            html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> ${_t('emotion.more_practice_title', '练习推荐')}</h3>`;
             practiceList.forEach((s, i) => {
                 html += `
                     <div class="suggestion-card" style="animation-delay:${i * 80}ms;" onclick="if('${s.action}' !== '#') window.location.href='${s.action}'">
@@ -1889,9 +1932,9 @@
             });
             html += `</div>`;
 
-            // 第二部分：推荐音乐
+            // 疗愈音乐
             if (recMusic.length > 0) {
-                html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> 适合你的疗愈音乐</h3>`;
+                html += `<div style="margin-bottom:1.5rem;"><h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> ${_t('emotion.more_music_title', '适合你的疗愈音乐')}</h3>`;
                 recMusic.forEach((m, i) => {
                     html += `
                         <div class="suggestion-card" style="animation-delay:${(practiceList.length + i) * 80}ms;">
@@ -1909,15 +1952,15 @@
                 html += `</div>`;
             }
 
-            // 第三部分：推荐故事
+            // 疗愈故事
             if (recStories.length > 0) {
                 const story = recStories[0];
                 html += `
                     <div style="margin-bottom:1.5rem;">
-                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 一篇疗愈故事</h3>
+                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📖 ${_t('emotion.more_story_title', '一篇疗愈故事')}</h3>
                         <div class="suggestion-card" style="animation-delay:${(practiceList.length + recMusic.length) * 80}ms;">
                             <h3 style="font-size:1.05rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">「${story.title}」</h3>
-                            <p style="font-size:0.8rem;color:var(--color-primary-500);margin-bottom:0.75rem;">${story.theme} · 约${story.duration}分钟阅读</p>
+                            <p style="font-size:0.8rem;color:var(--color-primary-500);margin-bottom:0.75rem;">${story.theme} · ${_t('emotion.more_story_minutes', '约')}${story.duration}${_t('emotion.more_story_unit', '分钟阅读')}</p>
                             <p style="font-size:0.9rem;color:var(--theme-text-light);line-height:1.7;">${story.content.substring(0, 120)}…</p>
                             <div style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--theme-border);">
                                 <p style="font-size:0.85rem;color:var(--color-warm-500);font-style:italic;">💬 ${story.moral}</p>
@@ -1926,12 +1969,12 @@
                     </div>`;
             }
 
-            // 第四部分：推荐论文
+            // 循证论文
             if (recPapers.length > 0) {
                 const paper = recPapers[0];
                 html += `
                     <div style="margin-bottom:1.5rem;">
-                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📚 循证心理学</h3>
+                        <h3 style="font-size:0.85rem;font-weight:600;color:var(--theme-text-light);margin-bottom:0.75rem;text-transform:uppercase;letter-spacing:0.05em;">📚 ${_t('emotion.more_paper_title', '循证心理学')}</h3>
                         <div class="suggestion-card" style="animation-delay:${(practiceList.length + recMusic.length + recStories.length) * 80}ms;">
                             <h3 style="font-size:1rem;font-weight:600;color:var(--theme-text);margin-bottom:0.5rem;">「${paper.title}」</h3>
                             <p style="font-size:0.8rem;color:var(--theme-text-light);margin-bottom:0.5rem;">${paper.author} (${paper.year}) · ${paper.journal}</p>
@@ -1944,11 +1987,20 @@
             html += `
                 <div style="margin-top:1.5rem;padding:1rem;background:rgba(251,191,36,0.1);border-radius:var(--radius-lg);border-left:3px solid #FBBF24;">
                     <p style="font-size:0.8rem;color:#92400E;line-height:1.6;">
-                        ⚠️ <strong>温馨提示：</strong>以上建议基于心理学研究和文献整理，仅供参考，不能替代专业心理咨询或医学诊断。如你感到持续的困扰，请联系专业心理咨询师或医疗机构。
+                        ⚠️ <strong>${_t('emotion.more_ethics_title', '温馨提示：')}</strong>${_t('emotion.more_ethics_desc', '以上建议基于心理学研究和文献整理，仅供参考，不能替代专业心理咨询或医学诊断。如你感到持续的困扰，请联系专业心理咨询师或医疗机构。')}
                     </p>
                 </div>`;
 
-            container.innerHTML = html;
+            return `
+                <details>
+                    <summary style="cursor:pointer;list-style:none;display:flex;align-items:center;gap:0.5rem;font-size:0.95rem;font-weight:600;color:var(--theme-text);padding:0.85rem 0;user-select:none;">
+                        <span style="transition:transform 0.2s var(--ease-standard);display:inline-block;">▸</span> ${_t('emotion.more_title', '更多调节方式')}
+                        <span style="font-size:0.75rem;color:var(--theme-text-light);font-weight:400;">${_t('emotion.more_hint', '需要时展开')}</span>
+                    </summary>
+                    <div style="margin-top:0.5rem;">
+                        ${html}
+                    </div>
+                </details>`;
         }
 
         /* ========== P0: 认知重构（CBT 思维记录表） ========== */
