@@ -351,7 +351,6 @@ class ThemeManager {
                 <h4 id="ent-game-title">解压小游戏</h4>
                 <button class="ent-game-item" data-game="snake"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 4a8 8 0 0 1 8 8"/><circle cx="4" cy="12" r="2" fill="currentColor"/><path d="M20 12c0 4-3.2 8-8 8s-8-4-8-8"/></svg><span>软糖蛇蛇</span></button>
                 <button class="ent-game-item" data-game="bubble"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="17" cy="8" r="4"/><path d="M8 21a4.5 4.5 0 0 0 4.5-4.5A4.5 4.5 0 0 0 8 12a4.5 4.5 0 0 0-4.5 4.5A4.5 4.5 0 0 0 8 21z"/><circle cx="17" cy="8" r="1.2" fill="currentColor"/></svg><span>泡泡轻拍</span></button>
-                <button class="ent-game-item" data-game="star"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8-6.1-3.5-6.1 3.5 1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span>星星收集</span></button>
                 <button class="ent-game-item" data-game="cloud"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 0 0 .42-8.98A6 6 0 0 0 6.1 11.5 4 4 0 0 0 7.5 19h10z"/></svg><span>云朵泡泡</span></button>
             </div>
         `;

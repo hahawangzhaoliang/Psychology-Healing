@@ -2,7 +2,7 @@
  * 供 relax.html 游戏卡区与娱乐主题工具栏复用
  * 依赖：无（I18N 存在时自动中英双语）
  * API：
- *   window.openGame(name)  打开游戏弹窗（snake/bubble/star/cloud）
+ *   window.openGame(name)  打开游戏弹窗（snake/bubble/cloud）
  *   window.closeGame()     关闭
  *   window.gamesReady      是否已加载
  */
@@ -98,11 +98,6 @@
                 title: gt('relax.game_bubble_title', '泡泡轻拍'),
                 hint: gt('relax.game_bubble_hint', '点击或按住，让泡泡把紧绷一点点带走。'),
                 start: startBubble
-            },
-            star: {
-                title: gt('relax.game_star_title', '星星收集'),
-                hint: gt('relax.game_star_hint', '点击飘落的星星，把它们轻轻接住。没有输赢，只有闪烁。'),
-                start: startStar
             },
             cloud: {
                 title: gt('relax.game_cloud_title', '云朵泡泡'),
@@ -349,103 +344,6 @@
                 if (raf) cancelAnimationFrame(raf);
                 canvas.removeEventListener('pointerdown', pd);
                 canvas.removeEventListener('pointermove', pm);
-            }
-        };
-    }
-
-    /* ===== 星星收集（新） ===== */
-    function startStar(host) {
-        var canvas = document.createElement('canvas');
-        canvas.width = 440; canvas.height = 400;
-        host.appendChild(canvas);
-        var ctx = canvas.getContext('2d');
-        var raf = null, stopped = false, lastT = 0;
-        var stars = [], caught = 0, spawnT = 0;
-
-        function newStar() {
-            return {
-                x: 30 + Math.random() * 380, y: -12 - Math.random() * 60,
-                r: 5 + Math.random() * 6,
-                vy: 0.25 + Math.random() * 0.45,
-                wob: Math.random() * Math.PI * 2, ws: 0.03 + Math.random() * 0.03,
-                hue: 40 + Math.random() * 20,
-                a: 0.9
-            };
-        }
-
-        function drawBg() {
-            ctx.fillStyle = '#101B2E';
-            ctx.fillRect(0, 0, 440, 400);
-            // 小背景星
-            ctx.fillStyle = 'rgba(255,255,255,0.35)';
-            for (var i = 0; i < 40; i++) {
-                var sx = (i * 97) % 440, sy = (i * 61) % 400;
-                ctx.beginPath(); ctx.arc(sx, sy, 1, 0, Math.PI * 2); ctx.fill();
-            }
-        }
-
-        function frame(t) {
-            if (stopped) return;
-            var dt = Math.min((t - lastT) / 16.7, 3) || 1;
-            lastT = t;
-            spawnT += dt;
-            if (spawnT > 26) { spawnT = 0; stars.push(newStar()); }
-            drawBg();
-            for (var i = stars.length - 1; i >= 0; i--) {
-                var s = stars[i];
-                s.y += s.vy * dt;
-                s.wob += s.ws * dt;
-                s.a -= 0.0012 * dt;
-                if (s.y > 410 || s.a <= 0.05) { stars.splice(i, 1); continue; }
-                var glow = ctx.createRadialGradient(s.x, s.y, 1, s.x, s.y, s.r * 3.2);
-                glow.addColorStop(0, 'hsla(' + s.hue + ', 90%, 78%, ' + s.a.toFixed(3) + ')');
-                glow.addColorStop(1, 'hsla(' + s.hue + ', 90%, 78%, 0)');
-                ctx.fillStyle = glow;
-                ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 3.2, 0, Math.PI * 2); ctx.fill();
-                ctx.fillStyle = 'hsla(' + s.hue + ', 95%, 88%, ' + s.a.toFixed(3) + ')';
-                ctx.beginPath(); ctx.arc(s.x + Math.sin(s.wob) * 1.6, s.y, s.r, 0, Math.PI * 2); ctx.fill();
-            }
-            // HUD
-            ctx.fillStyle = 'rgba(255,255,255,0.85)';
-            ctx.font = '14px sans-serif';
-            ctx.fillText('✨ ' + caught, 16, 24);
-            raf = requestAnimationFrame(frame);
-        }
-
-        function pt(e) {
-            var r = canvas.getBoundingClientRect();
-            return { x: (e.clientX - r.left) / r.width * 440, y: (e.clientY - r.top) / r.height * 400 };
-        }
-        var pd = function (e) {
-            var p = pt(e);
-            for (var i = stars.length - 1; i >= 0; i--) {
-                var s = stars[i];
-                var dx = p.x - s.x, dy = p.y - s.y;
-                if (dx * dx + dy * dy < (s.r * 2.6) * (s.r * 2.6)) {
-                    caught++;
-                    stars.splice(i, 1);
-                    for (var k = 0; k < 8; k++) {
-                        var sp = newStar();
-                        sp.x = s.x; sp.y = s.y; sp.vy = 0.5;
-                        sp.r = 2.5 + Math.random() * 2;
-                        stars.splice(i, 0, sp);
-                        i++;
-                    }
-                }
-            }
-        };
-        canvas.addEventListener('pointerdown', pd);
-        (function () {
-            var s1 = newStar(); s1.y = 20 + Math.random() * 160; stars.push(s1);
-            var s2 = newStar(); s2.y = 20 + Math.random() * 160; stars.push(s2);
-        })();
-        raf = requestAnimationFrame(frame);
-
-        return {
-            stop: function () {
-                stopped = true;
-                if (raf) cancelAnimationFrame(raf);
-                canvas.removeEventListener('pointerdown', pd);
             }
         };
     }
