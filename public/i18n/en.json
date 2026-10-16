@@ -1241,6 +1241,7 @@
     "section_selftest": "Self-Assessment",
     "section_practice": "Practice Exercises",
     "section_related": "Related Theories",
+    "relation_related": "Related",
     "section_resources": "Authoritative Resources",
     "tag_selftest": "Self-test",
     "tag_practice": "Practice",
@@ -1262,7 +1263,6 @@
     "tt_theme": "Theme · {n} books",
     "tt_book": "Healing Book · Reading Notes",
     "tt_click_theme": "Click to explore the theme",
-
     "stage1_title": "Stage 1: Foundations",
     "stage1_desc": "Build core concepts and understand the basic psychology framework",
     "stage2_title": "Stage 2: Deeper Understanding",
@@ -2096,7 +2096,9 @@
     "profile_list": "Profiles on this device",
     "current": "Current",
     "switch": "Switch",
-    "name_placeholder": "Nickname"
+    "name_placeholder": "Nickname",
+    "default_name": "Wanderer",
+    "my_profile": "My profile"
   },
   "admin": {
     "page_title": "Xinqing Space · Admin"
@@ -2117,7 +2119,7 @@
   "widget": {
     "empathy_title": "💞 Today's Empathy Card",
     "empathy_sub": "A small conversation brings hearts closer",
-    "empathy_done": "✓ Mark Done",
+    "empathy_done": "✓ Done",
     "empathy_done_msg": "Lovely — your conversation warmed today",
     "empathy_meta": "Try a gentle tone and share with your family",
     "knowledge_tooltip": "Theme Library",
@@ -2142,7 +2144,9 @@
     "pet_pat": "👋 Greet",
     "pet_hug": "🤗 Hug",
     "pet_play": "🎾 Play",
-    "knowledge_themes": "📚 Theme Library"
+    "knowledge_themes": "📚 Theme Library",
+    "empathy_btn": "Family Empathy Card",
+    "empathy_prompt": "Ask your family: what was the most reassuring moment today?"
   },
   "icon": {
     "name_calm": "Calm",

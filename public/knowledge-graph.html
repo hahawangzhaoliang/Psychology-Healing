@@ -465,10 +465,6 @@
             <button class="view-tab" data-view="path" ><svg class="icon icon--md"><use href="#icon-flow"></use></svg> <span data-i18n="knowledge_graph.tab_path_text">学习路径</span></button>
         </div>
         <button class="filter-chip layer-toggle" id="echoLayerToggle" data-i18n="knowledge_graph.toggle_echoes" title="显示书籍之间的语义互文关系">书籍互文</button>
-        <div class="filter-group" id="filterGroup">
-            <button class="filter-chip active" data-filter="all" data-i18n="knowledge_graph.filter_all"><span class="dot" style="background:var(--color-primary-400);"></span>全部</button>
-            <div id="themeChips" style="display:contents;"></div>
-        </div>
     </div>
 
     <!-- ===== 主内容 ===== -->
@@ -594,6 +590,15 @@
         advanced:     '#8B5CF6'
     };
 
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+
     // ========== 数据加载 ==========
     function normalizeData(raw) {
         const isEn = window.I18N && I18N.currentLocale === 'en';
@@ -608,7 +613,6 @@
                 difficulty: n.difficulty || 'beginner',
                 summary: pick(n.summary),
                 desc: pick(n.desc),
-                author: n.author || '',
                 year: n.year || '',
                 practices: n.practices || [],
                 coreTheories: n.coreTheories || [],
@@ -617,10 +621,10 @@
                 contribution: n.contribution || [],
                 quote: n.quote || '',
                 date: n.date || '',
-                // v3 新增字段
-                author: n.author || '',
+                // v3 新增字段（author / oneLine 在数据里已是 {zh, en} 双语对象，必须经 pick 归一）
+                author: pick(n.author),
                 publisher: n.publisher || '',
-                oneLine: n.oneLine || '',
+                oneLine: pick(n.oneLine),
                 pathReason: pick(n.pathReason),
                 themeIds: n.themeIds || [],
                 color: t === 'theme' ? '#D4956A' : t === 'book' ? '#6B9BD1' : (colorMap[n.category] || '#5A9A8A'),
@@ -676,19 +680,6 @@
             theoryNodes = theories.filter(n => n.type === 'theory');
             themeNodes = theories.filter(n => n.type === 'theme');
             bindEchoToggle();   // 数据就绪后再绑定图层开关
-
-            // 动态生成主题筛选 chips
-            const chipsWrap = document.getElementById('themeChips');
-            if (chipsWrap) {
-                themeNodes.forEach(t => {
-                    const b = document.createElement('button');
-                    b.className = 'filter-chip';
-                    b.dataset.filter = t.id;
-                    b.innerHTML = `<span class="dot" style="background:#D4956A;"></span>${t.label}`;
-                    b.addEventListener('click', () => { currentFilter = b.dataset.filter; activeThemeId = null; applyFilter(); });
-                    chipsWrap.appendChild(b);
-                });
-            }
 
             loadingEl.style.display = 'none';
             document.getElementById('graphView').style.display = 'block';
@@ -967,16 +958,24 @@
             html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-circle-check"></use></svg> ${_t('knowledge_graph.section_practice', '实践练习')}</div><p>${d.practice}</p></div>`;
         }
 
+        // 仅取「理论 ↔ 理论」的相关关系（covers 是书→理论，echoes 是书↔书，都不该出现在这里）
         const rels = relationships.filter(r => {
+            if (r.relation !== 'related') return false;
             const s = r.source.id || r.source;
             const t = r.target.id || r.target;
-            return s === d.id || t === d.id;
+            if (s !== d.id && t !== d.id) return false;
+            const otherId = s === d.id ? t : s;
+            const otherNode = theories.find(n => n.id === otherId);
+            return !!otherNode && otherNode.type === 'theory';
         });
         if (rels.length) {
+            const relLabel = _t('knowledge_graph.relation_related', '相关理论');
             html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-leaf"></use></svg> ${_t('knowledge_graph.section_related', '相关理论')}</div><ul>${rels.map(r => {
                 const otherId = (r.source.id || r.source) === d.id ? (r.target.id || r.target) : (r.source.id || r.source);
-                const otherNode = theories.find(t => t.id === otherId);
-                return otherNode ? `<li><strong>${r.type} ${otherNode.label}</strong>：${r.desc || ''}</li>` : '';
+                const otherNode = theories.find(n => n.id === otherId);
+                return otherNode
+                    ? `<li><strong>${escapeHtml(otherNode.label)}</strong> · ${escapeHtml(relLabel)}</li>`
+                    : '';
             }).join('')}</ul></div>`;
         }
 
@@ -1302,7 +1301,8 @@
             });
         }
     }
-    document.querySelectorAll('.filter-chip').forEach(btn => {
+    // 注：主题筛选 chips 已移除，仅保留图谱中「点击主题节点」高亮（activeThemeId）这一种筛选方式
+    document.querySelectorAll('.filter-chip[data-filter]').forEach(btn => {
         btn.addEventListener('click', function() {
             currentFilter = this.dataset.filter;
             activeThemeId = null;

@@ -279,17 +279,17 @@ class ThemeManager {
                     <button onclick="themeManager.closePopup()" data-i18n="widget.got_it">我知道了</button>
                 </div>
             </div>
-            <button class="empathy-btn" id="empathy-btn" aria-label="家庭共情练习卡"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></svg></button>
+            <button class="empathy-btn" id="empathy-btn" data-i18n-title="widget.empathy_btn" title="家庭共情练习卡" aria-label="家庭共情练习卡"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></svg></button>
             <div class="popup-card" id="empathyPopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
                 <div class="empathy-card">
-                    <div style="font-size:16px;font-weight:700;color:var(--theme-text, #4a3728);margin-bottom:4px;" id="empathyTitle">💞 今日共情小卡</div>
-                    <div style="font-size:12px;color:var(--theme-text-light, #8b7355);margin-bottom:16px;" id="empathySub">一次小小的对话，让心更近</div>
+                    <div style="font-size:16px;font-weight:700;color:var(--theme-text, #4a3728);margin-bottom:4px;" id="empathyTitle" data-i18n="widget.empathy_title">💞 今日共情小卡</div>
+                    <div style="font-size:12px;color:var(--theme-text-light, #8b7355);margin-bottom:16px;" id="empathySub" data-i18n="widget.empathy_sub">一次小小的对话，让心更近</div>
                     <div class="big-emoji" id="empathyEmoji">🕊️</div>
-                    <div class="prompt" id="empathyPrompt">问问家人，今天最让你安心的一件事是什么？</div>
-                    <div class="meta" id="empathyMeta">试着用温柔的语气，和家人聊一聊</div>
-                    <button class="done-btn" id="empathyDoneBtn" onclick="themeManager.empathyComplete()">✓ 已完成</button>
-                    <div class="done-msg" id="empathyDoneMsg" style="display:none;">真好，你们的对话让今天有了温度</div>
+                    <div class="prompt" id="empathyPrompt" data-i18n="widget.empathy_prompt">问问家人，今天最让你安心的一件事是什么？</div>
+                    <div class="meta" id="empathyMeta" data-i18n="widget.empathy_meta">试着用温柔的语气，和家人聊一聊</div>
+                    <button class="done-btn" id="empathyDoneBtn" data-i18n="widget.empathy_done" onclick="themeManager.empathyComplete()">✓ 已完成</button>
+                    <div class="done-msg" id="empathyDoneMsg" data-i18n="widget.empathy_done_msg" style="display:none;">真好，你们的对话让今天有了温度</div>
                 </div>
             </div>
         `;

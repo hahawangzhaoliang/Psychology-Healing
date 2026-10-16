@@ -147,9 +147,9 @@
 
         <!-- 用户档案徽章（P2） -->
         <div style="position:relative;margin-left:0.5rem;">
-          <button onclick="UserMenu.toggle(event)" style="display:flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-card);color:var(--theme-text);font-size:0.85rem;cursor:pointer;transition:all 0.2s;max-width:11rem;" title="我的档案">
+          <button onclick="UserMenu.toggle(event)" style="display:flex;align-items:center;gap:0.375rem;padding:0.375rem 0.75rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:var(--theme-card);color:var(--theme-text);font-size:0.85rem;cursor:pointer;transition:all 0.2s;max-width:11rem;" data-i18n-title="user.my_profile" title="我的档案">
             <span id="userBadgeEmoji" style="font-size:1rem;">🌟</span>
-            <span id="userBadgeName" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">微光旅人</span>
+            <span id="userBadgeName" data-i18n="user.default_name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">微光旅人</span>
             <svg style="width:12px;height:12px;flex-shrink:0;color:var(--theme-text-light);" fill="none" stroke="currentColor" viewBox="0 0 12 12"><path d="M3 5l3 3 3-3"/></svg>
           </button>
           <div id="userMenu" style="display:none;position:absolute;right:0;top:calc(100% + 6px);background:var(--theme-card);border:1px solid var(--theme-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:0.875rem;min-width:13rem;z-index:100;">
@@ -175,7 +175,7 @@
         ${switcherMobile}
         <div style="padding:0.75rem 1.25rem;border-top:1px solid var(--theme-border);display:flex;align-items:center;gap:0.5rem;font-size:0.85rem;color:var(--theme-text-light);">
           <span style="font-size:1.1rem;" id="userBadgeEmojiM">🌟</span>
-          <span id="userBadgeNameM">微光旅人</span>
+          <span id="userBadgeNameM" data-i18n="user.default_name">微光旅人</span>
           <button onclick="UserMenu.openManager()" style="margin-left:0.5rem;padding:0.25rem 0.625rem;border-radius:var(--radius-full);border:1px solid var(--color-primary-300);background:var(--color-primary-100);color:var(--color-primary-700);font-size:0.75rem;font-weight:600;cursor:pointer;" data-i18n="user.manage_profile">档案管理</button>
           <button onclick="UserMenu.newProfile()" style="margin-left:auto;padding:0.25rem 0.625rem;border-radius:var(--radius-full);border:1px solid var(--theme-border);background:transparent;color:var(--theme-text);font-size:0.75rem;cursor:pointer;" data-i18n="user.new_profile">新建档案</button>
         </div>
