@@ -462,7 +462,6 @@
     <div class="toolbar">
         <div class="view-tabs">
             <button class="view-tab active" data-view="graph" ><svg class="icon icon--md"><use href="#icon-knowledge"></use></svg> <span data-i18n="knowledge_graph.tab_graph_text">知识图谱</span></button>
-            <button class="view-tab" data-view="cards" ><svg class="icon icon--md"><use href="#icon-circle-check"></use></svg> <span data-i18n="knowledge_graph.tab_cards_text">卡片浏览</span></button>
             <button class="view-tab" data-view="path" ><svg class="icon icon--md"><use href="#icon-flow"></use></svg> <span data-i18n="knowledge_graph.tab_path_text">学习路径</span></button>
         </div>
         <button class="filter-chip layer-toggle" id="echoLayerToggle" data-i18n="knowledge_graph.toggle_echoes" title="显示书籍之间的语义互文关系">书籍互文</button>
@@ -508,17 +507,13 @@
             </div>
         </div>
 
-        <!-- 卡片视图 -->
-        <div class="cards-view" id="cardsView" style="display:none;">
-            <div class="cards-grid" id="cardsGrid"></div>
-        </div>
-
         <!-- 路径视图 -->
         <div class="path-view" id="pathView" style="display:none;">
             <div class="path-intro">
                 <h2 data-i18n-html="knowledge_graph.path_intro_title"><svg class="icon icon--md"><use href="#icon-circle-check"></use></svg> <span data-i18n="knowledge_graph.path_intro_title_text">循序渐进学习心理学</span></h2>
                 <p data-i18n="knowledge_graph.path_intro_desc">从基础概念入手，逐步深入核心理论，最后掌握实践方法。建议按阶段顺序学习，每个阶段掌握后再进入下一阶段。</p>
             </div>
+            <div class="path-overview" id="pathOverview"></div>
             <div id="pathStages"></div>
         </div>
     </div>
@@ -560,6 +555,8 @@
     let theoryNodes = [];
     let relationships = [];
     let graphSim = null;
+    let rawNodes = [];   // 保留未归一化的原始节点，供语言切换时重新渲染
+    let rawEdges = [];
     let currentFilter = 'all';
     let currentView = 'graph';
     let themeNodes = [];
@@ -624,6 +621,7 @@
                 author: n.author || '',
                 publisher: n.publisher || '',
                 oneLine: n.oneLine || '',
+                pathReason: pick(n.pathReason),
                 themeIds: n.themeIds || [],
                 color: t === 'theme' ? '#D4956A' : t === 'book' ? '#6B9BD1' : (colorMap[n.category] || '#5A9A8A'),
             };
@@ -670,6 +668,8 @@
                 throw new Error('无可用数据');
             }
 
+            rawNodes = data.nodes || [];
+            rawEdges = data.edges || [];
             const normalized = normalizeData(data);
             theories = normalized.nodes;
             relationships = normalized.edges;
@@ -697,7 +697,6 @@
             requestAnimationFrame(() => {
                 // 初始化视图
                 initGraph();
-                renderCards();
                 renderPath();
             });
         } catch (err) {
@@ -1087,67 +1086,141 @@
     }
 
     // ========== 卡片渲染 ==========
-    function renderCards() {
-        const grid = document.getElementById('cardsGrid');
-        grid.innerHTML = '';
-        theoryNodes.forEach(t => {
-            if (currentFilter !== 'all') {
-                if (currentFilter.startsWith('theme_')) {
-                    // 主题筛选：仅显示该主题书籍关联的理论
-                    const inTheme = relationships.some(r => (r.source === t.id || r.target === t.id) && (r.relation === 'covers') && (
-                        (r.source === t.id ? theories.find(n => n.id === r.target) : theories.find(n => n.id === r.source))
-                        && (theories.find(n => n.id === (r.source === t.id ? r.target : r.source)).themeIds || []).indexOf(currentFilter) !== -1));
-                    if (!inTheme) return;
-                } else if (t.category !== currentFilter) return;
-            }
-            const card = document.createElement('div');
-            card.className = 'knowledge-card';
-            card.style.borderColor = (colorMap[t.category] || '#5A9A8A') + '30';
-            card.innerHTML = `
-                <div class="card-header" style="background:linear-gradient(135deg,${colorMap[t.category] || '#5A9A8A'} 0%,${adjustColor(colorMap[t.category] || '#5A9A8A', -30)});">
-                    <div class="card-category-badge">${getCategoryName(t.category)}</div>
-                    <div class="card-difficulty"><span style="width:8px;height:8px;border-radius:50%;background:${diffColors[t.difficulty] || '#ccc'};display:inline-block;"></span> ${getDiffName(t.difficulty)}</div>
-                    <div class="card-title">${t.label}</div>
-                    <div class="card-author">${t.author} (${t.year})</div>
-                </div>
-                <div class="card-body">
-                    <div class="card-summary">${t.summary || ''}</div>
-                    <div class="card-tags">
-                        <span class="card-tag"><svg class="icon icon--md"><use href="#icon-journal"></use></svg> ${_t('knowledge_graph.tag_selftest', '自测')}</span>
-                        <span class="card-tag"><svg class="icon icon--md"><use href="#icon-circle-check"></use></svg> ${_t('knowledge_graph.tag_practice', '练习')}</span>
-                        <span class="card-tag">${_t('knowledge_graph.tag_resources', '{n} 个资源').replace('{n}', t.links ? t.links.length : 0)}</span>
-                    </div>
-                </div>`;
-            card.onclick = () => openDetail(t);
-            grid.appendChild(card);
-        });
-    }
-
+    
     // ========== 路径渲染 ==========
     function renderPath() {
         const container = document.getElementById('pathStages');
+        const overview = document.getElementById('pathOverview');
         container.innerHTML = '';
+        if (overview) overview.innerHTML = '';
+
         const stages = [
-            { key: 'beginner', icon: '<svg class="icon icon--md"><use href="#icon-leaf"></use></svg>', title: _t('knowledge_graph.stage1_title', '第一阶段：入门基础'), desc: _t('knowledge_graph.stage1_desc', '建立核心概念，理解心理学基础框架') },
-            { key: 'intermediate', icon: '<svg class="icon icon--md"><use href="#icon-leaf"></use></svg>', title: _t('knowledge_graph.stage2_title', '第二阶段：进阶理解'), desc: _t('knowledge_graph.stage2_desc', '深入核心理论，开始觉察自身模式') },
-            { key: 'advanced', icon: '<svg class="icon icon--md"><use href="#icon-tree"></use></svg>', title: _t('knowledge_graph.stage3_title', '第三阶段：深入实践'), desc: _t('knowledge_graph.stage3_desc', '掌握复杂理论，整合应用于生活') }
+            { key: 'beginner', step: 1, icon: '<svg class="icon icon--md"><use href="#icon-leaf"></use></svg>',
+              title: _t('knowledge_graph.stage1_title', '第一阶段：入门基础'),
+              desc: _t('knowledge_graph.stage1_desc', '建立核心概念，理解心理学基础框架'),
+              goal: _t('knowledge_graph.stage1_goal', '目标：能说清"念头如何影响情绪"，不再被情绪自动反应牵着走') },
+            { key: 'intermediate', step: 2, icon: '<svg class="icon icon--md"><use href="#icon-knowledge"></use></svg>',
+              title: _t('knowledge_graph.stage2_title', '第二阶段：进阶理解'),
+              desc: _t('knowledge_graph.stage2_desc', '深入核心理论，开始觉察自身模式'),
+              goal: _t('knowledge_graph.stage2_goal', '目标：能识别自己的思维与关系模式，并掌握对应的干预方法') },
+            { key: 'advanced', step: 3, icon: '<svg class="icon icon--md"><use href="#icon-tree"></use></svg>',
+              title: _t('knowledge_graph.stage3_title', '第三阶段：深入实践'),
+              desc: _t('knowledge_graph.stage3_desc', '掌握复杂理论，整合应用于生活'),
+              goal: _t('knowledge_graph.stage3_goal', '目标：能把多种理论整合成自己的长期实践方案') },
         ];
+
+        const books = theories.filter(n => n.type === 'book');
+        const themeFilter = currentFilter.startsWith('theme_') ? currentFilter : null;
+
+        // ---- 顶部总览：三阶段进度条 ----
+        if (overview) {
+            const rows = stages.map(st => {
+                const nt = theoryNodes.filter(t => t.difficulty === st.key).length;
+                const nb = books.filter(b => b.difficulty === st.key).length;
+                return { st, nt, nb, total: nt + nb };
+            });
+            const grand = rows.reduce((a, r) => a + r.total, 0) || 1;
+            overview.innerHTML = '<div class="path-overview-row">'
+                + rows.map(r => {
+                    const pct = Math.round(r.total / grand * 100);
+                    return `<div class="path-overview-step">
+                        <div class="path-overview-num">${r.st.step}</div>
+                        <div class="path-overview-meta">
+                            <div class="path-overview-label">${_t('knowledge_graph.path_stat', '{t} 理论 · {b} 读物').replace('{t}', r.nt).replace('{b}', r.nb)}</div>
+                            <div class="path-overview-bar"><span style="width:${pct}%"></span></div>
+                        </div>
+                    </div>`;
+                }).join('')
+                + '</div>';
+        }
+
         stages.forEach(stage => {
-            const items = theoryNodes.filter(t => t.difficulty === stage.key).sort((a, b) => (a.order || 0) - (b.order || 0));
-            if (currentFilter !== 'all' && !currentFilter.startsWith('theme_')) {
-                const fitems = items.filter(t => t.category === currentFilter);
-                if (!fitems.length) return;
+            const items = theoryNodes
+                .filter(t => t.difficulty === stage.key)
+                .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+            // 理论按学科筛选（主题筛选对理论不适用）
+            const catFilter = (!themeFilter && currentFilter !== 'all') ? currentFilter : null;
+            const shownTheory = catFilter ? items.filter(t => t.category === catFilter) : items;
+
+            // 书籍：主题筛选时只显示属于该主题的书
+            let shownBooks = books.filter(b => b.difficulty === stage.key);
+            if (themeFilter) {
+                shownBooks = shownBooks.filter(b => (b.themeIds || []).indexOf(themeFilter) !== -1);
             }
+            shownBooks.sort((a, b) => {
+                const ar = a.pathReason ? 0 : 1, br = b.pathReason ? 0 : 1;
+                if (ar !== br) return ar - br;           // 有推荐理由的排前面
+                return String(a.label).localeCompare(String(b.label), 'zh');
+            });
+
+            if (!shownTheory.length && !shownBooks.length) return;
+
             const stageEl = document.createElement('div');
             stageEl.className = 'path-stage';
-            let cardsHtml = '';
-            items.forEach(t => {
-                if (currentFilter !== 'all' && !currentFilter.startsWith('theme_') && t.category !== currentFilter) return;
-                cardsHtml += `<div class="path-card" onclick="openDetailById('${t.id}')"><div class="path-card-index" style="background:${colorMap[t.category] || '#5A9A8A'};">${t.order || ''}</div><div class="path-card-content"><div class="path-card-title">${t.label}</div><div class="path-card-desc">${t.summary || ''}</div></div></div>`;
-            });
-            stageEl.innerHTML = `<div class="path-stage-header"><div class="path-stage-icon">${stage.icon}</div><div><div class="path-stage-title">${stage.title}</div><div class="path-stage-desc">${stage.desc}</div></div></div><div class="path-cards">${cardsHtml}</div>`;
+
+            // --- 核心理论区 ---
+            let theoryHtml = '';
+            if (shownTheory.length) {
+                theoryHtml = '<div class="path-block">'
+                    + '<div class="path-block-title">' + _t('knowledge_graph.path_theory_title', '核心理论') + '</div>'
+                    + '<div class="path-cards">'
+                    + shownTheory.map(t =>
+                        `<div class="path-card" onclick="openDetailById('${t.id}')">`
+                        + `<div class="path-card-index" style="background:${colorMap[t.category] || '#5A9A8A'};">${t.order || ''}</div>`
+                        + `<div class="path-card-content">`
+                        + `<div class="path-card-title">${t.label}</div>`
+                        + `<div class="path-card-desc">${t.summary || ''}</div>`
+                        + `</div></div>`
+                    ).join('')
+                    + '</div></div>';
+            }
+
+            // --- 推荐读物区 ---
+            let bookHtml = '';
+            if (shownBooks.length) {
+                bookHtml = '<div class="path-block">'
+                    + '<div class="path-block-title">'
+                    + _t('knowledge_graph.path_book_title', '推荐读物')
+                    + '<span class="path-block-count">' + shownBooks.length + '</span>'
+                    + '</div>'
+                    + '<div class="path-book-list">'
+                    + shownBooks.map(b =>
+                        `<div class="path-book" onclick="openDetailById('${b.id}')">`
+                        + `<div class="path-book-main">`
+                        + `<div class="path-book-title">${b.label}</div>`
+                        + (b.author ? `<div class="path-book-author">${b.author}</div>` : '')
+                        + (b.pathReason ? `<div class="path-book-why">${b.pathReason}</div>` : '')
+                        + `</div>`
+                        + '<svg class="icon icon--md path-book-arrow"><use href="#icon-flow"></use></svg>'
+                        + `</div>`
+                    ).join('')
+                    + '</div></div>';
+            }
+
+            stageEl.innerHTML =
+                `<div class="path-stage-header">`
+                + `<div class="path-stage-icon">${stage.icon}</div>`
+                + `<div class="path-stage-headtext">`
+                + `<div class="path-stage-title">${stage.title}</div>`
+                + `<div class="path-stage-desc">${stage.desc}</div>`
+                + `<div class="path-stage-goal">${stage.goal}</div>`
+                + `</div>`
+                + `<div class="path-stage-counts">`
+                + `<span class="path-count-chip">${shownTheory.length} ${_t('knowledge_graph.path_unit_theory', '理论')}</span>`
+                + `<span class="path-count-chip">${shownBooks.length} ${_t('knowledge_graph.path_unit_book', '读物')}</span>`
+                + `</div>`
+                + `</div>`
+                + theoryHtml + bookHtml;
             container.appendChild(stageEl);
         });
+
+        // 全部为空时的兜底提示
+        if (!container.children.length) {
+            container.innerHTML = '<div class="empty-state"><p>'
+                + _t('knowledge_graph.path_empty', '当前筛选条件下没有匹配的学习内容')
+                + '</p></div>';
+        }
     }
 
     function openDetailById(id) {
@@ -1162,9 +1235,7 @@
         currentView = view;
         document.querySelectorAll('.view-tab').forEach(b => b.classList.toggle('active', b.dataset.view === view));
         document.getElementById('graphView').style.display = view === 'graph' ? 'block' : 'none';
-        document.getElementById('cardsView').style.display = view === 'cards' ? 'block' : 'none';
-        document.getElementById('pathView').style.display = view === 'path' ? 'block' : 'none';
-        if (view === 'cards') renderCards();
+                document.getElementById('pathView').style.display = view === 'path' ? 'block' : 'none';
         if (view === 'path') renderPath();
     }
 
@@ -1193,8 +1264,7 @@
         document.querySelectorAll('.filter-chip').forEach(b => {
             b.classList.toggle('active', b.dataset.filter === currentFilter);
         });
-        if (currentView === 'cards') renderCards();
-        if (currentView === 'path') renderPath();
+                if (currentView === 'path') renderPath();
         if (currentView === 'graph' && g) {
             const nodes = g.selectAll('g.graph-node');
             const links = g.selectAll('line');
@@ -1255,6 +1325,20 @@
     document.addEventListener('DOMContentLoaded', () => {
         loadData();
         document.getElementById('detailSheet').addEventListener('click', e => e.stopPropagation());
+    });
+
+    // 语言切换：阶段标题/目标/理由均由 _t() 与 {zh,en} 注入，
+    // 不会被 data-i18n 自动重扫，必须重新归一化并重渲染。
+    document.addEventListener('localeChanged', () => {
+        // 用原始 rawNodes 重算，避免对已拍平的 label 二次归一化导致语种不可逆
+        if (rawNodes.length) {
+            const again = normalizeData({ nodes: rawNodes, edges: rawEdges });
+            theories = again.nodes;
+            relationships = again.edges;
+            theoryNodes = theories.filter(n => n.type === 'theory');
+            themeNodes = theories.filter(n => n.type === 'theme');
+        }
+        if (currentView === 'path') renderPath();
     });
     </script>
 

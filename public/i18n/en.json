@@ -1216,7 +1216,6 @@
     "error_title": "Data Loading Failed",
     "error_desc": "Unable to retrieve knowledge graph data from the server.",
     "tab_graph_text": "Knowledge Graph",
-    "tab_cards_text": "Card Browse",
     "tab_path_text": "Learning Path",
     "path_intro_title_text": "Learn Psychology Step by Step",
     "path_intro_desc": "Start with basic concepts, gradually go deeper into core theories, and finally master practical methods. We recommend learning in order, mastering each stage before moving to the next.",
@@ -1270,6 +1269,15 @@
     "stage2_desc": "Go deeper into core theories and start noticing your own patterns",
     "stage3_title": "Stage 3: Applied Practice",
     "stage3_desc": "Master complex theories and integrate them into daily life",
+    "stage1_goal": "Goal: explain how thoughts shape emotions, and stop being pulled by automatic reactions",
+    "stage2_goal": "Goal: identify your own thinking and relationship patterns, and learn the matching interventions",
+    "stage3_goal": "Goal: combine several theories into your own long-term practice",
+    "path_theory_title": "Core Theories",
+    "path_book_title": "Recommended Reading",
+    "path_unit_theory": "theories",
+    "path_unit_book": "books",
+    "path_stat": "{t} theories · {b} books",
+    "path_empty": "No learning content matches the current filter",
     "page_title": "Psychology Knowledge Map"
   },
   "relax": {

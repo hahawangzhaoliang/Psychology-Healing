@@ -448,6 +448,133 @@ body {
 .path-card-title { font-weight: 600; margin-bottom: 0.25rem; }
 .path-card-desc { font-size: 0.85rem; color: var(--theme-text-light); line-height: 1.5; }
 
+/* ---------- 学习路径：阶段总览 ---------- */
+.path-overview { margin: 0 0 1.75rem; }
+.path-overview-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: var(--theme-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+}
+@media (min-width: 720px) {
+    .path-overview-row { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+}
+.path-overview-step { display: flex; align-items: center; gap: 0.7rem; }
+.path-overview-num {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--color-primary-400);
+    color: #fff;
+    font-size: 0.85rem; font-weight: 700;
+    flex-shrink: 0;
+}
+.path-overview-meta { flex: 1; min-width: 0; }
+.path-overview-label { font-size: 0.8rem; color: var(--theme-text-light); margin-bottom: 0.35rem; }
+.path-overview-bar {
+    height: 5px;
+    border-radius: var(--radius-full);
+    background: var(--theme-border);
+    overflow: hidden;
+}
+.path-overview-bar span {
+    display: block; height: 100%;
+    border-radius: var(--radius-full);
+    background: linear-gradient(90deg, var(--color-primary-400), var(--color-primary-300));
+}
+
+/* ---------- 学习路径：阶段头扩展 ---------- */
+.path-stage-header { align-items: flex-start; }
+.path-stage-headtext { flex: 1; min-width: 0; }
+.path-stage-goal {
+    font-size: 0.82rem;
+    color: var(--color-primary-600);
+    margin-top: 0.35rem;
+    line-height: 1.5;
+    padding-left: 0.6rem;
+    border-left: 2px solid var(--color-primary-300);
+}
+.path-stage-counts {
+    display: flex;
+    gap: 0.4rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.path-count-chip {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--radius-full);
+    background: var(--color-primary-50);
+    color: var(--color-primary-600);
+    white-space: nowrap;
+}
+
+/* ---------- 学习路径：区块 ---------- */
+.path-block { margin-bottom: 1rem; }
+.path-block-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--theme-text-light);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.6rem;
+    padding-left: 22px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+.path-block-count {
+    font-size: 0.72rem;
+    font-weight: 500;
+    background: var(--theme-border);
+    color: var(--theme-text-light);
+    border-radius: var(--radius-full);
+    padding: 0.05rem 0.45rem;
+}
+
+/* ---------- 学习路径：推荐读物列表 ---------- */
+.path-book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 22px;
+    border-left: 3px solid var(--color-primary-300);
+    margin-left: 22px;
+}
+.path-book {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--theme-card);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: transform var(--duration-fast) var(--ease-standard),
+                box-shadow var(--duration-fast) var(--ease-standard);
+}
+.path-book:hover {
+    transform: translateX(4px);
+    box-shadow: var(--shadow-sm);
+}
+.path-book-main { flex: 1; min-width: 0; }
+.path-book-title { font-size: 0.92rem; font-weight: 600; color: var(--theme-text); }
+.path-book-author { font-size: 0.76rem; color: var(--theme-text-light); margin-top: 0.1rem; }
+.path-book-why {
+    font-size: 0.78rem;
+    color: var(--color-primary-600);
+    margin-top: 0.25rem;
+    line-height: 1.5;
+}
+.path-book-arrow {
+    color: var(--theme-text-light);
+    opacity: 0.5;
+    flex-shrink: 0;
+}
+.path-book:hover .path-book-arrow { opacity: 1; color: var(--color-primary-400); }
+
 /* ---------- 详情面板 ---------- */
 .detail-overlay {
     position: fixed;
