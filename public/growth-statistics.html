@@ -76,7 +76,7 @@
             color: var(--theme-text-light);
         }
     </style>
-    <script src="js/i18n.js?v=20260929-28"></script>
+    <script src="js/i18n.js?v=20260929-37"></script>
     <link rel="stylesheet" href="css/icons-custom.css">
           <!-- Consent Mode v2 (Google AdSense CMP signalling; default-denied for EEA/UK/CH) -->
     <script>
@@ -544,18 +544,19 @@
             if (window.I18N && I18N.currentLocale === 'en' && !I18N.enTranslations) return;
             const records = JSON.parse(UserStore.get('flow-records') || '[]');
             const charging = JSON.parse(UserStore.get('chargingRecords') || '[]');
+            const relax = JSON.parse(UserStore.get('relaxRecords') || '[]');
             
-            if (records.length === 0 && charging.length === 0) {
+            if (records.length === 0 && charging.length === 0 && relax.length === 0) {
                 showNoData();
                 return;
             }
             
-            renderSummaryCards(records, charging);
+            renderSummaryCards(records, charging, relax);
             if (records.length > 0) {
                 renderQualityChart(records);
                 renderActivityChart(records);
             }
-            renderRecordsList(records, charging);
+            renderRecordsList(records, charging, relax);
         }
         // 显示无数据状态
         function showNoData() {
@@ -568,7 +569,7 @@
         }
         
         // 渲染统计卡片
-        function renderSummaryCards(records, charging) {
+        function renderSummaryCards(records, charging, relax) {
             const totalSessions = records.length;
             const totalDuration = records.reduce((sum, r) => sum + (r.duration || 0), 0);
             const totalMinutes = Math.round(totalDuration / 60);
@@ -591,7 +592,23 @@
                 </div>
             ` : '';
             
+            // 放松练习统计（P1：relaxRecords 接入）
+            const relaxDone = (relax || []).filter(r => r.completed);
+            const relaxCount = relaxDone.length;
+            const relaxMinutes = Math.round(relaxDone.reduce((s, r) => s + (r.duration || 0), 0) / 60);
+            const relaxCards = relaxCount > 0 ? `
+                <div class="card stat-card">
+                    <div class="stat-number">🌿 ${relaxCount}</div>
+                    <p>${_t('growth_statistics.relax_sessions', '放松练习')}</p>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-number">${relaxMinutes} ${_t('growth_statistics.unit_minutes', '分钟')}</div>
+                    <p>${_t('growth_statistics.relax_minutes', '放松时长')}</p>
+                </div>
+            ` : '';
+            
             document.getElementById('summary-cards').innerHTML = `
+                ${relaxCards}
                 <div class="card stat-card">
                     <div class="stat-number">${totalSessions}</div>
                     <p>${_t('growth_statistics.stat_sessions', '心流次数')}</p>
@@ -677,7 +694,7 @@
         }
         
         // 渲染记录列表（心流 + 充电仪式融合，按时间倒序）
-        function renderRecordsList(records, charging) {
+        function renderRecordsList(records, charging, relax) {
             const container = document.getElementById('records-container');
             
             // 充电场景名（复用充电站 i18n key）
@@ -685,7 +702,23 @@
                 ({ morning: '晨起 · 光呼吸', noon: '午休 · 正念补水', evening: '黄昏 · 情绪卸货', sleep: '睡前 · 身体扫描' })[scenario] || scenario);
             const dateFmt = (d) => new Date(d).toLocaleDateString(window.I18N?.currentLocale === 'en' ? 'en-US' : 'zh-CN');
             
+            const relaxName = (p) => ({ breathing: _t('relax.exercise_breath_title', '呼吸训练'), body_scan: _t('relax.exercise_body_scan_title', '身体扫描'), mindfulness: _t('relax.exercise_mindfulness_title', '正念冥想'), walking: _t('relax.exercise_walking_title', '正念行走'), defusion: _t('relax.exercise_defusion_title', '思维解离'), five_senses: _t('relax.exercise_five_senses_title', '五感放松') })[p] || p;
+            const relaxMood = (m) => ({ calmer: _t('relax.mood_calmer', '更平静'), ok: _t('relax.mood_ok', '还好'), same: _t('relax.mood_same', '没变化') })[m] || '';
+            
             const items = [
+                ...relax.map(r => ({
+                    t: Date.parse(r.timestamp) || 0,
+                    html: `
+                        <div class="record-item">
+                            <div>
+                                <div class="record-activity">🌿 ${relaxName(r.practice)}</div>
+                                <div class="record-meta">${dateFmt(r.timestamp)}${r.mood ? ' · ' + relaxMood(r.mood) : ''}</div>
+                            </div>
+                            <div class="record-meta">
+                                ${Math.round((r.duration || 0) / 60)} ${_t('growth_statistics.unit_minutes', '分钟')}
+                            </div>
+                        </div>`
+                })),
                 ...records.map(r => ({
                     t: r.timestamp || Date.parse(r.date) || 0,
                     html: `

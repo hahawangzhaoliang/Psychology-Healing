@@ -8,10 +8,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <script src="js/cache.js"></script>
-    <script src="js/i18n.js?v=20260929-28"></script>
+    <script src="js/i18n.js?v=20260929-37"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/icons-custom.css">
 <script src="js/user-store.js"></script>
+
+    <script>
+    // P1：主题预应用（防首屏闪变）——与 theme-manager.js 内 vars 保持一致的精简子集
+    (function () {
+        try {
+            var T = localStorage.getItem('theme');
+            var V = {
+                home: {'--theme-bg':'#fdf8f3','--theme-card':'#ffffff','--theme-text':'#4a3728','--theme-text-light':'#8b7355','--theme-border':'#e8d5c0','--color-primary-500':'#c07a50'},
+                work: {'--theme-bg':'#f5f8fc','--theme-card':'#ffffff','--theme-text':'#1e2d3d','--theme-text-light':'#4a6080','--theme-border':'#d0dcea','--color-primary-500':'#3d7abf'},
+                entertainment: {'--theme-bg':'#f0fdf9','--theme-card':'#ffffff','--theme-text':'#1a3530','--theme-text-light':'#4a7a6a','--theme-border':'#b8e8d8','--color-primary-500':'#20a882'}
+            };
+            if (V[T]) {
+                var r = document.documentElement.style;
+                for (var k in V[T]) r.setProperty(k, V[T][k]);
+            }
+        } catch (e) {}
+    })();
+    </script>
 </head>
 <body class="bg-warm-50 text-gray-700 min-h-screen neuro-aesthetic-body">
     <div id="app-header"></div>
@@ -112,7 +130,7 @@
     <div id="app-footer"></div>
 
     <script src="js/neuroaesthetics.js"></script>
-    <script src="js/theme-manager.js?v=20260929-21"></script>
+    <script src="js/theme-manager.js?v=20260929-33"></script>
     <script src="js/components/header.js"></script>
     <script src="js/components/footer.js"></script>
     <script>

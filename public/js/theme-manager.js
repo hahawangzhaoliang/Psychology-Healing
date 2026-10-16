@@ -87,13 +87,6 @@ class ThemeManager {
 
         // 数据将在 init() 中从 JSON 文件异步加载
         this.emotionData = {};
-        this.petNames = [];
-        this.petEmojis = [];
-        this.petMoodTexts = [];
-        this.petGreetings = [];
-        this.petInteractions = {};
-        this.knowledgeLibrary = {};
-        this.knowledgeCategories = {};
 
         this.init();
     }
@@ -131,54 +124,6 @@ class ThemeManager {
             console.warn('[ThemeManager] emotions.json 加载失败:', e.message);
         }
 
-        // 加载宠物数据
-        try {
-            const res = await fetch('data/companions.json?v=' + ((window.I18N && I18N.langPackVersion) || Date.now()));
-            const companions = await res.json();
-            if (companions.companions) {
-                this.petNames     = companions.companions.map(c => c.name);
-                this.petNamesRaw  = companions.companions.map(c => c.name);
-                this.petEmojis    = companions.companions.map(c => c.emoji);
-                this.petMoodTexts = companions.companions.map(c => c.mood);
-                this.petGreetings = companions.companions.map(c => c.greeting);
-                this.petNamesEn     = companions.companions.map(c => c.nameEn || c.name);
-                this.petMoodTextsEn = companions.companions.map(c => c.moodEn || c.mood);
-                this.petGreetingsEn = companions.companions.map(c => c.greetingEn || c.greeting);
-            }
-            this.petInteractions = companions.interactions || {};
-            this.petInteractionsEn = (companions.interactions && companions.interactions.en) || {};
-            console.log('[ThemeManager] companions.json 加载成功');
-        } catch (e) {
-            console.warn('[ThemeManager] companions.json 加载失败:', e.message);
-        }
-
-        // 加载知识库
-        try {
-            const res = await fetch('data/knowledge.json?v=' + ((window.I18N && I18N.langPackVersion) || Date.now()));
-            const knowledge = await res.json();
-            this.knowledgeLibrary = {};
-            if (Array.isArray(knowledge)) {
-                knowledge.forEach((item, idx) => {
-                    const key = item.id || `article_${idx}`;
-                    this.knowledgeLibrary[key] = item;
-                });
-            } else if (knowledge.articles) {
-                this.knowledgeLibrary = knowledge.articles;
-            }
-
-            // 构建分类索引
-            this.knowledgeCategories = {};
-            Object.entries(this.knowledgeLibrary).forEach(([key, item]) => {
-                const cat = item.category || '其他';
-                if (!this.knowledgeCategories[cat]) this.knowledgeCategories[cat] = [];
-                this.knowledgeCategories[cat].push({ key, ...item });
-            });
-            console.log('[ThemeManager] knowledge.json 加载成功');
-            this.renderThemeLibrary();
-        } catch (e) {
-            console.warn('[ThemeManager] knowledge.json 加载失败:', e.message);
-        }
-
         console.log('[ThemeManager] 文本数据加载完成');
     }
 
@@ -187,6 +132,12 @@ class ThemeManager {
         if (!theme) return;
 
         const root = document.documentElement;
+        // P1：切换时临时启用颜色过渡（结束后移除，不影响日常 hover 手感）
+        root.classList.add('theme-switching');
+        clearTimeout(this._themeTransitionTimer);
+        this._themeTransitionTimer = setTimeout(function () {
+            root.classList.remove('theme-switching');
+        }, 600);
         Object.entries(theme.vars).forEach(([key, val]) => {
             root.style.setProperty(key, val);
         });
@@ -226,6 +177,7 @@ class ThemeManager {
         switch (themeName) {
             case 'home':          this.createHomeEffects();          break;
             case 'work':          this.createWorkEffects();          break;
+            case 'entertainment': this.createEntertainmentEffects(); break;
         }
     }
 
@@ -242,38 +194,6 @@ class ThemeManager {
                     pointer-events: none; z-index: -1;
                     transition: background 0.5s ease;
                 }
-                .home-toolbar {
-                    position:fixed; right:12px; top:50%;
-                    transform:translateY(-50%);
-                    display:flex; flex-direction:column; gap:8px;
-                    z-index:100;
-                }
-                .tool-btn {
-                    width:52px; height:52px; border-radius:16px;
-                    background:rgba(255,255,255,0.95);
-                    border:2px solid rgba(255,255,255,0.8);
-                    cursor:pointer; position:relative;
-                    display:flex; align-items:center; justify-content:center;
-                    box-shadow:0 4px 15px rgba(0,0,0,0.12);
-                    transition:all 0.25s cubic-bezier(0.34,1.56,0.64,1);
-                    backdrop-filter:blur(10px);
-                }
-                .tool-btn:hover {
-                    transform:scale(1.12);
-                    box-shadow:0 8px 25px rgba(0,0,0,0.18);
-                }
-                .tool-btn:active { transform:scale(0.95); }
-                .tool-btn .icon { font-size:26px; line-height:1; }
-                .tool-btn .tooltip {
-                    position:absolute; right:62px; top:50%;
-                    transform:translateY(-50%);
-                    background:rgba(74,55,40,0.95);
-                    color:white; padding:6px 12px; border-radius:10px;
-                    font-size:12px; white-space:nowrap;
-                    opacity:0; pointer-events:none;
-                    transition:opacity 0.2s ease;
-                }
-                .tool-btn:hover .tooltip { opacity:1; }
                 .popup-overlay {
                     position:fixed;top:0;left:0;width:100%;height:100%;
                     background:rgba(0,0,0,0.4);z-index:199;
@@ -283,7 +203,7 @@ class ThemeManager {
                 .popup-card {
                     position:fixed; top:50%; left:50%;
                     transform:translate(-50%,-50%) scale(0.85);
-                    background:white; padding:28px; border-radius:24px;
+                    background:var(--theme-card, #ffffff); padding:28px; border-radius:24px;
                     box-shadow:0 25px 80px rgba(0,0,0,0.25); max-width:400px;
                     width:92%; z-index:200; opacity:0; pointer-events:none;
                     transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
@@ -292,141 +212,64 @@ class ThemeManager {
                 .popup-card.show {
                     opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto;
                 }
+                .empathy-btn {
+                    position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, #E8B87D, #D4956A);
+                    box-shadow: 0 4px 16px rgba(212, 149, 106, 0.35);
+                    display: flex; align-items: center; justify-content: center;
+                    cursor: pointer; z-index: 100; border: none;
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+                .empathy-btn:hover { transform: scale(1.1) rotate(-6deg); box-shadow: 0 6px 24px rgba(212, 149, 106, 0.5); }
+                .empathy-card { text-align: center; padding: 6px 0 0; }
+                .empathy-card .big-emoji { font-size: 52px; margin-bottom: 14px; }
+                .empathy-card .prompt {
+                    font-size: 15px; color: var(--theme-text, #4a3728); line-height: 1.8;
+                    background: var(--color-warm-50, #fdf8f3); border-radius: 14px;
+                    padding: 16px 18px; margin-bottom: 14px; border-left: 3px solid #D4956A;
+                }
+                .empathy-card .meta { font-size: 12px; color: var(--theme-text-light, #8b7355); margin-bottom: 16px; }
+                .empathy-card .done-btn {
+                    background: linear-gradient(135deg, #E8B87D, #D4956A);
+                    color: #fff; border: none; padding: 11px 30px; border-radius: 25px;
+                    cursor: pointer; font-size: 14px; font-weight: 600;
+                    transition: all 0.2s ease;
+                }
+                .empathy-card .done-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(212, 149, 106, 0.4); }
+                .empathy-card .done-btn.done { background: #a8b8a0; cursor: default; }
+                .empathy-card .done-msg {
+                    font-size: 14px; color: #6B8F7C; font-weight: 600; margin-top: 14px;
+                }
                 .popup-card .close-btn {
                     position:absolute; top:14px; right:14px; width:32px; height:32px;
-                    border-radius:50%; background:#f0f0f0; border:none; cursor:pointer;
+                    border-radius:50%; background:var(--theme-bg, #fdf8f3); border:none; cursor:pointer;
                     display:flex; align-items:center; justify-content:center;
-                    font-size:18px; color:#666; transition:background 0.2s;
+                    font-size:18px; color:var(--theme-text-light, #8b7355); transition:background 0.2s;
                 }
-                .popup-card .close-btn:hover{background:#e0e0e0;}
+                .popup-card .close-btn:hover{background:var(--theme-border, #e8d5c0);}
                 .popup-card h3 {
-                    font-size:18px; color:#4A4A4A; margin:0 0 20px;
+                    font-size:18px; color:var(--theme-text, #4a3728); margin:0 0 20px;
                     text-align:center; padding-right:40px;
                 }
-                .knowledge-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-                .knowledge-card {
-                    background:linear-gradient(135deg,#FFF8F0,#FFF0E6);
-                    border-radius:14px; padding:16px; text-align:center;
-                    cursor:pointer; transition:all 0.25s ease;
-                    border:2px solid transparent;
-                }
-                .knowledge-card:hover {
-                    transform:translateY(-5px);
-                    box-shadow:0 10px 25px rgba(0,0,0,0.12);
-                    border-color:#E8B87D;
-                }
-                .knowledge-card .emoji { font-size:36px; margin-bottom:10px; }
-                .knowledge-card .title { font-size:14px; font-weight:700; color:#4A4A4A; margin-bottom:6px; }
-                .knowledge-card .desc { font-size:11px; color:#8B7355; line-height:1.5; }
-                .theme-card { background:linear-gradient(135deg,#F3FBF6,#E8F5EC) !important; text-align:left; padding:14px; }
-                .theme-card .title { font-size:13px; }
-                .theme-card .desc { font-size:11px; color:#6B8F7C; }
-                .kp-source { font-size:12px; color:#8B7355; margin-bottom:10px; }
-                .kp-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
-                .kp-item { display:flex; gap:8px; font-size:13px; color:#4A4A4A; line-height:1.6; background:#F5FBF7; border-radius:10px; padding:10px 12px; border-left:3px solid #A8D5BA; }
-                .kp-icon { flex-shrink:0; }
-                .kp-body { font-size:13px; color:#5A5A5A; line-height:1.75; margin-bottom:12px; }
-                .kp-tags { display:flex; flex-wrap:wrap; gap:6px; }
-                .kp-tag { font-size:11px; color:#6B8F7C; background:#EAF6EF; border-radius:999px; padding:3px 10px; }
-                .knowledge-card:nth-child(1){background:linear-gradient(135deg,#FFF8E1,#FFE4B5);}
-                .knowledge-card:nth-child(2){background:linear-gradient(135deg,#E8F5E9,#C8E6C9);}
-                .knowledge-card:nth-child(3){background:linear-gradient(135deg,#E3F2FD,#BBDEFB);}
-                .knowledge-card:nth-child(4){background:linear-gradient(135deg,#F3E5F5,#E1BEE7);}
-                .knowledge-card:nth-child(5){background:linear-gradient(135deg,#FFF0F5,#FFE4EC);}
-                .knowledge-card:nth-child(6){background:linear-gradient(135deg,#E0F7FA,#B2EBF2);}
                 .emotion-display { text-align:center; padding:10px 0; }
                 .emotion-display .icon{font-size:64px;margin-bottom:16px;}
-                .emotion-display .title{font-size:22px;font-weight:700;color:#4A4A4A;margin-bottom:12px;}
-                .emotion-display .quote{font-size:15px;color:#666;line-height:1.7;font-style:italic;margin-bottom:20px;}
+                .emotion-display .title{font-size:22px;font-weight:700;color:var(--theme-text, #4a3728);margin-bottom:12px;}
+                .emotion-display .quote{font-size:15px;color:var(--theme-text-light, #8b7355);line-height:1.7;font-style:italic;margin-bottom:20px;}
                 .emotion-display button{
-                    background:linear-gradient(135deg,#E8B87D,#D4956A);color:white;border:none;
+                    background:linear-gradient(135deg,var(--color-primary-400,#d4956a),var(--color-primary-500,#c07a50));color:white;border:none;
                     padding:12px 28px;border-radius:25px;cursor:pointer;font-size:14px;font-weight:600;
                     transition:all 0.2s ease;
                 }
                 .emotion-display button:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(232,184,125,0.4);}
-                .pet-interaction { text-align:center; }
-                .pet-avatar {
-                    width:100px; height:100px; margin:0 auto 16px;
-                    border-radius:50%; overflow:hidden;
-                    border:4px solid #E8B87D;
-                    box-shadow:0 8px 25px rgba(0,0,0,0.15);
-                    position:relative; cursor:pointer;
-                    transition:all 0.3s ease;
-                }
-                .pet-avatar:hover { transform:scale(1.08); }
-                .pet-avatar img { width:100%; height:100%; object-fit:cover; }
-                .pet-avatar .pet-action {
-                    position:absolute; inset:0;
-                    display:flex; align-items:center; justify-content:center;
-                    background:rgba(0,0,0,0.3); opacity:0;
-                    transition:opacity 0.2s;
-                    font-size:32px;
-                }
-                .pet-avatar:hover .pet-action { opacity:1; }
-                .pet-name { font-size:18px; font-weight:700; color:#4A4A4A; margin-bottom:4px; }
-                .pet-mood { font-size:13px; color:#8B7355; margin-bottom:16px; }
-                .pet-msg {
-                    background:#FFF8F0; padding:14px 18px; border-radius:14px;
-                    font-size:14px; color:#4A4A4A; line-height:1.6;
-                    margin-bottom:16px; position:relative;
-                }
-                .pet-msg::before {
-                    content:''; position:absolute; top:-8px; left:50%;
-                    transform:translateX(-50%);
-                    border-left:8px solid transparent;
-                    border-right:8px solid transparent;
-                    border-bottom:8px solid #FFF8F0;
-                }
-                .pet-actions { display:flex; gap:10px; justify-content:center; }
-                .pet-action-btn {
-                    padding:10px 18px; border-radius:20px;
-                    background:#FFF; border:2px solid #E8D5C0;
-                    cursor:pointer; font-size:13px; font-weight:600;
-                    color:#8B7355; transition:all 0.2s ease;
-                    display:flex; align-items:center; gap:6px;
-                }
-                .pet-action-btn:hover {
-                    background:#E8B87D; border-color:#E8B87D;
-                    color:white; transform:translateY(-2px);
-                }
                 @media(max-width:640px){
                     .home-toolbar { right:8px; gap:6px; }
-                    .tool-btn { width:48px; height:48px; border-radius:14px; }
-                    .tool-btn .icon { font-size:24px; }
-                    .tool-btn .tooltip { display:none; }
                     .energy-indicator { right:8px; bottom:16px; padding:8px 12px; }
                     .popup-card { padding:20px; border-radius:20px; }
-                    .knowledge-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
-                    .knowledge-card { padding:12px; }
-                    .knowledge-card .emoji { font-size:28px; }
-                    .knowledge-card .title { font-size:13px; }
                 }
             </style>
             <div class="home-bg-overlay" id="homeBgOverlay"></div>
-            <div class="home-toolbar">
-                <div class="tool-btn tool-knowledge" onclick="themeManager.toggleKnowledge()">
-                    <span class="icon">📖</span>
-                    <span class="tooltip" data-i18n="widget.knowledge_tooltip">主题书库</span>
-                </div>
-                <div class="tool-btn tool-pet" onclick="themeManager.togglePet()">
-                    <span class="icon">🐰</span>
-                    <span class="tooltip" data-i18n="widget.pet_tooltip">宠物伙伴</span>
-                </div>
-            </div>
             <div class="popup-overlay" id="popupOverlay" onclick="themeManager.closePopup()"></div>
-            <div class="popup-card" id="knowledgePopup">
-                <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
-                <h3 data-i18n="widget.knowledge_title">📖 主题书库</h3>
-                <div class="theme-library" id="themeLibraryWrap" style="display:none;margin-top:0.75rem;">
-                    <div class="theme-library-title" style="font-size:0.9rem;font-weight:600;color:var(--color-gray-600);margin:0.25rem 0 0.5rem;" data-i18n="widget.knowledge_themes">📚 主题书库</div>
-                    <div id="themeLibraryGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;"></div>
-                </div>
-            </div>
-            <div class="popup-card" id="knowledgeDetailPopup">
-                <button class="close-btn" onclick="themeManager.backToKnowledge()">←</button>
-                <h3 id="knowledgeTitle">🌬️ 呼吸放松</h3>
-                <div class="knowledge-content" id="knowledgeContent"></div>
-            </div>
             <div class="popup-card" id="emotionCardPopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
                 <div class="emotion-display">
@@ -436,736 +279,211 @@ class ThemeManager {
                     <button onclick="themeManager.closePopup()" data-i18n="widget.got_it">我知道了</button>
                 </div>
             </div>
-            <div class="popup-card" id="petPopup">
+            <button class="empathy-btn" id="empathy-btn" aria-label="家庭共情练习卡"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 12 5.5 5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/></svg></button>
+            <div class="popup-card" id="empathyPopup">
                 <button class="close-btn" onclick="themeManager.closePopup()">✕</button>
-                <div class="pet-interaction">
-                    <div class="pet-avatar" onclick="themeManager.petInteract('pat')">
-                        <img src="assets/images/companions/爱心兔兔.png" alt="宠物" onerror="this.parentElement.innerHTML='<span style=font-size:60px>🐰</span>'">
-                        <div class="pet-action">🐰</div>
-                    </div>
-                    <div class="pet-name" id="petName">爱心兔兔</div>
-                    <div class="pet-mood" id="petMood">✨ 心情愉悦</div>
-                    <div class="pet-msg" id="petMsg" data-i18n="widget.pet_greeting_init">嗨～看到你真开心！今天过得怎么样？</div>
-                    <div class="pet-actions">
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('pat')" data-i18n="widget.pet_pat">👋 打招呼</button>
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('hug')" data-i18n="widget.pet_hug">🤗 抱抱</button>
-                        <button class="pet-action-btn" onclick="themeManager.petInteract('play')" data-i18n="widget.pet_play">🎾 玩耍</button>
-                    </div>
+                <div class="empathy-card">
+                    <div style="font-size:16px;font-weight:700;color:var(--theme-text, #4a3728);margin-bottom:4px;" id="empathyTitle">💞 今日共情小卡</div>
+                    <div style="font-size:12px;color:var(--theme-text-light, #8b7355);margin-bottom:16px;" id="empathySub">一次小小的对话，让心更近</div>
+                    <div class="big-emoji" id="empathyEmoji">🕊️</div>
+                    <div class="prompt" id="empathyPrompt">问问家人，今天最让你安心的一件事是什么？</div>
+                    <div class="meta" id="empathyMeta">试着用温柔的语气，和家人聊一聊</div>
+                    <button class="done-btn" id="empathyDoneBtn" onclick="themeManager.empathyComplete()">✓ 已完成</button>
+                    <div class="done-msg" id="empathyDoneMsg" style="display:none;">真好，你们的对话让今天有了温度</div>
                 </div>
             </div>
         `;
         document.body.appendChild(container);
+        this.initEmpathy();
     }
 
-    /* ===== 切换知识弹窗 ===== */
-    toggleKnowledge() {
-        document.getElementById('knowledgePopup')?.classList.add('show');
-        document.getElementById('popupOverlay')?.classList.add('show');
-    }
-
-    /* ===== 渲染主题书库（家庭主题书籍） ===== */
-    renderThemeLibrary() {
-        const wrap = document.getElementById('themeLibraryWrap');
-        const grid = document.getElementById('themeLibraryGrid');
-        if (!wrap || !grid) return;
-        const isEn = window.I18N && I18N.currentLocale === 'en';
-        // 主题组展示顺序与名称（后续主题可在此扩展）
-        const order = ['家庭'];
-        const names = {
-            '家庭': isEn ? '🏡 Family & Intimacy' : '🏡 家庭 · 亲密关系与家人'
-        };
-        let html = '';
-        order.forEach(cat => {
-            const items = this.knowledgeCategories[cat] || [];
-            if (!items.length) return;
-            html += `<div style="grid-column:1 / -1;font-size:0.78rem;font-weight:600;color:var(--color-gray-400);margin:0.5rem 0 0.1rem;">${names[cat] || cat}</div>`;
-            items.forEach(item => {
-                const rawDesc = (item.keyPoints && item.keyPoints.length) ? item.keyPoints[0] : '';
-                const desc = rawDesc.length > 26 ? rawDesc.slice(0, 26) + '…' : rawDesc;
-                html += `<div class="knowledge-card theme-card" onclick="themeManager.showKnowledgeDetail('${item.key}')">
-                            <div class="emoji">📖</div>
-                            <div class="title">${item.title}</div>
-                            <div class="desc">${desc}</div>
-                        </div>`;
-            });
-        });
-        if (html) {
-            grid.innerHTML = html;
-            wrap.style.display = 'block';
-        }
-    }
-
-    /* ===== 显示知识详情 ===== */
-    showKnowledgeDetail(key) {
-        const data = this.knowledgeLibrary[key];
-        if (!data) return;
-        document.getElementById('knowledgeTitle').innerHTML = data.title;
-        const src = data.source ? `<div class="kp-source">📖 ${data.source}</div>` : '';
-        const kp = (Array.isArray(data.keyPoints) && data.keyPoints.length)
-            ? `<div class="kp-list">${data.keyPoints.map(p => `<div class="kp-item"><span class="kp-icon">🌱</span><span>${p}</span></div>`).join('')}</div>`
-            : '';
-        const tags = (Array.isArray(data.tags) && data.tags.length)
-            ? `<div class="kp-tags">${data.tags.map(t => `<span class="kp-tag">${t}</span>`).join('')}</div>`
-            : '';
-        document.getElementById('knowledgeContent').innerHTML = src + kp + `<div class="kp-body">${data.content || ''}</div>` + tags;
-        document.getElementById('knowledgePopup')?.classList.remove('show');
-        document.getElementById('knowledgeDetailPopup')?.classList.add('show');
-    }
-
-    /* ===== 返回知识列表 ===== */
-    backToKnowledge() {
-        document.getElementById('knowledgeDetailPopup')?.classList.remove('show');
-        document.getElementById('knowledgePopup')?.classList.add('show');
-    }
-
-    /* ===== 切换宠物弹窗 ===== */
-    togglePet() {
-        const isEn = window.I18N && window.I18N.currentLocale === 'en';
-        const petIdx = Math.floor(Math.random() * this.petNames.length);
-        const petRawName = this.petNamesRaw[petIdx] || '爱心兔兔';
-        const petName = isEn ? (this.petNamesEn[petIdx] || petRawName) : (this.petNames[petIdx] || petRawName);
-        const petEmoji = this.petEmojis[petIdx] || '🐰';
-        const petMood = isEn ? (this.petMoodTextsEn[petIdx] || '✨ Warm') : (this.petMoodTexts[petIdx] || '✨ 心情愉悦');
-        const petMsg = isEn ? (this.petGreetingsEn[petIdx] || 'Hi~ so glad to see you!') : (this.petGreetings[petIdx] || '嗨～看到你真开心！');
-        
-        document.getElementById('petName').textContent = petName;
-        document.getElementById('petMood').textContent = petMood;
-        document.getElementById('petMsg').textContent = petMsg;
-        
-        // 更新宠物头像（图片路径始终用原始中文名）
-        const petAvatar = document.querySelector('#petPopup .pet-avatar');
-        if (petAvatar) {
-            const img = petAvatar.querySelector('img');
-            const action = petAvatar.querySelector('.pet-action');
-            if (img) {
-                img.src = `assets/images/companions/${petRawName}.png`;
-                img.alt = petName;
-            }
-            if (action) action.textContent = petEmoji;
-        }
-        document.getElementById('petPopup')?.classList.add('show');
-        document.getElementById('popupOverlay')?.classList.add('show');
-    }
-
-    /* ===== 宠物互动 ===== */
-    petInteract(action) {
-        const isEn = window.I18N && window.I18N.currentLocale === 'en';
-        const data = isEn ? (this.petInteractionsEn[action] || this.petInteractions[action]) : this.petInteractions[action];
-        if (!data || !data.messages) return;
-        const msg = data.messages[Math.floor(Math.random() * data.messages.length)];
-        document.getElementById('petMsg').textContent = msg;
-        document.getElementById('petMood').textContent = data.mood;
-    }
-
-    /* ===== 工作主题 - 重新设计的情绪垃圾桶 ===== */
-    createWorkEffects() {
-        // 内联 CSS（避免外部文件路径问题，双击打开也能正常显示）
-        if (!document.getElementById('emotion-trash-styles')) {
-            const style = document.createElement('style');
-            style.id = 'emotion-trash-styles';
-            style.textContent = `
-/* ===== 情绪垃圾桶样式 ===== */
-.emotion-trash-trigger {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-primary-400, #5cb8a8), var(--color-primary-500, #4aa898));
-    box-shadow: 0 4px 16px rgba(90, 154, 138, 0.35);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    cursor: pointer;
-    z-index: 100;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: none;
-    outline: none;
-}
-.emotion-trash-trigger:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 24px rgba(90, 154, 138, 0.5);
-}
-.emotion-trash-trigger.active {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-    transform: rotate(15deg);
-}
-.emotion-trash-trigger::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    background: rgba(90, 154, 138, 0.2);
-    animation: triggerBreathe 3s ease-in-out infinite;
-    pointer-events: none;
-}
-@keyframes triggerBreathe {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.2); opacity: 0; }
-}
-
-.emotion-trash-panel {
-    position: fixed;
-    bottom: 80px;
-    right: 24px;
-    width: 380px;
-    max-width: calc(100vw - 48px);
-    max-height: calc(100vh - 120px);
-    overflow-y: auto;
-    background: var(--theme-card, #ffffff);
-    border-radius: var(--radius-xl, 16px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-    z-index: 101;
-    padding: 2rem;
-    opacity: 0;
-    transform: translateY(20px) scale(0.95);
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 1px solid var(--theme-border, #e5e7eb);
-}
-.emotion-trash-panel.active {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-.emotion-trash-panel h3 {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--theme-text, #1f2937);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-.emotion-trash-panel .close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: none;
-    background: var(--theme-bg, #f9fafb);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    color: var(--theme-text-light, #9ca3af);
-    transition: all 0.2s ease;
-}
-.emotion-trash-panel .close-btn:hover {
-    background: var(--color-primary-50, #f0fdf4);
-    color: var(--color-primary-500, #5cb8a8);
-}
-
-.emotion-balls-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 1.5rem 0.75rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.25rem;
-}
-.emotion-ball-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-}
-.emotion-ball-new {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.emotion-ball-wrapper:hover .emotion-ball-new {
-    transform: scale(1.15) translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-.emotion-ball-wrapper.selected .emotion-ball-new {
-    transform: scale(0.9);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    opacity: 0.6;
-}
-.emotion-ball-new .ball-emoji {
-    pointer-events: none;
-}
-.emotion-ball-wrapper .ball-label {
-    font-size: 11px;
-    color: var(--theme-text-light, #9ca3af);
-    white-space: nowrap;
-    line-height: 1;
-}
-
-.trash-zone {
-    text-align: center;
-    padding: 1.5rem;
-    border: 2px dashed var(--theme-border, #e5e7eb);
-    border-radius: var(--radius-lg, 12px);
-    transition: all 0.3s ease;
-    cursor: pointer;
-    background: var(--theme-bg, #f9fafb);
-}
-.trash-zone:hover, .trash-zone.drag-over {
-    border-color: var(--color-primary-400, #5cb8a8);
-    background: var(--color-primary-50, #f0fdf4);
-    transform: scale(1.02);
-}
-.trash-zone.processing {
-    border-color: #ef4444;
-    background: #fef2f2;
-    animation: trashShake 0.5s ease-in-out;
-}
-@keyframes trashShake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-.trash-icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 0.5rem;
-    transition: transform 0.3s ease;
-}
-.trash-zone:hover .trash-icon {
-    transform: scale(1.1);
-}
-.trash-zone-text {
-    font-size: 0.85rem;
-    color: var(--theme-text-light, #9ca3af);
-}
-.trash-zone-text strong {
-    color: var(--color-primary-500, #5cb8a8);
-}
-
-.release-success {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    background: var(--theme-card, #ffffff);
-    border-radius: var(--radius-xl, 16px);
-    padding: 2rem 3rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-    text-align: center;
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-.release-success.active {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-.release-success .success-emoji {
-    font-size: 3rem;
-    display: block;
-    margin-bottom: 0.75rem;
-    animation: successBounce 0.6s ease-in-out;
-}
-@keyframes successBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-.release-success .success-text {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--theme-text, #1f2937);
-    margin-bottom: 0.5rem;
-}
-.release-success .success-subtext {
-    font-size: 0.85rem;
-    color: var(--theme-text-light, #9ca3af);
-    line-height: 1.6;
-}
-
-.release-particle {
-    position: fixed;
-    pointer-events: none;
-    z-index: 999;
-    animation: particleFly 1s ease-out forwards;
-}
-@keyframes particleFly {
-    0% { opacity: 1; transform: translate(0, 0) scale(1); }
-    100% { opacity: 0; transform: translate(var(--tx, 50px), var(--ty, -100px)) scale(0); }
-}
-            `;
-            document.head.appendChild(style);
-        }
-
-        // 创建 DOM 容器
+    /* ===== 娱乐主题 - 柔和光晕 + 解压小游戏工具栏 ===== */
+    createEntertainmentEffects() {
         const container = document.createElement('div');
         container.id = 'theme-effects';
         container.innerHTML = `
-            <!-- 触发器按钮 -->
-            <button class="emotion-trash-trigger" id="emotion-trash-trigger" aria-label="情绪垃圾桶">
-                🗑️
-            </button>
-
-            <!-- 展开面板 -->
-            <div class="emotion-trash-panel" id="emotion-trash-panel">
-                <button class="close-btn" id="close-trash-panel">✕</button>
-                <h3>🗑️ 释放负面情绪</h3>
-                <p style="font-size:0.85rem;color:var(--theme-text-light, #9ca3af);margin-bottom:1rem;">
-                    点击选择让你困扰的情绪，然后点击垃圾桶释放它
-                </p>
-
-                <!-- 情绪球网格 -->
-                <div class="emotion-balls-grid" id="emotion-balls-grid">
-                    <!-- 动态生成 -->
-                </div>
-
-                <!-- 垃圾桶区域 -->
-                <div class="trash-zone" id="trash-zone">
-                    <span class="trash-icon">🗑️</span>
-                    <p class="trash-zone-text">
-                        <strong>点击释放</strong> 选中的情绪<br>
-                        或拖拽情绪球到此区域
-                    </p>
-                </div>
-            </div>
-
-            <!-- 成功提示 -->
-            <div class="release-success" id="release-success">
-                <span class="success-emoji" id="success-emoji">✨</span>
-                <p class="success-text" id="success-text">已释放</p>
-                <p class="success-subtext" id="success-subtext">你可以继续释放其他情绪</p>
+            <style>
+                .ent-bg-overlay {
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                    background:
+                        radial-gradient(ellipse at 72% 22%, rgba(255,183,197,0.16) 0%, transparent 55%),
+                        radial-gradient(ellipse at 22% 82%, rgba(46,190,154,0.10) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(255,214,231,0.08) 0%, transparent 60%);
+                    pointer-events: none; z-index: -1;
+                    transition: background 0.5s ease;
+                }
+                .ent-game-btn {
+                    position: fixed; bottom: 24px; right: 24px; width: 48px; height: 48px;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, var(--color-primary-400, #8fb8a8), var(--color-primary-500, #20a882));
+                    box-shadow: 0 4px 16px rgba(32, 168, 130, 0.35);
+                    display: flex; align-items: center; justify-content: center;
+                    font-size: 20px; cursor: pointer; z-index: 100; border: none;
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                }
+                .ent-game-btn:hover { transform: scale(1.1) rotate(-6deg); box-shadow: 0 6px 24px rgba(32, 168, 130, 0.5); }
+                .ent-game-menu {
+                    position: fixed; bottom: 82px; right: 24px; z-index: 101;
+                    background: var(--theme-card, #ffffff);
+                    border: 1px solid var(--theme-border, #b8e8d8);
+                    border-radius: 16px; padding: 0.9rem;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+                    display: none; width: 236px;
+                }
+                .ent-game-menu.active { display: block; }
+                .ent-game-menu h4 {
+                    margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 700;
+                    color: var(--theme-text, #1a3530);
+                }
+                .ent-game-item {
+                    display: flex; align-items: center; gap: 0.5rem;
+                    width: 100%; text-align: left; padding: 0.55rem 0.7rem;
+                    border: none; background: transparent; border-radius: 10px;
+                    cursor: pointer; font-size: 0.85rem; font-weight: 600;
+                    color: var(--theme-text, #1a3530);
+                    transition: background 0.15s ease;
+                }
+                .ent-game-item:hover { background: var(--color-warm-50, #f0fdf9); }
+            </style>
+            <div class="ent-bg-overlay"></div>
+            <button class="ent-game-btn" id="ent-game-btn" aria-label="解压小游戏"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12h4M8 10v4"/><path d="M15 11h.01M18 13h.01"/><path d="M17.3 5H6.7a3.7 3.7 0 0 0-3.6 4.6l1.3 5.2A3.7 3.7 0 0 0 8 18h8a3.7 3.7 0 0 0 3.6-3.2l1.3-5.2A3.7 3.7 0 0 0 17.3 5z"/></svg></button>
+            <div class="ent-game-menu" id="ent-game-menu">
+                <h4 id="ent-game-title">解压小游戏</h4>
+                <button class="ent-game-item" data-game="snake"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 4a8 8 0 0 1 8 8"/><circle cx="4" cy="12" r="2" fill="currentColor"/><path d="M20 12c0 4-3.2 8-8 8s-8-4-8-8"/></svg><span>软糖蛇蛇</span></button>
+                <button class="ent-game-item" data-game="bubble"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><circle cx="17" cy="8" r="4"/><path d="M8 21a4.5 4.5 0 0 0 4.5-4.5A4.5 4.5 0 0 0 8 12a4.5 4.5 0 0 0-4.5 4.5A4.5 4.5 0 0 0 8 21z"/><circle cx="17" cy="8" r="1.2" fill="currentColor"/></svg><span>泡泡轻拍</span></button>
+                <button class="ent-game-item" data-game="star"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8-6.1-3.5-6.1 3.5 1.4-6.8L2.2 9.1l6.9-.8z"/></svg><span>星星收集</span></button>
+                <button class="ent-game-item" data-game="cloud"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M17.5 19a4.5 4.5 0 0 0 .42-8.98A6 6 0 0 0 6.1 11.5 4 4 0 0 0 7.5 19h10z"/></svg><span>云朵泡泡</span></button>
             </div>
         `;
         document.body.appendChild(container);
 
-        // 初始化情绪球
-        this.initEmotionBalls();
-
-        // 绑定事件
-        this.setupTrashInteractions();
-    }
-
-    /* ===== 初始化情绪球 ===== */
-    initEmotionBalls() {
-        const grid = document.getElementById('emotion-balls-grid');
-        if (!grid) return;
-
-        // 扩展的情绪列表
-        const emotions = [
-            { key: 'anxious',   emoji: '😰', label: '焦虑',  colors: ['#FFB6C1', '#FF69B4'] },
-            { key: 'sad',       emoji: '😢', label: '难过',  colors: ['#87CEEB', '#4682B4'] },
-            { key: 'angry',     emoji: '😡', label: '愤怒',  colors: ['#FFA07A', '#FF6347'] },
-            { key: 'tired',     emoji: '😴', label: '疲惫',  colors: ['#DDA0DD', '#9370DB'] },
-            { key: 'frustrated', emoji: '😤', label: '挫败',  colors: ['#FF7F50', '#FF4500'] },
-            { key: 'lonely',    emoji: '🙁', label: '孤独',  colors: ['#B0C4DE', '#6A5ACD'] },
-            { key: 'fearful',   emoji: '😨', label: '恐惧',  colors: ['#FFD700', '#FFA500'] },
-            { key: 'overwhelmed', emoji: '😵', label: '不堪重负', colors: ['#98FB98', '#2E8B57'] },
-        ];
-
-        grid.innerHTML = emotions.map(emotion => `
-            <div class="emotion-ball-wrapper" 
-                 data-emotion="${emotion.key}"
-                 title="${emotion.label}">
-                <div class="emotion-ball-new" 
-                     style="background: linear-gradient(135deg, ${emotion.colors[0]}, ${emotion.colors[1]});">
-                    <span>${emotion.emoji}</span>
-                </div>
-                <div class="ball-label">${emotion.label}</div>
-            </div>
-        `).join('');
-
-        // 添加点击事件
-        grid.querySelectorAll('.emotion-ball-wrapper').forEach(wrapper => {
-            wrapper.addEventListener('click', () => {
-                // 取消其他球的选中状态
-                grid.querySelectorAll('.emotion-ball-wrapper').forEach(b => b.classList.remove('selected'));
-                // 选中当前球
-                wrapper.classList.add('selected');
-                // 更新垃圾桶区域提示
-                const trashZone = document.getElementById('trash-zone');
-                if (trashZone) {
-                    const label = wrapper.querySelector('.ball-label').textContent;
-                    trashZone.querySelector('.trash-zone-text').innerHTML = 
-                        `点击释放 <strong>${label}</strong> 情绪`;
+        // 工具栏交互（games.js 未加载时动态注入）
+        const btn = document.getElementById('ent-game-btn');
+        const menu = document.getElementById('ent-game-menu');
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                const isEn = window.I18N && window.I18N.currentLocale === 'en';
+                const title = document.getElementById('ent-game-title');
+                if (title) title.textContent = isEn ? 'Tiny Games' : '解压小游戏';
+                menu.classList.toggle('active');
+            });
+            document.addEventListener('click', (e) => {
+                if (menu.classList.contains('active') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                    menu.classList.remove('active');
                 }
             });
-        });
-    }
-
-    /* ===== 设置垃圾桶交互 ===== */
-    setupTrashInteractions() {
-        const trigger = document.getElementById('emotion-trash-trigger');
-        const panel = document.getElementById('emotion-trash-panel');
-        const closeBtn = document.getElementById('close-trash-panel');
-        const trashZone = document.getElementById('trash-zone');
-        const successModal = document.getElementById('release-success');
-
-        if (!trigger || !panel) return;
-
-        // 触发器点击 - 展开/收起面板
-        trigger.addEventListener('click', () => {
-            const isActive = panel.classList.contains('active');
-            if (isActive) {
-                panel.classList.remove('active');
-                trigger.classList.remove('active');
-            } else {
-                panel.classList.add('active');
-                trigger.classList.add('active');
-            }
-        });
-
-        // 关闭按钮
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                panel.classList.remove('active');
-                trigger.classList.remove('active');
-            });
-        }
-
-        // 点击面板外部关闭
-        document.addEventListener('click', (e) => {
-            if (panel.classList.contains('active') && 
-                !panel.contains(e.target) && 
-                !trigger.contains(e.target)) {
-                panel.classList.remove('active');
-                trigger.classList.remove('active');
-            }
-        });
-
-        // 垃圾桶区域点击 - 释放选中的情绪
-        if (trashZone) {
-            trashZone.addEventListener('click', () => {
-                const selectedWrapper = panel.querySelector('.emotion-ball-wrapper.selected');
-                if (selectedWrapper) {
-                    const emotion = selectedWrapper.dataset.emotion;
-                    this.releaseEmotion(emotion, selectedWrapper);
-                } else {
-                    this.showToast('请先选择一种情绪', 'warning');
-                }
-            });
-
-            // 拖拽支持
-            trashZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                trashZone.classList.add('drag-over');
-            });
-
-            trashZone.addEventListener('dragleave', () => {
-                trashZone.classList.remove('drag-over');
-            });
-
-            trashZone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                trashZone.classList.remove('drag-over');
-                const emotion = e.dataTransfer.getData('emotion');
-                if (emotion) {
-                    const wrapper = panel.querySelector(`.emotion-ball-wrapper[data-emotion="${emotion}"]`);
-                    if (wrapper) {
-                        this.releaseEmotion(emotion, wrapper);
+            menu.querySelectorAll('.ent-game-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    menu.classList.remove('active');
+                    const name = item.dataset.game;
+                    const open = () => {
+                        if (window.openGame) { window.openGame(name); }
+                        else { this.showToast('小游戏组件加载中，请稍候…', 'info'); }
+                    };
+                    if (window.openGame) { open(); }
+                    else {
+                        const s = document.createElement('script');
+                        s.src = 'js/games.js?v=4';
+                        s.onload = open;
+                        document.head.appendChild(s);
                     }
+                });
+            });
+        }
+    }
+
+    /* ===== 工作主题 - 静谧氛围 ===== */
+    createWorkEffects() {
+        const container = document.createElement('div');
+        container.id = 'theme-effects';
+        container.innerHTML = `
+            <style>
+                .work-bg-overlay {
+                    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+                    background:
+                        radial-gradient(ellipse at 72% 22%, rgba(61,122,191,0.14) 0%, transparent 55%),
+                        radial-gradient(ellipse at 22% 82%, rgba(93,158,214,0.08) 0%, transparent 50%);
+                    pointer-events: none; z-index: -1;
+                    transition: background 0.5s ease;
                 }
-            });
-        }
-
-        // 支持情绪球拖拽
-        panel.querySelectorAll('.emotion-ball-wrapper').forEach(wrapper => {
-            wrapper.setAttribute('draggable', 'true');
-            wrapper.addEventListener('dragstart', (e) => {
-                e.dataTransfer.setData('emotion', wrapper.dataset.emotion);
-                wrapper.style.opacity = '0.5';
-            });
-            wrapper.addEventListener('dragend', () => {
-                wrapper.style.opacity = '1';
-            });
-        });
-    }
-
-    /* ===== 释放情绪 ===== */
-    releaseEmotion(emotionKey, ballElement) {
-        const trashZone = document.getElementById('trash-zone');
-        const successModal = document.getElementById('release-success');
-        const successEmoji = document.getElementById('success-emoji');
-        const successText = document.getElementById('success-text');
-        const successSubtext = document.getElementById('success-subtext');
-
-        if (!trashZone || !successModal) return;
-
-        // 垃圾桶处理动画
-        trashZone.classList.add('processing');
-        setTimeout(() => {
-            trashZone.classList.remove('processing');
-        }, 500);
-
-        // 情绪球消失动画
-        if (ballElement) {
-            const ball = ballElement.querySelector('.emotion-ball-new');
-            if (ball) {
-                ball.style.transform = 'scale(0)';
-                ball.style.opacity = '0';
-                setTimeout(() => {
-                    ball.style.transform = 'scale(1)';
-                    ball.style.opacity = '0.6';
-                    ballElement.classList.remove('selected');
-                }, 1200);
-            }
-        }
-
-        // 创建粒子效果
-        this.createReleaseParticles(trashZone);
-
-        // 显示成功提示
-        setTimeout(() => {
-            const encouragement = this.getEnhancedEncouragement(emotionKey);
-            if (successEmoji) successEmoji.textContent = encouragement.emoji;
-            if (successText) successText.textContent = encouragement.text;
-            if (successSubtext) successSubtext.textContent = encouragement.subtext;
-
-            successModal.classList.add('active');
-
-            // 2秒后自动关闭
-            setTimeout(() => {
-                successModal.classList.remove('active');
-            }, 2000);
-        }, 600);
-    }
-
-    /* ===== 创建释放粒子效果 ===== */
-    createReleaseParticles(targetElement) {
-        const rect = targetElement.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const emojis = ['✨', '💫', '🌟', '💖', '🕊️', '🌈'];
-
-        for (let i = 0; i < 12; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'release-particle';
-            particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-            
-            const angle = (Math.PI * 2 * i) / 12;
-            const distance = 50 + Math.random() * 100;
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
-
-            particle.style.cssText = `
-                left: ${centerX}px;
-                top: ${centerY}px;
-                font-size: ${16 + Math.random() * 12}px;
-                --tx: ${tx}px;
-                --ty: ${ty}px;
-            `;
-
-            document.body.appendChild(particle);
-
-            setTimeout(() => {
-                if (particle.parentNode) {
-                    particle.parentNode.removeChild(particle);
-                }
-            }, 1000);
-        }
-    }
-
-    /* ===== 增强的鼓励信息 ===== */
-    getEnhancedEncouragement(emotionKey) {
-        const encouragements = {
-            anxious: {
-                emoji: '🕊️',
-                text: '深呼吸，焦虑会过去的',
-                subtext: '试着关注当下，一次只做一件事'
-            },
-            sad: {
-                emoji: '🌈',
-                text: '允许自己难过，明天会更好',
-                subtext: '每一种情绪都有它存在的意义'
-            },
-            angry: {
-                emoji: '🧘',
-                text: '愤怒是正常的，让我们冷静一下',
-                subtext: '喝口水，数到十，给自己一点空间'
-            },
-            tired: {
-                emoji: '😊',
-                text: '休息一下，照顾好自己',
-                subtext: '你已經做得很好了，值得好好休息'
-            },
-            frustrated: {
-                emoji: '💪',
-                text: '挫败是成长的一部分',
-                subtext: '每次尝试都让你离成功更近一步'
-            },
-            lonely: {
-                emoji: '🤗',
-                text: '你并不孤单',
-                subtext: '世界上总有人在默默关心着你'
-            },
-            fearful: {
-                emoji: '🦁',
-                text: '勇敢不是不害怕，而是带着恐惧前行',
-                subtext: '你已经比昨天的自己更勇敢了'
-            },
-            overwhelmed: {
-                emoji: '🌊',
-                text: '不堪重负时，学会说"不"',
-                subtext: '优先级排序，一次只处理一件事'
-            }
-        };
-
-        return encouragements[emotionKey] || {
-            emoji: '✨',
-            text: '你做得很好！',
-            subtext: '继续加油，每一步都是进步'
-        };
-    }
-
-    /* ===== Toast 提示 ===== */
-    showToast(message, type = 'info') {
-        const colors = {
-            success: 'var(--color-primary-400, #5cb8a8)',
-            warning: '#F59E0B',
-            error: '#EF4444',
-            info: 'var(--color-primary-500, #4aa898)'
-        };
-
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: ${colors[type] || colors.info};
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 9999px;
-            font-size: 0.95rem;
-            z-index: 9999;
-            box-shadow: var(--shadow-lg, 0 10px 30px rgba(0,0,0,0.15));
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-            white-space: nowrap;
+            </style>
+            <div class="work-bg-overlay"></div>
         `;
-        toast.textContent = message;
-        document.body.appendChild(toast);
-
-        requestAnimationFrame(() => {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(-50%) translateY(0)';
-        });
-
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(-50%) translateY(20px)';
-            setTimeout(() => {
-                if (toast.parentNode) {
-                    toast.parentNode.removeChild(toast);
-                }
-            }, 300);
-        }, 2500);
+        document.body.appendChild(container);
     }
 
+
+
+
+    /* ===== 家庭共情练习卡 ===== */
+    initEmpathy() {
+        const btn = document.getElementById('empathy-btn');
+        if (btn) {
+            btn.addEventListener('click', () => this.toggleEmpathy());
+        }
+        // 每日一卡 + 完成状态
+        this._empathyCards = [
+            { zh: '问问家人，今天最让你安心的一件事是什么？', en: 'Ask your family: what was the most reassuring moment today?', emoji: '🕊️' },
+            { zh: '告诉家人一件你今天特别欣赏 TA 的小事。', en: 'Tell your family one small thing you truly appreciated about them today.', emoji: '🌷' },
+            { zh: '和家人分享一个今天让你微笑的瞬间。', en: 'Share a moment that made you smile today.', emoji: '🌤️' },
+            { zh: '认真听家人说两分钟，不打断、不建议。', en: 'Listen to your family for two minutes — no interrupting, no advice.', emoji: '👂' },
+            { zh: '给家人一个十秒的拥抱，感受彼此的温度。', en: "Give your family a ten-second hug and feel each other's warmth.", emoji: '🤗' },
+            { zh: '和家人聊聊明天最期待的一件小事。', en: 'Talk about one small thing you are both looking forward to tomorrow.', emoji: '🌱' },
+            { zh: '和家人回忆一件一起度过的开心小事。', en: 'Recall a small happy memory you shared together.', emoji: '📖' },
+            { zh: '对家人说一句今天最想感谢的话。', en: 'Say one grateful thing to your family today.', emoji: '💛' },
+            { zh: '问问家人，此刻最需要的是什么？', en: 'Ask your family what they need most right now.', emoji: '💧' },
+            { zh: '放下手机，和家人一起安静地待五分钟。', en: 'Put down your phone and sit quietly with your family for five minutes.', emoji: '🕯️' },
+        ];
+    }
+
+    toggleEmpathy() {
+        const isEn = window.I18N && window.I18N.currentLocale === 'en';
+        // 每日一卡（按日期索引，同一天同一张）
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 0);
+        const day = Math.floor((now - start) / 86400000);
+        const card = this._empathyCards[day % this._empathyCards.length];
+        const today = now.toISOString().slice(0, 10);
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('xinqing_empathy') || '{}'); } catch (e) {}
+        const doneToday = saved.date === today && saved.done;
+
+        document.getElementById('empathyEmoji').textContent = card.emoji;
+        document.getElementById('empathyPrompt').textContent = isEn ? card.en : card.zh;
+        document.getElementById('empathyTitle').textContent = isEn ? '💞 Today\'s Empathy Card' : '💞 今日共情小卡';
+        document.getElementById('empathySub').textContent = isEn ? 'A small conversation brings hearts closer' : '一次小小的对话，让心更近';
+        document.getElementById('empathyMeta').textContent = isEn ? 'Try a gentle tone and share with your family' : '试着用温柔的语气，和家人聊一聊';
+        const btn = document.getElementById('empathyDoneBtn');
+        const msg = document.getElementById('empathyDoneMsg');
+        if (doneToday) {
+            btn.textContent = isEn ? '✓ Done' : '✓ 已完成';
+            btn.classList.add('done');
+            btn.disabled = true;
+            msg.style.display = 'block';
+            msg.textContent = isEn ? 'Lovely — your conversation warmed today' : '真好，你们的对话让今天有了温度';
+        } else {
+            btn.textContent = isEn ? '✓ Mark Done' : '✓ 已完成';
+            btn.classList.remove('done');
+            btn.disabled = false;
+            msg.style.display = 'none';
+        }
+        document.getElementById('empathyPopup')?.classList.add('show');
+        document.getElementById('popupOverlay')?.classList.add('show');
+    }
+
+    empathyComplete() {
+        const isEn = window.I18N && window.I18N.currentLocale === 'en';
+        const now = new Date();
+        const today = now.toISOString().slice(0, 10);
+        try { localStorage.setItem('xinqing_empathy', JSON.stringify({ date: today, done: true })); } catch (e) {}
+        const btn = document.getElementById('empathyDoneBtn');
+        const msg = document.getElementById('empathyDoneMsg');
+        if (btn) { btn.textContent = isEn ? '✓ Done' : '✓ 已完成'; btn.classList.add('done'); btn.disabled = true; }
+        if (msg) {
+            msg.style.display = 'block';
+            msg.textContent = isEn ? 'Lovely — your conversation warmed today' : '真好，你们的对话让今天有了温度';
+        }
+    }
 
     /* ===== 情绪卡片 ===== */
     openEmotionCard(emotion) {
@@ -1174,16 +492,13 @@ class ThemeManager {
         document.getElementById('cardIcon').textContent  = data.icon;
         document.getElementById('cardTitle').textContent = data.title;
         document.getElementById('cardQuote').textContent = data.quote;
-        document.getElementById('knowledgePopup')?.classList.remove('show');
-        document.getElementById('emotionCardPopup').classList.add('show');
+
     }
 
     closePopup() {
         document.getElementById('popupOverlay')?.classList.remove('show');
         document.getElementById('emotionCardPopup')?.classList.remove('show');
-        document.getElementById('knowledgePopup')?.classList.remove('show');
-        document.getElementById('knowledgeDetailPopup')?.classList.remove('show');
-        document.getElementById('petPopup')?.classList.remove('show');
+        document.getElementById('empathyPopup')?.classList.remove('show');
     }
 
     /* ===== 顶部主题下拉切换 ===== */
@@ -1253,9 +568,14 @@ class ThemeManager {
                 .theme-dropdown-item .dot {
                     width:8px; height:8px; border-radius:50%; flex-shrink:0;
                 }
-                @media(max-width:640px){
-                    .theme-dropdown-wrap{top:8px;right:12px;}
-                    .theme-dropdown-btn{font-size:12px;padding:5px 10px;}
+                @media(max-width:768px){
+                    .theme-dropdown-wrap{top:10px;right:64px;}
+                    .theme-dropdown-btn{padding:5px 9px;border-radius:50%;}
+                    .theme-dropdown-btn .label{display:none;}
+                }
+                /* P1：主题切换时的颜色过渡 */
+                .theme-switching, .theme-switching * {
+                    transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease !important;
                 }
             </style>
             <div class="theme-dropdown-btn" id="themeDropdownBtn">
@@ -1303,6 +623,15 @@ class ThemeManager {
             btn.classList.remove('open');
         });
 
+        if (!this._localeListenerBound) {
+            this._localeListenerBound = true;
+            // P1：语言切换时同步刷新主题按钮名称
+            document.addEventListener('localeChanged', () => {
+                const btnEl = document.getElementById('themeDropdownBtn');
+                if (btnEl) btnEl.querySelector('.label').textContent = this.themeName(this.currentTheme);
+            });
+        }
+
         if (!this._themeListenerBound) {
             this._themeListenerBound = true;
             window.addEventListener('themeChanged', (e) => {
@@ -1312,7 +641,7 @@ class ThemeManager {
                 const menuEl = document.getElementById('themeDropdownMenu');
                 if (btnEl) {
                     btnEl.querySelector('.icon').textContent  = theme.icon;
-                    btnEl.querySelector('.label').textContent = theme.name;
+                    btnEl.querySelector('.label').textContent = this.themeName(e.detail.theme);
                 }
                 if (menuEl) {
                     menuEl.querySelectorAll('.theme-dropdown-item').forEach(i => {

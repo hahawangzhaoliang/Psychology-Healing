@@ -11,7 +11,7 @@
     <!-- 神经美学设计系统 -->
     <link rel="stylesheet" href="css/neuroaesthetics.css">
     <link rel="stylesheet" href="css/icons-custom.css">
-    <script src="js/i18n.js?v=20260929-28"></script>
+    <script src="js/i18n.js?v=20260929-37"></script>
     <script src="js/cache.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -626,6 +626,24 @@
         }
     </style>
 <script src="js/user-store.js"></script>
+
+    <script>
+    // P1：主题预应用（防首屏闪变）——与 theme-manager.js 内 vars 保持一致的精简子集
+    (function () {
+        try {
+            var T = localStorage.getItem('theme');
+            var V = {
+                home: {'--theme-bg':'#fdf8f3','--theme-card':'#ffffff','--theme-text':'#4a3728','--theme-text-light':'#8b7355','--theme-border':'#e8d5c0','--color-primary-500':'#c07a50'},
+                work: {'--theme-bg':'#f5f8fc','--theme-card':'#ffffff','--theme-text':'#1e2d3d','--theme-text-light':'#4a6080','--theme-border':'#d0dcea','--color-primary-500':'#3d7abf'},
+                entertainment: {'--theme-bg':'#f0fdf9','--theme-card':'#ffffff','--theme-text':'#1a3530','--theme-text-light':'#4a7a6a','--theme-border':'#b8e8d8','--color-primary-500':'#20a882'}
+            };
+            if (V[T]) {
+                var r = document.documentElement.style;
+                for (var k in V[T]) r.setProperty(k, V[T][k]);
+            }
+        } catch (e) {}
+    })();
+    </script>
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
@@ -1238,9 +1256,11 @@
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
     <!-- 主题管理器 -->
-    <script src="js/theme-manager.js?v=20260929-21"></script>
+    <script src="js/theme-manager.js?v=20260929-33"></script>
     <!-- 虚拟动物陪伴组件 -->
     <script src="js/companion-widget.js"></script>
+    <!-- M1：情绪释放组件（记录完成后引导"轻轻放下"） -->
+    <script src="js/emotion-release.js?v=2"></script>
     <script>
         /* ========== i18n 翻译辅助函数 ========== */
         function _t(key, zhDefault) {
@@ -1530,6 +1550,20 @@
 
                 /* P0 埋点：情绪日记完成（匿名，仅事件计数） */
                 try { if (window.Analytics) window.Analytics.track('emotion_diary_complete'); } catch (e) { /* ignore */ }
+
+                /* M1：记录完成后引导"把这些情绪轻轻放下"（预填本次已选情绪） */
+                try {
+                    if (window.EmotionRelease) {
+                        const relEmotions = selectedEmotions.map(e => ({
+                            key: e.key,
+                            name: e.name,
+                            emoji: e.emoji || '✨',
+                            colors: e.colors || ['#C4B5A5', '#A89484']
+                        }));
+                        EmotionRelease.setEmotions(relEmotions);
+                        setTimeout(() => EmotionRelease.open(), 1200);
+                    }
+                } catch (e) { /* ignore */ }
 
                 /* 重置表单 */
                 selectedEmotions = [];
@@ -2314,6 +2348,9 @@
             }
             initTabs();
             initTagButtons();
+
+            /* M1：情绪释放组件（常驻悬浮入口 🍃） */
+            if (window.EmotionRelease) EmotionRelease.init();
 
             /* 等待 i18n 就绪后再初始化依赖翻译的内容 */
             const startSlider = () => {

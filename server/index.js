@@ -65,6 +65,12 @@ if (process.env.VERCEL !== '1') {
     app.use(express.static(path.join(__dirname, '../public'), {
         maxAge: '1d',
         etag: true,
+        setHeaders: (res, filePath) => {
+            // HTML 页面不缓存，保证每次都能拿到最新版本（配合 ?v= 防 js 缓存）
+            if (filePath.endsWith('.html')) {
+                res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+            }
+        },
     }));
 }
 
