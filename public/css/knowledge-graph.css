@@ -86,9 +86,9 @@ body {
 .filter-group {
     display: flex;
     gap: 0.35rem;
-    margin-left: auto;
-    flex-shrink: 0;
+    flex-shrink: 1;
     flex-wrap: nowrap;
+    min-width: 0;
     overflow-x: auto;
     scrollbar-width: none;
     -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
@@ -122,6 +122,23 @@ body {
     border-radius: 50%;
     display: inline-block;
     flex-shrink: 0;
+}
+
+/* 书籍互文图层开关：独立于横向滚动的筛选组，始终可见 */
+.layer-toggle {
+    margin-left: auto;
+    flex-shrink: 0;
+    border-style: dashed;
+    color: var(--color-text-secondary);
+}
+.layer-toggle.active {
+    border-style: solid;
+    border-color: var(--color-primary-400);
+    background: var(--color-primary-50);
+    color: var(--color-primary-600);
+}
+@media (max-width: 640px) {
+    .layer-toggle { margin-left: 0; align-self: flex-start; }
 }
 
 /* 移动端：工具栏垂直堆叠 */

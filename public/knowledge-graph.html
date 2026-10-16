@@ -465,12 +465,10 @@
             <button class="view-tab" data-view="cards" ><svg class="icon icon--md"><use href="#icon-circle-check"></use></svg> <span data-i18n="knowledge_graph.tab_cards_text">卡片浏览</span></button>
             <button class="view-tab" data-view="path" ><svg class="icon icon--md"><use href="#icon-flow"></use></svg> <span data-i18n="knowledge_graph.tab_path_text">学习路径</span></button>
         </div>
-        <div class="filter-group">
+        <button class="filter-chip layer-toggle" id="echoLayerToggle" data-i18n="knowledge_graph.toggle_echoes" title="显示书籍之间的语义互文关系">书籍互文</button>
+        <div class="filter-group" id="filterGroup">
             <button class="filter-chip active" data-filter="all" data-i18n="knowledge_graph.filter_all"><span class="dot" style="background:var(--color-primary-400);"></span>全部</button>
-            <button class="filter-chip" data-filter="positive" data-i18n="knowledge_graph.filter_positive"><span class="dot" style="background:#E07A5F;"></span>积极心理学</button>
-            <button class="filter-chip" data-filter="cognitive" data-i18n="knowledge_graph.filter_cognitive"><span class="dot" style="background:#3D8B8B;"></span>认知心理学</button>
-            <button class="filter-chip" data-filter="clinical" data-i18n="knowledge_graph.filter_clinical"><span class="dot" style="background:#5B8DB8;"></span>临床治疗</button>
-            <button class="filter-chip" data-filter="motivation" data-i18n="knowledge_graph.filter_motivation"><span class="dot" style="background:#D4A373;"></span>动机与改变</button>
+            <div id="themeChips" style="display:contents;"></div>
         </div>
     </div>
 
@@ -546,7 +544,7 @@
     <!-- 神经美学交互引擎 -->
     <script src="js/neuroaesthetics.js"></script>
     <script src="js/theme-manager.js?v=20260929-33"></script>
-    <script src="js/i18n.js?v=20260929-37"></script>
+    <script src="js/i18n.js?v=20260929-39"></script>
 
     <script>
     // ========= i18n 辅助函数 =========
@@ -559,9 +557,13 @@
 
     // ========== 全局状态 ==========
     let theories = [];
+    let theoryNodes = [];
     let relationships = [];
+    let graphSim = null;
     let currentFilter = 'all';
     let currentView = 'graph';
+    let themeNodes = [];
+    let activeThemeId = null;
     let svg, g, zoomTransform = { k: 1, x: 0, y: 0 };
 
     // ========== 颜色映射（适配心晴空间色系） ==========
@@ -596,35 +598,97 @@
     };
 
     // ========== 数据加载 ==========
+    function normalizeData(raw) {
+        const isEn = window.I18N && I18N.currentLocale === 'en';
+        const pick = (f) => (f == null ? '' : (typeof f === 'string' ? f : (isEn ? (f.en || f.zh || '') : (f.zh || f.en || ''))));
+        const nodes = (raw.nodes || []).map(n => {
+            const t = n.type || 'theory';
+            return {
+                ...n,
+                type: t,
+                label: pick(n.label),
+                category: n.category || (t === 'book' ? 'book' : t === 'theme' ? 'theme' : 'concept'),
+                difficulty: n.difficulty || 'beginner',
+                summary: pick(n.summary),
+                desc: pick(n.desc),
+                author: n.author || '',
+                year: n.year || '',
+                practices: n.practices || [],
+                coreTheories: n.coreTheories || [],
+                healing: n.healing || [],
+                audience: n.audience || [],
+                contribution: n.contribution || [],
+                quote: n.quote || '',
+                date: n.date || '',
+                // v3 新增字段
+                author: n.author || '',
+                publisher: n.publisher || '',
+                oneLine: n.oneLine || '',
+                themeIds: n.themeIds || [],
+                color: t === 'theme' ? '#D4956A' : t === 'book' ? '#6B9BD1' : (colorMap[n.category] || '#5A9A8A'),
+            };
+        });
+        const edges = (raw.edges || []).map(e => ({
+            relation: e.relation || 'related',
+            note: e.note || '',
+            source: typeof e.source === 'object' ? e.source.id : e.source,
+            target: typeof e.target === 'object' ? e.target.id : e.target,
+        }));
+        return { nodes, edges };
+    }
+
+    // ========== 数据加载 ==========
     async function loadData() {
         const loadingEl = document.getElementById('loadingState');
         const errorEl = document.getElementById('errorState');
 
         try {
-            // 根据当前语言选择数据文件
-            const isEn = window.I18N && I18N.currentLocale === 'en';
-            const graphDataFile = isEn ? '/data/graph-en.json' : '/data/graph.json';
-
-            // 优先从 API 加载（Blob 存储）
+            // v3：含书籍字段（作者/疗愈维度/学科）与书间语义互文边，由 scripts/build_graph_v3.py 生成
+            // v2 作为兜底，保证 v3 缺失时页面仍可用
             let data = null;
-            try {
-                const json = await Cache.cachedFetch('/api/knowledge/graph');
-                data = { nodes: json.nodes || [], edges: json.edges || [] };
-            } catch (apiErr) {
-                console.log('API load failed, trying local fallback', apiErr);
+            for (const src of ['/data/graph-v3.json?v=1', '/data/graph-v2.json?v=3']) {
+                try {
+                    data = await Cache.cachedFetch(src);
+                    if (data && data.nodes && data.nodes.length) {
+                        console.log('知识图谱数据源:', src);
+                        break;
+                    }
+                    data = null;
+                } catch (loadErr) {
+                    console.log(src, 'load failed', loadErr);
+                }
             }
-
-            // API 失败则降级到本地 JSON
             if (!data || !data.nodes.length) {
-                data = await Cache.cachedFetch(graphDataFile);
+                try {
+                    const json = await Cache.cachedFetch('/api/knowledge/graph');
+                    data = { nodes: json.nodes || [], edges: json.edges || [] };
+                } catch (apiErr) {
+                    console.log('API load failed', apiErr);
+                }
             }
-
             if (!data || !data.nodes.length) {
                 throw new Error('无可用数据');
             }
 
-            theories = data.nodes;
-            relationships = data.edges;
+            const normalized = normalizeData(data);
+            theories = normalized.nodes;
+            relationships = normalized.edges;
+            theoryNodes = theories.filter(n => n.type === 'theory');
+            themeNodes = theories.filter(n => n.type === 'theme');
+            bindEchoToggle();   // 数据就绪后再绑定图层开关
+
+            // 动态生成主题筛选 chips
+            const chipsWrap = document.getElementById('themeChips');
+            if (chipsWrap) {
+                themeNodes.forEach(t => {
+                    const b = document.createElement('button');
+                    b.className = 'filter-chip';
+                    b.dataset.filter = t.id;
+                    b.innerHTML = `<span class="dot" style="background:#D4956A;"></span>${t.label}`;
+                    b.addEventListener('click', () => { currentFilter = b.dataset.filter; activeThemeId = null; applyFilter(); });
+                    chipsWrap.appendChild(b);
+                });
+            }
 
             loadingEl.style.display = 'none';
             document.getElementById('graphView').style.display = 'block';
@@ -643,13 +707,49 @@
         }
     }
 
-    // ========== D3 图谱 ==========
+    // ========== D3 图谱（三层节点） ==========
+    function nodeRadius(d) {
+        return d.type === 'theme' ? 30 : d.type === 'book' ? 17 : 11;
+    }
+    function edgeStyle(e) {
+        if (e.relation === 'contains') return { stroke: '#D4956A', dash: '5,4', op: 0.28, dist: 90 };
+        if (e.relation === 'covers') return { stroke: '#8fa8c8', dash: '3,4', op: 0.22, dist: 100 };
+        // 书籍间语义互文：更细更淡，默认隐藏（由 echoLayerOn 控制）
+        if (e.relation === 'echoes') return { stroke: '#7FBFA8', dash: '2,5', op: 0.34, dist: 130 };
+        return { stroke: '#bbb', dash: null, op: 0.45, dist: 110 };
+    }
+
+    // ========== 书籍互文图层开关 ==========
+    // 默认关闭：开启后显示书↔书 的语义互文边。
+    // 边会影响力导向布局，因此切换时重建模拟，而非仅改样式。
+    let echoLayerOn = false;
+    function currentEdges() {
+        return echoLayerOn ? relationships : relationships.filter(e => e.relation !== 'echoes');
+    }
+    function applyEchoLayer() {
+        const btn = document.getElementById('echoLayerToggle');
+        if (btn) btn.classList.toggle('active', echoLayerOn);
+        if (!g || currentView !== 'graph') return;
+        // 重建模拟：边集合变了，forceLink 的输入也必须变
+        initGraph();
+        // 等待新一层渲染后再套用筛选，避免作用在已被清空的旧元素上
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => applyCurrentFilter());
+        });
+    }
     function initGraph() {
         const wrapper = document.querySelector('.graph-svg-wrapper');
         const w = wrapper.clientWidth;
         const h = wrapper.clientHeight;
 
-        svg = d3.select('#graphSvg').attr('width', w).attr('height', h);
+        // 停止上一轮模拟：否则旧 sim 会继续往已移除的 DOM 写坐标，
+        // 并与新 sim 争抢 theories 节点的坐标。
+        if (graphSim) { graphSim.stop(); graphSim = null; }
+
+        // 重建前清空旧图层，避免重复叠加
+        svg = d3.select('#graphSvg');
+        svg.selectAll('*').remove();
+        svg.attr('width', w).attr('height', h);
 
         const zoom = d3.zoom()
             .scaleExtent([0.3, 3])
@@ -661,23 +761,26 @@
 
         g = svg.append('g');
 
-        const sim = d3.forceSimulation(theories)
-            .force('link', d3.forceLink(relationships).id(d => d.id).distance(120))
-            .force('charge', d3.forceManyBody().strength(-400))
+        const edges = currentEdges();
+
+        graphSim = d3.forceSimulation(theories)
+            .force('link', d3.forceLink(edges).id(d => d.id).distance(e => edgeStyle(e).dist))
+            .force('charge', d3.forceManyBody().strength(-520))
             .force('center', d3.forceCenter(w / 2, h / 2))
-            .force('collide', d3.forceCollide().radius(55));
+            .force('collide', d3.forceCollide().radius(d => nodeRadius(d) + 14));
 
         const link = g.append('g')
             .selectAll('line')
-            .data(relationships)
+            .data(edges)
             .join('line')
-            .attr('stroke', '#bbb')
-            .attr('stroke-opacity', 0.5)
-            .attr('stroke-width', 1.5);
+            .attr('stroke', e => edgeStyle(e).stroke)
+            .attr('stroke-dasharray', e => edgeStyle(e).dash || null)
+            .attr('stroke-opacity', e => edgeStyle(e).op)
+            .attr('stroke-width', e => e.relation === 'contains' ? 1.6 : 1.2);
 
         const linkLabel = g.append('g')
             .selectAll('text')
-            .data(relationships)
+            .data(edges)
             .join('text')
             .attr('class', 'link-label')
             .text(d => d.type)
@@ -687,9 +790,10 @@
             .selectAll('g')
             .data(theories)
             .join('g')
+            .attr('class', 'graph-node')
             .call(d3.drag()
                 .on('start', (e, d) => {
-                    if (!e.active) sim.alphaTarget(0.3).restart();
+                    if (!e.active) graphSim.alphaTarget(0.3).restart();
                     d.fx = d.x;
                     d.fy = d.y;
                 })
@@ -698,34 +802,82 @@
                     d.fy = e.y;
                 })
                 .on('end', (e, d) => {
-                    if (!e.active) sim.alphaTarget(0);
+                    if (!e.active) graphSim.alphaTarget(0);
                     d.fx = null;
                     d.fy = null;
                 }));
 
-        node.append('circle')
-            .attr('r', d => d.difficulty === 'beginner' ? 26 : d.difficulty === 'intermediate' ? 24 : 22)
-            .attr('fill', d => colorMap[d.category])
+        // 主题层：大圆环 + 核心
+        node.filter(d => d.type === 'theme').append('circle')
+            .attr('r', 30)
+            .attr('fill', 'rgba(212,149,106,0.13)')
+            .attr('stroke', '#D4956A')
+            .attr('stroke-width', 2.2)
+            .attr('cursor', 'pointer')
+            .attr('class', 'theme-halo')
+            .on('mouseover', showTooltip)
+            .on('mouseout', hideTooltip)
+            .on('click', (e, d) => { e.stopPropagation(); toggleTheme(d); });
+        node.filter(d => d.type === 'theme').append('circle')
+            .attr('r', 8)
+            .attr('fill', '#D4956A')
             .attr('stroke', '#fff')
-            .attr('stroke-width', 3)
+            .attr('stroke-width', 2)
+            .attr('cursor', 'pointer')
+            .on('mouseover', showTooltip)
+            .on('mouseout', hideTooltip)
+            .on('click', (e, d) => { e.stopPropagation(); toggleTheme(d); });
+        node.filter(d => d.type === 'theme').append('text')
+            .attr('class', 'node-label')
+            .attr('dy', -38)
+            .attr('font-size', '13px')
+            .attr('font-weight', '700')
+            .attr('fill', '#A06B45')
+            .text(d => d.label);
+
+        // 书籍层：圆角方块（默认弱化，hover 强化）
+        node.filter(d => d.type === 'book').append('rect')
+            .attr('width', 62)
+            .attr('height', 34)
+            .attr('x', -31)
+            .attr('y', -17)
+            .attr('rx', 9)
+            .attr('fill', '#6B9BD1')
+            .attr('fill-opacity', 0.82)
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 2)
+            .attr('cursor', 'pointer')
+            .style('opacity', 0.55)
+            .on('mouseover', function(e, d) { d3.select(this).style('opacity', 1); showTooltip(e, d); })
+            .on('mouseout', function(e, d) { d3.select(this).style('opacity', 0.55); hideTooltip(); })
+            .on('click', (e, d) => { e.stopPropagation(); openDetail(d); });
+        node.filter(d => d.type === 'book').append('text')
+            .attr('class', 'node-label')
+            .attr('dy', 3.5)
+            .attr('font-size', '10.5px')
+            .attr('font-weight', '600')
+            .attr('fill', '#ffffff')
+            .text(d => (d.label.length > 7 ? d.label.slice(0, 7) + '…' : d.label));
+
+        // 理论层：小圆（分类色）
+        node.filter(d => d.type === 'theory').append('circle')
+            .attr('r', 11)
+            .attr('fill', d => colorMap[d.category] || '#5A9A8A')
+            .attr('stroke', '#fff')
+            .attr('stroke-width', 2)
             .attr('cursor', 'pointer')
             .on('mouseover', showTooltip)
             .on('mouseout', hideTooltip)
             .on('click', (e, d) => { e.stopPropagation(); openDetail(d); });
-
-        node.append('text')
+        node.filter(d => d.type === 'theory').append('text')
             .attr('class', 'node-label')
             .attr('dy', 4)
-            .text(d => d.label);
+            .attr('font-size', '10px')
+            .attr('font-weight', '600')
+            .attr('fill', '#4a4a4a')
+            .text(d => (d.label.length > 8 ? d.label.slice(0, 8) + '…' : d.label));
 
-        node.append('text')
-            .attr('class', 'node-label')
-            .attr('dy', 16)
-            .attr('font-size', '9px')
-            .attr('fill', '#666')
-            .text(d => d.author);
-
-        sim.on('tick', () => {
+        graphSim.on('tick', () => {
             link
                 .attr('x1', d => d.source.x)
                 .attr('y1', d => d.source.y)
@@ -737,13 +889,20 @@
             node.attr('transform', d => `translate(${d.x},${d.y})`);
         });
 
+        // 主题切换：高亮该主题子图
+        function toggleTheme(d) {
+            const isActive = activeThemeId === d.id;
+            activeThemeId = isActive ? null : d.id;
+            applyFilter();
+        }
+
         window.addEventListener('resize', () => {
             const wrapper = document.querySelector('.graph-svg-wrapper');
             const nw = wrapper.clientWidth;
             const nh = wrapper.clientHeight;
             svg.attr('width', nw).attr('height', nh);
-            sim.force('center', d3.forceCenter(nw / 2, nh / 2));
-            sim.alpha(0.3).restart();
+            graphSim.force('center', d3.forceCenter(nw / 2, nh / 2));
+            graphSim.alpha(0.3).restart();
         });
     }
 
@@ -767,7 +926,14 @@
     // ========== Tooltip ==========
     function showTooltip(e, d) {
         const t = document.getElementById('tooltip');
-        t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.8">${getCategoryName(d.category)} · ${getDiffName(d.difficulty)}</span><br/><span style="font-size:.8rem;opacity:.7">${d.author} (${d.year})</span>`;
+        if (d.type === 'theme') {
+            const cnt = relationships.filter(r => r.source === d.id || r.target === d.id).length;
+            t.innerHTML = `<strong>${d.label}</strong><br/><span style="font-size:.8rem;opacity:.75">${_t('knowledge_graph.tt_theme', '主题 · {n} 本书').replace('{n}', cnt)}</span><br/><span style="font-size:.75rem;opacity:.6">${_t('knowledge_graph.tt_click_theme', '点击查看主题书籍')}</span>`;
+        } else if (d.type === 'book') {
+            t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.75"> · ${_t('knowledge_graph.tt_book', '疗愈书籍 · 读书笔记')}</span><br/><span style="font-size:.8rem;opacity:.7">${(d.coreTheories || []).slice(0, 2).join(' · ')}</span>`;
+        } else {
+            t.innerHTML = `<strong>${d.label}</strong><span style="opacity:.8">${getCategoryName(d.category)} · ${getDiffName(d.difficulty)}</span><br/><span style="font-size:.8rem;opacity:.7">${d.author} (${d.year})</span>`;
+        }
         t.style.display = 'block';
         t.style.left = (e.clientX + 12) + 'px';
         t.style.top = (e.clientY - 12) + 'px';
@@ -781,6 +947,9 @@
         const overlay = document.getElementById('detailOverlay');
         const sheet = document.getElementById('detailSheet');
         const header = document.getElementById('detailHeader');
+
+        if (d.type === 'book') { openBookDetail(d); return; }
+        if (d.type === 'theme') { openThemeDetail(d); return; }
 
         document.getElementById('detailCategory').textContent = getCategoryName(d.category) + ' · ' + getDiffName(d.difficulty);
         document.getElementById('detailTitle').textContent = d.label;
@@ -822,6 +991,87 @@
         document.body.style.overflow = 'hidden';
     }
 
+    // ===== 书籍详情 =====
+    function openBookDetail(b) {
+        const overlay = document.getElementById('detailOverlay');
+        const sheet = document.getElementById('detailSheet');
+        document.getElementById('detailCategory').textContent = _t('knowledge_graph.tt_book', '疗愈书籍 · 读书笔记');
+        document.getElementById('detailTitle').textContent = b.label;
+        const metaBits = [];
+        if (b.author) metaBits.push(b.author);
+        if (b.publisher) metaBits.push(b.publisher);
+        if (b.date) metaBits.push(b.date);
+        document.getElementById('detailMeta').textContent = metaBits.join(' · ');
+        document.getElementById('detailHeader').style.background = 'linear-gradient(135deg,#6B9BD1 0%,' + adjustColor('#6B9BD1', -30) + ')';
+        let html = '';
+        if (b.oneLine) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> ${_t('knowledge_graph.section_book_oneline', '一句话主题')}</div><p style="font-style:italic;">${b.oneLine}</p></div>`;
+        if (b.quote) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-heart"></use></svg> ${_t('knowledge_graph.section_book_quote', '书中一句话')}</div><p style="font-style:italic;">${b.quote}</p></div>`;
+        if (b.core) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-lightbulb"></use></svg> ${_t('knowledge_graph.section_book_core', '核心内容')}</div><p>${b.core}</p></div>`;
+        if (b.coreTheories && b.coreTheories.length) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-star"></use></svg> ${_t('knowledge_graph.section_book_meta', '核心理论')}</div><div class="detail-tags">${b.coreTheories.map(c => `<span class="card-tag">${c}</span>`).join('')}</div></div>`;
+        if (b.lifeExamples) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-flower"></use></svg> ${_t('knowledge_graph.section_book_life', '生活例子')}</div><p>${b.lifeExamples}</p></div>`;
+        if (b.practices) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-play"></use></svg> ${_t('knowledge_graph.section_book_practice', '实践练习')}</div><p>${b.practices}</p></div>`;
+        if (b.discipline && b.discipline.length) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-knowledge"></use></svg> ${_t('knowledge_graph.section_book_disc', '学科领域')}</div><p>${b.discipline.join(' · ')}</p></div>`;
+        if (b.healing && b.healing.length) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-leaf"></use></svg> ${_t('knowledge_graph.section_book_healing', '疗愈维度')}</div><p>${b.healing.join(' · ')}</p></div>`;
+        if (b.audience && b.audience.length) html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-user"></use></svg> ${_t('knowledge_graph.section_book_audience', '适读人群')}</div><p>${b.audience.join(' · ')}</p></div>`;
+        // 语义互文书籍（书↔书）
+        const echoRel = relationships.filter(r => r.relation === 'echoes'
+            && (r.source === b.id || r.target === b.id));
+        if (echoRel.length) {
+            const seen = new Set();
+            const items = [];
+            for (const r of echoRel) {
+                const otherId = r.source === b.id ? r.target : r.source;
+                if (seen.has(otherId)) continue;
+                seen.add(otherId);
+                const other = theories.find(t => t.id === otherId);
+                if (other) items.push({ other, note: r.note || '' });
+            }
+            if (items.length) {
+                html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-flow"></use></svg> ${_t('knowledge_graph.section_book_echo', '脉络衔接 · {n} 本').replace('{n}', items.length)}</div><div style="display:flex;flex-direction:column;gap:8px;">`;
+                items.forEach(it => {
+                    html += `<div style="padding:9px 12px;background:#f2f8f5;border-radius:12px;cursor:pointer;" onclick="openDetailById('${it.other.id}')">`
+                        + `<div style="font-weight:600;font-size:13px;color:#2c3e50;">${it.other.label}</div>`
+                        + (it.note ? `<div style="font-size:11px;color:#6b8a80;margin-top:3px;line-height:1.5;">${it.note}</div>` : '')
+                        + `</div>`;
+                });
+                html += `</div></div>`;
+            }
+        }
+        // 关联理论
+        const relTheories = relationships.filter(r => (r.source === b.id || r.target === b.id) && (r.relation === 'covers'))
+            .map(r => theoryNodes.find(t => t.id === (r.source === b.id ? r.target : r.source)))
+            .filter(Boolean);
+        if (relTheories.length) {
+            html += `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-flow"></use></svg> ${_t('knowledge_graph.section_book_related', '关联理论')}</div><div class="detail-tags">${relTheories.map(t => `<span class="card-tag" style="cursor:pointer;" onclick="openDetailById('${t.id}')">${t.label}</span>`).join('')}</div></div>`;
+        }
+        document.getElementById('detailBody').innerHTML = html;
+        overlay.classList.add('active');
+        sheet.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // ===== 主题详情 =====
+    function openThemeDetail(th) {
+        const overlay = document.getElementById('detailOverlay');
+        const sheet = document.getElementById('detailSheet');
+        document.getElementById('detailCategory').textContent = _t('knowledge_graph.tt_theme', '主题');
+        document.getElementById('detailTitle').textContent = th.label;
+        document.getElementById('detailMeta').textContent = th.summary || '';
+        document.getElementById('detailHeader').style.background = 'linear-gradient(135deg,#D4956A 0%,' + adjustColor('#D4956A', -30) + ')';
+        const books = theories.filter(n => n.type === 'book' && (n.themeIds || []).indexOf(th.id) !== -1);
+        let html = `<div class="detail-section"><div class="detail-section-title"><svg class="icon icon--md"><use href="#icon-journal"></use></svg> ${_t('knowledge_graph.section_theme_books', '主题书籍 · {n} 本').replace('{n}', books.length)}</div>`;
+        if (books.length) {
+            html += `<div style="display:flex;flex-direction:column;gap:8px;">${books.map(b => `<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:#f5f9fd;border-radius:12px;cursor:pointer;" onclick="openDetailById('${b.id}')"><div style="width:34px;height:34px;border-radius:10px;background:#6B9BD1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">📖</div><div><div style="font-weight:600;font-size:13px;color:#2c3e50;">${b.label}</div><div style="font-size:11px;color:#8b8b8b;">${(b.coreTheories || []).slice(0, 2).join(' · ')}</div></div></div>`).join('')}</div>`;
+        } else {
+            html += `<p>${_t('knowledge_graph.section_theme_empty', '暂无书籍')}</p>`;
+        }
+        html += '</div>';
+        document.getElementById('detailBody').innerHTML = html;
+        overlay.classList.add('active');
+        sheet.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
     function closeDetail() {
         document.getElementById('detailOverlay').classList.remove('active');
         document.getElementById('detailSheet').classList.remove('active');
@@ -840,8 +1090,16 @@
     function renderCards() {
         const grid = document.getElementById('cardsGrid');
         grid.innerHTML = '';
-        theories.forEach(t => {
-            if (currentFilter !== 'all' && t.category !== currentFilter) return;
+        theoryNodes.forEach(t => {
+            if (currentFilter !== 'all') {
+                if (currentFilter.startsWith('theme_')) {
+                    // 主题筛选：仅显示该主题书籍关联的理论
+                    const inTheme = relationships.some(r => (r.source === t.id || r.target === t.id) && (r.relation === 'covers') && (
+                        (r.source === t.id ? theories.find(n => n.id === r.target) : theories.find(n => n.id === r.source))
+                        && (theories.find(n => n.id === (r.source === t.id ? r.target : r.source)).themeIds || []).indexOf(currentFilter) !== -1));
+                    if (!inTheme) return;
+                } else if (t.category !== currentFilter) return;
+            }
             const card = document.createElement('div');
             card.className = 'knowledge-card';
             card.style.borderColor = (colorMap[t.category] || '#5A9A8A') + '30';
@@ -875,8 +1133,8 @@
             { key: 'advanced', icon: '<svg class="icon icon--md"><use href="#icon-tree"></use></svg>', title: _t('knowledge_graph.stage3_title', '第三阶段：深入实践'), desc: _t('knowledge_graph.stage3_desc', '掌握复杂理论，整合应用于生活') }
         ];
         stages.forEach(stage => {
-            const items = theories.filter(t => t.difficulty === stage.key).sort((a, b) => (a.order || 0) - (b.order || 0));
-            if (currentFilter !== 'all') {
+            const items = theoryNodes.filter(t => t.difficulty === stage.key).sort((a, b) => (a.order || 0) - (b.order || 0));
+            if (currentFilter !== 'all' && !currentFilter.startsWith('theme_')) {
                 const fitems = items.filter(t => t.category === currentFilter);
                 if (!fitems.length) return;
             }
@@ -884,7 +1142,7 @@
             stageEl.className = 'path-stage';
             let cardsHtml = '';
             items.forEach(t => {
-                if (currentFilter !== 'all' && t.category !== currentFilter) return;
+                if (currentFilter !== 'all' && !currentFilter.startsWith('theme_') && t.category !== currentFilter) return;
                 cardsHtml += `<div class="path-card" onclick="openDetailById('${t.id}')"><div class="path-card-index" style="background:${colorMap[t.category] || '#5A9A8A'};">${t.order || ''}</div><div class="path-card-content"><div class="path-card-title">${t.label}</div><div class="path-card-desc">${t.summary || ''}</div></div></div>`;
             });
             stageEl.innerHTML = `<div class="path-stage-header"><div class="path-stage-icon">${stage.icon}</div><div><div class="path-stage-title">${stage.title}</div><div class="path-stage-desc">${stage.desc}</div></div></div><div class="path-cards">${cardsHtml}</div>`;
@@ -896,6 +1154,8 @@
         const node = theories.find(t => t.id === id);
         if (node) openDetail(node);
     }
+
+    function applyCurrentFilter() { applyFilter(); }
 
     // ========== 视图切换 ==========
     function switchView(view) {
@@ -912,36 +1172,71 @@
         btn.addEventListener('click', () => switchView(btn.dataset.view));
     });
 
-    // ========== 筛选 ==========
+    // ========== 书籍互文图层开关 ==========
+    // 注意：必须在 loadData() 之后绑定，否则 relationships 尚为空会误判"无边"而隐藏按钮。
+    function bindEchoToggle() {
+        const btn = document.getElementById('echoLayerToggle');
+        if (!btn || btn.dataset.bound) return;
+        btn.dataset.bound = '1';
+        if (!relationships.some(e => e.relation === 'echoes')) {
+            btn.style.display = 'none';
+            return;
+        }
+        btn.addEventListener('click', () => {
+            echoLayerOn = !echoLayerOn;
+            applyEchoLayer();
+        });
+    }
+
+    // ========== 筛选（全部 / 主题） ==========
+    function applyFilter() {
+        document.querySelectorAll('.filter-chip').forEach(b => {
+            b.classList.toggle('active', b.dataset.filter === currentFilter);
+        });
+        if (currentView === 'cards') renderCards();
+        if (currentView === 'path') renderPath();
+        if (currentView === 'graph' && g) {
+            const nodes = g.selectAll('g.graph-node');
+            const links = g.selectAll('line');
+            const labels = g.selectAll('.link-label');
+            const active = activeThemeId || (currentFilter !== 'all' && currentFilter.startsWith('theme_') ? currentFilter : null);
+            const themeBookIds = new Set();
+            if (active) {
+                theories.forEach(n => {
+                    if (n.type === 'book' && (n.themeIds || []).indexOf(active) !== -1) themeBookIds.add(n.id);
+                });
+            }
+            nodes.style('opacity', d => {
+                if (!active) return d.type === 'book' ? 0.55 : 1;
+                if (d.type === 'theme') return d.id === active ? 1 : 0.12;
+                if (d.type === 'book') return themeBookIds.has(d.id) ? 1 : 0.12;
+                // theory：与展开主题的书有关联
+                return themeBookIds.size ? (relationships.some(r => (r.source === d.id && themeBookIds.has(r.target)) || (r.target === d.id && themeBookIds.has(r.source))) ? 1 : 0.12) : 0.12;
+            });
+            links.style('opacity', e => {
+                if (!active) return edgeStyle(e).op;
+                const sc = e.source.id || e.source, tc = e.target.id || e.target;
+                const sTheme = sc === active, tTheme = tc === active;
+                const sBook = themeBookIds.has(sc), tBook = themeBookIds.has(tc);
+                const sTheory = theories.find(t => t.id === sc)?.type === 'theory';
+                const tTheory = theories.find(t => t.id === tc)?.type === 'theory';
+                if (sTheme && tBook || tTheme && sBook) return 0.5;
+                if (sBook && tTheory || tBook && sTheory) return 0.5;
+                if (sTheory && tTheory && (sTheme || tTheme)) return 0.2;
+                return 0.06;
+            });
+            labels.style('opacity', d => {
+                if (!active) return 1;
+                const sc = d.source.id || d.source, tc = d.target.id || d.target;
+                return (themeBookIds.has(sc) || themeBookIds.has(tc) || sc === active || tc === active) ? 1 : 0.05;
+            });
+        }
+    }
     document.querySelectorAll('.filter-chip').forEach(btn => {
         btn.addEventListener('click', function() {
-            document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
             currentFilter = this.dataset.filter;
-            if (currentView === 'cards') renderCards();
-            if (currentView === 'path') renderPath();
-            if (currentView === 'graph' && g) {
-                const nodes = g.selectAll('g');
-                const links = g.selectAll('line');
-                const labels = g.selectAll('.link-label');
-                if (currentFilter === 'all') {
-                    nodes.style('opacity', 1);
-                    links.style('opacity', 0.5);
-                    labels.style('opacity', 1);
-                } else {
-                    nodes.style('opacity', d => d.category === currentFilter ? 1 : 0.15);
-                    links.style('opacity', d => {
-                        const sc = d.source.category || (d.source.id && theories.find(t => t.id === d.source.id)?.category);
-                        const tc = d.target.category || (d.target.id && theories.find(t => t.id === d.target.id)?.category);
-                        return sc === currentFilter || tc === currentFilter ? 0.5 : 0.1;
-                    });
-                    labels.style('opacity', d => {
-                        const sc = d.source.category || (d.source.id && theories.find(t => t.id === d.source.id)?.category);
-                        const tc = d.target.category || (d.target.id && theories.find(t => t.id === d.target.id)?.category);
-                        return sc === currentFilter || tc === currentFilter ? 1 : 0.1;
-                    });
-                }
-            }
+            activeThemeId = null;
+            applyFilter();
         });
     });
 

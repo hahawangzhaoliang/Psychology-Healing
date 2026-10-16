@@ -99,7 +99,11 @@ async function cachedFetch(path, options = {}) {
 
     // 实际请求
     // path 已经是完整路径（如 /api/knowledge/graph），生产环境直接拼接，本地开发加 localhost 前缀
-    const API_BASE = location.hostname === 'localhost' || location.hostname === '127.0.0.1'
+    // 注意：静态资源（/data/*.json、/css、/js 等）不应重写到 API 端口，
+    // 否则在非 3000 端口的静态预览环境下会连接失败。
+    const isStaticAsset = /\.(json|css|js|svg|png|jpe?g|webp|mp3|woff2?)(\?|$)/i.test(path);
+    const API_BASE = !isStaticAsset &&
+        (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
         ? 'http://localhost:3000'
         : '';
 
